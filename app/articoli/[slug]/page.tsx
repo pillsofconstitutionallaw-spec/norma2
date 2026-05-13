@@ -412,7 +412,7 @@ export default function ArticoloPage() {
               <div style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>{autore}</div>
               <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>{data} · {tempoLettura} min</div>
             </div>
-            <div style={{ marginLeft: 'auto', marginLeft: 'auto', fontSize: 10, color: 'rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: 99, border: '0.5px solid rgba(255,255,255,0.08)', flexShrink: 0 }}>
+            <div style={{ marginLeft: 'auto', fontSize: 10, color: 'rgba(255,255,255,0.4)', background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: 99, border: '0.5px solid rgba(255,255,255,0.08)', flexShrink: 0 }}>
               {readProgress}% letto
             </div>
           </div>
