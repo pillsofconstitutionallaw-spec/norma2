@@ -432,7 +432,7 @@ export default function NormaHomeV2() {
     'Ripetiamo il Diritto': 'Ripetiamo',
   };
 
-  const icons: Record<string, JSX.Element> = {
+  const icons: Record<string, React.ReactNode> = {
     Penale: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
         <path d="M12 3L19 6V11C19 16 15.5 20 12 21C8.5 20 5 16 5 11V6L12 3Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round" />
