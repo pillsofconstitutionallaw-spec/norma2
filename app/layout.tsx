@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -41,23 +42,59 @@ export default function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
         <meta name="apple-mobile-web-app-title" content="Norma" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
       </head>
-      <body className="min-h-full flex flex-col" style={{ background: '#0a0d18' }}>
+
+      <body
+        className="min-h-full flex flex-col"
+        style={{ background: "#0a0d18" }}
+      >
         {children}
-        <script dangerouslySetInnerHTML={{
-          __html: `
+
+        {/* OneSignal SDK */}
+        <Script
+          src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
+          strategy="afterInteractive"
+        />
+
+        {/* OneSignal Init */}
+        <Script id="onesignal-init" strategy="afterInteractive">
+          {`
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+
+            OneSignalDeferred.push(async function(OneSignal) {
+              await OneSignal.init({
+                appId: "cb2f63d9-6736-47a6-97e7-913f41abd463",
+                notifyButton: {
+                  enable: true,
+                },
+                allowLocalhostAsSecureOrigin: true,
+              });
+            });
+          `}
+        </Script>
+
+        {/* Service Worker */}
+        <Script id="sw-register" strategy="afterInteractive">
+          {`
             if ('serviceWorker' in navigator) {
-              window.addEventListener('load', function() {
+              window.addEventListener('load', function () {
                 navigator.serviceWorker.register('/sw.js')
-                  .then(function(reg) { console.log('SW registrato:', reg.scope); })
-                  .catch(function(err) { console.log('SW errore:', err); });
+                  .then(function (reg) {
+                    console.log('SW registrato:', reg.scope);
+                  })
+                  .catch(function (err) {
+                    console.log('SW errore:', err);
+                  });
               });
             }
-          `
-        }} />
+          `}
+        </Script>
       </body>
     </html>
   );
