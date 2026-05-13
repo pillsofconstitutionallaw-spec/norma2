@@ -108,7 +108,7 @@ export default function Footer() {
       )}
 
       {/* FOOTER BAR */}
-      <div className="absolute inset-0 bg-[#031327]/95 backdrop-blur-2xl border-t border-white/[0.05]" style={{ position: 'relative' }} />
+      <div className="absolute inset-0 bg-[#041428]/98 backdrop-blur-md border-t border-white/[0.05]" style={{ position: 'relative' }} />
       <div className="relative h-[88px] flex items-center justify-around px-2">
 
         {/* HOME */}

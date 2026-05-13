@@ -86,13 +86,7 @@ export default function Header() {
     <header style={{ position: 'sticky', top: 0, zIndex: 50, background: '#041428', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
       <div style={{ paddingLeft: 12, paddingRight: 12, paddingTop: 10, paddingBottom: 0 }}>
 
-        {/* STATUS BAR */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-          <span style={{ color: '#fff', fontSize: 11, fontWeight: 800 }}>9:41</span>
-          <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: 10, letterSpacing: 2 }}>●●●</span>
-        </div>
-
-        {/* TOP */}
+       {/* TOP */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
           <Link href="/" style={{ textDecoration: 'none' }}>
             <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 56, fontWeight: 700, color: '#fff', lineHeight: 0.9, letterSpacing: 1, margin: 0 }}>
