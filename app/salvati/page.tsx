@@ -9,7 +9,7 @@ export default function Salvati() {
 
   useEffect(() => {
     try {
-      const data = JSON.parse(localStorage.getItem('norma_salvati') || '[]');
+      const data = JSON.parse(localStorage.getItem('articoli_salvati') || '[]');
       setSalvati(data);
     } catch (e) {}
   }, []);
@@ -17,7 +17,7 @@ export default function Salvati() {
   function rimuovi(slug: string) {
     const nuovi = salvati.filter(p => p.slug !== slug);
     setSalvati(nuovi);
-    localStorage.setItem('norma_salvati', JSON.stringify(nuovi));
+    localStorage.setItem('articoli_salvati', JSON.stringify(nuovi));
   }
 
   return (

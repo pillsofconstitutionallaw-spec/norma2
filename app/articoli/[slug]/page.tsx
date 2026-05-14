@@ -13,6 +13,7 @@ export default function ArticoloPage() {
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [readProgress, setReadProgress] = useState(0);
+  const [salvato, setSalvato] = useState(false);
 
   const [sintesi, setSintesi] = useState('');
   const [loadingSintesi, setLoadingSintesi] = useState(false);
@@ -59,6 +60,68 @@ export default function ArticoloPage() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+
+  if (!post) return;
+
+  const salvati = JSON.parse(
+    localStorage.getItem('articoli_salvati') || '[]'
+  );
+
+  const esiste = salvati.some(
+    (a: any) => a.slug === post.slug
+  );
+
+  setSalvato(esiste);
+
+}, [post]);
+
+function toggleSalva() {
+
+  if (!post) return;
+
+  const salvati = JSON.parse(
+    localStorage.getItem('articoli_salvati') || '[]'
+  );
+
+  const esiste = salvati.some(
+    (a: any) => a.slug === post.slug
+  );
+
+  if (esiste) {
+
+    const nuovi = salvati.filter(
+      (a: any) => a.slug !== post.slug
+    );
+
+    localStorage.setItem(
+      'articoli_salvati',
+      JSON.stringify(nuovi)
+    );
+
+    setSalvato(false);
+
+  } else {
+
+    const articolo = {
+      slug: post.slug,
+      titolo: post.title?.rendered || '',
+      immagine: imgUrl || '',
+      categoria,
+      autore,
+      data: dataPost,
+    };
+
+    localStorage.setItem(
+      'articoli_salvati',
+      JSON.stringify([articolo, ...salvati])
+    );
+
+    setSalvato(true);
+
+  }
+}
 
   function toggleVocale() {
     if (vocaleAttiva) {
@@ -210,6 +273,30 @@ export default function ArticoloPage() {
 
           {/* Back + categoria */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+            <button
+  onClick={toggleSalva}
+  style={{
+    height: 34,
+    padding: '0 14px',
+    borderRadius: 10,
+    background: salvato
+      ? 'rgba(143,211,255,0.14)'
+      : 'rgba(255,255,255,0.06)',
+    border: salvato
+      ? '0.5px solid rgba(143,211,255,0.25)'
+      : '0.5px solid rgba(255,255,255,0.08)',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 6,
+    cursor: 'pointer',
+    color: salvato ? '#8fd3ff' : '#fff',
+    fontSize: 11,
+    fontWeight: 700
+  }}
+>
+  {salvato ? '✓ Salvato' : '☆ Salva'}
+</button>
+
             <button onClick={() => router.back()} style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: '0.5px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#fff', fontSize: 14 }}>←</button>
             {categoria && <span style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: '#8fd3ff', fontWeight: 800 }}>{categoria}</span>}
           </div>
