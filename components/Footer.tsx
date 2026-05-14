@@ -50,7 +50,12 @@ export default function Footer() {
   const isActive = (href: string) => pathname === href;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50">
+    <div
+  className="fixed bottom-0 left-0 right-0 z-50"
+  style={{
+    background: '#041428',
+  }}
+>
 
       {/* BARRA RICERCA sopra footer */}
       {cercaAperta && (
