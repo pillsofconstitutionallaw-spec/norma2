@@ -41,32 +41,12 @@ export default function RootLayout({
     <html lang="it" className={`${montserrat.variable} h-full antialiased`}>
       <head>
         <link rel="manifest" href="/manifest.json" />
-
-        <meta
-          name="apple-mobile-web-app-capable"
-          content="yes"
-        />
-
-        <meta
-          name="apple-mobile-web-app-status-bar-style"
-          content="black-translucent"
-        />
-
-        <meta
-          name="apple-mobile-web-app-title"
-          content="Norma"
-        />
-
-        <link
-          rel="apple-touch-icon"
-          href="/icon-192.png"
-        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Norma" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
       </head>
-
-      <body
-        className="min-h-full flex flex-col"
-        style={{ background: "#0a0d18" }}
-      >
+      <body className="min-h-full flex flex-col" style={{ background: "#0a0d18" }}>
         {children}
 
         {/* OneSignal SDK */}
@@ -79,20 +59,17 @@ export default function RootLayout({
         <Script id="onesignal-init" strategy="afterInteractive">
           {`
             window.OneSignalDeferred = window.OneSignalDeferred || [];
-
             OneSignalDeferred.push(async function(OneSignal) {
-
               await OneSignal.init({
                 appId: "cb2f63d9-6736-47a6-97e7-913f41abd463",
-
                 notifyButton: {
-                  enable: true,
+                  enable: false,
                 },
-
                 allowLocalhostAsSecureOrigin: true,
               });
-
-              await OneSignal.Notifications.requestPermission();
+              if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
+                await OneSignal.Notifications.requestPermission();
+              }
             });
           `}
         </Script>
@@ -102,7 +79,6 @@ export default function RootLayout({
           {`
             if ('serviceWorker' in navigator) {
               window.addEventListener('load', function () {
-
                 navigator.serviceWorker.register('/OneSignalSDKWorker.js')
                   .then(function (reg) {
                     console.log('SW registrato:', reg.scope);
@@ -110,7 +86,6 @@ export default function RootLayout({
                   .catch(function (err) {
                     console.log('SW errore:', err);
                   });
-
               });
             }
           `}
