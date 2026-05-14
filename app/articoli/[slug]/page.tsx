@@ -465,7 +465,7 @@ export default function ArticoloPage() {
             </div>
 
             {/* Griglia 4 bottoni */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, background: 'rgba(255,255,255,0.05)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, background: 'rgba(255,255,255,0.05)', alignItems: 'stretch' }}>
 
               {/* Lettura vocale */}
               <button
