@@ -61,6 +61,19 @@ const sezioni = [
     ),
   },
   {
+    href: '/test',
+    titolo: 'Test di Diritto',
+    sub: '12 materie · 30 domande AI · 1 min/domanda',
+    colore: '#8fd3ff',
+    bg: 'rgba(143,211,255,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 11l3 3L22 4"/>
+        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+      </svg>
+    ),
+  },
+  {
     href: '/chi-siamo',
     titolo: 'Chi siamo',
     sub: 'Orizzonte Giuridico e Orizzonti del Diritto',
@@ -110,12 +123,9 @@ export default function EsploraPage() {
                 onClick={() => router.push(s.href)}
                 style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px', borderRadius: 16, background: '#111526', border: '0.5px solid rgba(255,255,255,0.05)', cursor: 'pointer', textAlign: 'left', width: '100%' }}
               >
-                {/* Icona */}
                 <div style={{ width: 52, height: 52, borderRadius: 14, background: s.bg, border: `0.5px solid ${s.colore}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   {s.icona}
                 </div>
-
-                {/* Testo */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 4, fontFamily: 'Montserrat, sans-serif' }}>
                     {s.titolo}
@@ -124,8 +134,6 @@ export default function EsploraPage() {
                     {s.sub}
                   </div>
                 </div>
-
-                {/* Freccia */}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
                   <path d="M9 18l6-6-6-6"/>
                 </svg>
@@ -140,39 +148,25 @@ export default function EsploraPage() {
             </div>
           </div>
 
-          <a
-            href="https://orizzontideldiritto.orizzontegiuridico.com"
-            target="_blank"
-            rel="noreferrer"
-            style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px', borderRadius: 16, background: 'linear-gradient(135deg, #07162b, #0d2040)', border: '0.5px solid rgba(143,211,255,0.15)', textDecoration: 'none' }}
-          >
+          <a href="https://orizzontideldiritto.orizzontegiuridico.com" target="_blank" rel="noreferrer"
+            style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px', borderRadius: 16, background: 'linear-gradient(135deg, #07162b, #0d2040)', border: '0.5px solid rgba(143,211,255,0.15)', textDecoration: 'none' }}>
             <div style={{ width: 52, height: 52, borderRadius: 14, background: 'rgba(143,211,255,0.1)', border: '0.5px solid rgba(143,211,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 19V5H12V19M12 5H20V19"/>
-                <path d="M2 19H22"/>
+                <path d="M4 19V5H12V19M12 5H20V19"/><path d="M2 19H22"/>
               </svg>
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 4, fontFamily: 'Montserrat, sans-serif' }}>
-                Orizzonti del Diritto
-              </div>
-              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontFamily: 'Montserrat, sans-serif', lineHeight: 1.4 }}>
-                La rivista scientifica ufficiale
-              </div>
+              <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 4, fontFamily: 'Montserrat, sans-serif' }}>Orizzonti del Diritto</div>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontFamily: 'Montserrat, sans-serif', lineHeight: 1.4 }}>La rivista scientifica ufficiale</div>
             </div>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
               <path d="M9 18l6-6-6-6"/>
             </svg>
           </a>
 
-          {/* SEZIONE SITO */}
-          <div style={{ marginTop: 16 }}>
-            <a
-              href="https://orizzontegiuridico.com"
-              target="_blank"
-              rel="noreferrer"
-              style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px', borderRadius: 16, background: '#111526', border: '0.5px solid rgba(255,255,255,0.05)', textDecoration: 'none' }}
-            >
+          <div style={{ marginTop: 8 }}>
+            <a href="https://orizzontegiuridico.com" target="_blank" rel="noreferrer"
+              style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px', borderRadius: 16, background: '#111526', border: '0.5px solid rgba(255,255,255,0.05)', textDecoration: 'none' }}>
               <div style={{ width: 52, height: 52, borderRadius: 14, background: 'rgba(255,255,255,0.05)', border: '0.5px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8" strokeLinecap="round">
                   <circle cx="12" cy="12" r="9"/>
@@ -180,12 +174,8 @@ export default function EsploraPage() {
                 </svg>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 4, fontFamily: 'Montserrat, sans-serif' }}>
-                  orizzontegiuridico.com
-                </div>
-                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontFamily: 'Montserrat, sans-serif', lineHeight: 1.4 }}>
-                  Visita il sito ufficiale
-                </div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 4, fontFamily: 'Montserrat, sans-serif' }}>orizzontegiuridico.com</div>
+                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontFamily: 'Montserrat, sans-serif', lineHeight: 1.4 }}>Visita il sito ufficiale</div>
               </div>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
                 <path d="M9 18l6-6-6-6"/>
