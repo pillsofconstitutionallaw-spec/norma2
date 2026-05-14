@@ -16,17 +16,22 @@ export async function POST(req: Request) {
     const prompt = `
 Crea una semplice mappa concettuale giuridica del testo seguente.
 
-Rispondi SOLO in JSON valido nel formato:
+Restituisci SOLO JSON valido.
+
+Formato obbligatorio:
 
 {
   "principio": "breve principio centrale",
-  "concetti": ["concetto 1", "concetto 2", "concetto 3"]
+  "concetti": [
+    "concetto 1",
+    "concetto 2",
+    "concetto 3"
+  ]
 }
 
-Non usare markdown.
-Non usare **.
-Non usare ##.
-Non aggiungere testo fuori dal JSON.
+NON usare markdown.
+NON usare \`\`\`.
+NON usare testo fuori dal JSON.
 
 TESTO:
 ${testo}
@@ -49,6 +54,9 @@ ${testo}
               ],
             },
           ],
+          generationConfig: {
+            temperature: 0.2,
+          },
         }),
       }
     );
@@ -63,15 +71,20 @@ ${testo}
       .replace(/```/g, '')
       .trim();
 
+    console.log(cleaned);
+
     const parsed = JSON.parse(cleaned);
 
-    return NextResponse.json(parsed);
+    return NextResponse.json({
+      principio: parsed?.principio || '',
+      concetti: parsed?.concetti || [],
+    });
 
   } catch (e) {
     console.error(e);
 
     return NextResponse.json({
-      principio: '',
+      principio: 'Errore generazione mappa',
       concetti: [],
     });
   }
