@@ -19,8 +19,8 @@ export const metadata: Metadata = {
     title: "Norma",
   },
   icons: {
-    icon: "/icon-192.png",
-    apple: "/icon-192.png",
+    icon: "/apple-icon.png",
+    apple: "/apple-icon.png",
   },
 };
 
@@ -55,20 +55,85 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
 
-        {/* OneSignal Init */}
+        {/* OneSignal Init + Banner notifiche */}
         <Script id="onesignal-init" strategy="afterInteractive">
           {`
             window.OneSignalDeferred = window.OneSignalDeferred || [];
             OneSignalDeferred.push(async function(OneSignal) {
               await OneSignal.init({
                 appId: "cb2f63d9-6736-47a6-97e7-913f41abd463",
-                notifyButton: {
-                  enable: false,
-                },
+                notifyButton: { enable: false },
                 allowLocalhostAsSecureOrigin: true,
               });
+
+              // Mostra banner solo se non ha già dato permesso
               if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
-                await OneSignal.Notifications.requestPermission();
+                
+                let bannerShown = false;
+
+                function showBanner() {
+                  if (bannerShown) return;
+                  bannerShown = true;
+
+                  // Rimuovi listener dopo il primo trigger
+                  window.removeEventListener('scroll', showBanner);
+                  window.removeEventListener('touchstart', showBanner);
+                  window.removeEventListener('click', showBanner);
+
+                  // Crea banner
+                  const banner = document.createElement('div');
+                  banner.id = 'norma-notif-banner';
+                  banner.style.cssText = \`
+                    position: fixed;
+                    top: -100px;
+                    left: 0;
+                    right: 0;
+                    z-index: 99999;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 14px 16px;
+                    background: #041428;
+                    border-bottom: 1px solid rgba(143,211,255,0.2);
+                    cursor: pointer;
+                    transition: top 0.4s cubic-bezier(0.16,1,0.3,1);
+                    font-family: 'Montserrat', sans-serif;
+                  \`;
+
+                  banner.innerHTML = \`
+                    <img src="/apple-icon.png" style="width:40px;height:40px;border-radius:10px;flex-shrink:0;" />
+                    <div style="flex:1;min-width:0;">
+                      <div style="font-size:13px;font-weight:800;color:#fff;margin-bottom:2px;">Norma</div>
+                      <div style="font-size:11px;color:rgba(255,255,255,0.5);">Tocca per attivare le notifiche push</div>
+                    </div>
+                    <div style="font-size:10px;font-weight:700;color:#8fd3ff;letter-spacing:1px;flex-shrink:0;border:1px solid rgba(143,211,255,0.3);border-radius:20px;padding:5px 12px;">ATTIVA</div>
+                  \`;
+
+                  document.body.appendChild(banner);
+
+                  // Animazione entrata
+                  setTimeout(() => { banner.style.top = '0px'; }, 50);
+
+                  // Click → chiedi permesso
+                  banner.addEventListener('click', async function() {
+                    banner.style.top = '-100px';
+                    setTimeout(() => { banner.remove(); }, 400);
+                    await OneSignal.Notifications.requestPermission();
+                  });
+
+                  // Auto-dismiss dopo 6 secondi
+                  setTimeout(() => {
+                    if (document.getElementById('norma-notif-banner')) {
+                      banner.style.top = '-100px';
+                      setTimeout(() => { banner.remove(); }, 400);
+                    }
+                  }, 6000);
+                }
+
+                // Appare al primo scroll o touch
+                window.addEventListener('scroll', showBanner, { passive: true });
+                window.addEventListener('touchstart', showBanner, { passive: true });
+                window.addEventListener('click', showBanner);
               }
             });
           `}
@@ -80,12 +145,8 @@ export default function RootLayout({
             if ('serviceWorker' in navigator) {
               window.addEventListener('load', function () {
                 navigator.serviceWorker.register('/OneSignalSDKWorker.js')
-                  .then(function (reg) {
-                    console.log('SW registrato:', reg.scope);
-                  })
-                  .catch(function (err) {
-                    console.log('SW errore:', err);
-                  });
+                  .then(function(reg) { console.log('SW registrato:', reg.scope); })
+                  .catch(function(err) { console.log('SW errore:', err); });
               });
             }
           `}

@@ -41,13 +41,13 @@ export default function Footer() {
     setCercando(false);
   }
 
+  // N → sempre scroll to top (ovunque tu sia)
   function handleCenterButton() {
     if (cercaAperta) { setCercaAperta(false); return; }
-    if (pathname === '/') window.scrollTo({ top: 0, behavior: 'smooth' });
-    else router.push('/');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  const isActive = (href: string) => pathname === href;
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 
   const btnStyle = (active: boolean): React.CSSProperties => ({
     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -71,7 +71,6 @@ export default function Footer() {
             style={{ position: 'absolute', bottom: 96, left: 16, right: 16, background: '#031327', borderRadius: 18, padding: '16px', border: '0.5px solid rgba(143,211,255,0.25)' }}
             onClick={e => e.stopPropagation()}
           >
-            {/* INPUT */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#111526', borderRadius: 12, padding: '12px 14px', border: '0.5px solid rgba(143,211,255,0.3)', marginBottom: 10 }}>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8fd3ff" strokeWidth="2">
                 <circle cx="11" cy="11" r="7" />
@@ -137,16 +136,15 @@ export default function Footer() {
           <span style={lblStyle(isActive('/') && !cercaAperta)}>Feed</span>
         </button>
 
-        {/* CERCA */}
-        <button style={btnStyle(cercaAperta)} onClick={() => setCercaAperta(!cercaAperta)}>
-          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke={cercaAperta ? '#8fd3ff' : 'rgba(255,255,255,0.28)'} strokeWidth="1.9">
-            <circle cx="11" cy="11" r="7" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        {/* ESPLORA */}
+        <button style={btnStyle(isActive('/esplora'))} onClick={() => { setCercaAperta(false); router.push('/esplora'); }}>
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke={isActive('/esplora') ? '#8fd3ff' : 'rgba(255,255,255,0.28)'} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 6h16M4 12h16M4 18h16" />
           </svg>
-          <span style={lblStyle(cercaAperta)}>Cerca</span>
+          <span style={lblStyle(isActive('/esplora'))}>Esplora</span>
         </button>
 
-        {/* CENTER N */}
+        {/* CENTER N — sempre scroll to top */}
         <div style={{ position: 'relative', marginTop: -40, display: 'flex', flexDirection: 'column', alignItems: 'center', width: 96 }}>
           <div style={{ position: 'absolute', top: 0, width: 90, height: 90, borderRadius: '50%', background: 'rgba(15,111,255,0.2)', filter: 'blur(16px)' }} />
           <button onClick={handleCenterButton} style={{ position: 'relative', width: 74, height: 74, borderRadius: '50%', background: '#071225', border: '1px solid #1c4d7d', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 30px rgba(0,123,255,0.25)', cursor: 'pointer', fontFamily: "'Cormorant Garamond', serif" }}>

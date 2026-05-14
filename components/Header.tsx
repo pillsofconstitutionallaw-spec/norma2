@@ -4,28 +4,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 
-const voci = [
-  { label: 'Home', href: '/' },
-  { label: 'Chi siamo', href: '/chi-siamo' },
-  { label: 'Costituzione', href: '/costituzione' },
-  { label: 'Fonti', href: '/fonti' },
-  { label: 'Sentenze', href: '/sentenze' },
-  { label: 'Istituzioni', href: '/istituzioni' },
-];
-
 export default function Header() {
   const pathname = usePathname();
-
   const [cercaAperta, setCercaAperta] = useState(false);
   const [query, setQuery] = useState('');
   const [risultati, setRisultati] = useState<any[]>([]);
   const [cercando, setCercando] = useState(false);
-
   const [notificheAperte, setNotificheAperte] = useState(false);
   const [notifiche, setNotifiche] = useState<any[]>([]);
   const [loadingNotifiche, setLoadingNotifiche] = useState(false);
   const [notificheLette, setNotificheLette] = useState(false);
-
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<any>(null);
 
@@ -84,66 +72,60 @@ export default function Header() {
 
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 50, background: '#041428', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-      <div style={{ paddingLeft: 12, paddingRight: 12, paddingTop: 10, paddingBottom: 0 }}>
+      <div style={{ paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12 }}>
 
-       {/* TOP */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+        {/* TOP — solo logo + icone */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Link href="/" style={{ textDecoration: 'none' }}>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 56, fontWeight: 700, color: '#fff', lineHeight: 0.9, letterSpacing: 1, margin: 0 }}>
+            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 42, fontWeight: 700, color: '#fff', lineHeight: 1, letterSpacing: 1, margin: 0 }}>
               NORMA
             </h1>
           </Link>
 
-          <div style={{ display: 'flex', gap: 18, paddingTop: 8 }}>
-            <button onClick={() => { setCercaAperta(!cercaAperta); setNotificheAperte(false); }}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={cercaAperta ? '#8fd3ff' : 'rgba(255,255,255,0.5)'} strokeWidth="2">
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+            {/* LENTE */}
+            <button
+              onClick={() => { setCercaAperta(!cercaAperta); setNotificheAperte(false); }}
+              style={{ width: 36, height: 36, borderRadius: 10, background: cercaAperta ? 'rgba(143,211,255,0.12)' : 'rgba(255,255,255,0.05)', border: `0.5px solid ${cercaAperta ? 'rgba(143,211,255,0.3)' : 'rgba(255,255,255,0.08)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={cercaAperta ? '#8fd3ff' : 'rgba(255,255,255,0.55)'} strokeWidth="2" strokeLinecap="round">
                 <circle cx="11" cy="11" r="7" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
             </button>
 
-            <button onClick={apriNotifiche} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, position: 'relative' }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={notificheAperte ? '#8fd3ff' : 'rgba(255,255,255,0.5)'} strokeWidth="2">
+            {/* CAMPANELLA */}
+            <button
+              onClick={apriNotifiche}
+              style={{ width: 36, height: 36, borderRadius: 10, background: notificheAperte ? 'rgba(143,211,255,0.12)' : 'rgba(255,255,255,0.05)', border: `0.5px solid ${notificheAperte ? 'rgba(143,211,255,0.3)' : 'rgba(255,255,255,0.08)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', position: 'relative' }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={notificheAperte ? '#8fd3ff' : 'rgba(255,255,255,0.55)'} strokeWidth="2" strokeLinecap="round">
                 <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
                 <path d="M13.73 21a2 2 0 0 1-3.46 0" />
               </svg>
               {!notificheLette && (
-                <div style={{ position: 'absolute', top: -2, right: -2, width: 7, height: 7, borderRadius: '50%', background: '#8fd3ff' }} />
+                <div style={{ position: 'absolute', top: 6, right: 6, width: 7, height: 7, borderRadius: '50%', background: '#8fd3ff', border: '1.5px solid #041428' }} />
               )}
             </button>
           </div>
-        </div>
-
-        {/* MENU */}
-        <div style={{ display: 'flex', gap: 26, overflowX: 'auto', scrollbarWidth: 'none' }}>
-          {voci.map((v) => {
-            const attivo = pathname === v.href || (v.href !== '/' && pathname.startsWith(v.href));
-            return (
-              <Link key={v.href} href={v.href} style={{
-                paddingBottom: 12,
-                borderBottom: attivo ? '3px solid #8fd3ff' : '3px solid transparent',
-                color: attivo ? '#8fd3ff' : 'rgba(255,255,255,0.36)',
-                fontSize: 11, fontWeight: 900, letterSpacing: 3, textTransform: 'uppercase',
-                whiteSpace: 'nowrap', textDecoration: 'none', transition: 'color 0.2s',
-              }}>
-                {v.label}
-              </Link>
-            );
-          })}
         </div>
       </div>
 
       {/* BARRA RICERCA */}
       {cercaAperta && (
-        <div style={{ padding: '10px 12px 12px', borderTop: '0.5px solid rgba(255,255,255,0.06)', background: '#041428' }}>
+        <div style={{ padding: '10px 16px 14px', borderTop: '0.5px solid rgba(255,255,255,0.06)', background: '#041428' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#111526', borderRadius: 12, padding: '10px 14px', border: '0.5px solid rgba(143,211,255,0.2)' }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8fd3ff" strokeWidth="2">
               <circle cx="11" cy="11" r="7" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
-            <input ref={inputRef} value={query} onChange={e => setQuery(e.target.value)}
-              placeholder="Cerca articoli..." style={{ flex: 1, background: 'none', border: 'none', outline: 'none', color: '#fff', fontSize: 13, fontFamily: 'Montserrat, sans-serif', fontWeight: 600 }} />
+            <input
+              ref={inputRef}
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder="Cerca articoli..."
+              style={{ flex: 1, background: 'none', border: 'none', outline: 'none', color: '#fff', fontSize: 13, fontFamily: 'Montserrat, sans-serif', fontWeight: 600 }}
+            />
             {query && (
               <button onClick={() => setQuery('')} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)', fontSize: 16, padding: 0 }}>✕</button>
             )}
@@ -182,7 +164,7 @@ export default function Header() {
 
       {/* PANNELLO NOTIFICHE */}
       {notificheAperte && (
-        <div style={{ padding: '10px 12px 12px', borderTop: '0.5px solid rgba(255,255,255,0.06)', background: '#041428' }}>
+        <div style={{ padding: '10px 16px 14px', borderTop: '0.5px solid rgba(255,255,255,0.06)', background: '#041428' }}>
           <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 10, fontFamily: 'Montserrat, sans-serif' }}>
             Ultimi aggiornamenti
           </div>
