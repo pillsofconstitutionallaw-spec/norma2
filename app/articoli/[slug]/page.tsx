@@ -470,7 +470,7 @@ export default function ArticoloPage() {
               {/* Lettura vocale */}
               <button
                 onClick={toggleVocale}
-                style={{ background: vocaleAttiva ? '#0f2040' : '#0a1220', border: 'none', padding: '18px 16px', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}
+              style={{ background: vocaleAttiva ? '#0f2040' : '#0a1220', border: 'none', padding: '18px 16px', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8, height: 110, justifyContent: 'flex-start' }}
               >
                 <div style={{ width: 36, height: 36, borderRadius: 12, background: vocaleAttiva ? 'rgba(143,211,255,0.2)' : 'rgba(143,211,255,0.08)', border: `0.5px solid rgba(143,211,255,${vocaleAttiva ? '0.4' : '0.15'})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8fd3ff" strokeWidth="2">
