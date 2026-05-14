@@ -107,18 +107,18 @@ export default function Footer() {
         </div>
       )}
 
-      {/* FOOTER BAR */}
-      <div
-  className="absolute inset-0 border-t border-white/[0.05]"
+     {/* FOOTER BAR */}
+<div
   style={{
-    position: 'relative',
+    position: 'absolute',
+    inset: 0,
     background: '#041428',
-    opacity: 1,
-    backdropFilter: 'none',
+    borderTop: '1px solid rgba(255,255,255,0.05)',
+    zIndex: 0,
   }}
 />
-      <div className="relative h-[88px] flex items-center justify-around px-2">
 
+<div className="relative h-[88px] flex items-center justify-around px-2 z-10">
         {/* HOME */}
         <button onClick={() => { setCercaAperta(false); router.push('/'); }} className="flex flex-col items-center justify-center gap-[5px] flex-1">
           <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke={isActive('/') && !cercaAperta ? '#8fd3ff' : 'rgba(255,255,255,0.28)'} strokeWidth="1.9">
