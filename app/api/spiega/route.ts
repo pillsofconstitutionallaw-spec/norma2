@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const body = await req.json();
-    const { articolo, testo, tipo } = body;
+    const { articolo, testo, tipo, materia, numero } = body;
 
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-pro',
@@ -58,13 +58,12 @@ ${testo}
         const parsed = JSON.parse(raw);
         return NextResponse.json(parsed);
       } catch {
-        // fallback: split by newline or comma
         const parole = raw.split(/[\n,]/).map((p: string) => p.trim()).filter(Boolean).slice(0, 10);
         return NextResponse.json({ parole });
       }
     }
 
-    // ─── TEST ───────────────────────────────────────────────────────────────────
+    // ─── TEST ARTICOLO ───────────────────────────────────────────────────────────
     if (tipo === 'test') {
       const prompt = `
 Sei un giurista italiano esperto.
@@ -84,6 +83,37 @@ Il campo "risposta_corretta" è l'indice (0-3) dell'opzione corretta.
 Testo:
 ${testo}
 `;
+      const result = await model.generateContent(prompt);
+      let raw = result.response.text().replace(/```json|```/g, '').trim();
+      try {
+        const parsed = JSON.parse(raw);
+        return NextResponse.json(parsed);
+      } catch {
+        return NextResponse.json({ domande: [] });
+      }
+    }
+
+    // ─── TEST MATERIA ────────────────────────────────────────────────────────────
+    if (tipo === 'test_materia') {
+      const n = numero || 30;
+      const prompt = `Sei un professore universitario italiano di ${materia} con trent'anni di esperienza nell'insegnamento e nella ricerca giuridica. Il tuo compito è generare ${n} domande a risposta multipla di livello universitario avanzato sulla materia ${materia}.
+
+Le domande devono essere ispirate ai contenuti di Normattiva, ai manuali Simone Edizioni, ai manuali Giappichelli, alla Gazzetta Ufficiale, alla giurisprudenza della Corte Costituzionale, della Corte di Cassazione e della Corte di Giustizia dell'Unione Europea.
+
+Ogni domanda deve riguardare un istituto giuridico diverso. Le domande devono essere precise, tecniche e di livello universitario. I distrattori devono essere plausibili e richiedere una conoscenza approfondita per essere esclusi. La spiegazione deve essere un testo discorsivo, formale e privo di qualsiasi simbolo markdown, asterischi, cancelletti o elenchi puntati.
+
+Rispondi SOLO con un oggetto JSON valido nel seguente formato, senza markdown, senza backtick, senza testo aggiuntivo prima o dopo:
+{
+  "domande": [
+    {
+      "testo": "Testo della domanda",
+      "opzioni": ["Prima opzione", "Seconda opzione", "Terza opzione", "Quarta opzione"],
+      "corretta": 0,
+      "spiegazione": "Spiegazione discorsiva e formale della risposta corretta, senza markdown, senza asterischi, senza elenchi puntati, scritta come un paragrafo continuo."
+    }
+  ]
+}`;
+
       const result = await model.generateContent(prompt);
       let raw = result.response.text().replace(/```json|```/g, '').trim();
       try {
