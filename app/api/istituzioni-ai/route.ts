@@ -1,88 +1,80 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-
-const genAI = new GoogleGenerativeAI(
-  process.env.GEMINI_API_KEY!
-);
-
 export async function POST(req: Request) {
   try {
     const { istituzione, tipo } = await req.json();
 
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-pro',
-    });
+    const apiKey =
+      process.env.GROQ_API_KEY_ISTITUZIONI;
+
+    if (!apiKey) {
+      return Response.json(
+        {
+          errore:
+            'GROQ_API_KEY_ISTITUZIONI non trovata',
+        },
+        {
+          status: 500,
+        }
+      );
+    }
 
     let prompt = '';
 
-    // SPIEGAZIONE
     if (tipo === 'spiegazione') {
       prompt = `
-Spiega in modo chiaro, elegante e giuridicamente corretto la seguente istituzione:
+Sei un esperto di diritto costituzionale, diritto pubblico e istituzioni internazionali.
+
+Spiega in modo chiaro, rigoroso, elegante e giuridicamente corretto la seguente istituzione:
 
 ${istituzione}
 
 La risposta deve includere:
-
 - ruolo istituzionale
 - funzioni principali
 - composizione
 - competenze
-- fonti del diritto
+- fonti normative
 - articoli della Costituzione o trattati collegati
 - spiegazione semplice ma professionale
 
-Tono:
-premium, moderno, stile enciclopedia giuridica AI.
+NON usare markdown.
+NON usare asterischi.
+NON usare elenchi puntati.
+NON usare tono da chatbot.
+
+Scrivi un testo fluido, discorsivo e professionale.
 `;
     }
 
-    // RIASSUNTO
-    if (tipo === 'riassunto') {
-      prompt = `
-Fai un riassunto schematico e chiaro della seguente istituzione:
+    const response = await fetch(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            {
+              role: 'user',
+              content: prompt,
+            },
+          ],
+          temperature: 0.15,
+          max_tokens: 2048,
+        }),
+      }
+    );
 
-${istituzione}
+    const data = await response.json();
 
-Massimo 250 parole.
-`;
-    }
-
-    // QUIZ
-    if (tipo === 'quiz') {
-      prompt = `
-Crea 3 quiz a risposta multipla sulla seguente istituzione:
-
-${istituzione}
-
-Formato:
-
-Domanda:
-A)
-B)
-C)
-
-Risposta corretta:
-`;
-    }
-
-    // ARTICOLI
-    if (tipo === 'articoli') {
-      prompt = `
-Mostra gli articoli della Costituzione, trattati UE o norme principali collegati a:
-
-${istituzione}
-
-Spiega anche brevemente cosa disciplinano.
-`;
-    }
-
-    const result = await model.generateContent(prompt);
-
-    const risposta =
-      result.response.text() || 'Nessuna risposta disponibile';
+    const spiegazione =
+      data.choices?.[0]?.message?.content ||
+      'Nessuna risposta disponibile';
 
     return Response.json({
-      risposta,
+      spiegazione,
     });
   } catch (e) {
     console.error(e);
