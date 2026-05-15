@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -162,62 +162,33 @@ export default function NormaHome() {
   const [homeArticles, setHomeArticles] = useState<any[]>([]);
   const [fascicolo, setFascicolo] = useState<{url: string, title: string} | null>(null);
 
-  // Story state
   const [storyOpen, setStoryOpen] = useState(false);
-  const [storyCatIndex, setStoryCatIndex] = useState(0); // indice categoria corrente
+  const [storyCatIndex, setStoryCatIndex] = useState(0);
   const [storyCatName, setStoryCatName] = useState('');
   const [storyPosts, setStoryPosts] = useState<any[]>([]);
   const [storyIndex, setStoryIndex] = useState(0);
   const [storyLoading, setStoryLoading] = useState(false);
   const [storyProgress, setStoryProgress] = useState(0);
-  // Cache posts per categoria
   const storyCache = useRef<Record<string, any[]>>({});
 
-  // Carica categorie
+  // Unica chiamata API per tutto
   useEffect(() => {
-    fetch('https://orizzontegiuridico.com/wp-json/wp/v2/categories?per_page=100')
+    fetch('/api/home-data')
       .then(r => r.json())
-      .then(data => {
-        if (!Array.isArray(data)) return;
-        const merged = staticCategories.map(sc => {
-          const found = data.find((d: any) => d.name === sc.name);
-          return found ? { ...sc, id: found.id } : sc;
-        });
-        setCategories(merged);
+      .then(({ cats, articles, fascicolo: f }) => {
+        if (Array.isArray(cats)) {
+          const merged = staticCategories.map(sc => {
+            const found = cats.find((d: any) => d.name === sc.name);
+            return found ? { ...sc, id: found.id } : sc;
+          });
+          setCategories(merged);
+        }
+        if (Array.isArray(articles)) setHomeArticles(articles);
+        if (f) setFascicolo(f);
       })
       .catch(() => {});
   }, []);
 
-  // Carica articoli home
-  useEffect(() => {
-    async function load() {
-      try {
-        const [r1, r2] = await Promise.all([
-          fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=3'),
-          fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=3'),
-        ]);
-        const d1 = await r1.json();
-        const d2 = await r2.json();
-        const og = Array.isArray(d1) ? d1.map((p: any) => ({ ...p, _source: 'og' })) : [];
-        const odl = Array.isArray(d2) ? d2.map((p: any) => ({ ...p, _source: 'odl' })) : [];
-        setHomeArticles([...og, ...odl].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3));
-      } catch (e) {}
-    }
-    load();
-  }, []);
-
-  // Carica ultimo fascicolo
-  useEffect(() => {
-    fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/media?mime_type=application/pdf&per_page=1&orderby=date&order=desc')
-      .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0)
-          setFascicolo({ url: data[0].source_url, title: data[0].title?.rendered || 'Ultimo fascicolo' });
-      })
-      .catch(() => {});
-  }, []);
-
-  // Carica posts di una categoria (con cache)
   async function loadCatPosts(name: string): Promise<any[]> {
     if (storyCache.current[name]) return storyCache.current[name];
     try {
@@ -233,7 +204,6 @@ export default function NormaHome() {
     } catch (e) { return []; }
   }
 
-  // Apri storia di una categoria
   async function openStory(catIdx: number) {
     const name = categories[catIdx].name;
     setStoryCatIndex(catIdx);
@@ -242,24 +212,17 @@ export default function NormaHome() {
     setStoryProgress(0);
     setStoryOpen(true);
     setStoryLoading(true);
-
-    // Precache categoria successiva in background
-    if (catIdx + 1 < categories.length) {
-      loadCatPosts(categories[catIdx + 1].name);
-    }
-
+    if (catIdx + 1 < categories.length) loadCatPosts(categories[catIdx + 1].name);
     const posts = await loadCatPosts(name);
     setStoryPosts(posts);
     setStoryLoading(false);
   }
 
-  // Vai alla storia successiva (post o categoria)
   async function nextStory() {
     if (storyIndex < storyPosts.length - 1) {
       setStoryIndex(i => i + 1);
       setStoryProgress(0);
     } else {
-      // Passa alla categoria successiva
       const nextCatIdx = storyCatIndex + 1;
       if (nextCatIdx < categories.length) {
         const name = categories[nextCatIdx].name;
@@ -271,7 +234,6 @@ export default function NormaHome() {
         const posts = await loadCatPosts(name);
         setStoryPosts(posts);
         setStoryLoading(false);
-        // Precache prossima
         if (nextCatIdx + 1 < categories.length) loadCatPosts(categories[nextCatIdx + 1].name);
       } else {
         setStoryOpen(false);
@@ -313,8 +275,6 @@ export default function NormaHome() {
         .hero-tag { font-size: 8px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.65); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 5px 14px; display: inline-block; align-self: flex-start; }
         .hero-title { font-size: 34px; font-weight: 900; color: #fff; line-height: 1.05; letter-spacing: -0.8px; margin: 0; }
         .hero-sub { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.65; margin: 0; }
-        .hero-prog { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.08); }
-        .hero-prog-fill { height: 100%; background: #8fd3ff; }
         .hero-dots { position: absolute; bottom: 10px; right: 14px; display: flex; gap: 5px; }
         .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.25); }
         .hero-dot.on { width: 14px; border-radius: 10px; background: #fff; }
@@ -360,7 +320,7 @@ export default function NormaHome() {
             ))}
           </div>
 
-          {/* CAROUSEL — solo manuale */}
+          {/* CAROUSEL */}
           <div className="slbl">
             <span className="slbl-t">Cos'è Norma</span>
             <div className="slbl-l"></div>
@@ -503,7 +463,6 @@ export default function NormaHome() {
             else prevStory();
           }}
         >
-          {/* Progress bars */}
           <div style={{ display: 'flex', gap: 4, padding: '12px 12px 0', position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }}>
             {(storyLoading ? [0] : storyPosts).map((_, i) => (
               <div key={i} style={{ flex: 1, height: 2.5, borderRadius: 99, background: 'rgba(255,255,255,0.25)', overflow: 'hidden' }}>
@@ -512,7 +471,6 @@ export default function NormaHome() {
             ))}
           </div>
 
-          {/* Header */}
           <div style={{ position: 'absolute', top: 22, left: 0, right: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#0a3060,#8fd3ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🏛️</div>
@@ -531,7 +489,6 @@ export default function NormaHome() {
             </button>
           </div>
 
-          {/* Content */}
           {storyLoading ? (
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>Caricamento...</div>
           ) : storyPosts.length === 0 ? (
@@ -564,7 +521,6 @@ export default function NormaHome() {
         </div>
       )}
 
-      {/* Timer stories */}
       {storyOpen && !storyLoading && storyPosts.length > 0 && (
         <StoryTimer key={`${storyCatIndex}-${storyIndex}`} onTick={p => setStoryProgress(p)} onEnd={nextStory} />
       )}
