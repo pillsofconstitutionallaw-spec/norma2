@@ -1,479 +1,200 @@
 'use client';
 
-import { useState } from 'react';
-
+import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-const sentenze = [
+const sezioni = [
   {
-    numero: 'Sent. 1/1956',
-    titolo: 'Primato della Costituzione',
-    caso:
-      'La Corte affronta il problema delle leggi anteriori alla Costituzione incompatibili con i principi costituzionali.',
-    motivazione:
-      'La Costituzione è fonte gerarchicamente superiore e anche le leggi precedenti devono conformarsi ad essa.',
+    href: '/costituzione',
+    titolo: 'Costituzione',
+    sub: '139 articoli con spiegazioni chiare',
+    colore: '#f97316',
+    bg: 'rgba(249,115,22,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M7 3h10l4 4v14H3V3h4z"/>
+        <path d="M17 3v4h4"/>
+        <path d="M7 12h10M7 16h6"/>
+      </svg>
+    ),
   },
-
   {
-    numero: 'Sent. 154/1985',
-    titolo: 'Autonomia parlamentare',
-    caso:
-      'Si discuteva sulla possibilità per la Corte costituzionale di sindacare i regolamenti parlamentari.',
-    motivazione:
-      'La Corte afferma che i regolamenti parlamentari non sono generalmente sindacabili.',
+    href: '/fonti',
+    titolo: 'Fonti del Diritto',
+    sub: 'Gerarchia delle fonti e sentenze reali',
+    colore: '#ffd700',
+    bg: 'rgba(255,215,0,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3V21M12 3L5 7L12 11L19 7L12 3Z"/>
+        <path d="M5 7L2 14C2 16 3.5 17 5 17C6.5 17 8 16 8 14L5 7Z"/>
+        <path d="M19 7L16 14C16 16 17.5 17 19 17C20.5 17 22 16 22 14L19 7Z"/>
+        <path d="M3 21H21"/>
+      </svg>
+    ),
   },
-
   {
-    numero: 'Sent. 7/1996',
-    titolo: 'Sfiducia individuale',
-    caso:
-      'La vicenda riguarda la mozione di sfiducia individuale verso un singolo ministro.',
-    motivazione:
-      'La Corte riconosce la compatibilità costituzionale della sfiducia individuale.',
+    href: '/sentenze',
+    titolo: 'Sentenze',
+    sub: 'Corte Cost., Cassazione, CGUE',
+    colore: '#22c55e',
+    bg: 'rgba(34,197,94,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+        <path d="M14 2v6h6"/>
+        <path d="M9 13l2 2 4-4"/>
+      </svg>
+    ),
   },
-
   {
-    numero: 'Sent. 360/1996',
-    titolo: 'Decreti-legge reiterati',
-    caso:
-      'Il Governo reiterava decreti-legge non convertiti mantenendo in vita norme provvisorie.',
-    motivazione:
-      'La reiterazione sistematica viola l’art. 77 Cost. perché altera il rapporto tra Governo e Parlamento.',
+    href: '/istituzioni',
+    titolo: 'Istituzioni',
+    sub: 'Italia, UE e internazionale + AI',
+    colore: '#38bdf8',
+    bg: 'rgba(56,189,248,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10"/>
+      </svg>
+    ),
   },
-
   {
-    numero: 'Sent. 200/2006',
-    titolo: 'Potere di grazia',
-    caso:
-      'Conflitto tra Presidente della Repubblica e Ministro della Giustizia.',
-    motivazione:
-      'La grazia appartiene ai poteri del Presidente della Repubblica.',
-  },
-
-  {
-    numero: 'Sent. 199/2012',
-    titolo: 'Effetti del referendum',
-    caso:
-      'Ripristino di una disciplina sostanzialmente abrogata tramite referendum.',
-    motivazione:
-      'La Corte tutela l’effettività del referendum abrogativo.',
-  },
-
-  {
-    numero: 'Sent. 1/2014',
-    titolo: 'Porcellum',
-    caso:
-      'La Corte esamina premio di maggioranza e liste bloccate.',
-    motivazione:
-      'Violazione della rappresentatività e dell’eguaglianza del voto.',
-  },
-
-  {
-    numero: 'Sent. 275/2016',
-    titolo: 'Diritti sociali e bilancio',
-    caso:
-      'Prestazioni per persone con disabilità limitate da vincoli finanziari.',
-    motivazione:
-      'I diritti incomprimibili non possono essere sacrificati per esigenze di bilancio.',
-  },
-
-  {
-    numero: 'Sent. 35/2017',
-    titolo: 'Italicum',
-    caso:
-      'Controllo della legge elettorale Italicum.',
-    motivazione:
-      'La Corte elimina il premio di maggioranza sproporzionato.',
-  },
-
-  {
-    numero: 'Ord. 17/2019',
-    titolo: 'Maxiemendamento e fiducia',
-    caso:
-      'Compressione del dibattito parlamentare durante la legge di bilancio.',
-    motivazione:
-      'La Corte riconosce ampia autonomia interna delle Camere.',
-  },
-
-  {
-    numero: 'Sent. 192/2024',
-    titolo: 'Autonomia differenziata',
-    caso:
-      'Questioni sulla legge relativa all’autonomia differenziata.',
-    motivazione:
-      'La Corte dichiara illegittime varie disposizioni della legge.',
-  },
-
-  {
-    numero: 'Ord. 10/2025',
-    titolo: 'Referendum autonomia',
-    caso:
-      'Verifica di ammissibilità del referendum sulla legge 86/2024.',
-    motivazione:
-      'Il referendum viene dichiarato inammissibile.',
+    href: '/chi-siamo',
+    titolo: 'Chi siamo',
+    sub: 'Orizzonte Giuridico e Orizzonti del Diritto',
+    colore: '#a8c8f0',
+    bg: 'rgba(168,200,240,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a8c8f0" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20"/>
+      </svg>
+    ),
   },
 ];
 
-export default function SentenzePage() {
-  const [attiva, setAttiva] = useState<number | null>(null);
+export default function EsploraPage() {
+  const router = useRouter();
 
   return (
     <>
-      <Header />
+      <style jsx global>{`
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #0a0d18; }
+        ::-webkit-scrollbar { display: none; }
+        html, body { overflow-x: hidden; }
+      `}</style>
 
-      <div
-        style={{
-          minHeight: '100vh',
-          background:
-            'radial-gradient(circle at top, #0f1b3d 0%, #050816 45%, #03050f 100%)',
-          color: '#fff',
-          fontFamily: 'Montserrat, sans-serif',
-        }}
-      >
-        {/* HERO */}
-        <section
-          style={{
-            padding: '90px 24px 50px',
-          }}
-        >
-          <div
-            style={{
-              maxWidth: 1400,
-              margin: '0 auto',
-              display: 'grid',
-              gridTemplateColumns:
-                'repeat(auto-fit, minmax(340px, 1fr))',
-              gap: 50,
-              alignItems: 'center',
-            }}
-          >
-            {/* TESTO */}
-            <div>
-              <div
-                style={{
-                  fontSize: 12,
-                  letterSpacing: 5,
-                  textTransform: 'uppercase',
-                  color: '#8fd3ff',
-                  fontWeight: 700,
-                  marginBottom: 24,
-                }}
-              >
-                Corte Costituzionale
-              </div>
+      <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh' }}>
+        <Header />
 
-              <h1
-                style={{
-                  fontSize: 'clamp(58px, 10vw, 120px)',
-                  lineHeight: 0.9,
-                  fontWeight: 900,
-                  letterSpacing: -5,
-                  marginBottom: 28,
-                }}
-              >
-                SENTENZE
-              </h1>
+        <div style={{ padding: '20px 16px 140px' }}>
 
-              <p
-                style={{
-                  maxWidth: 620,
-                  color: 'rgba(255,255,255,0.72)',
-                  lineHeight: 1.9,
-                  fontSize: 18,
-                }}
-              >
-                Le decisioni che hanno scritto la
-                storia della Repubblica, definito i
-                limiti del potere e protetto i
-                diritti fondamentali.
-              </p>
+          {/* TITOLO */}
+          <div style={{ marginBottom: 24 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 8, fontFamily: 'Montserrat, sans-serif' }}>
+              Naviga
             </div>
-
-            {/* HERO IMAGE */}
-            <div
-              style={{
-                position: 'relative',
-                height: 520,
-                borderRadius: 40,
-                overflow: 'hidden',
-                border:
-                  '1px solid rgba(255,255,255,0.08)',
-                background:
-                  'linear-gradient(180deg, rgba(143,211,255,0.16), rgba(255,255,255,0.02))',
-              }}
-            >
-              <img
-                src="/consulta.jpg"
-                alt="Corte Costituzionale"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  opacity: 0.78,
-                }}
-              />
-
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background:
-                    'linear-gradient(to top, rgba(3,5,15,0.92), rgba(3,5,15,0.15))',
-                }}
-              />
+            <div style={{ fontSize: 26, fontWeight: 900, color: '#fff', lineHeight: 1.15, letterSpacing: -0.5, fontFamily: 'Montserrat, sans-serif' }}>
+              Esplora
             </div>
           </div>
-        </section>
 
-        {/* SENTENZE */}
-        <section
-          style={{
-            padding: '20px 24px 220px',
-          }}
-        >
-          <div
-            style={{
-              maxWidth: 1400,
-              margin: '0 auto',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 18,
-                marginBottom: 34,
-              }}
-            >
-              <div
-                style={{
-                  width: 70,
-                  height: 1,
-                  background:
-                    'rgba(143,211,255,0.4)',
-                }}
-              />
-
-              <div
-                style={{
-                  color: '#8fd3ff',
-                  letterSpacing: 4,
-                  textTransform: 'uppercase',
-                  fontSize: 12,
-                  fontWeight: 700,
-                }}
+          {/* CARD SEZIONI */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {sezioni.map((s, i) => (
+              <button
+                key={i}
+                onClick={() => router.push(s.href)}
+                style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px', borderRadius: 16, background: '#111526', border: '0.5px solid rgba(255,255,255,0.05)', cursor: 'pointer', textAlign: 'left', width: '100%' }}
               >
-                Le decisioni più importanti
-              </div>
-            </div>
+                {/* Icona */}
+                <div style={{ width: 52, height: 52, borderRadius: 14, background: s.bg, border: `0.5px solid ${s.colore}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  {s.icona}
+                </div>
 
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns:
-                  'repeat(auto-fit, minmax(320px, 1fr))',
-                gap: 26,
-              }}
-            >
-              {sentenze.map((sentenza, i) => {
-                const aperta = attiva === i;
-
-                return (
-                  <div
-                    key={i}
-                    onClick={() =>
-                      setAttiva(
-                        aperta ? null : i
-                      )
-                    }
-                    style={{
-                      position: 'relative',
-                      overflow: 'hidden',
-                      borderRadius: 34,
-                      padding: 32,
-                      cursor: 'pointer',
-                      transition: '0.35s',
-                      minHeight: 340,
-
-                      border:
-                        aperta
-                          ? '1px solid rgba(143,211,255,0.4)'
-                          : '1px solid rgba(255,255,255,0.08)',
-
-                      background:
-                        aperta
-                          ? 'rgba(143,211,255,0.08)'
-                          : 'rgba(255,255,255,0.03)',
-
-                      backdropFilter: 'blur(18px)',
-                    }}
-                  >
-                    {/* GLOW */}
-                    <div
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        background:
-                          'radial-gradient(circle at top left, rgba(143,211,255,0.16), transparent 55%)',
-                        opacity: 0.8,
-                      }}
-                    />
-
-                    <div
-                      style={{
-                        position: 'relative',
-                        zIndex: 2,
-                      }}
-                    >
-                      {/* HEADER CARD */}
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'flex-start',
-                          justifyContent:
-                            'space-between',
-                          gap: 20,
-                          marginBottom: 30,
-                        }}
-                      >
-                        <div
-                          style={{
-                            flex: 1,
-                          }}
-                        >
-                          <div
-                            style={{
-                              fontSize: 56,
-                              lineHeight: 0.9,
-                              fontWeight: 900,
-                              color: '#8fd3ff',
-                              letterSpacing: -3,
-                              wordBreak:
-                                'break-word',
-                            }}
-                          >
-                            {sentenza.numero}
-                          </div>
-                        </div>
-
-                        <div
-                          style={{
-                            width: 46,
-                            height: 46,
-                            flexShrink: 0,
-                            borderRadius: 999,
-                            border:
-                              '1px solid rgba(143,211,255,0.3)',
-
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent:
-                              'center',
-
-                            color: '#8fd3ff',
-                            fontSize: 24,
-                          }}
-                        >
-                          →
-                        </div>
-                      </div>
-
-                      {/* TITOLO */}
-                      <h2
-                        style={{
-                          fontSize: 34,
-                          lineHeight: 1,
-                          fontWeight: 800,
-                          marginBottom: 24,
-                        }}
-                      >
-                        {sentenza.titolo}
-                      </h2>
-
-                      {/* MOTIVAZIONE */}
-                      <p
-                        style={{
-                          color:
-                            'rgba(255,255,255,0.68)',
-                          lineHeight: 1.9,
-                          fontSize: 15,
-                        }}
-                      >
-                        {sentenza.motivazione}
-                      </p>
-
-                      {/* ESPANSIONE */}
-                      {aperta && (
-                        <div
-                          style={{
-                            marginTop: 34,
-                            paddingTop: 28,
-                            borderTop:
-                              '1px solid rgba(255,255,255,0.08)',
-                          }}
-                        >
-                          <div
-                            style={{
-                              color: '#8fd3ff',
-                              fontSize: 12,
-                              letterSpacing: 3,
-                              textTransform:
-                                'uppercase',
-                              fontWeight: 700,
-                              marginBottom: 14,
-                            }}
-                          >
-                            Caso concreto
-                          </div>
-
-                          <p
-                            style={{
-                              color:
-                                'rgba(255,255,255,0.82)',
-                              lineHeight: 1.9,
-                              fontSize: 15,
-                              marginBottom: 28,
-                            }}
-                          >
-                            {sentenza.caso}
-                          </p>
-
-                          <div
-                            style={{
-                              color: '#8fd3ff',
-                              fontSize: 12,
-                              letterSpacing: 3,
-                              textTransform:
-                                'uppercase',
-                              fontWeight: 700,
-                              marginBottom: 14,
-                            }}
-                          >
-                            Motivazione
-                          </div>
-
-                          <p
-                            style={{
-                              color:
-                                'rgba(255,255,255,0.82)',
-                              lineHeight: 1.9,
-                              fontSize: 15,
-                            }}
-                          >
-                            {sentenza.motivazione}
-                          </p>
-                        </div>
-                      )}
-                    </div>
+                {/* Testo */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 4, fontFamily: 'Montserrat, sans-serif' }}>
+                    {s.titolo}
                   </div>
-                );
-              })}
+                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontFamily: 'Montserrat, sans-serif', lineHeight: 1.4 }}>
+                    {s.sub}
+                  </div>
+                </div>
+
+                {/* Freccia */}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
+                  <path d="M9 18l6-6-6-6"/>
+                </svg>
+              </button>
+            ))}
+          </div>
+
+          {/* SEZIONE RIVISTA */}
+          <div style={{ marginTop: 24, marginBottom: 12 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 12, fontFamily: 'Montserrat, sans-serif' }}>
+              La nostra rivista
             </div>
           </div>
-        </section>
-      </div>
 
+          <a
+            href="https://orizzontideldiritto.orizzontegiuridico.com"
+            target="_blank"
+            rel="noreferrer"
+            style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px', borderRadius: 16, background: 'linear-gradient(135deg, #07162b, #0d2040)', border: '0.5px solid rgba(143,211,255,0.15)', textDecoration: 'none' }}
+          >
+            <div style={{ width: 52, height: 52, borderRadius: 14, background: 'rgba(143,211,255,0.1)', border: '0.5px solid rgba(143,211,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19V5H12V19M12 5H20V19"/>
+                <path d="M2 19H22"/>
+              </svg>
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 4, fontFamily: 'Montserrat, sans-serif' }}>
+                Orizzonti del Diritto
+              </div>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontFamily: 'Montserrat, sans-serif', lineHeight: 1.4 }}>
+                La rivista scientifica ufficiale
+              </div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </a>
+
+          {/* SEZIONE SITO */}
+          <div style={{ marginTop: 16 }}>
+            <a
+              href="https://orizzontegiuridico.com"
+              target="_blank"
+              rel="noreferrer"
+              style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px', borderRadius: 16, background: '#111526', border: '0.5px solid rgba(255,255,255,0.05)', textDecoration: 'none' }}
+            >
+              <div style={{ width: 52, height: 52, borderRadius: 14, background: 'rgba(255,255,255,0.05)', border: '0.5px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8" strokeLinecap="round">
+                  <circle cx="12" cy="12" r="9"/>
+                  <path d="M3 12H21M12 3C9.5 6 8 9 8 12C8 15 9.5 18 12 21C14.5 18 16 15 16 12C16 9 14.5 6 12 3Z"/>
+                </svg>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 4, fontFamily: 'Montserrat, sans-serif' }}>
+                  orizzontegiuridico.com
+                </div>
+                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontFamily: 'Montserrat, sans-serif', lineHeight: 1.4 }}>
+                  Visita il sito ufficiale
+                </div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </a>
+          </div>
+
+        </div>
+      </div>
       <Footer />
     </>
   );
