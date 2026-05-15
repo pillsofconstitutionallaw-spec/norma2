@@ -1,6 +1,20 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextRequest, NextResponse } from 'next/server';
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function generateWithRetry(model: any, prompt: string, maxRetries = 3): Promise<any> {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      if (i > 0) await delay(2000 * i);
+      return await generateWithRetry(model, prompt);
+    } catch (error: any) {
+      if (error?.status === 429 && i < maxRetries - 1) continue;
+      throw error;
+    }
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const apiKey = process.env.GEMINI_API_KEY;
@@ -36,7 +50,7 @@ La sintesi deve essere:
 Testo:
 ${testo}
 `;
-      const result = await model.generateContent(prompt);
+      const result = await generateWithRetry(model, prompt);
       let sintesi = result.response.text().replace(/\*/g, '').replace(/#{1,6}/g, '').trim();
       return NextResponse.json({ spiegazione: sintesi, sintesi });
     }
@@ -52,7 +66,7 @@ Rispondi SOLO con un JSON valido in questo formato esatto, senza markdown, senza
 Testo:
 ${testo}
 `;
-      const result = await model.generateContent(prompt);
+      const result = await generateWithRetry(model, prompt);
       let raw = result.response.text().replace(/```json|```/g, '').trim();
       try {
         const parsed = JSON.parse(raw);
@@ -83,7 +97,7 @@ Il campo "risposta_corretta" è l'indice (0-3) dell'opzione corretta.
 Testo:
 ${testo}
 `;
-      const result = await model.generateContent(prompt);
+      const result = await generateWithRetry(model, prompt);
       let raw = result.response.text().replace(/```json|```/g, '').trim();
       try {
         const parsed = JSON.parse(raw);
@@ -114,7 +128,7 @@ Rispondi SOLO con un oggetto JSON valido nel seguente formato, senza markdown, s
   ]
 }`;
 
-      const result = await model.generateContent(prompt);
+      const result = await generateWithRetry(model, prompt);
       let raw = result.response.text().replace(/```json|```/g, '').trim();
       try {
         const parsed = JSON.parse(raw);
@@ -166,7 +180,7 @@ Testo:
 ${testo}
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await generateWithRetry(model, prompt);
     let spiegazione = result.response.text().replace(/\*/g, '').replace(/#{1,6}/g, '').trim();
     return NextResponse.json({ spiegazione });
 
