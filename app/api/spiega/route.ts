@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const { articolo, testo, tipo, materia, numero } = body;
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-1.5-pro',
       generationConfig: {
         temperature: 0.15,
         topP: 0.8,
