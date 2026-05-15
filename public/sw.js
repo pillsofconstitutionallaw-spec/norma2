@@ -1,4 +1,4 @@
-const CACHE_NAME = 'norma-v2';
+const CACHE_NAME = 'norma-v3';
 const STATIC_ASSETS = [
   '/',
   '/chi-siamo',
