@@ -1,4 +1,4 @@
-const CACHE_NAME = 'norma-v1';
+const CACHE_NAME = 'norma-v2';
 const STATIC_ASSETS = [
   '/',
   '/chi-siamo',
@@ -72,4 +72,11 @@ self.addEventListener('notificationclick', (event) => {
       if (clients.openWindow) return clients.openWindow(url);
     })
   );
+});
+
+// AUTO-UPDATE — controlla aggiornamenti ogni volta che l'app torna in foreground
+self.addEventListener('message', (event) => {
+  if (event.data === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
