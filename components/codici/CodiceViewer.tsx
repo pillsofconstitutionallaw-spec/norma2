@@ -75,21 +75,19 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
     if (aiCache[id]?.[tipo]) return;
     setLoadingAI({ id, tipo });
     try {
-      const res = await fetch('/api/codici', {
+      const res = await fetch('/api/spiega', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          numero: articolo.numero,
-          rubrica: articolo.rubrica,
+          articolo: `Art. ${articolo.numero}${articolo.rubrica ? ' — ' + articolo.rubrica : ''}`,
           testo: articolo.testo,
-          codice: titolo,
-          tipo,
+          tipo: tipo === 'spiega' ? 'codice' : 'giurisprudenza',
         }),
       });
       const data = await res.json();
       setAiCache(prev => ({
         ...prev,
-        [id]: { ...prev[id], [tipo]: data.commento ?? 'Nessuna risposta.' },
+        [id]: { ...prev[id], [tipo]: data.spiegazione ?? 'Nessuna risposta.' },
       }));
     } catch {
       setAiCache(prev => ({
@@ -156,7 +154,7 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
 
         <div style={{ padding: '20px 16px 140px' }}>
 
-          {/* ── HERO ── */}
+          {/* HERO */}
           <div style={{
             background: 'linear-gradient(135deg,#0d1829,#111a2e)',
             borderRadius: 24, padding: '24px 20px',
@@ -198,16 +196,13 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
             </div>
           </div>
 
-          {/* ── SEARCH ── */}
+          {/* SEARCH */}
           <div style={{ position: 'relative', marginBottom: 10 }}>
             <input
               type="text"
               placeholder="Cerca per numero, rubrica o parola chiave..."
               value={search}
-              onChange={e => {
-                setSearch(e.target.value);
-                setLibroAttivo(null);
-              }}
+              onChange={e => { setSearch(e.target.value); setLibroAttivo(null); }}
               style={{
                 width: '100%', height: 48,
                 background: '#111526',
@@ -217,73 +212,57 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
                 fontFamily: 'Montserrat, sans-serif',
               }}
             />
-            <svg
-              style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)' }}
+            <svg style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)' }}
               width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="rgba(255,255,255,0.25)" strokeWidth="2" strokeLinecap="round"
-            >
+              stroke="rgba(255,255,255,0.25)" strokeWidth="2" strokeLinecap="round">
               <circle cx="11" cy="11" r="7" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
           </div>
 
-          {/* ── FILTRI LIBRO ── */}
+          {/* FILTRI LIBRO */}
           {!search && libri.length > 1 && (
             <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' as const, marginBottom: 10 }}>
-              <button
-                onClick={() => setLibroAttivo(null)}
-                style={{
-                  padding: '5px 11px', borderRadius: 8, cursor: 'pointer',
-                  background: !libroAttivo ? `${colore}18` : 'rgba(255,255,255,0.04)',
-                  border: `0.5px solid ${!libroAttivo ? colore + '55' : 'rgba(255,255,255,0.08)'}`,
-                  color: !libroAttivo ? colore : 'rgba(255,255,255,0.35)',
-                  fontSize: 10, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
-                }}
-              >
-                Tutti
-              </button>
+              <button onClick={() => setLibroAttivo(null)} style={{
+                padding: '5px 11px', borderRadius: 8, cursor: 'pointer',
+                background: !libroAttivo ? `${colore}18` : 'rgba(255,255,255,0.04)',
+                border: `0.5px solid ${!libroAttivo ? colore + '55' : 'rgba(255,255,255,0.08)'}`,
+                color: !libroAttivo ? colore : 'rgba(255,255,255,0.35)',
+                fontSize: 10, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
+              }}>Tutti</button>
               {libri.map((l: string) => {
                 const att = libroAttivo === l;
                 const label = l.includes('—') ? l.split('—')[0].trim() : l.substring(0, 20);
                 return (
-                  <button
-                    key={l}
-                    onClick={() => setLibroAttivo(att ? null : l)}
-                    style={{
-                      padding: '5px 11px', borderRadius: 8, cursor: 'pointer',
-                      background: att ? `${colore}18` : 'rgba(255,255,255,0.04)',
-                      border: `0.5px solid ${att ? colore + '55' : 'rgba(255,255,255,0.08)'}`,
-                      color: att ? colore : 'rgba(255,255,255,0.35)',
-                      fontSize: 10, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
-                    }}
-                  >
-                    {label}
-                  </button>
+                  <button key={l} onClick={() => setLibroAttivo(att ? null : l)} style={{
+                    padding: '5px 11px', borderRadius: 8, cursor: 'pointer',
+                    background: att ? `${colore}18` : 'rgba(255,255,255,0.04)',
+                    border: `0.5px solid ${att ? colore + '55' : 'rgba(255,255,255,0.08)'}`,
+                    color: att ? colore : 'rgba(255,255,255,0.35)',
+                    fontSize: 10, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
+                  }}>{label}</button>
                 );
               })}
             </div>
           )}
 
-          {/* ── CONTATORE + TOGGLE ABROGATI ── */}
+          {/* CONTATORE + TOGGLE */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
             <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)' }}>
               {filtrati.length} articoli{search ? ` per "${search}"` : ''}
             </div>
-            <button
-              onClick={() => setMostraAbrogati(v => !v)}
-              style={{
-                padding: '4px 10px', borderRadius: 8, cursor: 'pointer',
-                background: mostraAbrogati ? 'rgba(251,113,133,0.1)' : 'rgba(255,255,255,0.04)',
-                border: `0.5px solid ${mostraAbrogati ? 'rgba(251,113,133,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                color: mostraAbrogati ? '#fb7185' : 'rgba(255,255,255,0.3)',
-                fontSize: 9, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
-              }}
-            >
+            <button onClick={() => setMostraAbrogati(v => !v)} style={{
+              padding: '4px 10px', borderRadius: 8, cursor: 'pointer',
+              background: mostraAbrogati ? 'rgba(251,113,133,0.1)' : 'rgba(255,255,255,0.04)',
+              border: `0.5px solid ${mostraAbrogati ? 'rgba(251,113,133,0.3)' : 'rgba(255,255,255,0.08)'}`,
+              color: mostraAbrogati ? '#fb7185' : 'rgba(255,255,255,0.3)',
+              fontSize: 9, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
+            }}>
               {mostraAbrogati ? '✕ Nascondi abrogati' : '+ Abrogati'}
             </button>
           </div>
 
-          {/* ── LISTA ── */}
+          {/* LISTA */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {filtrati.length === 0 && (
               <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.2)', fontSize: 13, marginTop: 48 }}>
@@ -301,17 +280,15 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
               const loadingGiuris = loadingAI?.id === id && loadingAI.tipo === 'giurisprudenza';
 
               return (
-                <div
-                  key={id}
-                  style={{
-                    background: '#111526',
-                    borderRadius: 16,
-                    border: `0.5px solid ${isAperto ? colore + '44' : isSalvato ? colore + '22' : 'rgba(255,255,255,0.05)'}`,
-                    overflow: 'hidden',
-                    transition: 'border-color 0.2s',
-                    opacity: a.abrogato ? 0.55 : 1,
-                  }}
-                >
+                <div key={id} style={{
+                  background: '#111526',
+                  borderRadius: 16,
+                  border: `0.5px solid ${isAperto ? colore + '44' : isSalvato ? colore + '22' : 'rgba(255,255,255,0.05)'}`,
+                  overflow: 'hidden',
+                  transition: 'border-color 0.2s',
+                  opacity: a.abrogato ? 0.55 : 1,
+                }}>
+
                   {/* HEADER */}
                   <div
                     className="art-card"
@@ -396,8 +373,6 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
 
                         {/* Riga 1: Spiega + Giurisprudenza */}
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
-
-                          {/* Spiega AI */}
                           <button
                             className="btn-ai"
                             onClick={() => { if (!cache.spiega && !a.abrogato) chiediAI(a, 'spiega'); }}
@@ -429,7 +404,6 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
                             {loadingSpiega ? 'Carico...' : cache.spiega ? 'Spiegato' : 'Spiega AI'}
                           </button>
 
-                          {/* Giurisprudenza */}
                           <button
                             className="btn-ai"
                             onClick={() => { if (!cache.giurisprudenza && !a.abrogato) chiediAI(a, 'giurisprudenza'); }}
@@ -466,19 +440,15 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
 
                         {/* Riga 2: Ascolta + Salva */}
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
-
-                          <button
-                            onClick={() => toggleVocale(a)}
-                            style={{
-                              height: 40, borderRadius: 12,
-                              background: isVocale ? 'rgba(167,139,250,0.15)' : 'rgba(255,255,255,0.04)',
-                              border: `0.5px solid ${isVocale ? 'rgba(167,139,250,0.4)' : 'rgba(255,255,255,0.08)'}`,
-                              color: isVocale ? '#a78bfa' : 'rgba(255,255,255,0.4)',
-                              fontSize: 11, fontWeight: 700,
-                              cursor: 'pointer', fontFamily: 'Montserrat, sans-serif',
-                              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                            }}
-                          >
+                          <button onClick={() => toggleVocale(a)} style={{
+                            height: 40, borderRadius: 12,
+                            background: isVocale ? 'rgba(167,139,250,0.15)' : 'rgba(255,255,255,0.04)',
+                            border: `0.5px solid ${isVocale ? 'rgba(167,139,250,0.4)' : 'rgba(255,255,255,0.08)'}`,
+                            color: isVocale ? '#a78bfa' : 'rgba(255,255,255,0.4)',
+                            fontSize: 11, fontWeight: 700,
+                            cursor: 'pointer', fontFamily: 'Montserrat, sans-serif',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                          }}>
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
                               stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                               {isVocale
@@ -489,18 +459,15 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
                             {isVocale ? 'Stop' : 'Ascolta'}
                           </button>
 
-                          <button
-                            onClick={() => toggleSalva(a)}
-                            style={{
-                              height: 40, borderRadius: 12,
-                              background: isSalvato ? `${colore}15` : 'rgba(255,255,255,0.04)',
-                              border: `0.5px solid ${isSalvato ? colore + '40' : 'rgba(255,255,255,0.08)'}`,
-                              color: isSalvato ? colore : 'rgba(255,255,255,0.4)',
-                              fontSize: 11, fontWeight: 700,
-                              cursor: 'pointer', fontFamily: 'Montserrat, sans-serif',
-                              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                            }}
-                          >
+                          <button onClick={() => toggleSalva(a)} style={{
+                            height: 40, borderRadius: 12,
+                            background: isSalvato ? `${colore}15` : 'rgba(255,255,255,0.04)',
+                            border: `0.5px solid ${isSalvato ? colore + '40' : 'rgba(255,255,255,0.08)'}`,
+                            color: isSalvato ? colore : 'rgba(255,255,255,0.4)',
+                            fontSize: 11, fontWeight: 700,
+                            cursor: 'pointer', fontFamily: 'Montserrat, sans-serif',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                          }}>
                             <svg width="13" height="13" viewBox="0 0 24 24"
                               fill={isSalvato ? 'currentColor' : 'none'}
                               stroke="currentColor" strokeWidth="2" strokeLinecap="round">
