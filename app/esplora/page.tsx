@@ -1,10 +1,22 @@
 'use client';
-
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 const sezioni = [
+  {
+    href: '/chi-siamo',
+    titolo: 'Chi siamo',
+    sub: 'Orizzonte Giuridico e Orizzonti del Diritto',
+    colore: '#a8c8f0',
+    bg: 'rgba(168,200,240,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a8c8f0" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" />
+      </svg>
+    ),
+  },
   {
     href: '/costituzione',
     titolo: 'Costituzione',
@@ -19,17 +31,19 @@ const sezioni = [
       </svg>
     ),
   },
-  {
-    href: '/glossario',
-    titolo: 'Glossario giuridico',
-    sub: '159 termini · definizioni chiare · ricerca per lettera',
-    colore: '#a78bfa',
-    bg: 'rgba(167,139,250,0.1)',
+    {
+    href: '/codici',
+    titolo: 'Codici',
+    sub: 'Codice civile, penale, procedura civile e penale + AI',
+    colore: '#8fd3ff',
+    bg: 'rgba(143,211,255,0.1)',
     icona: (
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-        <path d="M8 7h8M8 11h6" />
+        <path d="M8 7h8" />
+        <path d="M8 11h8" />
+        <path d="M8 15h5" />
       </svg>
     ),
   },
@@ -41,6 +55,33 @@ const sezioni = [
     bg: 'rgba(255,215,0,0.1)',
     icona: (
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3V21M12 3L5 7L12 11L19 7L12 3Z" />
+        <path d="M5 7L2 14C2 16 3.5 17 5 17C6.5 17 8 16 8 14L5 7Z" />
+        <path d="M19 7L16 14C16 16 17.5 17 19 17C20.5 17 22 16 22 14L19 7Z" />
+        <path d="M3 21H21" />
+      </svg>
+    ),
+  },
+  {
+    href: '/istituzioni',
+    titolo: 'Istituzioni',
+    sub: 'Italia, UE e internazionale + AI',
+    colore: '#38bdf8',
+    bg: 'rgba(56,189,248,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10" />
+      </svg>
+    ),
+  },
+  {
+    href: '/corte-costituzionale',
+    titolo: 'Corte Costituzionale',
+    sub: 'Competenze · sentenze · conflitti · referendum',
+    colore: '#f97316',
+    bg: 'rgba(249,115,22,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 3V21M12 3L5 7L12 11L19 7L12 3Z" />
         <path d="M5 7L2 14C2 16 3.5 17 5 17C6.5 17 8 16 8 14L5 7Z" />
         <path d="M19 7L16 14C16 16 17.5 17 19 17C20.5 17 22 16 22 14L19 7Z" />
@@ -63,14 +104,30 @@ const sezioni = [
     ),
   },
   {
-    href: '/istituzioni',
-    titolo: 'Istituzioni',
-    sub: 'Italia, UE e internazionale + AI',
-    colore: '#38bdf8',
-    bg: 'rgba(56,189,248,0.1)',
+    href: '/glossario',
+    titolo: 'Glossario giuridico',
+    sub: '227 termini · definizioni chiare · ricerca per lettera',
+    colore: '#a78bfa',
+    bg: 'rgba(167,139,250,0.1)',
     icona: (
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10" />
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+        <path d="M8 7h8M8 11h6" />
+      </svg>
+    ),
+  },
+  {
+    href: '/costituzione-napoletana',
+    titolo: 'Costituzione Napoletana',
+    sub: 'Repubblica del 1799 · Pagano · l\'Eforato',
+    colore: '#ffd700',
+    bg: 'rgba(255,215,0,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+        <path d="M2 17l10 5 10-5" />
+        <path d="M2 12l10 5 10-5" />
       </svg>
     ),
   },
@@ -88,13 +145,53 @@ const sezioni = [
     ),
   },
   {
-    href: '/libri',
-    titolo: 'Libri consigliati',
-    sub: 'Manuali e codici commentati · Trova il prezzo minore',
+    href: '/consulenza',
+    titolo: 'Consulenza Legale AI',
+    sub: 'Descrivi il problema · trova l\'avvocato giusto · testo mail pronto',
+    colore: '#8fd3ff',
+    bg: 'rgba(143,211,255,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+      </svg>
+    ),
+  },
+  {
+    href: '/news',
+    titolo: 'Ultime News',
+    sub: 'Notizie giuridiche · aggiornate ogni ora · 4 fonti',
+    colore: '#22c55e',
+    bg: 'rgba(34,197,94,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
+        <path d="M18 14h-8M15 18h-5M10 6h8v4h-8V6z" />
+      </svg>
+    ),
+  },
+  {
+    href: '/cultura',
+    titolo: 'Cultura Giuridica',
+    sub: 'Film · libri · podcast per ogni giurista',
     colore: '#e879f9',
     bg: 'rgba(232,121,249,0.1)',
     icona: (
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#e879f9" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+        <circle cx="12" cy="10" r="2" />
+        <path d="M9 13h6" />
+      </svg>
+    ),
+  },
+  {
+    href: '/libri',
+    titolo: 'Libri consigliati',
+    sub: 'Manuali e codici commentati · Trova il prezzo minore',
+    colore: '#fb7185',
+    bg: 'rgba(251,113,133,0.1)',
+    icona: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fb7185" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
       </svg>
@@ -116,19 +213,6 @@ const sezioni = [
       </svg>
     ),
   },
-  {
-    href: '/chi-siamo',
-    titolo: 'Chi siamo',
-    sub: 'Orizzonte Giuridico e Orizzonti del Diritto',
-    colore: '#a8c8f0',
-    bg: 'rgba(168,200,240,0.1)',
-    icona: (
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a8c8f0" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="8" r="4" />
-        <path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" />
-      </svg>
-    ),
-  },
 ];
 
 export default function EsploraPage() {
@@ -140,20 +224,16 @@ export default function EsploraPage() {
           margin: 0;
           padding: 0;
         }
-
         body {
           background: #0a0d18;
         }
-
         ::-webkit-scrollbar {
           display: none;
         }
-
         html,
         body {
           overflow-x: hidden;
         }
-
         .sezione-link:active {
           opacity: 0.7;
         }
@@ -182,7 +262,6 @@ export default function EsploraPage() {
             >
               Naviga
             </div>
-
             <div
               style={{
                 fontSize: 26,
@@ -241,7 +320,6 @@ export default function EsploraPage() {
                   >
                     {s.titolo}
                   </div>
-
                   <div
                     style={{
                       fontSize: 12,
@@ -322,7 +400,6 @@ export default function EsploraPage() {
               <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 4 }}>
                 Orizzonti del Diritto
               </div>
-
               <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', lineHeight: 1.4 }}>
                 La rivista scientifica ufficiale
               </div>
@@ -381,7 +458,6 @@ export default function EsploraPage() {
                 <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 4 }}>
                   orizzontegiuridico.com
                 </div>
-
                 <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', lineHeight: 1.4 }}>
                   Visita il sito ufficiale
                 </div>

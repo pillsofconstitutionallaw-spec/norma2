@@ -1,45 +1,37 @@
 import { codiciMap } from '@/lib/codici';
 import { notFound } from 'next/navigation';
+import CodiceViewer from '@/components/codici/CodiceViewer';
 
-function renderJSON(data: any) {
-  return (
-    <pre
-      style={{
-        whiteSpace: 'pre-wrap',
-        fontSize: '12px',
-        lineHeight: 1.5,
-      }}
-    >
-      {JSON.stringify(data, null, 2)}
-    </pre>
-  );
-}
+const COLORI: Record<string, string> = {
+  'codice-civile': '#38bdf8',
+  'codice-penale': '#f97316',
+  'procedura-civile': '#a78bfa',
+  'procedura-penale': '#fb7185',
+};
 
-export default function CodicePage({
+const SOTTOTITOLI: Record<string, string> = {
+  'codice-civile': 'R.D. 16 marzo 1942, n. 262',
+  'codice-penale': 'R.D. 19 ottobre 1930, n. 1398',
+  'procedura-civile': 'R.D. 28 ottobre 1940, n. 1443',
+  'procedura-penale': 'D.P.R. 22 settembre 1988, n. 447',
+};
+
+export default async function CodicePage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
+  const codice = codiciMap[slug as keyof typeof codiciMap];
 
-  const codice =
-    codiciMap[params.slug as keyof typeof codiciMap];
-
-  if (!codice) {
-    return notFound();
-  }
+  if (!codice) return notFound();
 
   return (
-    <main
-      style={{
-        padding: '40px',
-        background: '#0a0d18',
-        color: 'white',
-        minHeight: '100vh',
-      }}
-    >
-      <h1>{codice.nome}</h1>
-
-      {renderJSON(codice.articoli)}
-    </main>
+    <CodiceViewer
+      titolo={codice.nome}
+      sottotitolo={SOTTOTITOLI[slug] ?? ''}
+      colore={COLORI[slug] ?? '#8fd3ff'}
+      articoli={codice.articoli}
+    />
   );
 }
