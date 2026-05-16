@@ -1,0 +1,17 @@
+name: Controlla Sentenze Corte Costituzionale
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # ogni giorno alle 9:00 ora italiana
+  workflow_dispatch:      # permette di eseguirlo manualmente
+
+jobs:
+  controlla:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chiama API controllo sentenze
+        run: |
+          curl -X POST https://norma2.vercel.app/api/controlla-sentenze \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -d '{}'

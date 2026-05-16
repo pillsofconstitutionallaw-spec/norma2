@@ -65,22 +65,14 @@ export default function RootLayout({
                 notifyButton: { enable: false },
                 allowLocalhostAsSecureOrigin: true,
               });
-
-              // Mostra banner solo se non ha già dato permesso
               if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
-                
                 let bannerShown = false;
-
                 function showBanner() {
                   if (bannerShown) return;
                   bannerShown = true;
-
-                  // Rimuovi listener dopo il primo trigger
                   window.removeEventListener('scroll', showBanner);
                   window.removeEventListener('touchstart', showBanner);
                   window.removeEventListener('click', showBanner);
-
-                  // Crea banner
                   const banner = document.createElement('div');
                   banner.id = 'norma-notif-banner';
                   banner.style.cssText = \`
@@ -99,7 +91,6 @@ export default function RootLayout({
                     transition: top 0.4s cubic-bezier(0.16,1,0.3,1);
                     font-family: 'Montserrat', sans-serif;
                   \`;
-
                   banner.innerHTML = \`
                     <img src="/apple-icon.png" style="width:40px;height:40px;border-radius:10px;flex-shrink:0;" />
                     <div style="flex:1;min-width:0;">
@@ -108,20 +99,13 @@ export default function RootLayout({
                     </div>
                     <div style="font-size:10px;font-weight:700;color:#8fd3ff;letter-spacing:1px;flex-shrink:0;border:1px solid rgba(143,211,255,0.3);border-radius:20px;padding:5px 12px;">ATTIVA</div>
                   \`;
-
                   document.body.appendChild(banner);
-
-                  // Animazione entrata
                   setTimeout(() => { banner.style.top = '0px'; }, 50);
-
-                  // Click → chiedi permesso
                   banner.addEventListener('click', async function() {
                     banner.style.top = '-100px';
                     setTimeout(() => { banner.remove(); }, 400);
                     await OneSignal.Notifications.requestPermission();
                   });
-
-                  // Auto-dismiss dopo 6 secondi
                   setTimeout(() => {
                     if (document.getElementById('norma-notif-banner')) {
                       banner.style.top = '-100px';
@@ -129,8 +113,6 @@ export default function RootLayout({
                     }
                   }, 6000);
                 }
-
-                // Appare al primo scroll o touch
                 window.addEventListener('scroll', showBanner, { passive: true });
                 window.addEventListener('touchstart', showBanner, { passive: true });
                 window.addEventListener('click', showBanner);
@@ -139,14 +121,33 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Service Worker */}
+        {/* Service Worker — OneSignal + auto-aggiornamento PWA */}
         <Script id="sw-register" strategy="afterInteractive">
           {`
             if ('serviceWorker' in navigator) {
               window.addEventListener('load', function () {
+
+                // OneSignal SW
                 navigator.serviceWorker.register('/OneSignalSDKWorker.js')
-                  .then(function(reg) { console.log('SW registrato:', reg.scope); })
-                  .catch(function(err) { console.log('SW errore:', err); });
+                  .then(function(reg) { console.log('OneSignal SW registrato:', reg.scope); })
+                  .catch(function(err) { console.log('OneSignal SW errore:', err); });
+
+                // Norma SW — aggiornamento automatico ad ogni deploy
+                navigator.serviceWorker.register('/sw.js')
+                  .then(function(reg) {
+                    console.log('Norma SW registrato:', reg.scope);
+                    reg.addEventListener('updatefound', function() {
+                      const newWorker = reg.installing;
+                      newWorker.addEventListener('statechange', function() {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                          newWorker.postMessage('SKIP_WAITING');
+                          window.location.reload();
+                        }
+                      });
+                    });
+                  })
+                  .catch(function(err) { console.log('Norma SW errore:', err); });
+
               });
             }
           `}
