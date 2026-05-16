@@ -1,4 +1,4 @@
-import { codiceCivile } from '@/data/codici/codiceCivile';
+import codiceCivile from '@/data/codici/codiceCivile.json';
 
 export const codiciMap = {
   'codice-civile': {
