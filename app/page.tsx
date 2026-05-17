@@ -42,7 +42,7 @@ function InstagramEmbed() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', borderBottom: '0.5px solid rgba(255,255,255,0.05)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ padding: 2, borderRadius: '50%', background: 'linear-gradient(135deg,#ff9966,#ff5e62,#d6249f,#285AEB)' }}>
-            <img src={profilePic} alt="" style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover', border: '2px solid #111526', display: 'block' }} />
+            <img src={profilePic} alt="" width={38} height={38} style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover', border: '2px solid #111526', display: 'block' }} />
           </div>
           <div>
             <div style={{ color: '#fff', fontWeight: 800, fontSize: 12 }}>Orizzonte Giuridico</div>
@@ -171,7 +171,22 @@ export default function NormaHome() {
   const [storyProgress, setStoryProgress] = useState(0);
   const storyCache = useRef<Record<string, any[]>>({});
 
-  // Unica chiamata API per tutto
+  async function loadCatPosts(name: string): Promise<any[]> {
+    if (storyCache.current[name]) return storyCache.current[name];
+    try {
+      const res = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/categories?search=${encodeURIComponent(name)}`);
+      const cats = await res.json();
+      if (!Array.isArray(cats) || cats.length === 0) return [];
+      const catId = cats[0].id;
+      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${catId}&per_page=5`);
+      const data = await postsRes.json();
+      const posts = Array.isArray(data) ? data : [];
+      storyCache.current[name] = posts;
+      return posts;
+    } catch { return []; }
+  }
+
+  // Unica chiamata API per tutto + precaricamento prime 4 categorie
   useEffect(() => {
     fetch('/api/home-data')
       .then(r => r.json())
@@ -185,24 +200,23 @@ export default function NormaHome() {
         }
         if (Array.isArray(articles)) setHomeArticles(articles);
         if (f) setFascicolo(f);
-      })
-      .catch(() => {});
-  }, []);
 
-  async function loadCatPosts(name: string): Promise<any[]> {
-    if (storyCache.current[name]) return storyCache.current[name];
-    try {
-      const res = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/categories?search=${encodeURIComponent(name)}`);
-      const cats = await res.json();
-      if (!Array.isArray(cats) || cats.length === 0) return [];
-      const catId = cats[0].id;
-      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${catId}&per_page=5`);
-      const data = await postsRes.json();
-      const posts = Array.isArray(data) ? data : [];
-      storyCache.current[name] = posts;
-      return posts;
-    } catch (e) { return []; }
-  }
+        // Precarica le prime 4 categorie in background dopo 1.5s
+        setTimeout(() => {
+          staticCategories.slice(0, 4).forEach(cat => {
+            loadCatPosts(cat.name);
+          });
+        }, 1500);
+      })
+      .catch(() => {
+        // Anche in caso di errore precarica le categorie
+        setTimeout(() => {
+          staticCategories.slice(0, 4).forEach(cat => {
+            loadCatPosts(cat.name);
+          });
+        }, 2000);
+      });
+  }, []);
 
   async function openStory(catIdx: number) {
     const name = categories[catIdx].name;
@@ -211,11 +225,22 @@ export default function NormaHome() {
     setStoryIndex(0);
     setStoryProgress(0);
     setStoryOpen(true);
-    setStoryLoading(true);
-    if (catIdx + 1 < categories.length) loadCatPosts(categories[catIdx + 1].name);
-    const posts = await loadCatPosts(name);
-    setStoryPosts(posts);
-    setStoryLoading(false);
+
+    // Se già in cache non mostra il loading
+    if (storyCache.current[name]) {
+      setStoryPosts(storyCache.current[name]);
+      setStoryLoading(false);
+    } else {
+      setStoryLoading(true);
+      const posts = await loadCatPosts(name);
+      setStoryPosts(posts);
+      setStoryLoading(false);
+    }
+
+    // Precarica la categoria successiva
+    if (catIdx + 1 < categories.length) {
+      loadCatPosts(categories[catIdx + 1].name);
+    }
   }
 
   async function nextStory() {
@@ -230,11 +255,20 @@ export default function NormaHome() {
         setStoryCatName(name);
         setStoryIndex(0);
         setStoryProgress(0);
-        setStoryLoading(true);
-        const posts = await loadCatPosts(name);
-        setStoryPosts(posts);
-        setStoryLoading(false);
-        if (nextCatIdx + 1 < categories.length) loadCatPosts(categories[nextCatIdx + 1].name);
+
+        if (storyCache.current[name]) {
+          setStoryPosts(storyCache.current[name]);
+          setStoryLoading(false);
+        } else {
+          setStoryLoading(true);
+          const posts = await loadCatPosts(name);
+          setStoryPosts(posts);
+          setStoryLoading(false);
+        }
+
+        if (nextCatIdx + 1 < categories.length) {
+          loadCatPosts(categories[nextCatIdx + 1].name);
+        }
       } else {
         setStoryOpen(false);
       }
@@ -250,8 +284,6 @@ export default function NormaHome() {
 
   return (
     <>
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet" />
-
       <style jsx global>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: #000; }
@@ -380,7 +412,10 @@ export default function NormaHome() {
             const date = post?.date ? new Date(post.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' }) : '';
             return (
               <a key={i} href={isOdl ? post.link : `/articoli/${post.slug}`} target={isOdl ? '_blank' : '_self'} rel={isOdl ? 'noreferrer' : undefined} className="art" style={{ display: 'block' }}>
-                {img ? <img src={img} alt="" style={{ width: '100%', height: 150, objectFit: 'cover' }} /> : <div style={{ height: 130, background: '#07162b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>📄</div>}
+                {img
+                  ? <img src={img} alt="" style={{ width: '100%', height: 150, objectFit: 'cover' }} />
+                  : <div style={{ height: 130, background: '#07162b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>📄</div>
+                }
                 <div className="art-body">
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                     {isOdl ? <span className="badge-odl">Orizzonti del Diritto</span> : <span className="badge-og">Orizzonte Giuridico</span>}
@@ -395,7 +430,11 @@ export default function NormaHome() {
               </a>
             );
           }) : [0,1,2].map(i => (
-            <div key={i} className="art"><div style={{ height: 130, background: '#07162b', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.2)', fontSize: 11, letterSpacing: 1 }}>CARICAMENTO...</div></div>
+            <div key={i} className="art">
+              <div style={{ height: 130, background: '#07162b', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.2)', fontSize: 11, letterSpacing: 1 }}>
+                CARICAMENTO...
+              </div>
+            </div>
           ))}
 
           <a href="/articoli" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '13px 0', borderRadius: 16, background: 'rgba(143,211,255,0.08)', border: '0.5px solid rgba(143,211,255,0.2)', color: '#8fd3ff', fontSize: 10, fontWeight: 800, letterSpacing: 1, marginBottom: 8 }}>
@@ -427,23 +466,27 @@ export default function NormaHome() {
             <div className="slbl-l"></div>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 8 }}>
-            <a href="https://www.instagram.com/orizzonte.giuridico/" target="_blank" rel="noreferrer" style={{ borderRadius: 16, background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-              <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="" style={{ width: 28, height: 28 }} />
+            <a href="https://www.instagram.com/orizzonte.giuridico/" target="_blank" rel="noreferrer"
+              style={{ borderRadius: 16, background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
+              <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width={28} height={28} style={{ width: 28, height: 28 }} />
               <span style={{ color: '#fff', fontSize: 10, fontWeight: 800 }}>INSTAGRAM</span>
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9 }}>@orizzonte.giuridico</span>
             </a>
-            <a href="https://www.tiktok.com/@orizzonte.giuridi" target="_blank" rel="noreferrer" style={{ borderRadius: 16, background: '#111526', border: '0.5px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-              <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="" style={{ width: 28, height: 28 }} />
+            <a href="https://www.tiktok.com/@orizzonte.giuridi" target="_blank" rel="noreferrer"
+              style={{ borderRadius: 16, background: '#111526', border: '0.5px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
+              <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok" width={28} height={28} style={{ width: 28, height: 28 }} />
               <span style={{ color: '#fff', fontSize: 10, fontWeight: 800 }}>TIKTOK</span>
               <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 9 }}>@orizzonte.giuridi</span>
             </a>
-            <a href="https://www.facebook.com/profile.php?id=61589319283875" target="_blank" rel="noreferrer" style={{ borderRadius: 16, background: '#1877F2', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-              <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="" style={{ width: 28, height: 28 }} />
+            <a href="https://www.facebook.com/profile.php?id=61589319283875" target="_blank" rel="noreferrer"
+              style={{ borderRadius: 16, background: '#1877F2', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
+              <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" width={28} height={28} style={{ width: 28, height: 28 }} />
               <span style={{ color: '#fff', fontSize: 10, fontWeight: 800 }}>FACEBOOK</span>
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9 }}>Orizzonte Giuridico</span>
             </a>
-            <a href="https://www.linkedin.com/company/orizzonte-giuridico" target="_blank" rel="noreferrer" style={{ borderRadius: 16, background: '#0A66C2', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-              <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="" style={{ width: 28, height: 28 }} />
+            <a href="https://www.linkedin.com/company/orizzonte-giuridico" target="_blank" rel="noreferrer"
+              style={{ borderRadius: 16, background: '#0A66C2', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
+              <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" width={28} height={28} style={{ width: 28, height: 28 }} />
               <span style={{ color: '#fff', fontSize: 10, fontWeight: 800 }}>LINKEDIN</span>
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9 }}>Orizzonte Giuridico</span>
             </a>
@@ -466,7 +509,11 @@ export default function NormaHome() {
           <div style={{ display: 'flex', gap: 4, padding: '12px 12px 0', position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }}>
             {(storyLoading ? [0] : storyPosts).map((_, i) => (
               <div key={i} style={{ flex: 1, height: 2.5, borderRadius: 99, background: 'rgba(255,255,255,0.25)', overflow: 'hidden' }}>
-                <div style={{ height: '100%', background: '#fff', width: i < storyIndex ? '100%' : i === storyIndex ? `${storyProgress}%` : '0%', transition: i === storyIndex ? 'width 0.1s linear' : 'none' }} />
+                <div style={{
+                  height: '100%', background: '#fff',
+                  width: i < storyIndex ? '100%' : i === storyIndex ? `${storyProgress}%` : '0%',
+                  transition: i === storyIndex ? 'width 0.1s linear' : 'none',
+                }} />
               </div>
             ))}
           </div>
@@ -483,16 +530,21 @@ export default function NormaHome() {
                 )}
               </div>
             </div>
-            <button onClick={e => { e.stopPropagation(); setStoryOpen(false); }}
+            <button
+              onClick={e => { e.stopPropagation(); setStoryOpen(false); }}
               style={{ background: 'rgba(255,255,255,0.12)', border: 'none', borderRadius: '50%', width: 32, height: 32, color: '#fff', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               ✕
             </button>
           </div>
 
           {storyLoading ? (
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>Caricamento...</div>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>
+              Caricamento...
+            </div>
           ) : storyPosts.length === 0 ? (
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>Nessun articolo trovato</div>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>
+              Nessun articolo trovato
+            </div>
           ) : (() => {
             const post = storyPosts[storyIndex];
             const img = post?._embedded?.['wp:featuredmedia']?.[0]?.source_url;

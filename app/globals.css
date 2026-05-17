@@ -26,6 +26,8 @@ html, body {
   width: 100% !important;
   max-width: 100% !important;
   padding: 20px 16px 140px;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 800px;
 }
 
 @media (min-width: 768px) {
@@ -44,4 +46,16 @@ html, body {
   .feed, .cs-feed {
     padding: 40px 120px 140px;
   }
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.art img {
+  aspect-ratio: 16/9;
+  width: 100%;
+  object-fit: cover;
+  height: auto;
 }

@@ -33,6 +33,25 @@ const COLORE_CATEGORIA: Record<string, string> = {
   'Giurisprudenza': '#fb7185',
 };
 
+function decodeHtml(str: string): string {
+  return str
+    .replace(/&#8217;/g, '\u2019')
+    .replace(/&#8216;/g, '\u2018')
+    .replace(/&#8220;/g, '\u201C')
+    .replace(/&#8221;/g, '\u201D')
+    .replace(/&#8211;/g, '\u2013')
+    .replace(/&#8212;/g, '\u2014')
+    .replace(/&#8230;/g, '\u2026')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/<[^>]*>/g, '');
+}
+
 function dataRelativa(isoString: string): string {
   try {
     const d = new Date(isoString);
@@ -41,13 +60,11 @@ function dataRelativa(isoString: string): string {
     const diffMin = Math.floor(diffMs / 60000);
     const diffOre = Math.floor(diffMin / 60);
     const diffGiorni = Math.floor(diffOre / 24);
-
     if (diffMin < 5) return 'Adesso';
     if (diffMin < 60) return `${diffMin} min fa`;
     if (diffOre < 24) return `${diffOre} ore fa`;
     if (diffGiorni === 1) return 'Ieri';
     if (diffGiorni < 7) return `${diffGiorni} giorni fa`;
-
     return d.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
   } catch {
     return '';
@@ -60,10 +77,8 @@ function labelGiorno(isoString: string): string {
     const oggi = new Date();
     const ieri = new Date();
     ieri.setDate(oggi.getDate() - 1);
-
     if (d.toDateString() === oggi.toDateString()) return 'Oggi';
     if (d.toDateString() === ieri.toDateString()) return 'Ieri';
-
     return d.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
   } catch {
     return '';
@@ -92,7 +107,6 @@ export default function NewsClient({
   const perGiorno = useMemo(() => {
     const groups: { label: string; items: NewsItem[] }[] = [];
     let ultimoGiorno = '';
-
     for (const item of filtrate) {
       const label = labelGiorno(item.data);
       if (label !== ultimoGiorno) {
@@ -101,7 +115,6 @@ export default function NewsClient({
       }
       groups[groups.length - 1].items.push(item);
     }
-
     return groups;
   }, [filtrate]);
 
@@ -131,7 +144,6 @@ export default function NewsClient({
             Le notizie giuridiche più recenti da fonti ufficiali, aggiornate ogni ora.
           </div>
 
-          {/* Barra aggiornamento */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: 8,
             background: 'rgba(34,197,94,0.07)',
@@ -181,7 +193,6 @@ export default function NewsClient({
           ) : (
             perGiorno.map((gruppo, gi) => (
               <div key={gi}>
-                {/* Label giorno */}
                 <div style={{
                   fontSize: 9, fontWeight: 700, letterSpacing: 3,
                   textTransform: 'uppercase', color: 'rgba(255,255,255,0.28)',
@@ -193,11 +204,12 @@ export default function NewsClient({
                   <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.04)' }} />
                 </div>
 
-                {/* Cards */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {gruppo.items.map((item, ii) => {
                     const colFonte = COLORE_FONTE[item.fonte] ?? '#8fd3ff';
                     const colCat = COLORE_CATEGORIA[item.categoria] ?? '#8fd3ff';
+                    const titolo = decodeHtml(item.titolo);
+                    const anteprima = decodeHtml(item.anteprima);
 
                     return (
                       <a
@@ -212,58 +224,48 @@ export default function NewsClient({
                           borderRadius: 16,
                           border: '0.5px solid rgba(255,255,255,0.06)',
                           padding: '13px 14px',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: 8,
-                          transition: 'border-color 0.15s',
+                          display: 'flex', flexDirection: 'column', gap: 8,
                         }}>
-                          {/* Meta row */}
+                          {/* Meta */}
                           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                            {/* Badge fonte */}
                             <div style={{
-                              background: `${colFonte}14`,
-                              border: `0.5px solid ${colFonte}30`,
+                              background: `${colFonte}14`, border: `0.5px solid ${colFonte}30`,
                               borderRadius: 5, padding: '2px 7px',
                               fontSize: 8, fontWeight: 700, color: colFonte,
                               letterSpacing: 0.8, textTransform: 'uppercase' as const,
                             }}>
                               {item.fonte}
                             </div>
-                            {/* Badge categoria */}
                             <div style={{
-                              background: `${colCat}0e`,
-                              border: `0.5px solid ${colCat}28`,
+                              background: `${colCat}0e`, border: `0.5px solid ${colCat}28`,
                               borderRadius: 5, padding: '2px 7px',
                               fontSize: 8, fontWeight: 700, color: colCat,
                               letterSpacing: 0.8, textTransform: 'uppercase' as const,
                             }}>
                               {item.categoria}
                             </div>
-                            {/* Data */}
                             <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginLeft: 'auto' }}>
                               {dataRelativa(item.data)}
                             </span>
                           </div>
 
-                          {/* Titolo */}
+                          {/* Titolo — decodificato */}
                           <div style={{ fontSize: 13.5, fontWeight: 800, color: '#fff', lineHeight: 1.35 }}>
-                            {item.titolo}
+                            {titolo}
                           </div>
 
-                          {/* Anteprima + freccia */}
-                          {item.anteprima && (
+                          {/* Anteprima — decodificata */}
+                          {anteprima && (
                             <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}>
                               <div style={{
                                 fontSize: 11.5, color: 'rgba(255,255,255,0.38)',
                                 lineHeight: 1.55, flex: 1,
                               }}>
-                                {item.anteprima}{item.anteprima.length >= 158 ? '…' : ''}
+                                {anteprima}{anteprima.length >= 158 ? '…' : ''}
                               </div>
-                              <svg
-                                width="14" height="14" viewBox="0 0 24 24" fill="none"
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                                 stroke="rgba(255,255,255,0.2)" strokeWidth="2.5" strokeLinecap="round"
-                                style={{ flexShrink: 0 }}
-                              >
+                                style={{ flexShrink: 0 }}>
                                 <path d="M9 18l6-6-6-6" />
                               </svg>
                             </div>
@@ -277,10 +279,8 @@ export default function NewsClient({
             ))
           )}
 
-          {/* Footer info */}
           <div style={{
-            marginTop: 24,
-            background: 'rgba(143,211,255,0.04)',
+            marginTop: 24, background: 'rgba(143,211,255,0.04)',
             border: '0.5px solid rgba(143,211,255,0.1)',
             borderRadius: 14, padding: '14px',
             display: 'flex', alignItems: 'center', gap: 12,
