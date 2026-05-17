@@ -203,9 +203,10 @@ export default function NormaHome() {
 
         // Precarica le prime 4 categorie in background dopo 1.5s
         setTimeout(() => {
-          staticCategories.slice(0, 4).forEach(cat => {
-            loadCatPosts(cat.name);
-          });
+        // Precarica subito senza delay
+staticCategories.slice(0, 4).forEach(cat => {
+  loadCatPosts(cat.name);
+});
         }, 1500);
       })
       .catch(() => {
