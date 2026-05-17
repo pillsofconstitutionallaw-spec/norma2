@@ -106,7 +106,7 @@ const sezioni = [
   {
     href: '/glossario',
     titolo: 'Glossario giuridico',
-    sub: '227 termini · definizioni chiare · ricerca per lettera',
+    sub: '312 termini · definizioni chiare · ricerca per lettera',
     colore: '#a78bfa',
     bg: 'rgba(167,139,250,0.1)',
     icona: (
