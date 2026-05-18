@@ -365,7 +365,7 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
                           borderRadius: 12, padding: '14px',
                           fontSize: 13, color: 'rgba(255,255,255,0.78)',
                           lineHeight: 1.9, marginBottom: 14,
-                          fontFamily: 'Georgia, serif',
+                          fontFamily: 'Montserrat, sans-serif',
                           whiteSpace: 'pre-wrap' as const,
                         }}>
                           {a.testo}

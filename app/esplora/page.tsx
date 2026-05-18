@@ -106,7 +106,7 @@ const sezioni = [
   {
     href: '/glossario',
     titolo: 'Glossario giuridico',
-    sub: '312 termini · definizioni chiare · ricerca per lettera',
+    sub: '1000 termini · definizioni chiare · ricerca per lettera',
     colore: '#a78bfa',
     bg: 'rgba(167,139,250,0.1)',
     icona: (
@@ -213,6 +213,19 @@ const sezioni = [
       </svg>
     ),
   },
+  {
+  href: '/referendum',
+  titolo: 'Referendum',
+  sub: 'Referendum costituzionali e abrogativi · spiegazioni AI',
+  colore: '#22c55e',
+  bg: 'rgba(34,197,94,0.1)',
+  icona: (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 11l3 3L22 4" />
+      <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+    </svg>
+  ),
+},
 ];
 
 export default function EsploraPage() {
