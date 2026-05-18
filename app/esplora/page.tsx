@@ -5,6 +5,20 @@ import Footer from '@/components/Footer';
 
 const sezioni = [
   {
+  href: '/studio',
+  titolo: 'Studia',
+  sub: 'Flash card per materia · Carica PDF · Test AI',
+  colore: '#ffd700',
+  bg: 'rgba(255,215,0,0.1)',
+  icona: (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffd700" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2L2 7l10 5 10-5-10-5z" />
+      <path d="M2 17l10 5 10-5" />
+      <path d="M2 12l10 5 10-5" />
+    </svg>
+  ),
+},
+  {
     href: '/chi-siamo',
     titolo: 'Chi siamo',
     sub: 'Orizzonte Giuridico e Orizzonti del Diritto',
