@@ -52,7 +52,7 @@ Formato esatto:
 [{"domanda":"...","risposta":"..."},{"domanda":"...","risposta":"..."}]
 
 Documento:
-${testo.substring(0, 8000)}`;
+${testo.substring(0, 20000)}`;
 
       const raw = (await groqGenerate(prompt, apiKey, 8192)).replace(/```json|```/g, '').trim();
 
@@ -88,7 +88,7 @@ Formato esatto:
 [{"domanda":"...","opzioni":["A) ...","B) ...","C) ...","D) ..."],"corretta":0}]
 
 Documento:
-${testo.substring(0, 8000)}`;
+${testo.substring(0, 20000)}`;
 
       const raw = (await groqGenerate(prompt, apiKey, 8192)).replace(/```json|```/g, '').trim();
 
