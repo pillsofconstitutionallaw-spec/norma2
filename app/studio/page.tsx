@@ -8,7 +8,7 @@ const materie = [
   // ── DISPONIBILI ──
   { slug: 'diritto-privato', titolo: 'Diritto Privato', icona: '📘', colore: '#38bdf8', bg: 'rgba(56,189,248,0.1)', carte: 80 },
   { slug: 'diritto-costituzionale', titolo: 'Diritto Costituzionale', icona: '🏛️', colore: '#fb7185', bg: 'rgba(251,113,133,0.1)', carte: 59 },
-  { slug: 'diritto-internazionale', titolo: 'Diritto Internazionale', icona: '🌐', colore: '#38bdf8', bg: 'rgba(56,189,248,0.1)', carte: 30 },
+  { slug: 'diritto-internazionale', titolo: 'Diritto Internazionale', icona: '🌐', colore: '#38bdf8', bg: 'rgba(56,189,248,0.1)', carte: 297 },
   { slug: 'diritto-internazionale-privato', titolo: 'Dir. Internazionale Privato', icona: '⚖️', colore: '#a78bfa', bg: 'rgba(167,139,250,0.1)', carte: 28 },
   { slug: 'diritto-romano', titolo: 'Diritto Romano', icona: '🏺', colore: '#e879f9', bg: 'rgba(232,121,249,0.1)', carte: 12 },
   { slug: 'diritto-del-lavoro', titolo: 'Diritto del Lavoro', icona: '👷', colore: '#22c55e', bg: 'rgba(34,197,94,0.1)', carte: 42 },

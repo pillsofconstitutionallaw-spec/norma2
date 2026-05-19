@@ -35,3 +35,4 @@ export const meta = {
   bg: 'rgba(167,139,250,0.1)',
   icona: '⚖️',
 };
+

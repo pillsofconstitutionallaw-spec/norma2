@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useRef, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -26,7 +25,6 @@ function StoryTimer({ onTick, onEnd }: { onTick: (p: number) => void; onEnd: () 
 function InstagramEmbed() {
   const [posts, setPosts] = useState<any[]>([]);
   const [profilePic, setProfilePic] = useState('https://i.imgur.com/2DhmtJ4.png');
-
   useEffect(() => {
     fetch('/api/instagram')
       .then(r => r.json())
@@ -36,7 +34,6 @@ function InstagramEmbed() {
       })
       .catch(() => {});
   }, []);
-
   return (
     <div style={{ background: '#111526', borderRadius: 18, overflow: 'hidden', border: '0.5px solid rgba(255,255,255,0.06)', marginBottom: 10 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', borderBottom: '0.5px solid rgba(255,255,255,0.05)' }}>
@@ -154,14 +151,13 @@ const shortNames: Record<string, string> = {
 };
 
 export default function NormaHome() {
+  const [mounted, setMounted] = useState(false); // FIX: evita hydration mismatch
   const [cur, setCur] = useState(0);
   const touchStartX = useRef<number>(0);
   const wheelTimeout = useRef<any>(null);
-
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(staticCategories);
   const [homeArticles, setHomeArticles] = useState<any[]>([]);
   const [fascicolo, setFascicolo] = useState<{url: string, title: string} | null>(null);
-
   const [storyOpen, setStoryOpen] = useState(false);
   const [storyCatIndex, setStoryCatIndex] = useState(0);
   const [storyCatName, setStoryCatName] = useState('');
@@ -170,6 +166,11 @@ export default function NormaHome() {
   const [storyLoading, setStoryLoading] = useState(false);
   const [storyProgress, setStoryProgress] = useState(0);
   const storyCache = useRef<Record<string, any[]>>({});
+
+  // FIX: imposta mounted a true solo sul client
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   async function loadCatPosts(name: string): Promise<any[]> {
     if (storyCache.current[name]) return storyCache.current[name];
@@ -186,7 +187,6 @@ export default function NormaHome() {
     } catch { return []; }
   }
 
-  // Unica chiamata API per tutto + precaricamento prime 4 categorie
   useEffect(() => {
     fetch('/api/home-data')
       .then(r => r.json())
@@ -200,17 +200,13 @@ export default function NormaHome() {
         }
         if (Array.isArray(articles)) setHomeArticles(articles);
         if (f) setFascicolo(f);
-
-        // Precarica le prime 4 categorie in background dopo 1.5s
         setTimeout(() => {
-        // Precarica subito senza delay
-staticCategories.slice(0, 4).forEach(cat => {
-  loadCatPosts(cat.name);
-});
+          staticCategories.slice(0, 4).forEach(cat => {
+            loadCatPosts(cat.name);
+          });
         }, 1500);
       })
       .catch(() => {
-        // Anche in caso di errore precarica le categorie
         setTimeout(() => {
           staticCategories.slice(0, 4).forEach(cat => {
             loadCatPosts(cat.name);
@@ -226,8 +222,6 @@ staticCategories.slice(0, 4).forEach(cat => {
     setStoryIndex(0);
     setStoryProgress(0);
     setStoryOpen(true);
-
-    // Se già in cache non mostra il loading
     if (storyCache.current[name]) {
       setStoryPosts(storyCache.current[name]);
       setStoryLoading(false);
@@ -237,8 +231,6 @@ staticCategories.slice(0, 4).forEach(cat => {
       setStoryPosts(posts);
       setStoryLoading(false);
     }
-
-    // Precarica la categoria successiva
     if (catIdx + 1 < categories.length) {
       loadCatPosts(categories[catIdx + 1].name);
     }
@@ -256,7 +248,6 @@ staticCategories.slice(0, 4).forEach(cat => {
         setStoryCatName(name);
         setStoryIndex(0);
         setStoryProgress(0);
-
         if (storyCache.current[name]) {
           setStoryPosts(storyCache.current[name]);
           setStoryLoading(false);
@@ -266,7 +257,6 @@ staticCategories.slice(0, 4).forEach(cat => {
           setStoryPosts(posts);
           setStoryLoading(false);
         }
-
         if (nextCatIdx + 1 < categories.length) {
           loadCatPosts(categories[nextCatIdx + 1].name);
         }
@@ -300,8 +290,8 @@ staticCategories.slice(0, 4).forEach(cat => {
         .cat-ring { width: 56px; height: 56px; border-radius: 50%; padding: 2.5px; background: linear-gradient(135deg,#0a3060,#8fd3ff); flex-shrink: 0; }
         .cat-inn { width: 100%; height: 100%; border-radius: 50%; background: #07162b; border: 2px solid #0a0d18; display: flex; align-items: center; justify-content: center; }
         .cat-lbl { font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.4); }
-        .hero-wrap { position: relative; border-radius: 20px; overflow: hidden; margin-bottom: 16px; aspect-ratio: 4/5; }
-        .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .hero-wrap { position: relative; border-radius: 20px; overflow: hidden; margin-bottom: 16px; aspect-ratio: 4/5; background: linear-gradient(135deg,#07162b 0%,#0d2040 100%); }
+        .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease; }
         .hero-ov1 { position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,15,40,0.95) 0%, rgba(0,15,40,0.7) 45%, rgba(0,15,40,0.05) 100%); }
         .hero-ov2 { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,15,40,0.75) 0%, transparent 50%); }
         .hero-body { position: absolute; bottom: 0; left: 0; padding: 28px 22px 40px; max-width: 88%; display: flex; flex-direction: column; gap: 10px; }
@@ -327,11 +317,9 @@ staticCategories.slice(0, 4).forEach(cat => {
         ::-webkit-scrollbar { display: none; }
         html, body { overflow-x: hidden; }
       `}</style>
-
       <div className="app">
         <Header />
         <div className="feed">
-
           {/* CATEGORIE */}
           <div className="slbl" style={{ marginTop: 4 }}>
             <span className="slbl-t">Categorie</span>
@@ -376,7 +364,8 @@ staticCategories.slice(0, 4).forEach(cat => {
               else setCur(p => (p - 1 + slides.length) % slides.length);
             }}
           >
-            {slides[cur].img ? (
+            {/* FIX: mounted evita il flash — sul server non renderizza mai il ramo con l'immagine */}
+            {mounted && slides[cur].img ? (
               <>
                 <img className="hero-img" src={slides[cur].img} alt="" />
                 <div className="hero-ov1" />
@@ -437,11 +426,9 @@ staticCategories.slice(0, 4).forEach(cat => {
               </div>
             </div>
           ))}
-
           <a href="/articoli" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '13px 0', borderRadius: 16, background: 'rgba(143,211,255,0.08)', border: '0.5px solid rgba(143,211,255,0.2)', color: '#8fd3ff', fontSize: 10, fontWeight: 800, letterSpacing: 1, marginBottom: 8 }}>
             VEDI TUTTI GLI ARTICOLI →
           </a>
-
           {fascicolo && (
             <a href={fascicolo.url} target="_blank" rel="noreferrer" download
               style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, padding: '14px 0', borderRadius: 16, background: 'rgba(168,200,240,0.08)', border: '0.5px solid rgba(168,200,240,0.25)', color: '#a8c8f0', fontSize: 10, fontWeight: 800, letterSpacing: 1, marginBottom: 8 }}>
@@ -492,7 +479,6 @@ staticCategories.slice(0, 4).forEach(cat => {
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9 }}>Orizzonte Giuridico</span>
             </a>
           </div>
-
         </div>
       </div>
 
@@ -518,7 +504,6 @@ staticCategories.slice(0, 4).forEach(cat => {
               </div>
             ))}
           </div>
-
           <div style={{ position: 'absolute', top: 22, left: 0, right: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#0a3060,#8fd3ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🏛️</div>
@@ -537,7 +522,6 @@ staticCategories.slice(0, 4).forEach(cat => {
               ✕
             </button>
           </div>
-
           {storyLoading ? (
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>
               Caricamento...
@@ -573,11 +557,9 @@ staticCategories.slice(0, 4).forEach(cat => {
           })()}
         </div>
       )}
-
       {storyOpen && !storyLoading && storyPosts.length > 0 && (
         <StoryTimer key={`${storyCatIndex}-${storyIndex}`} onTick={p => setStoryProgress(p)} onEnd={nextStory} />
       )}
-
       <Footer />
     </>
   );

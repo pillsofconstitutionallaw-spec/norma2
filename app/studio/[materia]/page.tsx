@@ -1,542 +1,472 @@
 'use client';
-
-import { useState, useEffect, useMemo } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-
+import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 
-import * as privato from '@/src/data/cards/diritto-privato';
-import * as costituzionale from '@/src/data/cards/diritto-costituzionale';
-import * as romano from '@/src/data/cards/diritto-romano';
-import * as internazionale from '@/src/data/cards/diritto-internazionale';
-import * as internazionalePrivato from '@/src/data/cards/diritto-internazionale-privato';
+type Carta = { domanda: string; risposta: string };
+type DomandaTest = { domanda: string; opzioni: string[]; corretta: number };
+type Fase =
+  | 'upload'
+  | 'caricamento'
+  | 'flashcard-intro'
+  | 'flashcard-studio'
+  | 'flashcard-risultati'
+  | 'test-generazione'
+  | 'test-studio'
+  | 'test-risultati';
 
-type Carta = {
-  domanda: string;
-  risposta: string;
-};
+const BOOKMARK_KEY = 'deck_segnalibro';
 
-const materieMap: Record<
-  string,
-  {
-    carte: Carta[];
-    meta: { titolo: string; colore: string; bg: string; icona: string };
-  }
-> = {
-  'diritto-privato': privato,
-  'diritto-costituzionale': costituzionale,
-  'diritto-romano': romano,
-  'diritto-internazionale': internazionale,
-  'diritto-internazionale-privato': internazionalePrivato,
-};
-
-const materiePlaceholder = [
-  'diritto-penale',
-  'diritto-amministrativo',
-  'diritto-del-lavoro',
-  'diritto-commerciale',
-  'diritto-processuale-civile',
-  'diritto-processuale-penale',
-  'diritto-ue',
-  'diritto-tributario',
-];
-
-type Fase = 'intro' | 'domanda' | 'risposta' | 'risultati';
-
-// ─── stili globali per il flip 3D ────────────────────────────────────────────
-const flipStyles = `
-  .flip-container {
-    perspective: 1200px;
-    width: 100%;
-    min-height: 280px;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-  .flip-inner {
-    position: relative;
-    width: 100%;
-    min-height: 280px;
-    transition: transform 0.55s cubic-bezier(0.45, 0, 0.55, 1);
-    transform-style: preserve-3d;
-  }
-  .flip-inner.flipped {
-    transform: rotateY(180deg);
-  }
-  .flip-front,
-  .flip-back {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    min-height: 280px;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    border-radius: 24px;
-    padding: 28px 24px;
-    box-sizing: border-box;
-  }
-  .flip-front {
-    background: #111526;
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-  .flip-back {
-    transform: rotateY(180deg);
-    background: #172033;
-  }
-  .flip-hint {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: rgba(255,255,255,0.25);
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    margin-top: 20px;
-  }
-`;
-
-export default function MateriaPage() {
-  const params = useParams();
+export default function PdfStudioPage() {
   const router = useRouter();
-
-  const slug = params?.materia as string;
-  const materiaData = materieMap[slug];
-  const isPlaceholder = materiePlaceholder.includes(slug);
-
-  const [fase, setFase] = useState<Fase>('intro');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [fase, setFase] = useState<Fase>('upload');
+  const [nomeFile, setNomeFile] = useState('');
+  const [testoEstratto, setTestoEstratto] = useState('');
+  const [errore, setErrore] = useState('');
   const [carte, setCarte] = useState<Carta[]>([]);
   const [indice, setIndice] = useState(0);
+  const [girata, setGirata] = useState(false);
   const [sapute, setSapute] = useState(0);
   const [nonSapute, setNonSapute] = useState(0);
   const [daRipetere, setDaRipetere] = useState<Carta[]>([]);
-  const [ultimaRisposta, setUltimaRisposta] = useState<'sapevo' | 'non-sapevo' | null>(null);
-  const [xp, setXp] = useState(0);
-  const [streak, setStreak] = useState(0);
-  const [bestStreak, setBestStreak] = useState(0);
-  const [search, setSearch] = useState('');
-  const [flip, setFlip] = useState(false);
-  const [tempoInizio, setTempoInizio] = useState(0);
-  const [tempoMedio, setTempoMedio] = useState(0);
-  const [hasSegnalibro, setHasSegnalibro] = useState(false);
+  const [domande, setDomande] = useState<DomandaTest[]>([]);
+  const [indiceDomanda, setIndiceDomanda] = useState(0);
+  const [rispostaScelta, setRispostaScelta] = useState<number | null>(null);
+  const [confermata, setConfermata] = useState(false);
+  const [punteggio, setPunteggio] = useState(0);
+  const [mostraRiprendi, setMostraRiprendi] = useState(false);
+  const [bookmarkIndice, setBookmarkIndice] = useState<number | null>(null);
 
-  // ── SEGNALIBRO ──────────────────────────────────────────────────────────────
-  function salvaSegnalibro() {
-    localStorage.setItem(
-      `segnalibro_${slug}`,
-      JSON.stringify({ indice, carte })
-    );
-    setHasSegnalibro(true);
-  }
-
-  function riprendi() {
-    const salvato = localStorage.getItem(`segnalibro_${slug}`);
-    if (!salvato) return;
+  // Controlla segnalibro salvato all'avvio della sessione flash card
+  function controllaSegnalibro(nomefile: string) {
     try {
-      const data = JSON.parse(salvato);
-      const carteRipristinate: Carta[] =
-        Array.isArray(data.carte) && data.carte.length > 0
-          ? data.carte
-          : carte;
-      const indiceValido =
-        typeof data.indice === 'number' &&
-        data.indice >= 0 &&
-        data.indice < carteRipristinate.length
-          ? data.indice
-          : 0;
-      setCarte(carteRipristinate);
-      setIndice(indiceValido);
-      setSapute(0);
-      setNonSapute(0);
-      setDaRipetere([]);
-      setUltimaRisposta(null);
-      setFlip(false);
-      setSearch('');
-      setTempoInizio(Date.now());
-      setFase('domanda');
-    } catch {
-      // ignora errori di parsing
-    }
-  }
-
-  // ── INIT ────────────────────────────────────────────────────────────────────
-  useEffect(() => {
-    if (!materiaData) return;
-
-    setHasSegnalibro(!!localStorage.getItem(`segnalibro_${slug}`));
-
-    const salvata = localStorage.getItem(`materia_${slug}`);
-    if (salvata) {
-      try {
-        const data = JSON.parse(salvata);
-        const carteRipristinate: Carta[] =
-          Array.isArray(data.carte) && data.carte.length > 0
-            ? data.carte
-            : materiaData.carte;
-        const indiceValido =
-          typeof data.indice === 'number' &&
-          data.indice >= 0 &&
-          data.indice < carteRipristinate.length
-            ? data.indice
-            : 0;
-        setFase(data.fase ?? 'intro');
-        setIndice(indiceValido);
-        setSapute(data.sapute ?? 0);
-        setNonSapute(data.nonSapute ?? 0);
-        setDaRipetere(Array.isArray(data.daRipetere) ? data.daRipetere : []);
-        setUltimaRisposta(data.ultimaRisposta ?? null);
-        setXp(data.xp ?? 0);
-        setStreak(data.streak ?? 0);
-        setBestStreak(data.bestStreak ?? 0);
-        setTempoMedio(data.tempoMedio ?? 0);
-        setCarte(carteRipristinate);
-      } catch {
-        setCarte([...materiaData.carte].sort(() => Math.random() - 0.5));
+      const saved = localStorage.getItem(BOOKMARK_KEY);
+      if (!saved) return;
+      const bk = JSON.parse(saved);
+      if (bk.nomeFile === nomefile && bk.indice > 0) {
+        setBookmarkIndice(bk.indice);
+        setMostraRiprendi(true);
       }
-    } else {
-      setCarte([...materiaData.carte].sort(() => Math.random() - 0.5));
-    }
+    } catch {}
+  }
 
-    setTempoInizio(Date.now());
-  }, [slug]);
-
-  // ── AUTOSAVE ────────────────────────────────────────────────────────────────
+  // Salva segnalibro ogni volta che cambia la carta
   useEffect(() => {
-    if (carte.length === 0) return;
-    localStorage.setItem(
-      `materia_${slug}`,
-      JSON.stringify({
-        fase, indice, sapute, nonSapute, daRipetere,
-        ultimaRisposta, xp, streak, bestStreak, tempoMedio, carte,
-      })
-    );
-  }, [fase, indice, sapute, nonSapute, daRipetere, ultimaRisposta, xp, streak, bestStreak, tempoMedio, carte, slug]);
-
-  // ── SEARCH ──────────────────────────────────────────────────────────────────
-  const carteFiltrate = useMemo(() => {
-    if (!search.trim()) return carte;
-    return carte.filter((c) =>
-      c.domanda.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [carte, search]);
-
-  useEffect(() => { setIndice(0); }, [search]);
-
-  if (!materiaData && !isPlaceholder) return null;
-
-  const colore = materiaData?.meta.colore ?? '#38bdf8';
-  const icona = materiaData?.meta.icona ?? '📚';
-  const titolo = materiaData?.meta.titolo ?? slug.replace(/-/g, ' ');
-  const cartaCorrente: Carta | undefined = carteFiltrate[indice] ?? carteFiltrate[0];
-  const progresso = carteFiltrate.length > 0 ? ((indice + 1) / carteFiltrate.length) * 100 : 0;
-
-  // ── AZIONI ──────────────────────────────────────────────────────────────────
-  function inizia() {
-    if (!materiaData) return;
-    const shuffled = [...materiaData.carte].sort(() => Math.random() - 0.5);
-    setCarte(shuffled);
-    setIndice(0); setSapute(0); setNonSapute(0); setDaRipetere([]);
-    setUltimaRisposta(null); setFlip(false); setSearch('');
-    setTempoInizio(Date.now());
-    setFase('domanda');
-  }
-
-  function valuta(sapevo: boolean) {
-    if (!cartaCorrente) return;
-    setUltimaRisposta(sapevo ? 'sapevo' : 'non-sapevo');
-    const tempo = Date.now() - tempoInizio;
-    setTempoMedio((prev) => prev === 0 ? tempo : Math.round((prev + tempo) / 2));
-    if (sapevo) {
-      setSapute((s) => s + 1);
-      setXp((x) => x + 5);
-      setStreak((prev) => {
-        const nuovo = prev + 1;
-        if (nuovo > bestStreak) setBestStreak(nuovo);
-        return nuovo;
-      });
-    } else {
-      setNonSapute((n) => n + 1);
-      setStreak(0);
-      setDaRipetere((dr) => {
-        const nuovi = [...dr, cartaCorrente];
-        localStorage.setItem(`errori_${slug}`, JSON.stringify(nuovi));
-        return nuovi;
-      });
+    if (fase === 'flashcard-studio' && nomeFile) {
+      try {
+        localStorage.setItem(BOOKMARK_KEY, JSON.stringify({
+          nomeFile,
+          indice,
+          totale: carte.length,
+          timestamp: Date.now(),
+        }));
+      } catch {}
     }
-    setFase('risposta');
+  }, [indice, fase]);
+
+  // Cancella segnalibro a fine sessione
+  function cancellaSegnalibro() {
+    try { localStorage.removeItem(BOOKMARK_KEY); } catch {}
   }
 
-  function prossima() {
-    if (carteFiltrate.length === 0) { setFase('risultati'); return; }
-    setFlip(false);
-    setUltimaRisposta(null);
-    setTempoInizio(Date.now());
-    if (indice + 1 >= carteFiltrate.length) {
-      setFase('risultati');
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type !== 'application/pdf') { setErrore('Carica un file PDF'); return; }
+    setNomeFile(file.name);
+    setErrore('');
+    setFase('caricamento');
+    try {
+      const testo = await estraiTestoPDF(file);
+      if (!testo || testo.trim().length < 50) {
+        setErrore('Il PDF non contiene testo leggibile. Usa un PDF non scansionato.');
+        setFase('upload');
+        return;
+      }
+      setTestoEstratto(testo);
+      await generaFlashCard(testo, file.name);
+    } catch (err) {
+      console.error(err);
+      setErrore('Errore nel caricamento. Riprova.');
+      setFase('upload');
+    }
+  }
+
+  async function estraiTestoPDF(file: File): Promise<string> {
+    const pdfjsLib = (await import('pdfjs-dist')) as any;
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js`;
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let testo = '';
+    const maxPagine = pdf.numPages;
+    for (let i = 1; i <= maxPagine; i++) {
+      const pagina = await pdf.getPage(i);
+      const contenuto = await pagina.getTextContent();
+      testo += contenuto.items.map((item: any) => item.str).join(' ') + '\n';
+    }
+    return testo.trim();
+  }
+
+  async function generaFlashCard(testo: string, nomefile?: string) {
+    const res = await fetch('/api/studio-pdf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tipo: 'flashcard', testo: testo.substring(0, 12000) }),
+    });
+    const data = await res.json();
+    if (data.errore || !data.carte) {
+      setErrore(data.errore || 'Errore nella generazione. Riprova.');
+      setFase('upload');
+      return;
+    }
+    const carteShuffled = data.carte.sort(() => Math.random() - 0.5);
+    setCarte(carteShuffled);
+    if (nomefile) controllaSegnalibro(nomefile);
+    setFase('flashcard-intro');
+  }
+
+  async function generaTest() {
+    setFase('test-generazione');
+    try {
+      const res = await fetch('/api/studio-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tipo: 'test', testo: testoEstratto.substring(0, 12000) }),
+      });
+      const data = await res.json();
+      if (data.errore || !data.domande) {
+        setErrore(data.errore || 'Errore generazione test.');
+        setFase('flashcard-risultati');
+        return;
+      }
+      setDomande(data.domande);
+      setIndiceDomanda(0); setRispostaScelta(null); setConfermata(false); setPunteggio(0);
+      setFase('test-studio');
+    } catch {
+      setErrore('Errore nella generazione del test. Riprova.');
+      setFase('flashcard-risultati');
+    }
+  }
+
+  function iniziaStudio(fromBookmark = false) {
+    setIndice(fromBookmark && bookmarkIndice !== null ? bookmarkIndice : 0);
+    setGirata(false);
+    setSapute(0);
+    setNonSapute(0);
+    setDaRipetere([]);
+    setMostraRiprendi(false);
+    setFase('flashcard-studio');
+  }
+
+  function rispondi(sapevo: boolean) {
+    if (sapevo) setSapute(s => s + 1);
+    else { setNonSapute(n => n + 1); setDaRipetere(dr => [...dr, carte[indice]]); }
+    if (indice + 1 >= carte.length) {
+      cancellaSegnalibro();
+      setFase('flashcard-risultati');
     } else {
-      setIndice((i) => i + 1);
-      setFase('domanda');
+      setIndice(i => i + 1);
+      setGirata(false);
     }
   }
 
   function riprova() {
-    if (daRipetere.length === 0) { setFase('intro'); return; }
-    const shuffled = [...daRipetere].sort(() => Math.random() - 0.5);
-    setCarte(shuffled);
-    setIndice(0); setSapute(0); setNonSapute(0); setDaRipetere([]);
-    setUltimaRisposta(null); setFlip(false); setSearch('');
-    setTempoInizio(Date.now());
-    setFase('domanda');
+    cancellaSegnalibro();
+    setCarte([...daRipetere].sort(() => Math.random() - 0.5));
+    setIndice(0); setGirata(false); setSapute(0); setNonSapute(0); setDaRipetere([]);
+    setFase('flashcard-studio');
   }
 
-  function ripassaErroriPersistenti() {
-    const salvati = localStorage.getItem(`errori_${slug}`);
-    if (!salvati) return;
-    let errori: Carta[];
-    try { errori = JSON.parse(salvati); } catch { return; }
-    if (!Array.isArray(errori) || errori.length === 0) return;
-    setCarte(errori);
-    setIndice(0); setSapute(0); setNonSapute(0); setDaRipetere([]);
-    setUltimaRisposta(null); setFlip(false); setSearch('');
-    setTempoInizio(Date.now());
-    setFase('domanda');
+  function confermaRisposta() {
+    if (rispostaScelta === null) return;
+    setConfermata(true);
+    if (rispostaScelta === domande[indiceDomanda].corretta) setPunteggio(p => p + 1);
   }
 
-  // ── RENDER ──────────────────────────────────────────────────────────────────
+  function prossimaDomanda() {
+    if (indiceDomanda + 1 >= domande.length) setFase('test-risultati');
+    else { setIndiceDomanda(i => i + 1); setRispostaScelta(null); setConfermata(false); }
+  }
+
   return (
-    <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <style>{flipStyles}</style>
+    <>
+      <style jsx global>{`
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #0a0d18; }
+        ::-webkit-scrollbar { display: none; }
+        @keyframes pulse {
+          0%, 80%, 100% { opacity: 0.2; transform: scale(0.75); }
+          40% { opacity: 1; transform: scale(1); }
+        }
+      `}</style>
+      <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh' }}>
+        <Header />
+        <div style={{ padding: '20px 16px', paddingBottom: fase === 'flashcard-studio' ? 140 : 100 }}>
 
-      <Header />
+          {/* ── UPLOAD ── */}
+          {fase === 'upload' && (
+            <>
+              <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', padding: 0, fontFamily: 'Montserrat, sans-serif', marginBottom: 24 }}>
+                ← Indietro
+              </button>
+              <div style={{ marginBottom: 24 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 8 }}>Studio · PDF</div>
+                <div style={{ fontSize: 24, fontWeight: 900, color: '#fff', marginBottom: 8 }}>Carica il tuo documento</div>
+                <div style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.4)', lineHeight: 1.65 }}>
+                  L'AI analizza il PDF e genera flash card e test personalizzati basati sul tuo materiale
+                </div>
+              </div>
+              <input ref={inputRef} type="file" accept=".pdf" style={{ display: 'none' }} onChange={handleFile} />
+              <div onClick={() => inputRef.current?.click()} style={{ background: '#111526', border: '1.5px dashed rgba(255,255,255,0.15)', borderRadius: 20, padding: '44px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 16 }}>
+                <div style={{ fontSize: 44, marginBottom: 14 }}>📄</div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 6 }}>Tocca per caricare il PDF</div>
+                <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.35)', lineHeight: 1.6 }}>Appunti · Dispense · Sentenze · Manuali</div>
+              </div>
+              {errore && (
+                <div style={{ background: 'rgba(239,68,68,0.1)', border: '0.5px solid rgba(239,68,68,0.3)', borderRadius: 12, padding: '12px 16px', color: '#ef4444', fontSize: 12, textAlign: 'center' }}>
+                  {errore}
+                </div>
+              )}
+            </>
+          )}
 
-      <main style={{ flex: 1, padding: '24px 16px 40px', maxWidth: 600, margin: '0 auto', width: '100%' }}>
-
-        {/* ── INTRO ── */}
-        {fase === 'intro' && (
-          <div>
-            <button
-              onClick={() => router.back()}
-              style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', padding: 0, fontFamily: 'Montserrat, sans-serif', marginBottom: 24, display: 'block' }}
-            >
-              ← Indietro
-            </button>
-
-            <div style={{ background: '#111526', borderRadius: 24, border: `1px solid ${colore}33`, padding: '36px 24px', textAlign: 'center', marginBottom: 24 }}>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>{icona}</div>
-              <h1 style={{ fontSize: 24, fontWeight: 900, color: '#fff', margin: '0 0 8px' }}>{titolo}</h1>
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', margin: 0 }}>
-                {isPlaceholder ? 'Appunti non ancora caricati' : `${carte.length} flash card`}
-              </p>
+          {/* ── CARICAMENTO ── */}
+          {fase === 'caricamento' && (
+            <div style={{ textAlign: 'center', paddingTop: 80 }}>
+              <div style={{ fontSize: 44, marginBottom: 20 }}>⚡</div>
+              <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 10 }}>L'AI sta analizzando il documento</div>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>{nomeFile}</div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', lineHeight: 1.6 }}>Estrazione testo · Generazione flash card personalizzate</div>
+              <div style={{ display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
+                {[0, 1, 2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: '#38bdf8', animation: `pulse 1.2s ease-in-out ${i * 200}ms infinite` }} />)}
+              </div>
             </div>
+          )}
 
-            {!isPlaceholder && (
-              <>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 20 }}>
-                  <div style={{ background: '#111526', borderRadius: 16, padding: '16px', textAlign: 'center' }}>
-                    <div style={{ fontSize: 22, fontWeight: 900, color: colore }}>{xp}</div>
-                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>XP</div>
+          {/* ── FLASHCARD INTRO ── */}
+          {fase === 'flashcard-intro' && (
+            <>
+              <button onClick={() => setFase('upload')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', padding: 0, fontFamily: 'Montserrat, sans-serif', marginBottom: 24 }}>← Indietro</button>
+              <div style={{ background: '#111526', borderRadius: 24, border: '0.5px solid rgba(56,189,248,0.3)', padding: '28px 20px', marginBottom: 20, textAlign: 'center' }}>
+                <div style={{ fontSize: 40, marginBottom: 12 }}>✅</div>
+                <div style={{ fontSize: 18, fontWeight: 900, color: '#fff', marginBottom: 6 }}>Flash card pronte!</div>
+                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 12 }}>{nomeFile}</div>
+                <div style={{ display: 'inline-block', background: 'rgba(56,189,248,0.12)', border: '0.5px solid rgba(56,189,248,0.25)', borderRadius: 8, padding: '4px 14px', fontSize: 11, fontWeight: 700, color: '#38bdf8' }}>
+                  {carte.length} carte generate dal tuo documento
+                </div>
+              </div>
+
+              {/* Popup riprendi da segnalibro */}
+              {mostraRiprendi && bookmarkIndice !== null && (
+                <div style={{ background: 'rgba(56,189,248,0.08)', border: '0.5px solid rgba(56,189,248,0.3)', borderRadius: 16, padding: '16px', marginBottom: 16 }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#38bdf8', marginBottom: 6 }}>🔖 Hai un segnalibro salvato</div>
+                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginBottom: 12 }}>
+                    Eri alla carta {bookmarkIndice + 1} di {carte.length}. Vuoi riprendere da lì?
                   </div>
-                  <div style={{ background: '#111526', borderRadius: 16, padding: '16px', textAlign: 'center' }}>
-                    <div style={{ fontSize: 22, fontWeight: 900, color: '#a855f7' }}>🔥 {bestStreak}</div>
-                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>BEST STREAK</div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button onClick={() => iniziaStudio(true)} style={{ flex: 1, padding: '10px', borderRadius: 12, border: 'none', background: '#38bdf8', color: '#0a0d18', fontWeight: 800, fontSize: 12, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}>
+                      Riprendi
+                    </button>
+                    <button onClick={() => iniziaStudio(false)} style={{ flex: 1, padding: '10px', borderRadius: 12, border: '0.5px solid rgba(255,255,255,0.15)', background: 'transparent', color: 'rgba(255,255,255,0.5)', fontWeight: 700, fontSize: 12, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}>
+                      Ricomincia
+                    </button>
                   </div>
                 </div>
+              )}
 
-                <input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Cerca flashcard..."
-                  style={{ width: '100%', padding: '14px 16px', borderRadius: 16, border: '1px solid rgba(255,255,255,0.08)', background: '#111526', color: '#fff', marginBottom: 16, outline: 'none', fontFamily: 'Montserrat, sans-serif', boxSizing: 'border-box' }}
-                />
-
-                <button
-                  onClick={inizia}
-                  style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: `linear-gradient(135deg, ${colore}, #818cf8)`, color: '#fff', fontWeight: 800, fontSize: 15, cursor: 'pointer', marginBottom: 10 }}
-                >
-                  ⚡ Inizia
+              {!mostraRiprendi && (
+                <button onClick={() => iniziaStudio(false)} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #38bdf8, #818cf8)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}>
+                  ⚡ Inizia a studiare
                 </button>
+              )}
+            </>
+          )}
 
-                {hasSegnalibro && (
-                  <button
-                    onClick={riprendi}
-                    style={{ width: '100%', padding: '15px', borderRadius: 16, border: `1px solid ${colore}44`, background: `${colore}11`, color: colore, fontWeight: 800, fontSize: 14, cursor: 'pointer', marginBottom: 10 }}
-                  >
-                    🔖 Riprendi dal segnalibro
-                  </button>
-                )}
+          {/* ── FLASHCARD STUDIO ── */}
+          {fase === 'flashcard-studio' && carte.length > 0 && (
+            <>
+              {/* Header */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                <button onClick={() => setFase('flashcard-intro')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', padding: 0, fontFamily: 'Montserrat, sans-serif' }}>← Esci</button>
+                <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)' }}>{indice + 1} / {carte.length}</div>
+                {/* Segnalibro visibile */}
+                <div style={{ fontSize: 18, color: '#38bdf8' }} title="Posizione salvata automaticamente">🔖</div>
+              </div>
 
-                <button
-                  onClick={ripassaErroriPersistenti}
-                  style={{ width: '100%', padding: '15px', borderRadius: 16, border: '1px solid rgba(239,68,68,0.2)', background: 'rgba(239,68,68,0.08)', color: '#ef4444', fontWeight: 800, fontSize: 14, cursor: 'pointer' }}
-                >
-                  🔄 Ripassa errori
-                </button>
-              </>
-            )}
-          </div>
-        )}
+              {/* Barra progresso */}
+              <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 4, height: 4, marginBottom: 24 }}>
+                <div style={{ background: '#38bdf8', height: 4, borderRadius: 4, width: `${(indice / carte.length) * 100}%`, transition: 'width 0.3s' }} />
+              </div>
 
-        {/* ── DOMANDA con flip 3D ── */}
-        {fase === 'domanda' && cartaCorrente && (
-          <div>
-            {/* Topbar: esci | contatore | segnalibro */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <button
-                onClick={() => setFase('intro')}
-                style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', padding: 0 }}
-              >
-                ← Esci
-              </button>
-
-              <span style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)' }}>
-                {indice + 1} / {carteFiltrate.length}
-              </span>
-
-              <button
-                onClick={salvaSegnalibro}
-                title="Salva segnalibro qui"
+              {/* Carta — scrollabile, NON cresce oltre la finestra */}
+              <div
+                onClick={() => !girata && setGirata(true)}
                 style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontSize: 20,
-                  lineHeight: 1,
-                  padding: 0,
-                  opacity: hasSegnalibro ? 1 : 0.35,
-                  transition: 'opacity 0.2s, transform 0.15s',
+                  background: girata ? '#0d1f35' : '#111526',
+                  borderRadius: 24,
+                  border: `0.5px solid ${girata ? 'rgba(56,189,248,0.5)' : 'rgba(255,255,255,0.08)'}`,
+                  padding: '36px 20px 28px',
+                  // Altezza fissa: non cresce, ma il testo scrolla dentro
+                  height: 'calc(100vh - 320px)',
+                  minHeight: 200,
+                  maxHeight: 420,
+                  cursor: girata ? 'default' : 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  textAlign: 'center',
+                  position: 'relative',
+                  transition: 'background 0.2s, border-color 0.2s',
+                  overflowY: 'auto',
                 }}
               >
-                🔖
+                <div style={{ position: 'sticky', top: 0, width: '100%', display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+                  <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', color: girata ? '#38bdf8' : 'rgba(255,255,255,0.25)' }}>
+                    {girata ? 'RISPOSTA' : 'DOMANDA'}
+                  </span>
+                  {!girata && <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.2)' }}>tocca per girare</span>}
+                </div>
+                <div style={{ fontSize: girata ? 13 : 15, fontWeight: girata ? 500 : 700, color: '#fff', lineHeight: 1.75, width: '100%' }}>
+                  {girata ? carte[indice].risposta : carte[indice].domanda}
+                </div>
+              </div>
+
+              {/* Bottoni FISSI in fondo — non si spostano mai */}
+              <div style={{
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                padding: '12px 16px 32px',
+                background: 'linear-gradient(to top, #0a0d18 70%, transparent)',
+                zIndex: 100,
+              }}>
+                {girata ? (
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    <button
+                      onClick={() => rispondi(false)}
+                      style={{ flex: 1, padding: '16px', borderRadius: 16, border: '0.5px solid rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.15)', color: '#ef4444', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}
+                    >
+                      ✗ Non sapevo
+                    </button>
+                    <button
+                      onClick={() => rispondi(true)}
+                      style={{ flex: 1, padding: '16px', borderRadius: 16, border: '0.5px solid rgba(34,197,94,0.4)', background: 'rgba(34,197,94,0.15)', color: '#22c55e', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}
+                    >
+                      ✓ Sapevo
+                    </button>
+                  </div>
+                ) : (
+                  <div style={{ textAlign: 'center', fontSize: 12, color: 'rgba(255,255,255,0.2)', paddingBottom: 4 }}>
+                    Tocca la carta per vedere la risposta
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* ── FLASHCARD RISULTATI ── */}
+          {fase === 'flashcard-risultati' && (
+            <div style={{ textAlign: 'center', paddingTop: 20 }}>
+              <div style={{ fontSize: 52, marginBottom: 16 }}>{sapute >= nonSapute ? '🎉' : '💪'}</div>
+              <div style={{ fontSize: 22, fontWeight: 900, color: '#fff', marginBottom: 8 }}>Sessione completata!</div>
+              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', marginBottom: 28 }}>
+                Hai risposto correttamente al {Math.round((sapute / Math.max(sapute + nonSapute, 1)) * 100)}% delle carte
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
+                <div style={{ background: '#111526', borderRadius: 16, padding: '20px 10px', border: '0.5px solid rgba(34,197,94,0.3)' }}>
+                  <div style={{ fontSize: 32, fontWeight: 900, color: '#22c55e' }}>{sapute}</div>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>Sapevo</div>
+                </div>
+                <div style={{ background: '#111526', borderRadius: 16, padding: '20px 10px', border: '0.5px solid rgba(239,68,68,0.3)' }}>
+                  <div style={{ fontSize: 32, fontWeight: 900, color: '#ef4444' }}>{nonSapute}</div>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>Non sapevo</div>
+                </div>
+              </div>
+              {daRipetere.length > 0 && (
+                <button onClick={riprova} style={{ width: '100%', padding: '15px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #38bdf8, #818cf8)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', marginBottom: 10 }}>
+                  🔄 Ripassare quelle sbagliate ({daRipetere.length})
+                </button>
+              )}
+              <button onClick={generaTest} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #a78bfa, #f97316)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', marginBottom: 10 }}>
+                📝 Fai il test
+              </button>
+              <button onClick={() => router.back()} style={{ width: '100%', padding: '15px', borderRadius: 16, border: '0.5px solid rgba(255,255,255,0.1)', background: '#111526', color: 'rgba(255,255,255,0.6)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}>
+                Torna allo studio
               </button>
             </div>
+          )}
 
-            {/* Barra progresso */}
-            <div style={{ height: 4, background: 'rgba(255,255,255,0.08)', borderRadius: 999, marginBottom: 20 }}>
-              <div style={{ width: `${progresso}%`, height: 4, background: colore, borderRadius: 999, transition: '0.3s' }} />
-            </div>
-
-            {/* Card flip 3D */}
-            <div className="flip-container" onClick={() => setFlip((f) => !f)}>
-              <div className={`flip-inner${flip ? ' flipped' : ''}`}>
-
-                {/* FRONTE */}
-                <div className="flip-front">
-                  <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 2, color: 'rgba(255,255,255,0.25)', marginBottom: 18 }}>
-                    DOMANDA
-                  </div>
-                  <p style={{ color: '#fff', fontSize: 18, lineHeight: 1.8, fontWeight: 700, margin: 0 }}>
-                    {cartaCorrente.domanda}
-                  </p>
-                  <div className="flip-hint">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3" />
-                      <path d="M16 3h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3" />
-                      <path d="M12 8v8" /><path d="M9 11l3-3 3 3" />
-                    </svg>
-                    Tocca per girare
-                  </div>
-                </div>
-
-                {/* RETRO */}
-                <div className="flip-back" style={{ border: `1px solid ${colore}44` }}>
-                  <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 2, color: colore, marginBottom: 18 }}>
-                    RISPOSTA
-                  </div>
-                  <p style={{ color: '#fff', fontSize: 15, lineHeight: 1.9, margin: 0 }}>
-                    {cartaCorrente.risposta}
-                  </p>
-                </div>
-
+          {/* ── TEST GENERAZIONE ── */}
+          {fase === 'test-generazione' && (
+            <div style={{ textAlign: 'center', paddingTop: 80 }}>
+              <div style={{ fontSize: 44, marginBottom: 20 }}>📝</div>
+              <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 8 }}>Generazione test in corso...</div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', lineHeight: 1.6 }}>L'AI sta preparando le domande basate sul tuo documento</div>
+              <div style={{ display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
+                {[0, 1, 2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: '#a78bfa', animation: `pulse 1.2s ease-in-out ${i * 200}ms infinite` }} />)}
               </div>
             </div>
+          )}
 
-            {/* Bottoni valutazione — visibili solo dopo flip */}
-            {flip && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <button
-                  onClick={(e) => { e.stopPropagation(); valuta(false); }}
-                  style={{ padding: '16px', borderRadius: 16, border: 'none', background: '#ef4444', color: '#fff', fontWeight: 800, cursor: 'pointer', fontSize: 14 }}
-                >
-                  ❌ Non sapevo
+          {/* ── TEST STUDIO ── */}
+          {fase === 'test-studio' && domande.length > 0 && (
+            <>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)' }}>TEST</div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)' }}>{indiceDomanda + 1} / {domande.length}</div>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 4, height: 4, marginBottom: 24 }}>
+                <div style={{ background: '#a78bfa', height: 4, borderRadius: 4, width: `${(indiceDomanda / domande.length) * 100}%`, transition: 'width 0.3s' }} />
+              </div>
+              <div style={{ background: '#111526', borderRadius: 20, border: '0.5px solid rgba(167,139,250,0.3)', padding: '20px', marginBottom: 16 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', color: '#a78bfa', marginBottom: 10 }}>DOMANDA</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: '#fff', lineHeight: 1.65 }}>{domande[indiceDomanda].domanda}</div>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+                {domande[indiceDomanda].opzioni.map((opzione, i) => {
+                  const isCorretta = i === domande[indiceDomanda].corretta;
+                  const isScelta = i === rispostaScelta;
+                  let bg = '#111526', border = '0.5px solid rgba(255,255,255,0.08)', colore = 'rgba(255,255,255,0.8)';
+                  if (confermata) {
+                    if (isCorretta) { bg = 'rgba(34,197,94,0.1)'; border = '0.5px solid rgba(34,197,94,0.5)'; colore = '#22c55e'; }
+                    else if (isScelta) { bg = 'rgba(239,68,68,0.1)'; border = '0.5px solid rgba(239,68,68,0.5)'; colore = '#ef4444'; }
+                  } else if (isScelta) { bg = 'rgba(167,139,250,0.1)'; border = '0.5px solid rgba(167,139,250,0.5)'; colore = '#a78bfa'; }
+                  return (
+                    <div key={i} onClick={() => !confermata && setRispostaScelta(i)} style={{ background: bg, border, borderRadius: 14, padding: '14px 16px', cursor: confermata ? 'default' : 'pointer', transition: 'all 0.15s' }}>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: colore, lineHeight: 1.5 }}>{opzione}</div>
+                    </div>
+                  );
+                })}
+              </div>
+              {!confermata ? (
+                <button onClick={confermaRisposta} disabled={rispostaScelta === null} style={{ width: '100%', padding: '15px', borderRadius: 16, border: 'none', background: rispostaScelta !== null ? 'linear-gradient(135deg, #a78bfa, #818cf8)' : '#1e2435', color: rispostaScelta !== null ? '#fff' : 'rgba(255,255,255,0.3)', fontWeight: 800, fontSize: 14, cursor: rispostaScelta !== null ? 'pointer' : 'not-allowed', fontFamily: 'Montserrat, sans-serif' }}>
+                  Conferma risposta
                 </button>
-                <button
-                  onClick={(e) => { e.stopPropagation(); valuta(true); }}
-                  style={{ padding: '16px', borderRadius: 16, border: 'none', background: '#22c55e', color: '#fff', fontWeight: 800, cursor: 'pointer', fontSize: 14 }}
-                >
-                  ✅ Sapevo
+              ) : (
+                <button onClick={prossimaDomanda} style={{ width: '100%', padding: '15px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #a78bfa, #818cf8)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}>
+                  {indiceDomanda + 1 >= domande.length ? 'Vedi risultati' : 'Prossima domanda →'}
                 </button>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </>
+          )}
 
-        {/* Nessuna carta trovata */}
-        {fase === 'domanda' && !cartaCorrente && (
-          <div style={{ textAlign: 'center', paddingTop: 60 }}>
-            <p style={{ color: 'rgba(255,255,255,0.5)', marginBottom: 24 }}>Nessuna flashcard trovata per questa ricerca.</p>
-            <button onClick={() => setFase('intro')} style={{ padding: '14px 28px', borderRadius: 16, border: 'none', background: colore, color: '#fff', fontWeight: 800, cursor: 'pointer' }}>
-              ← Torna all'inizio
-            </button>
-          </div>
-        )}
-
-        {/* ── RISPOSTA ── */}
-        {fase === 'risposta' && (
-          <div style={{ textAlign: 'center', paddingTop: 40 }}>
-            <div style={{ fontSize: 64, marginBottom: 16 }}>
-              {ultimaRisposta === 'sapevo' ? '✅' : '❌'}
+          {/* ── TEST RISULTATI ── */}
+          {fase === 'test-risultati' && (
+            <div style={{ textAlign: 'center', paddingTop: 20 }}>
+              <div style={{ fontSize: 52, marginBottom: 16 }}>{punteggio >= domande.length * 0.8 ? '🏆' : punteggio >= domande.length * 0.5 ? '👍' : '📚'}</div>
+              <div style={{ fontSize: 22, fontWeight: 900, color: '#fff', marginBottom: 8 }}>Test completato!</div>
+              <div style={{ fontSize: 40, fontWeight: 900, color: '#a78bfa', marginBottom: 6 }}>{punteggio}/{domande.length}</div>
+              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', marginBottom: 28 }}>{Math.round((punteggio / domande.length) * 100)}% di risposte corrette</div>
+              <button onClick={generaTest} style={{ width: '100%', padding: '15px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #a78bfa, #f97316)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', marginBottom: 10 }}>🔄 Rifai il test</button>
+              <button onClick={() => setFase('flashcard-risultati')} style={{ width: '100%', padding: '15px', borderRadius: 16, border: '0.5px solid rgba(255,255,255,0.1)', background: '#111526', color: 'rgba(255,255,255,0.6)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}>Torna allo studio</button>
             </div>
-            <h2 style={{ color: '#fff', marginBottom: 12 }}>
-              {ultimaRisposta === 'sapevo' ? 'Ottimo!' : 'Da ripassare'}
-            </h2>
-            <button
-              onClick={prossima}
-              style={{ padding: '16px 28px', borderRadius: 16, border: 'none', background: colore, color: '#fff', fontWeight: 800, cursor: 'pointer' }}
-            >
-              Prossima →
-            </button>
-          </div>
-        )}
+          )}
 
-        {/* ── RISULTATI ── */}
-        {fase === 'risultati' && (
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 64, marginBottom: 18 }}>🏁</div>
-            <h1 style={{ color: '#fff', marginBottom: 12 }}>Sessione completata</h1>
-            <p style={{ color: 'rgba(255,255,255,0.5)', marginBottom: 24 }}>Hai completato lo studio della materia.</p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 20 }}>
-              <div style={{ background: '#111526', borderRadius: 16, padding: '18px' }}>
-                <div style={{ color: '#22c55e', fontSize: 28, fontWeight: 900 }}>{sapute}</div>
-                <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>SAPUTE</div>
-              </div>
-              <div style={{ background: '#111526', borderRadius: 16, padding: '18px' }}>
-                <div style={{ color: '#ef4444', fontSize: 28, fontWeight: 900 }}>{nonSapute}</div>
-                <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>ERRORI</div>
-              </div>
-            </div>
-
-            <div style={{ marginBottom: 24, color: 'rgba(255,255,255,0.5)', fontSize: 13, lineHeight: 1.8 }}>
-              <div>XP ottenuti: {xp}</div>
-              <div>Best streak: {bestStreak}</div>
-              <div>Tempo medio: {Math.round(tempoMedio / 1000)}s</div>
-            </div>
-
-            <button
-              onClick={riprova}
-              style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#111526', color: '#fff', fontWeight: 800, cursor: 'pointer', marginBottom: 12 }}
-            >
-              🔄 Ripassa errori
-            </button>
-            <button
-              onClick={() => setFase('intro')}
-              style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: colore, color: '#fff', fontWeight: 800, cursor: 'pointer' }}
-            >
-              ← Torna all'inizio
-            </button>
-          </div>
-        )}
-      </main>
-
-      <Footer />
-    </div>
+        </div>
+      </div>
+    </>
   );
 }
