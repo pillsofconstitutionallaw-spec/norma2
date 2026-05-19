@@ -171,7 +171,7 @@ export default function PdfStudioPage() {
       const res = await fetch('/api/studio-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tipo: 'flashcard', testo: testo.substring(0, 12000) }),
+        body: JSON.stringify({ tipo: 'flashcard', testo: testo.substring(0, 240000) }),
         signal: controller.signal,
       });
 
@@ -211,7 +211,7 @@ export default function PdfStudioPage() {
       const res = await fetch('/api/studio-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tipo: 'test', testo: testoEstratto.substring(0, 12000) }),
+        body: JSON.stringify({ tipo: 'test', testo: testoEstratto.substring(0, 240000) }),
         signal: controller.signal,
       });
 
