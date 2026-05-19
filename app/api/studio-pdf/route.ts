@@ -16,6 +16,7 @@ async function groqGenerate(prompt: string, apiKey: string, maxTokens = 8192): P
   });
 
   const data = await response.json();
+  console.log('Groq response:', JSON.stringify(data).substring(0, 500));
   return data.choices?.[0]?.message?.content || '';
 }
 
@@ -29,10 +30,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ errore: 'API KEY GROQ PDF NON TROVATA' }, { status: 500 });
     }
 
-    // ── FLASHCARD ─────────────────────────────────────────────────────────────
     if (tipo === 'flashcard') {
-      const prompt = `
-Sei un docente universitario di giurisprudenza italiano.
+      const prompt = `Sei un docente universitario di giurisprudenza italiano.
 
 Hai ricevuto un documento di studio (appunti, dispensa o manuale).
 
@@ -53,8 +52,7 @@ Formato esatto:
 [{"domanda":"...","risposta":"..."},{"domanda":"...","risposta":"..."}]
 
 Documento:
-${testo.substring(0, 20000)}
-`;
+${testo.substring(0, 20000)}`;
 
       const raw = (await groqGenerate(prompt, apiKey, 8192)).replace(/```json|```/g, '').trim();
 
@@ -67,10 +65,8 @@ ${testo.substring(0, 20000)}
       }
     }
 
-    // ── TEST ──────────────────────────────────────────────────────────────────
     if (tipo === 'test') {
-      const prompt = `
-Sei un docente universitario di giurisprudenza italiano che prepara esami.
+      const prompt = `Sei un docente universitario di giurisprudenza italiano che prepara esami.
 
 Hai ricevuto un documento di studio (appunti, dispensa o manuale).
 
@@ -92,8 +88,7 @@ Formato esatto:
 [{"domanda":"...","opzioni":["A) ...","B) ...","C) ...","D) ..."],"corretta":0}]
 
 Documento:
-${testo.substring(0, 20000)}
-`;
+${testo.substring(0, 20000)}`;
 
       const raw = (await groqGenerate(prompt, apiKey, 8192)).replace(/```json|```/g, '').trim();
 
