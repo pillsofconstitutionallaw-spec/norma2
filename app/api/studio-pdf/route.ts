@@ -8,7 +8,7 @@ async function groqGenerate(prompt: string, apiKey: string, maxTokens = 8192): P
       'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
+      model: 'llama-3.1-8b-instant',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.1,
       max_tokens: maxTokens,
@@ -52,7 +52,7 @@ Formato esatto:
 [{"domanda":"...","risposta":"..."},{"domanda":"...","risposta":"..."}]
 
 Documento:
-${testo.substring(0, 20000)}`;
+${testo.substring(0, 60000)}`;
 
       const raw = (await groqGenerate(prompt, apiKey, 8192)).replace(/```json|```/g, '').trim();
 
@@ -88,7 +88,7 @@ Formato esatto:
 [{"domanda":"...","opzioni":["A) ...","B) ...","C) ...","D) ..."],"corretta":0}]
 
 Documento:
-${testo.substring(0, 20000)}`;
+${testo.substring(0, 60000)}`;
 
       const raw = (await groqGenerate(prompt, apiKey, 8192)).replace(/```json|```/g, '').trim();
 
