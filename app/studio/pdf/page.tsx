@@ -353,8 +353,9 @@ export default function PdfStudioPage() {
                 style={{ background: '#111526', border: '1.5px dashed rgba(255,255,255,0.15)', borderRadius: 20, padding: '44px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 16 }}
               >
                 <div style={{ fontSize: 44, marginBottom: 14 }}>📄</div>
-                <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 6 }}>Tocca per caricare</div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 6 }}>Tocca per caricare - Analizza 8 pagine alla volta </div>
                 <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>Solo PDF con testo selezionabile</div>
+<div style={{ fontSize: 11, color: '#f59e0b', marginTop: 6, fontWeight: 600 }}>⚠️ Analizza soltanto 8 pagine alla volta</div>
               </div>
 
               {errore && (

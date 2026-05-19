@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-async function groqGenerate(prompt: string, apiKey: string, maxTokens = 8192): Promise<string> {
+async function groqGenerate(prompt: string, apiKey: string, maxTokens = 4096): Promise<string> {
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -8,7 +8,7 @@ async function groqGenerate(prompt: string, apiKey: string, maxTokens = 8192): P
       'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: 'llama-3.1-8b-instant',
+      model: 'llama-3.3-70b-versatile',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.1,
       max_tokens: maxTokens,
@@ -16,8 +16,26 @@ async function groqGenerate(prompt: string, apiKey: string, maxTokens = 8192): P
   });
 
   const data = await response.json();
-  console.log('Groq response:', JSON.stringify(data).substring(0, 500));
+  console.log('Groq response:', JSON.stringify(data).substring(0, 300));
   return data.choices?.[0]?.message?.content || '';
+}
+
+// Calcola numero di card in base alla lunghezza del testo
+function calcolaNumeroCard(lunghezzaTesto: number): number {
+  if (lunghezzaTesto < 2000) return 8;
+  if (lunghezzaTesto < 5000) return 12;
+  if (lunghezzaTesto < 8000) return 18;
+  if (lunghezzaTesto < 12000) return 25;
+  if (lunghezzaTesto < 20000) return 35;
+  return 50;
+}
+
+function calcolaNumeroTest(lunghezzaTesto: number): number {
+  if (lunghezzaTesto < 2000) return 5;
+  if (lunghezzaTesto < 5000) return 8;
+  if (lunghezzaTesto < 8000) return 10;
+  if (lunghezzaTesto < 12000) return 15;
+  return 20;
 }
 
 export async function POST(req: NextRequest) {
@@ -30,31 +48,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ errore: 'API KEY GROQ PDF NON TROVATA' }, { status: 500 });
     }
 
+    // Limita il testo a 10.000 caratteri per stare nei limiti TPM
+    const testoLimitato = testo.substring(0, 10000);
+    const nCard = calcolaNumeroCard(testoLimitato.length);
+    const nTest = calcolaNumeroTest(testoLimitato.length);
+
     if (tipo === 'flashcard') {
       const prompt = `Sei un docente universitario di giurisprudenza italiano.
+Documento di studio fornito:
+${testoLimitato}
 
-Hai ricevuto un documento di studio (appunti, dispensa o manuale).
+Crea esattamente ${nCard} flash card basate SOLO su questo documento.
+Regole: no markdown, no backtick, risposte max 3 righe, copri tutti gli argomenti in modo uniforme.
+Rispondi SOLO con JSON valido:
+[{"domanda":"...","risposta":"..."}]`;
 
-Il tuo compito è creare ESATTAMENTE 50 flash card di studio basate ESCLUSIVAMENTE sul contenuto del documento, coprendo in modo uniforme tutti gli argomenti presenti dall'inizio alla fine.
-
-Regole tassative:
-- Copri TUTTI i concetti presenti: definizioni, distinzioni, requisiti, effetti, esempi, eccezioni, principi
-- NON inventare nulla che non sia nel testo
-- NON aggiungere nozioni esterne al documento
-- Le domande devono essere chiare, precise e giuridicamente corrette
-- Le risposte devono essere complete e fedeli al documento (massimo 4 righe)
-- NON usare markdown, asterischi, elenchi puntati o formattazione
-- Varia la tipologia: definizioni, differenze, requisiti, effetti, esempi, eccezioni
-- Distribuisci le domande uniformemente su tutto il documento, non solo sulla parte iniziale
-
-Rispondi SOLO con un array JSON valido, senza testo aggiuntivo, senza backtick, senza markdown.
-Formato esatto:
-[{"domanda":"...","risposta":"..."},{"domanda":"...","risposta":"..."}]
-
-Documento:
-${testo.substring(0, 60000)}`;
-
-      const raw = (await groqGenerate(prompt, apiKey, 8192)).replace(/```json|```/g, '').trim();
+      const raw = (await groqGenerate(prompt, apiKey, 4096)).replace(/```json|```/g, '').trim();
 
       try {
         const carte = JSON.parse(raw);
@@ -66,31 +75,16 @@ ${testo.substring(0, 60000)}`;
     }
 
     if (tipo === 'test') {
-      const prompt = `Sei un docente universitario di giurisprudenza italiano che prepara esami.
+      const prompt = `Sei un docente universitario di giurisprudenza italiano.
+Documento di studio fornito:
+${testoLimitato}
 
-Hai ricevuto un documento di studio (appunti, dispensa o manuale).
+Crea esattamente ${nTest} domande a risposta multipla basate SOLO su questo documento.
+Regole: no markdown, 4 opzioni per domanda, una sola corretta, opzioni plausibili.
+Rispondi SOLO con JSON valido:
+[{"domanda":"...","opzioni":["A) ...","B) ...","C) ...","D) ..."],"corretta":0}]`;
 
-Il tuo compito è creare ESATTAMENTE 20 domande a risposta multipla basate ESCLUSIVAMENTE sul contenuto del documento, coprendo uniformemente tutti gli argomenti dall'inizio alla fine.
-
-Regole tassative:
-- Copri TUTTI i concetti importanti presenti nel documento
-- NON inventare nulla che non sia nel testo
-- Ogni domanda deve avere 4 opzioni di risposta
-- Una sola risposta deve essere corretta
-- Le opzioni sbagliate devono essere plausibili ma chiaramente errate
-- NON usare markdown, asterischi o formattazione
-- Le domande devono testare la comprensione, non la memoria meccanica
-- Distribuisci le domande uniformemente su tutto il documento
-
-Rispondi SOLO con un array JSON valido, senza testo aggiuntivo, senza backtick, senza markdown.
-Il campo "corretta" è l'indice (0-3) della risposta corretta nell'array opzioni.
-Formato esatto:
-[{"domanda":"...","opzioni":["A) ...","B) ...","C) ...","D) ..."],"corretta":0}]
-
-Documento:
-${testo.substring(0, 60000)}`;
-
-      const raw = (await groqGenerate(prompt, apiKey, 8192)).replace(/```json|```/g, '').trim();
+      const raw = (await groqGenerate(prompt, apiKey, 4096)).replace(/```json|```/g, '').trim();
 
       try {
         const domande = JSON.parse(raw);
