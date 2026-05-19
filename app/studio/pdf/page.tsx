@@ -189,7 +189,7 @@ export default function PdfStudioPage() {
       'pdfjs-dist' as any
     )) as any;
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@5.7.284/build/pdf.worker.min.mjs';
 
     const arrayBuffer =
       await file.arrayBuffer();
