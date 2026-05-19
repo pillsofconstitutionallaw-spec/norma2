@@ -50,17 +50,17 @@ export default function PdfStudioPage() {
   const [punteggio, setPunteggio] = useState(0);
   const [salvato, setSalvato] = useState(false);
 
-  // ── AUTOSAVE ─────────────────────────────────────────────────────────────────
+  // AUTOSAVE
   useEffect(() => {
     const sessione = {
       fase, nomeFile, testoEstratto,
-      carte, indice, girata,
+      carte, indice,
       sapute, nonSapute, daRipetere,
     };
     localStorage.setItem('studio_pdf_sessione', JSON.stringify(sessione));
   }, [fase, nomeFile, testoEstratto, carte, indice, sapute, nonSapute, daRipetere]);
 
-  // ── RIPRISTINO SESSIONE ───────────────────────────────────────────────────────
+  // RIPRISTINO SESSIONE
   useEffect(() => {
     try {
       const salvata = localStorage.getItem('studio_pdf_sessione');
@@ -78,19 +78,36 @@ export default function PdfStudioPage() {
             ? data.indice
             : 0;
         setIndice(indiceValido);
-        setGirata(data.girata || false);
+        setGirata(false);
         setSapute(data.sapute || 0);
         setNonSapute(data.nonSapute || 0);
         setDaRipetere(data.daRipetere || []);
       }
     } catch {
-      // ignora errori di parsing
+      // ignora
     }
   }, []);
 
-  // ── ESTRAZIONE PDF ────────────────────────────────────────────────────────────
+  // CARICA PDFJS DA CDN
+  function caricaPdfjsScript(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if ((window as any).pdfjsLib) {
+        resolve();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js';
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('Errore caricamento pdfjs'));
+      document.head.appendChild(script);
+    });
+  }
+
+  // ESTRAZIONE PDF
   async function estraiTestoPDF(file: File): Promise<string> {
-    const pdfjsLib = await import('pdfjs-dist');
+    await caricaPdfjsScript();
+
+    const pdfjsLib = (window as any).pdfjsLib;
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 
@@ -109,7 +126,7 @@ export default function PdfStudioPage() {
     return testo.trim();
   }
 
-  // ── GESTIONE FILE ─────────────────────────────────────────────────────────────
+  // GESTIONE FILE
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -120,7 +137,6 @@ export default function PdfStudioPage() {
     }
 
     e.target.value = '';
-
     setNomeFile(file.name);
     setErrore('');
     setSalvato(false);
@@ -146,7 +162,7 @@ export default function PdfStudioPage() {
     }
   }
 
-  // ── GENERA FLASHCARD ──────────────────────────────────────────────────────────
+  // GENERA FLASHCARD
   async function generaFlashCard(testo: string) {
     try {
       const controller = new AbortController();
@@ -185,7 +201,7 @@ export default function PdfStudioPage() {
     }
   }
 
-  // ── GENERA TEST ───────────────────────────────────────────────────────────────
+  // GENERA TEST
   async function generaTest() {
     setFase('test-generazione');
     try {
@@ -222,7 +238,7 @@ export default function PdfStudioPage() {
     }
   }
 
-  // ── SALVA DECK ────────────────────────────────────────────────────────────────
+  // SALVA DECK
   function salvaDeck() {
     try {
       const decks = JSON.parse(localStorage.getItem('salvati_flashcard') || '[]');
@@ -239,7 +255,7 @@ export default function PdfStudioPage() {
     }
   }
 
-  // ── LOGICA FLASHCARD ──────────────────────────────────────────────────────────
+  // LOGICA FLASHCARD
   function rispondi(sapevo: boolean) {
     if (sapevo) {
       setSapute((s) => s + 1);
@@ -273,7 +289,7 @@ export default function PdfStudioPage() {
     setFase('flashcard-studio');
   }
 
-  // ── LOGICA TEST ───────────────────────────────────────────────────────────────
+  // LOGICA TEST
   function confermaRisposta() {
     if (rispostaScelta === null) return;
     setConfermata(true);
@@ -294,7 +310,6 @@ export default function PdfStudioPage() {
 
   const progresso = carte.length > 0 ? ((indice + 1) / carte.length) * 100 : 0;
 
-  // ── RENDER ────────────────────────────────────────────────────────────────────
   return (
     <>
       <style jsx global>{`
@@ -312,7 +327,7 @@ export default function PdfStudioPage() {
 
         <main style={{ flex: 1, padding: '20px 16px 100px', maxWidth: 650, width: '100%', margin: '0 auto' }}>
 
-          {/* ── UPLOAD ── */}
+          {/* UPLOAD */}
           {fase === 'upload' && (
             <>
               <button
@@ -331,25 +346,15 @@ export default function PdfStudioPage() {
                 </div>
               </div>
 
-              <input
-                ref={inputRef}
-                type="file"
-                accept=".pdf"
-                style={{ display: 'none' }}
-                onChange={handleFile}
-              />
+              <input ref={inputRef} type="file" accept=".pdf" style={{ display: 'none' }} onChange={handleFile} />
 
               <div
                 onClick={() => inputRef.current?.click()}
                 style={{ background: '#111526', border: '1.5px dashed rgba(255,255,255,0.15)', borderRadius: 20, padding: '44px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 16 }}
               >
                 <div style={{ fontSize: 44, marginBottom: 14 }}>📄</div>
-                <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 6 }}>
-                  Tocca per caricare
-                </div>
-                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>
-                  Solo PDF con testo selezionabile
-                </div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 6 }}>Tocca per caricare</div>
+                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>Solo PDF con testo selezionabile</div>
               </div>
 
               {errore && (
@@ -360,13 +365,11 @@ export default function PdfStudioPage() {
             </>
           )}
 
-          {/* ── CARICAMENTO ── */}
+          {/* CARICAMENTO */}
           {fase === 'caricamento' && (
             <div style={{ textAlign: 'center', paddingTop: 80 }}>
               <div style={{ fontSize: 44, marginBottom: 20 }}>⚡</div>
-              <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 10 }}>
-                Analisi documento...
-              </div>
+              <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 10 }}>Analisi documento...</div>
               <div style={{ display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
                 {[0, 1, 2].map((i) => (
                   <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: '#38bdf8', animation: `pulse 1.2s ease-in-out ${i * 200}ms infinite` }} />
@@ -375,22 +378,14 @@ export default function PdfStudioPage() {
             </div>
           )}
 
-          {/* ── FLASHCARD INTRO ── */}
+          {/* FLASHCARD INTRO */}
           {fase === 'flashcard-intro' && (
             <div style={{ textAlign: 'center', paddingTop: 40 }}>
               <div style={{ fontSize: 48, marginBottom: 16 }}>🃏</div>
-              <h1 style={{ fontSize: 22, fontWeight: 900, color: '#fff', marginBottom: 8 }}>
-                {carte.length} flashcard pronte
-              </h1>
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginBottom: 32 }}>
-                {nomeFile}
-              </p>
+              <h1 style={{ fontSize: 22, fontWeight: 900, color: '#fff', marginBottom: 8 }}>{carte.length} flashcard pronte</h1>
+              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginBottom: 32 }}>{nomeFile}</p>
               <button
-                onClick={() => {
-                  setIndice(0); setGirata(false);
-                  setSapute(0); setNonSapute(0); setDaRipetere([]);
-                  setFase('flashcard-studio');
-                }}
+                onClick={() => { setIndice(0); setGirata(false); setSapute(0); setNonSapute(0); setDaRipetere([]); setFase('flashcard-studio'); }}
                 style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #38bdf8, #818cf8)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: 'pointer', marginBottom: 12 }}
               >
                 ⚡ Inizia studio
@@ -405,19 +400,12 @@ export default function PdfStudioPage() {
             </div>
           )}
 
-          {/* ── FLASHCARD STUDIO ── */}
+          {/* FLASHCARD STUDIO */}
           {fase === 'flashcard-studio' && carte[indice] && (
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                <button
-                  onClick={() => setFase('flashcard-intro')}
-                  style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', padding: 0 }}
-                >
-                  ← Esci
-                </button>
-                <span style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)' }}>
-                  {indice + 1} / {carte.length}
-                </span>
+                <button onClick={() => setFase('flashcard-intro')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', padding: 0 }}>← Esci</button>
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)' }}>{indice + 1} / {carte.length}</span>
               </div>
 
               <div style={{ height: 4, background: 'rgba(255,255,255,0.08)', borderRadius: 999, marginBottom: 20 }}>
@@ -426,13 +414,7 @@ export default function PdfStudioPage() {
 
               <div
                 onClick={() => setGirata((g) => !g)}
-                style={{
-                  background: girata ? '#172033' : '#111526',
-                  borderRadius: 24, padding: '28px 24px', minHeight: 260,
-                  cursor: 'pointer',
-                  border: girata ? '1px solid #38bdf844' : '1px solid rgba(255,255,255,0.08)',
-                  marginBottom: 20, transition: 'background 0.3s, border-color 0.3s',
-                }}
+                style={{ background: girata ? '#172033' : '#111526', borderRadius: 24, padding: '28px 24px', minHeight: 260, cursor: 'pointer', border: girata ? '1px solid #38bdf844' : '1px solid rgba(255,255,255,0.08)', marginBottom: 20, transition: 'background 0.3s, border-color 0.3s' }}
               >
                 <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 2, color: girata ? '#38bdf8' : 'rgba(255,255,255,0.25)', marginBottom: 18 }}>
                   {girata ? 'RISPOSTA' : 'DOMANDA'}
@@ -440,38 +422,23 @@ export default function PdfStudioPage() {
                 <p style={{ color: '#fff', fontSize: girata ? 15 : 18, lineHeight: 1.8, fontWeight: girata ? 400 : 700, margin: 0 }}>
                   {girata ? carte[indice].risposta : carte[indice].domanda}
                 </p>
-                {!girata && (
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', fontWeight: 600, marginTop: 20 }}>
-                    Tocca per girare
-                  </div>
-                )}
+                {!girata && <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', fontWeight: 600, marginTop: 20 }}>Tocca per girare</div>}
               </div>
 
               {girata && (
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                  <button
-                    onClick={() => rispondi(false)}
-                    style={{ padding: '16px', borderRadius: 16, border: 'none', background: '#ef4444', color: '#fff', fontWeight: 800, cursor: 'pointer' }}
-                  >
-                    ❌ Non sapevo
-                  </button>
-                  <button
-                    onClick={() => rispondi(true)}
-                    style={{ padding: '16px', borderRadius: 16, border: 'none', background: '#22c55e', color: '#fff', fontWeight: 800, cursor: 'pointer' }}
-                  >
-                    ✅ Sapevo
-                  </button>
+                  <button onClick={() => rispondi(false)} style={{ padding: '16px', borderRadius: 16, border: 'none', background: '#ef4444', color: '#fff', fontWeight: 800, cursor: 'pointer' }}>❌ Non sapevo</button>
+                  <button onClick={() => rispondi(true)} style={{ padding: '16px', borderRadius: 16, border: 'none', background: '#22c55e', color: '#fff', fontWeight: 800, cursor: 'pointer' }}>✅ Sapevo</button>
                 </div>
               )}
             </div>
           )}
 
-          {/* ── FLASHCARD RISULTATI ── */}
+          {/* FLASHCARD RISULTATI */}
           {fase === 'flashcard-risultati' && (
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 64, marginBottom: 18 }}>🏁</div>
               <h1 style={{ color: '#fff', marginBottom: 12 }}>Sessione completata</h1>
-
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 24 }}>
                 <div style={{ background: '#111526', borderRadius: 16, padding: '18px' }}>
                   <div style={{ color: '#22c55e', fontSize: 28, fontWeight: 900 }}>{sapute}</div>
@@ -482,39 +449,25 @@ export default function PdfStudioPage() {
                   <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11 }}>ERRORI</div>
                 </div>
               </div>
-
               {daRipetere.length > 0 && (
-                <button
-                  onClick={riprova}
-                  style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#111526', color: '#fff', fontWeight: 800, cursor: 'pointer', marginBottom: 12 }}
-                >
+                <button onClick={riprova} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#111526', color: '#fff', fontWeight: 800, cursor: 'pointer', marginBottom: 12 }}>
                   🔄 Ripassa errori ({daRipetere.length})
                 </button>
               )}
-
-              <button
-                onClick={generaTest}
-                style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #a855f7, #818cf8)', color: '#fff', fontWeight: 800, cursor: 'pointer', marginBottom: 12 }}
-              >
+              <button onClick={generaTest} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #a855f7, #818cf8)', color: '#fff', fontWeight: 800, cursor: 'pointer', marginBottom: 12 }}>
                 📝 Fai il test
               </button>
-
-              <button
-                onClick={() => { localStorage.removeItem('studio_pdf_sessione'); setFase('upload'); }}
-                style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#38bdf8', color: '#fff', fontWeight: 800, cursor: 'pointer' }}
-              >
+              <button onClick={() => { localStorage.removeItem('studio_pdf_sessione'); setFase('upload'); }} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#38bdf8', color: '#fff', fontWeight: 800, cursor: 'pointer' }}>
                 ← Nuovo PDF
               </button>
             </div>
           )}
 
-          {/* ── TEST GENERAZIONE ── */}
+          {/* TEST GENERAZIONE */}
           {fase === 'test-generazione' && (
             <div style={{ textAlign: 'center', paddingTop: 80 }}>
               <div style={{ fontSize: 44, marginBottom: 20 }}>🧠</div>
-              <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 10 }}>
-                Generazione test...
-              </div>
+              <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginBottom: 10 }}>Generazione test...</div>
               <div style={{ display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
                 {[0, 1, 2].map((i) => (
                   <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: '#a855f7', animation: `pulse 1.2s ease-in-out ${i * 200}ms infinite` }} />
@@ -523,74 +476,53 @@ export default function PdfStudioPage() {
             </div>
           )}
 
-          {/* ── TEST STUDIO ── */}
+          {/* TEST STUDIO */}
           {fase === 'test-studio' && domande[indiceDomanda] && (
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontWeight: 700 }}>
-                  Domanda {indiceDomanda + 1} / {domande.length}
-                </span>
-                <span style={{ fontSize: 12, color: '#a855f7', fontWeight: 700 }}>
-                  {punteggio} punti
-                </span>
+                <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontWeight: 700 }}>Domanda {indiceDomanda + 1} / {domande.length}</span>
+                <span style={{ fontSize: 12, color: '#a855f7', fontWeight: 700 }}>{punteggio} punti</span>
               </div>
-
               <div style={{ height: 4, background: 'rgba(255,255,255,0.08)', borderRadius: 999, marginBottom: 24 }}>
                 <div style={{ width: `${((indiceDomanda + 1) / domande.length) * 100}%`, height: 4, background: '#a855f7', borderRadius: 999, transition: '0.3s' }} />
               </div>
-
               <div style={{ background: '#111526', borderRadius: 20, padding: '24px', marginBottom: 20 }}>
-                <p style={{ color: '#fff', fontSize: 16, fontWeight: 700, lineHeight: 1.7, margin: 0 }}>
-                  {domande[indiceDomanda].domanda}
-                </p>
+                <p style={{ color: '#fff', fontSize: 16, fontWeight: 700, lineHeight: 1.7, margin: 0 }}>{domande[indiceDomanda].domanda}</p>
               </div>
-
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
                 {domande[indiceDomanda].opzioni.map((opzione, i) => {
                   let bg = '#111526';
                   let border = '1px solid rgba(255,255,255,0.08)';
                   let color = '#fff';
                   if (confermata) {
-                    if (i === domande[indiceDomanda].corretta) {
-                      bg = 'rgba(34,197,94,0.15)'; border = '1px solid #22c55e'; color = '#22c55e';
-                    } else if (i === rispostaScelta) {
-                      bg = 'rgba(239,68,68,0.15)'; border = '1px solid #ef4444'; color = '#ef4444';
-                    }
+                    if (i === domande[indiceDomanda].corretta) { bg = 'rgba(34,197,94,0.15)'; border = '1px solid #22c55e'; color = '#22c55e'; }
+                    else if (i === rispostaScelta) { bg = 'rgba(239,68,68,0.15)'; border = '1px solid #ef4444'; color = '#ef4444'; }
                   } else if (i === rispostaScelta) {
                     bg = 'rgba(168,85,247,0.15)'; border = '1px solid #a855f7';
                   }
                   return (
-                    <button
-                      key={i}
-                      onClick={() => !confermata && setRispostaScelta(i)}
-                      style={{ padding: '14px 18px', borderRadius: 14, border, background: bg, color, fontWeight: 600, fontSize: 14, cursor: confermata ? 'default' : 'pointer', textAlign: 'left', transition: 'all 0.2s', fontFamily: 'Montserrat, sans-serif' }}
-                    >
+                    <button key={i} onClick={() => !confermata && setRispostaScelta(i)}
+                      style={{ padding: '14px 18px', borderRadius: 14, border, background: bg, color, fontWeight: 600, fontSize: 14, cursor: confermata ? 'default' : 'pointer', textAlign: 'left', transition: 'all 0.2s', fontFamily: 'Montserrat, sans-serif' }}>
                       {opzione}
                     </button>
                   );
                 })}
               </div>
-
               {!confermata ? (
-                <button
-                  onClick={confermaRisposta}
-                  disabled={rispostaScelta === null}
-                  style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: rispostaScelta !== null ? '#a855f7' : 'rgba(168,85,247,0.2)', color: '#fff', fontWeight: 800, cursor: rispostaScelta !== null ? 'pointer' : 'default', transition: 'background 0.2s' }}
-                >
+                <button onClick={confermaRisposta} disabled={rispostaScelta === null}
+                  style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: rispostaScelta !== null ? '#a855f7' : 'rgba(168,85,247,0.2)', color: '#fff', fontWeight: 800, cursor: rispostaScelta !== null ? 'pointer' : 'default', transition: 'background 0.2s' }}>
                   Conferma
                 </button>
               ) : (
-                <button
-                  onClick={prossimaDomanda}
-                  style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#a855f7', color: '#fff', fontWeight: 800, cursor: 'pointer' }}
-                >
+                <button onClick={prossimaDomanda}
+                  style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#a855f7', color: '#fff', fontWeight: 800, cursor: 'pointer' }}>
                   {indiceDomanda + 1 >= domande.length ? 'Vedi risultati' : 'Prossima →'}
                 </button>
               )}
             </div>
           )}
 
-          {/* ── TEST RISULTATI ── */}
+          {/* TEST RISULTATI */}
           {fase === 'test-risultati' && (
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 64, marginBottom: 18 }}>🎯</div>
@@ -598,7 +530,6 @@ export default function PdfStudioPage() {
               <p style={{ color: 'rgba(255,255,255,0.5)', marginBottom: 24, fontSize: 14 }}>
                 Hai risposto correttamente a {punteggio} domande su {domande.length}
               </p>
-
               <div style={{ background: '#111526', borderRadius: 20, padding: '28px', marginBottom: 24 }}>
                 <div style={{ fontSize: 48, fontWeight: 900, color: punteggio / domande.length >= 0.6 ? '#22c55e' : '#ef4444' }}>
                   {Math.round((punteggio / domande.length) * 100)}%
@@ -607,23 +538,13 @@ export default function PdfStudioPage() {
                   {punteggio / domande.length >= 0.6 ? 'Ottimo risultato!' : 'Continua a studiare'}
                 </div>
               </div>
-
-              <button
-                onClick={generaTest}
-                style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #a855f7, #818cf8)', color: '#fff', fontWeight: 800, cursor: 'pointer', marginBottom: 12 }}
-              >
+              <button onClick={generaTest} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #a855f7, #818cf8)', color: '#fff', fontWeight: 800, cursor: 'pointer', marginBottom: 12 }}>
                 🔄 Rifai il test
               </button>
-              <button
-                onClick={() => setFase('flashcard-intro')}
-                style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#38bdf8', color: '#fff', fontWeight: 800, cursor: 'pointer', marginBottom: 12 }}
-              >
+              <button onClick={() => setFase('flashcard-intro')} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#38bdf8', color: '#fff', fontWeight: 800, cursor: 'pointer', marginBottom: 12 }}>
                 ← Torna alle flashcard
               </button>
-              <button
-                onClick={() => { localStorage.removeItem('studio_pdf_sessione'); setFase('upload'); }}
-                style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#111526', color: '#fff', fontWeight: 800, cursor: 'pointer' }}
-              >
+              <button onClick={() => { localStorage.removeItem('studio_pdf_sessione'); setFase('upload'); }} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#111526', color: '#fff', fontWeight: 800, cursor: 'pointer' }}>
                 Carica nuovo PDF
               </button>
             </div>
