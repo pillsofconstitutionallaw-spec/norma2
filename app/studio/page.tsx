@@ -1,5 +1,4 @@
 'use client';
-
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -12,7 +11,6 @@ const materie = [
   { slug: 'diritto-internazionale-privato', titolo: 'Dir. Internazionale Privato', icona: '⚖️', colore: '#a78bfa', bg: 'rgba(167,139,250,0.1)', carte: 28 },
   { slug: 'diritto-romano', titolo: 'Diritto Romano', icona: '🏺', colore: '#e879f9', bg: 'rgba(232,121,249,0.1)', carte: 12 },
   { slug: 'diritto-del-lavoro', titolo: 'Diritto del Lavoro', icona: '👷', colore: '#22c55e', bg: 'rgba(34,197,94,0.1)', carte: 42 },
-
   // ── PLACEHOLDER ──
   { slug: 'diritto-penale', titolo: 'Diritto Penale', icona: '⚖️', colore: '#f97316', bg: 'rgba(249,115,22,0.1)', carte: null },
   { slug: 'diritto-amministrativo', titolo: 'Diritto Amministrativo', icona: '🏢', colore: '#facc15', bg: 'rgba(250,204,21,0.1)', carte: null },
@@ -28,7 +26,6 @@ export default function StudioPage() {
   return (
     <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header />
-
       <main style={{ flex: 1, padding: '24px 16px 40px', maxWidth: 600, margin: '0 auto', width: '100%' }}>
 
         {/* Header */}
@@ -55,12 +52,11 @@ export default function StudioPage() {
         <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 14 }}>
           Materie disponibili
         </div>
-
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
           {materie.filter(m => m.carte !== null).map(m => (
             <div
               key={m.slug}
-              onClick={() => router.push(`/studio/${m.slug}`)}
+              onClick={() => router.push(`/studio/deck?materia=${m.slug}`)}
               style={{ background: '#111526', borderRadius: 16, border: `1px solid ${m.colore}22`, padding: '16px 18px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 14, transition: 'border-color 0.2s' }}
             >
               <div style={{ width: 44, height: 44, borderRadius: 12, background: m.bg, border: `1px solid ${m.colore}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
@@ -79,7 +75,6 @@ export default function StudioPage() {
         <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 14 }}>
           In arrivo
         </div>
-
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           {materie.filter(m => m.carte === null).map(m => (
             <div
@@ -94,7 +89,6 @@ export default function StudioPage() {
         </div>
 
       </main>
-
       <Footer />
     </div>
   );

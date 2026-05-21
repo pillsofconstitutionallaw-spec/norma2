@@ -19,8 +19,16 @@ export const metadata: Metadata = {
     title: "Norma",
   },
   icons: {
-    icon: "/apple-icon.png",
-    apple: "/apple-icon.png",
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/apple-icon-152x152.png", sizes: "152x152", type: "image/png" },
+      { url: "/apple-icon-167x167-04.png", sizes: "167x167", type: "image/png" },
+      { url: "/apple-icon-120x120.png", sizes: "120x120", type: "image/png" },
+    ],
   },
 };
 
@@ -44,7 +52,11 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Norma" />
-        <link rel="apple-touch-icon" href="/apple-icon.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="167x167" href="/apple-icon-167x167-04.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png" />
       </head>
       <body className="min-h-full flex flex-col" style={{ background: "#0a0d18" }}>
         {children}
@@ -92,7 +104,7 @@ export default function RootLayout({
                     font-family: 'Montserrat', sans-serif;
                   \`;
                   banner.innerHTML = \`
-                    <img src="/apple-icon.png" style="width:40px;height:40px;border-radius:10px;flex-shrink:0;" />
+                    <img src="/apple-touch-icon.png" style="width:40px;height:40px;border-radius:10px;flex-shrink:0;" />
                     <div style="flex:1;min-width:0;">
                       <div style="font-size:13px;font-weight:800;color:#fff;margin-bottom:2px;">Norma</div>
                       <div style="font-size:11px;color:rgba(255,255,255,0.5);">Tocca per attivare le notifiche push</div>
@@ -126,13 +138,9 @@ export default function RootLayout({
           {`
             if ('serviceWorker' in navigator) {
               window.addEventListener('load', function () {
-
-                // OneSignal SW
                 navigator.serviceWorker.register('/OneSignalSDKWorker.js')
                   .then(function(reg) { console.log('OneSignal SW registrato:', reg.scope); })
                   .catch(function(err) { console.log('OneSignal SW errore:', err); });
-
-                // Norma SW — aggiornamento automatico ad ogni deploy
                 navigator.serviceWorker.register('/sw.js')
                   .then(function(reg) {
                     console.log('Norma SW registrato:', reg.scope);
@@ -147,7 +155,6 @@ export default function RootLayout({
                     });
                   })
                   .catch(function(err) { console.log('Norma SW errore:', err); });
-
               });
             }
           `}
