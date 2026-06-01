@@ -273,6 +273,55 @@ ${testo}
       return NextResponse.json({ spiegazione });
     }
 
+    // GIURISPRUDENZA CODICI
+    if (tipo === 'giurisprudenza') {
+
+      const apiKey = process.env.GROQ_API_KEY_CODICI;
+
+      if (!apiKey) {
+        return NextResponse.json({
+          spiegazione: 'API KEY GROQ CODICI NON TROVATA'
+        });
+      }
+
+      const prompt = `
+Sei un giurista italiano esperto in giurisprudenza di legittimità e di merito.
+
+Per l'articolo indicato, illustra i principali orientamenti giurisprudenziali in modo:
+- rigoroso e giuridicamente preciso
+- fondato su orientamenti consolidati di Corte di Cassazione, Consiglio di Stato, Corte costituzionale o altri giudici competenti
+- comprensibile agli studenti universitari e ai candidati ai concorsi pubblici
+
+NON inventare sentenze o riferimenti.
+NON usare markdown.
+NON usare asterischi.
+NON usare elenchi puntati.
+NON scrivere introduzioni inutili.
+NON usare tono da chatbot.
+
+Indica:
+- l'interpretazione dominante della norma in giurisprudenza
+- eventuali contrasti interpretativi e come sono stati risolti
+- le massime o principi giurisprudenziali più rilevanti, con riferimento generico all'organo giudicante (es. "la Corte di Cassazione ha affermato che...")
+
+Scrivi un testo unico, fluido, discorsivo e professionale.
+
+Articolo: ${articolo}
+
+Testo:
+${testo}
+`;
+
+      const spiegazione = (
+        await groqGenerate(prompt, apiKey, 1000)
+      )
+        .replace(/\*/g, '')
+        .replace(/#{1,6}/g, '')
+        .trim();
+
+      return NextResponse.json({ spiegazione });
+    }
+
     // COSTITUZIONE
     const apiKey = process.env.GROQ_API_KEY_COSTITUZIONE;
 
