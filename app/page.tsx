@@ -200,18 +200,14 @@ export default function NormaHome() {
         }
         if (Array.isArray(articles)) setHomeArticles(articles);
         if (f) setFascicolo(f);
-        setTimeout(() => {
-          staticCategories.slice(0, 4).forEach(cat => {
-            loadCatPosts(cat.name);
-          });
-        }, 1500);
+        staticCategories.slice(0, 6).forEach(cat => {
+          loadCatPosts(cat.name);
+        });
       })
       .catch(() => {
-        setTimeout(() => {
-          staticCategories.slice(0, 4).forEach(cat => {
-            loadCatPosts(cat.name);
-          });
-        }, 2000);
+        staticCategories.slice(0, 6).forEach(cat => {
+          loadCatPosts(cat.name);
+        });
       });
   }, []);
 

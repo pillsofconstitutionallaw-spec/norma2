@@ -24,7 +24,7 @@ type AICache = Record<string, { spiega?: string; giurisprudenza?: string }>;
 export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: Props) {
   const [search, setSearch] = useState('');
   const [libroAttivo, setLibroAttivo] = useState<string | null>(null);
-  const [aperto, setAperto] = useState<string | null>(null);
+  const [aperto, setAperto] = useState<number | null>(null);
   const [aiCache, setAiCache] = useState<AICache>({});
   const [loadingAI, setLoadingAI] = useState<{ id: string; tipo: string } | null>(null);
   const [salvati, setSalvati] = useState<Set<string>>(new Set());
@@ -70,6 +70,10 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
 
   const articoloId = (a: ArticoloCodice) => String(a.numero);
 
+  function cleanNumero(n: number | string): string {
+    return String(n).replace(/^Art\.\s*/i, '').replace(/\.\s*$/, '').trim();
+  }
+
   async function chiediAI(articolo: ArticoloCodice, tipo: 'spiega' | 'giurisprudenza') {
     const id = articoloId(articolo);
     if (aiCache[id]?.[tipo]) return;
@@ -79,7 +83,7 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          articolo: `Art. ${articolo.numero}${articolo.rubrica ? ' — ' + articolo.rubrica : ''}`,
+          articolo: `Art. ${cleanNumero(articolo.numero)}${articolo.rubrica ? ' — ' + articolo.rubrica : ''}`,
           testo: articolo.testo,
           tipo: tipo === 'spiega' ? 'codice' : 'giurisprudenza',
         }),
@@ -121,7 +125,7 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
     }
     window.speechSynthesis?.cancel();
     const utterance = new SpeechSynthesisUtterance(
-      `Articolo ${articolo.numero}. ${articolo.rubrica ? articolo.rubrica + '. ' : ''}${articolo.testo}`
+      `Articolo ${cleanNumero(articolo.numero)}. ${articolo.rubrica ? articolo.rubrica + '. ' : ''}${articolo.testo}`
     );
     utterance.lang = 'it-IT';
     utterance.rate = 0.9;
@@ -270,9 +274,9 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
               </div>
             )}
 
-            {filtrati.map(a => {
+            {filtrati.map((a, idx) => {
               const id = articoloId(a);
-              const isAperto = aperto === id;
+              const isAperto = aperto === idx;
               const isSalvato = salvati.has(id);
               const isVocale = vocale === id;
               const cache = aiCache[id] ?? {};
@@ -280,7 +284,7 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
               const loadingGiuris = loadingAI?.id === id && loadingAI.tipo === 'giurisprudenza';
 
               return (
-                <div key={id} style={{
+                <div key={idx} style={{
                   background: '#111526',
                   borderRadius: 16,
                   border: `0.5px solid ${isAperto ? colore + '44' : isSalvato ? colore + '22' : 'rgba(255,255,255,0.05)'}`,
@@ -292,7 +296,7 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
                   {/* HEADER */}
                   <div
                     className="art-card"
-                    onClick={() => setAperto(isAperto ? null : id)}
+                    onClick={() => setAperto(isAperto ? null : idx)}
                     style={{ padding: '13px 14px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12 }}
                   >
                     <div style={{
@@ -303,8 +307,8 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
                       alignItems: 'center', justifyContent: 'center',
                     }}>
                       <div style={{ fontSize: 7, fontWeight: 700, color: isAperto ? colore : 'rgba(255,255,255,0.3)', letterSpacing: 0.5 }}>ART.</div>
-                      <div style={{ fontSize: String(a.numero).length > 4 ? 9 : 12, fontWeight: 900, color: isAperto ? colore : 'rgba(255,255,255,0.55)', lineHeight: 1 }}>
-                        {a.numero}
+                      <div style={{ fontSize: cleanNumero(a.numero).length > 4 ? 9 : 12, fontWeight: 900, color: isAperto ? colore : 'rgba(255,255,255,0.55)', lineHeight: 1 }}>
+                        {cleanNumero(a.numero)}
                       </div>
                     </div>
 
@@ -318,7 +322,7 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
                         }}>ABROGATO</div>
                       )}
                       <div style={{ fontSize: 13.5, fontWeight: 800, color: '#fff', lineHeight: 1.25, marginBottom: 2 }}>
-                        {a.rubrica || `Art. ${a.numero}`}
+                        {a.rubrica || `Art. ${cleanNumero(a.numero)}`}
                       </div>
                       {a.libro && (
                         <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)' }}>

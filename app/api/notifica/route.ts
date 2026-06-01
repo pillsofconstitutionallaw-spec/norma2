@@ -28,8 +28,8 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         app_id: 'cb2f63d9-6736-47a6-97e7-913f41abd463',
         included_segments: ['All'],
-        headings: { it: 'Orizzonte Giuridico' },
-        contents: { it: messaggio },
+        headings: { it: 'Orizzonte Giuridico', en: 'Orizzonte Giuridico' },
+        contents: { it: messaggio, en: messaggio },
         url: body.post_url || 'https://norma2.vercel.app',
       }),
     });

@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/controlla-sentenze",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/controlla-instagram",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

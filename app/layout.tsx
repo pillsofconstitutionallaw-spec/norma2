@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+ import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -26,7 +26,6 @@ export const metadata: Metadata = {
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
       { url: "/apple-icon-152x152.png", sizes: "152x152", type: "image/png" },
-      { url: "/apple-icon-167x167-04.png", sizes: "167x167", type: "image/png" },
       { url: "/apple-icon-120x120.png", sizes: "120x120", type: "image/png" },
     ],
   },
@@ -54,7 +53,6 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Norma" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="167x167" href="/apple-icon-167x167-04.png" />
         <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png" />
         <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png" />
       </head>
