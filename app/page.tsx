@@ -193,19 +193,27 @@ export default function NormaHome() {
   useEffect(() => {
     fetch('/api/home-data')
       .then(r => r.json())
-      .then(({ cats, articles, fascicolo: f }) => {
+      .then(({ cats, articles, fascicolo: f, storyPosts }) => {
+        // Popola subito la cache con i post già fetchati server-side
+        if (storyPosts && typeof storyPosts === 'object') {
+          Object.entries(storyPosts).forEach(([name, posts]) => {
+            if (Array.isArray(posts) && posts.length > 0) {
+              storyCache.current[name] = posts;
+            }
+          });
+        }
         if (Array.isArray(cats)) {
           const merged = staticCategories.map(sc => {
             const found = cats.find((d: any) => d.name === sc.name);
             return found ? { ...sc, id: found.id } : sc;
           });
           setCategories(merged);
-          // Preloading con ID già noti: salta la chiamata di ricerca categoria
+          // Preloading in background per categorie non ancora in cache
           merged.slice(0, 6).forEach(cat => {
-            loadCatPosts(cat.name, cat.id || undefined);
+            if (!storyCache.current[cat.name]) {
+              loadCatPosts(cat.name, cat.id || undefined);
+            }
           });
-        } else {
-          staticCategories.slice(0, 6).forEach(cat => loadCatPosts(cat.name));
         }
         if (Array.isArray(articles)) setHomeArticles(articles);
         if (f) setFascicolo(f);

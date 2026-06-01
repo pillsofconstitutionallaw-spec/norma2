@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 
 export const revalidate = 300; // cache 5 minuti
 
+const STORY_CATS = ['Penale', 'Civile', 'Costituzionale', 'Ambiente', 'Legalità', 'Internazionale'];
+
 export async function GET() {
   try {
     const [catsRes, ogRes, odlRes, fascicoloRes] = await Promise.all([
@@ -28,8 +30,27 @@ export async function GET() {
       ? { url: fascicoli[0].source_url, title: fascicoli[0].title?.rendered || 'Ultimo fascicolo' }
       : null;
 
-    return NextResponse.json({ cats, articles, fascicolo });
+    // Prefetch post per le prime categorie — tutto in parallelo, cachato server-side
+    const storyCatIds = STORY_CATS.map(name => {
+      const found = Array.isArray(cats) ? cats.find((c: any) => c.name === name) : null;
+      return found ? { name, id: found.id } : null;
+    }).filter(Boolean) as { name: string; id: number }[];
+
+    const storyResults = await Promise.all(
+      storyCatIds.map(({ id }) =>
+        fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${id}&per_page=5`, { next: { revalidate: 300 } })
+          .then(r => r.json())
+          .catch(() => [])
+      )
+    );
+
+    const storyPosts: Record<string, any[]> = {};
+    storyCatIds.forEach(({ name }, i) => {
+      storyPosts[name] = Array.isArray(storyResults[i]) ? storyResults[i] : [];
+    });
+
+    return NextResponse.json({ cats, articles, fascicolo, storyPosts });
   } catch {
-    return NextResponse.json({ cats: [], articles: [], fascicolo: null });
+    return NextResponse.json({ cats: [], articles: [], fascicolo: null, storyPosts: {} });
   }
 }
