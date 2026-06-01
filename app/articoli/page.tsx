@@ -85,12 +85,7 @@ export default function ArticoliPage() {
   const [categories, setCategories] = useState(staticCategories);
   const storyCache = useRef<Record<string, any[]>>({});
 
-  // Pre-carica le prime categorie al mount
-  useEffect(() => {
-    staticCategories.slice(0, 6).forEach(cat => { loadStoryCat(cat.name); });
-  }, []);
-
-  // Fetch categories with real IDs
+  // Fetch categories with real IDs + preloading storie con ID noti
   useEffect(() => {
     fetch('https://orizzontegiuridico.com/wp-json/wp/v2/categories?per_page=100')
       .then(r => r.json())
@@ -101,14 +96,19 @@ export default function ArticoliPage() {
           return found ? { ...sc, id: found.id } : sc;
         });
         setCategories(merged);
-        // Se c'è una categoria attiva, ricarica con gli ID corretti
+        // Preloading storie con ID già noti: salta la chiamata di ricerca categoria
+        merged.slice(0, 6).forEach(cat => {
+          loadStoryCat(cat.name, cat.id || undefined);
+        });
         if (activeCat) {
           setLoading(true);
           setPosts([]);
           fetchPosts(1, activeCat, merged);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        staticCategories.slice(0, 6).forEach(cat => loadStoryCat(cat.name));
+      });
   }, []);
 
   // Fetch posts
@@ -174,14 +174,17 @@ export default function ArticoliPage() {
     await fetchPosts(nextPage, activeCat);
   }
 
-  async function loadStoryCat(name: string): Promise<any[]> {
+  async function loadStoryCat(name: string, catId?: number): Promise<any[]> {
     if (storyCache.current[name]) return storyCache.current[name];
     try {
-      const res = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/categories?search=${encodeURIComponent(name)}`);
-      const cats = await res.json();
-      if (!Array.isArray(cats) || cats.length === 0) return [];
-      const catId = cats[0].id;
-      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${catId}&per_page=5`);
+      let id = catId;
+      if (!id) {
+        const res = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/categories?search=${encodeURIComponent(name)}&per_page=1`);
+        const cats = await res.json();
+        if (!Array.isArray(cats) || cats.length === 0) return [];
+        id = cats[0].id;
+      }
+      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${id}&per_page=5`);
       const data = await postsRes.json();
       const posts = Array.isArray(data) ? data : [];
       storyCache.current[name] = posts;
@@ -189,7 +192,7 @@ export default function ArticoliPage() {
     } catch { return []; }
   }
 
-  async function openStory(name: string) {
+  async function openStory(name: string, catId?: number) {
     setStoryCatName(name);
     setStoryIndex(0);
     setStoryProgress(0);
@@ -200,7 +203,7 @@ export default function ArticoliPage() {
     } else {
       setStoryLoading(true);
       setStoryPosts([]);
-      const posts = await loadStoryCat(name);
+      const posts = await loadStoryCat(name, catId);
       setStoryPosts(posts);
       setStoryLoading(false);
     }
@@ -228,7 +231,7 @@ export default function ArticoliPage() {
           {categories.map((cat, i) => (
             <button
               key={i}
-              onClick={() => openStory(cat.name)}
+              onClick={() => openStory(cat.name, cat.id || undefined)}
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flexShrink: 0, background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
             >
               <div style={{

@@ -172,14 +172,17 @@ export default function NormaHome() {
     setMounted(true);
   }, []);
 
-  async function loadCatPosts(name: string): Promise<any[]> {
+  async function loadCatPosts(name: string, catId?: number): Promise<any[]> {
     if (storyCache.current[name]) return storyCache.current[name];
     try {
-      const res = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/categories?search=${encodeURIComponent(name)}`);
-      const cats = await res.json();
-      if (!Array.isArray(cats) || cats.length === 0) return [];
-      const catId = cats[0].id;
-      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${catId}&per_page=5`);
+      let id = catId;
+      if (!id) {
+        const res = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/categories?search=${encodeURIComponent(name)}&per_page=1`);
+        const cats = await res.json();
+        if (!Array.isArray(cats) || cats.length === 0) return [];
+        id = cats[0].id;
+      }
+      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${id}&per_page=5`);
       const data = await postsRes.json();
       const posts = Array.isArray(data) ? data : [];
       storyCache.current[name] = posts;
@@ -197,38 +200,40 @@ export default function NormaHome() {
             return found ? { ...sc, id: found.id } : sc;
           });
           setCategories(merged);
+          // Preloading con ID già noti: salta la chiamata di ricerca categoria
+          merged.slice(0, 6).forEach(cat => {
+            loadCatPosts(cat.name, cat.id || undefined);
+          });
+        } else {
+          staticCategories.slice(0, 6).forEach(cat => loadCatPosts(cat.name));
         }
         if (Array.isArray(articles)) setHomeArticles(articles);
         if (f) setFascicolo(f);
-        staticCategories.slice(0, 6).forEach(cat => {
-          loadCatPosts(cat.name);
-        });
       })
       .catch(() => {
-        staticCategories.slice(0, 6).forEach(cat => {
-          loadCatPosts(cat.name);
-        });
+        staticCategories.slice(0, 6).forEach(cat => loadCatPosts(cat.name));
       });
   }, []);
 
   async function openStory(catIdx: number) {
-    const name = categories[catIdx].name;
+    const cat = categories[catIdx];
     setStoryCatIndex(catIdx);
-    setStoryCatName(name);
+    setStoryCatName(cat.name);
     setStoryIndex(0);
     setStoryProgress(0);
     setStoryOpen(true);
-    if (storyCache.current[name]) {
-      setStoryPosts(storyCache.current[name]);
+    if (storyCache.current[cat.name]) {
+      setStoryPosts(storyCache.current[cat.name]);
       setStoryLoading(false);
     } else {
       setStoryLoading(true);
-      const posts = await loadCatPosts(name);
+      const posts = await loadCatPosts(cat.name, cat.id || undefined);
       setStoryPosts(posts);
       setStoryLoading(false);
     }
     if (catIdx + 1 < categories.length) {
-      loadCatPosts(categories[catIdx + 1].name);
+      const next = categories[catIdx + 1];
+      loadCatPosts(next.name, next.id || undefined);
     }
   }
 
