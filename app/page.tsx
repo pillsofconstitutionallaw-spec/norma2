@@ -168,6 +168,9 @@ export default function NormaHome() {
   const storyCache = useRef<Record<string, any[]>>({});
   const STORY_LS_KEY = 'norma_story_cache_v2';
   const STORY_LS_TTL = 60 * 60 * 1000; // 1 ora
+  const SEEN_KEY = 'norma_story_seen_v1';
+  const [newCategories, setNewCategories] = useState<Set<string>>(new Set());
+  const seenRef = useRef<Record<string, string>>({});
 
   function salvaStoryCacheLS() {
     try {
@@ -175,9 +178,34 @@ export default function NormaHome() {
     } catch {}
   }
 
+  function computeNewCategories() {
+    const news = new Set<string>();
+    Object.entries(storyCache.current).forEach(([name, posts]) => {
+      if (!Array.isArray(posts) || posts.length === 0) return;
+      const latestDate = posts[0]?.date as string;
+      const seenDate = seenRef.current[name];
+      if (!seenDate || latestDate > seenDate) news.add(name);
+    });
+    setNewCategories(news);
+  }
+
+  function markSeen(name: string) {
+    const posts = storyCache.current[name];
+    if (posts?.[0]?.date) {
+      seenRef.current[name] = posts[0].date as string;
+      try { localStorage.setItem(SEEN_KEY, JSON.stringify(seenRef.current)); } catch {}
+      setNewCategories(prev => { const next = new Set(prev); next.delete(name); return next; });
+    }
+  }
+
   // FIX: imposta mounted a true solo sul client
   useEffect(() => {
     setMounted(true);
+    // Carica seen map
+    try {
+      const rawSeen = localStorage.getItem(SEEN_KEY);
+      if (rawSeen) seenRef.current = JSON.parse(rawSeen);
+    } catch {}
     // Carica cache da localStorage al mount — storie istantanee al secondo avvio
     try {
       const raw = localStorage.getItem(STORY_LS_KEY);
@@ -185,6 +213,7 @@ export default function NormaHome() {
         const { ts, data } = JSON.parse(raw);
         if (Date.now() - ts < STORY_LS_TTL && data && typeof data === 'object') {
           storyCache.current = data;
+          computeNewCategories();
         }
       }
     } catch {}
@@ -221,6 +250,7 @@ export default function NormaHome() {
             }
           });
           salvaStoryCacheLS();
+          computeNewCategories();
         }
         if (Array.isArray(cats)) {
           const merged = staticCategories.map(sc => {
@@ -245,6 +275,8 @@ export default function NormaHome() {
 
   async function openStory(catIdx: number) {
     const cat = categories[catIdx];
+    markSeen(cat.name);
+    navigator.vibrate?.(8);
     setStoryCatIndex(catIdx);
     setStoryCatName(cat.name);
     setStoryIndex(0);
@@ -358,7 +390,9 @@ export default function NormaHome() {
             {categories.map((cat, idx) => (
               <button key={idx} className="cat" onClick={() => openStory(idx)}
                 style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: 0, width: 82, flexShrink: 0 }}>
-                <div className="cat-ring">
+                <div className="cat-ring" style={newCategories.has(cat.name)
+                  ? { boxShadow: '0 0 12px rgba(143,211,255,0.35)' }
+                  : { background: 'rgba(255,255,255,0.1)' }}>
                   <div className="cat-inn">
                     {icons[cat.name] || <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#8fd3ff" strokeWidth="1.8"/></svg>}
                   </div>
@@ -450,8 +484,15 @@ export default function NormaHome() {
             );
           }) : [0,1,2].map(i => (
             <div key={i} className="art">
-              <div style={{ height: 130, background: '#07162b', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.2)', fontSize: 11, letterSpacing: 1 }}>
-                CARICAMENTO...
+              <div className="shimmer" style={{ height: 130 }} />
+              <div style={{ padding: '12px 14px 14px' }}>
+                <div className="shimmer" style={{ height: 10, borderRadius: 6, width: '40%', marginBottom: 10 }} />
+                <div className="shimmer" style={{ height: 15, borderRadius: 6, marginBottom: 6 }} />
+                <div className="shimmer" style={{ height: 15, borderRadius: 6, width: '70%', marginBottom: 12 }} />
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div className="shimmer" style={{ height: 10, borderRadius: 6, width: '20%' }} />
+                  <div className="shimmer" style={{ height: 10, borderRadius: 6, width: '12%' }} />
+                </div>
               </div>
             </div>
           ))}
@@ -535,7 +576,11 @@ export default function NormaHome() {
           </div>
           <div style={{ position: 'absolute', top: 22, left: 0, right: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#0a3060,#8fd3ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🏛️</div>
+              <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#0a3060,#8fd3ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  {icons[storyCatName]
+                    ? <span style={{ display: 'flex', transform: 'scale(0.72)' }}>{icons[storyCatName]}</span>
+                    : <span style={{ fontSize: 16 }}>🏛️</span>}
+                </div>
               <div>
                 <div style={{ color: '#fff', fontWeight: 800, fontSize: 13 }}>{storyCatName}</div>
                 {!storyLoading && storyPosts[storyIndex] && (

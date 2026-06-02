@@ -2,62 +2,45 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
+import { useSearch } from '@/hooks/useSearch';
 
 export default function Footer() {
   const pathname = usePathname();
   const router = useRouter();
-
   const [cercaAperta, setCercaAperta] = useState(false);
-  const [query, setQuery] = useState('');
-  const [risultati, setRisultati] = useState<any[]>([]);
-  const [cercando, setCercando] = useState(false);
+  const { query, setQuery, risultati, cercando, reset: resetSearch } = useSearch(6);
   const inputRef = useRef<HTMLInputElement>(null);
-  const timerRef = useRef<any>(null);
 
   useEffect(() => {
     if (cercaAperta) setTimeout(() => inputRef.current?.focus(), 150);
-    else { setQuery(''); setRisultati([]); }
+    else resetSearch();
   }, [cercaAperta]);
 
-  useEffect(() => {
-    if (!query.trim()) { setRisultati([]); return; }
-    clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => cercaArticoli(query), 400);
-  }, [query]);
-
-  async function cercaArticoli(q: string) {
-    setCercando(true);
-    try {
-      const [r1, r2] = await Promise.all([
-        fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?search=${encodeURIComponent(q)}&per_page=4&_embed`),
-        fetch(`https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?search=${encodeURIComponent(q)}&per_page=4&_embed`),
-      ]);
-      const d1 = await r1.json();
-      const d2 = await r2.json();
-      const og = Array.isArray(d1) ? d1.map((p: any) => ({ ...p, _src: 'og' })) : [];
-      const odl = Array.isArray(d2) ? d2.map((p: any) => ({ ...p, _src: 'odl' })) : [];
-      setRisultati([...og, ...odl].slice(0, 6));
-    } catch (e) {}
-    setCercando(false);
-  }
-
-  // N → sempre scroll to top (ovunque tu sia)
   function handleCenterButton() {
     if (cercaAperta) { setCercaAperta(false); return; }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigator.vibrate?.(8);
+    router.push('/studio');
   }
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 
   const btnStyle = (active: boolean): React.CSSProperties => ({
     display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-    gap: 5, flex: 1, background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+    gap: 5, flex: 1, background: 'none', border: 'none', cursor: 'pointer',
+    padding: '8px 0 0', position: 'relative',
+    color: active ? '#8fd3ff' : 'rgba(255,255,255,0.28)',
+    transition: 'color 0.2s',
   });
 
-  const lblStyle = (active: boolean): React.CSSProperties => ({
+  const lblStyle: React.CSSProperties = {
     fontSize: 9, letterSpacing: 2, fontWeight: 900, textTransform: 'uppercase',
-    color: active ? '#8fd3ff' : 'rgba(255,255,255,0.25)', fontFamily: 'Montserrat, sans-serif',
-  });
+    fontFamily: 'Montserrat, sans-serif',
+  };
+
+  const pill: React.CSSProperties = {
+    position: 'absolute', top: 0, width: 24, height: 3,
+    borderRadius: 99, background: '#8fd3ff',
+  };
 
   return (
     <>
@@ -129,45 +112,52 @@ export default function Footer() {
       <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 50, background: '#041428', borderTop: '1px solid rgba(255,255,255,0.05)', height: 88, display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: '0 8px' }}>
 
         {/* HOME */}
-        <button style={btnStyle(isActive('/') && !cercaAperta)} onClick={() => { setCercaAperta(false); router.push('/'); }}>
-          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke={isActive('/') && !cercaAperta ? '#8fd3ff' : 'rgba(255,255,255,0.28)'} strokeWidth="1.9">
+        <button style={btnStyle(isActive('/') && !cercaAperta)} onClick={() => { setCercaAperta(false); navigator.vibrate?.(6); router.push('/'); }}>
+          {isActive('/') && !cercaAperta && <div style={pill} />}
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
             <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-9.5z" />
           </svg>
-          <span style={lblStyle(isActive('/') && !cercaAperta)}>Feed</span>
+          <span style={lblStyle}>Feed</span>
         </button>
 
         {/* ESPLORA */}
-        <button style={btnStyle(isActive('/esplora'))} onClick={() => { setCercaAperta(false); router.push('/esplora'); }}>
-          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke={isActive('/esplora') ? '#8fd3ff' : 'rgba(255,255,255,0.28)'} strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 6h16M4 12h16M4 18h16" />
+        <button style={btnStyle(isActive('/esplora'))} onClick={() => { setCercaAperta(false); navigator.vibrate?.(6); router.push('/esplora'); }}>
+          {isActive('/esplora') && <div style={pill} />}
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
           </svg>
-          <span style={lblStyle(isActive('/esplora'))}>Esplora</span>
+          <span style={lblStyle}>Esplora</span>
         </button>
 
-        {/* CENTER N — sempre scroll to top */}
+        {/* CENTER — Studio */}
         <div style={{ position: 'relative', marginTop: -40, display: 'flex', flexDirection: 'column', alignItems: 'center', width: 96 }}>
-          <div style={{ position: 'absolute', top: 0, width: 90, height: 90, borderRadius: '50%', background: 'rgba(15,111,255,0.2)', filter: 'blur(16px)' }} />
-          <button onClick={handleCenterButton} style={{ position: 'relative', width: 74, height: 74, borderRadius: '50%', background: '#071225', border: '1px solid #1c4d7d', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 30px rgba(0,123,255,0.25)', cursor: 'pointer', fontFamily: "'Cormorant Garamond', serif" }}>
-            <span style={{ color: '#fff', fontSize: 44, lineHeight: 1 }}>N</span>
+          <div style={{ position: 'absolute', top: 0, width: 90, height: 90, borderRadius: '50%', background: isActive('/studio') ? 'rgba(143,211,255,0.2)' : 'rgba(15,111,255,0.2)', filter: 'blur(16px)' }} />
+          <button onClick={handleCenterButton} style={{ position: 'relative', width: 74, height: 74, borderRadius: '50%', background: '#071225', border: `1px solid ${isActive('/studio') ? '#8fd3ff55' : '#1c4d7d'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: isActive('/studio') ? '0 0 30px rgba(143,211,255,0.3)' : '0 0 30px rgba(0,123,255,0.25)', cursor: 'pointer', fontFamily: "'Cormorant Garamond', serif", transition: 'border-color 0.2s, box-shadow 0.2s' }}>
+            <span style={{ color: isActive('/studio') ? '#8fd3ff' : '#fff', fontSize: 44, lineHeight: 1, transition: 'color 0.2s' }}>N</span>
           </button>
-          <span style={{ marginTop: 8, ...lblStyle(false) }}>Norma</span>
+          <span style={{ marginTop: 8, ...lblStyle, color: isActive('/studio') ? '#8fd3ff' : 'rgba(255,255,255,0.25)' }}>Studio</span>
         </div>
 
         {/* SALVATI */}
-        <button style={btnStyle(isActive('/salvati'))} onClick={() => { setCercaAperta(false); router.push('/salvati'); }}>
-          <svg width="25" height="25" viewBox="0 0 24 24" fill={isActive('/salvati') ? '#8fd3ff' : 'none'} stroke={isActive('/salvati') ? '#8fd3ff' : 'rgba(255,255,255,0.28)'} strokeWidth="1.9">
+        <button style={btnStyle(isActive('/salvati'))} onClick={() => { setCercaAperta(false); navigator.vibrate?.(6); router.push('/salvati'); }}>
+          {isActive('/salvati') && <div style={pill} />}
+          <svg width="25" height="25" viewBox="0 0 24 24" fill={isActive('/salvati') ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.9">
             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
           </svg>
-          <span style={lblStyle(isActive('/salvati'))}>Salvati</span>
+          <span style={lblStyle}>Salvati</span>
         </button>
 
         {/* AVVISI */}
-        <button style={btnStyle(isActive('/avvisi'))} onClick={() => { setCercaAperta(false); router.push('/avvisi'); }}>
-          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke={isActive('/avvisi') ? '#8fd3ff' : 'rgba(255,255,255,0.28)'} strokeWidth="1.9">
+        <button style={btnStyle(isActive('/avvisi'))} onClick={() => { setCercaAperta(false); navigator.vibrate?.(6); router.push('/avvisi'); }}>
+          {isActive('/avvisi') && <div style={pill} />}
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
             <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
             <path d="M13.73 21a2 2 0 0 1-3.46 0" />
           </svg>
-          <span style={lblStyle(isActive('/avvisi'))}>Avvisi</span>
+          <span style={lblStyle}>Avvisi</span>
         </button>
 
       </div>

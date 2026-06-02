@@ -1,21 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
+import { useSearch } from '@/hooks/useSearch';
 
 export default function Header() {
-  const pathname = usePathname();
   const [cercaAperta, setCercaAperta] = useState(false);
-  const [query, setQuery] = useState('');
-  const [risultati, setRisultati] = useState<any[]>([]);
-  const [cercando, setCercando] = useState(false);
+  const { query, setQuery, risultati, cercando, reset: resetSearch } = useSearch(8);
   const [notificheAperte, setNotificheAperte] = useState(false);
   const [notifiche, setNotifiche] = useState<any[]>([]);
   const [loadingNotifiche, setLoadingNotifiche] = useState(false);
   const [notificheLette, setNotificheLette] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const timerRef = useRef<any>(null);
 
   // Ascolta evento dal Footer
   useEffect(() => {
@@ -30,30 +26,8 @@ export default function Header() {
 
   useEffect(() => {
     if (cercaAperta) setTimeout(() => inputRef.current?.focus(), 100);
-    else { setQuery(''); setRisultati([]); }
+    else resetSearch();
   }, [cercaAperta]);
-
-  useEffect(() => {
-    if (!query.trim()) { setRisultati([]); return; }
-    clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => cercaArticoli(query), 400);
-  }, [query]);
-
-  async function cercaArticoli(q: string) {
-    setCercando(true);
-    try {
-      const [r1, r2] = await Promise.all([
-        fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?search=${encodeURIComponent(q)}&per_page=5&_embed`),
-        fetch(`https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?search=${encodeURIComponent(q)}&per_page=5&_embed`),
-      ]);
-      const d1 = await r1.json();
-      const d2 = await r2.json();
-      const og = Array.isArray(d1) ? d1.map((p: any) => ({ ...p, _src: 'og' })) : [];
-      const odl = Array.isArray(d2) ? d2.map((p: any) => ({ ...p, _src: 'odl' })) : [];
-      setRisultati([...og, ...odl].slice(0, 8));
-    } catch (e) {}
-    setCercando(false);
-  }
 
   async function apriNotifiche() {
     if (notificheAperte) { setNotificheAperte(false); return; }

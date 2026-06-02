@@ -59,3 +59,14 @@ img {
   object-fit: cover;
   height: auto;
 }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #111526 25%, #182040 50%, #111526 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite linear;
+}
