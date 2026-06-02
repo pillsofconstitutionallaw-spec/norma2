@@ -1,4 +1,4 @@
-const CACHE_NAME = 'norma-1779392232651';
+const CACHE_NAME = 'norma-1748869200000';
 
 // Asset statici sempre in cache
 const STATIC_ASSETS = [
