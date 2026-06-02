@@ -3,14 +3,63 @@ import { createClient } from '@vercel/edge-config';
 
 const IG_USER_ID = '17841472725782214';
 const ONESIGNAL_APP_ID = 'cb2f63d9-6736-47a6-97e7-913f41abd463';
+const REFRESH_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000; // 7 giorni
 
 function verificaAuth(req: NextRequest): boolean {
   const auth = req.headers.get('Authorization');
   return auth === `Bearer ${process.env.CRON_SECRET}`;
 }
 
+async function aggiornaEdgeConfig(items: { key: string; value: string }[]) {
+  await fetch(`https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ items: items.map(i => ({ operation: 'upsert', ...i })) }),
+  });
+}
+
+async function refreshTokenSeNecessario(edgeConfig: ReturnType<typeof createClient>): Promise<string> {
+  const tokenAttuale = (await edgeConfig.get('instagram-token') as string | null)
+    ?? process.env.INSTAGRAM_TOKEN ?? '';
+
+  try {
+    const lastRefreshRaw = await edgeConfig.get('instagram-token-refreshed-at') as string | null;
+    // null → mai rinfrescato → fai subito il refresh
+    const lastRefresh = lastRefreshRaw ? new Date(lastRefreshRaw).getTime() : 0;
+    const scaduto = Date.now() - lastRefresh >= REFRESH_INTERVAL_MS;
+
+    if (!scaduto) return tokenAttuale;
+
+    const res = await fetch(
+      `https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${tokenAttuale}`,
+      { next: { revalidate: 0 } }
+    );
+    const data = await res.json();
+
+    if (!data?.access_token) {
+      console.error('Refresh token fallito: access_token assente nella risposta', data);
+      return tokenAttuale; // continua con il token attuale, NON aggiorna timestamp
+    }
+
+    await aggiornaEdgeConfig([
+      { key: 'instagram-token', value: data.access_token },
+      { key: 'instagram-token-refreshed-at', value: new Date().toISOString() },
+    ]);
+
+    return data.access_token;
+  } catch (err) {
+    console.error('Errore durante il refresh del token Instagram:', err);
+    return tokenAttuale; // il refresh non blocca il flusso principale
+  }
+}
+
 async function esegui(): Promise<NextResponse> {
-  const token = process.env.INSTAGRAM_TOKEN;
+  const edgeConfig = createClient(process.env.EDGE_CONFIG!);
+
+  const token = await refreshTokenSeNecessario(edgeConfig);
   if (!token) {
     return NextResponse.json({ error: 'Token Instagram mancante' }, { status: 500 });
   }
@@ -28,24 +77,13 @@ async function esegui(): Promise<NextResponse> {
   const ultimoPost = data.data[0];
   const ultimoId = ultimoPost.id;
 
-  const edgeConfig = createClient(process.env.EDGE_CONFIG!);
   const salvato = await edgeConfig.get('ultimo-instagram-id') as string | null;
 
   if (salvato === ultimoId) {
     return NextResponse.json({ message: 'Nessuna novità', id: ultimoId });
   }
 
-  // Aggiorna Edge Config con il nuovo ID
-  await fetch(`https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`, {
-    method: 'PATCH',
-    headers: {
-      Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      items: [{ operation: 'upsert', key: 'ultimo-instagram-id', value: ultimoId }],
-    }),
-  });
+  await aggiornaEdgeConfig([{ key: 'ultimo-instagram-id', value: ultimoId }]);
 
   const caption = ultimoPost.caption
     ? ultimoPost.caption.split('\n')[0].slice(0, 80)
