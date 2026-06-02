@@ -80,20 +80,20 @@ function InstagramEmbed() {
 }
 
 const staticCategories = [
-  { id: 0, name: 'Penale' },
-  { id: 0, name: 'Civile' },
-  { id: 0, name: 'Costituzionale' },
-  { id: 0, name: 'Ambiente' },
-  { id: 0, name: 'Unione Europea' },
-  { id: 0, name: 'Amministrativo' },
-  { id: 0, name: 'Internazionale' },
-  { id: 0, name: 'Animali' },
-  { id: 0, name: 'Legalità' },
-  { id: 0, name: 'Economia' },
-  { id: 0, name: 'Politica' },
-  { id: 0, name: 'Dir. Comparato' },
-  { id: 0, name: "L'Intervista" },
-  { id: 0, name: 'Ripetiamo il Diritto' },
+  { id: 48, name: 'Penale' },
+  { id: 682, name: 'Civile' },
+  { id: 39, name: 'Costituzionale' },
+  { id: 220, name: 'Ambiente' },
+  { id: 249, name: 'Unione Europea' },
+  { id: 86, name: 'Amministrativo' },
+  { id: 140, name: 'Internazionale' },
+  { id: 834, name: 'Animali' },
+  { id: 320, name: 'Legalità' },
+  { id: 55, name: 'Economia' },
+  { id: 543, name: 'Politica' },
+  { id: 72, name: 'Dir. Comparato' },
+  { id: 333, name: "L'Intervista" },
+  { id: 707, name: 'Ripetiamo il Diritto' },
 ];
 
 const slides = [
@@ -152,6 +152,7 @@ const shortNames: Record<string, string> = {
 
 export default function NormaHome() {
   const [mounted, setMounted] = useState(false); // FIX: evita hydration mismatch
+  const [bannerVisible, setBannerVisible] = useState(true);
   const [cur, setCur] = useState(0);
   const touchStartX = useRef<number>(0);
   const wheelTimeout = useRef<any>(null);
@@ -381,6 +382,31 @@ export default function NormaHome() {
       <div className="app">
         <Header />
         <div className="feed">
+          {/* BANNER 80 ANNI REPUBBLICA */}
+          {bannerVisible && (
+            <div style={{ borderRadius: 18, overflow: 'hidden', marginBottom: 16, position: 'relative', background: 'linear-gradient(135deg,#0d1e3a 0%,#1a3a6e 50%,#0d1e3a 100%)', border: '0.5px solid rgba(0,100,200,0.35)' }}>
+              <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(90deg,transparent,transparent 32px,rgba(255,255,255,0.012) 32px,rgba(255,255,255,0.012) 33px)', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg,#009246,#fff,#ce2b37)' }} />
+              <div style={{ padding: '16px 18px 18px', display: 'flex', alignItems: 'center', gap: 14 }}>
+                <div style={{ fontSize: 32, flexShrink: 0, lineHeight: 1 }}>🇮🇹</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.45)', marginBottom: 5 }}>2 Giugno 2026</div>
+                  <div style={{ fontSize: 15, fontWeight: 900, color: '#fff', lineHeight: 1.2, marginBottom: 4 }}>
+                    <span style={{ color: '#8fd3ff' }}>80 anni</span> della Repubblica Italiana
+                  </div>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>
+                    Il 2 giugno 1946 gli italiani scelsero la Repubblica. Buona Festa a tutti.
+                  </div>
+                </div>
+                <button
+                  onClick={() => setBannerVisible(false)}
+                  style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: 28, height: 28, color: 'rgba(255,255,255,0.5)', fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'flex-start' }}>
+                  ✕
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* CATEGORIE */}
           <div className="slbl" style={{ marginTop: 4 }}>
             <span className="slbl-t">Categorie</span>
