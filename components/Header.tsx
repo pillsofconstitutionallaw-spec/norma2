@@ -37,18 +37,9 @@ export default function Header() {
     if (notifiche.length > 0) return;
     setLoadingNotifiche(true);
     try {
-      const [wpRes, igRes] = await Promise.all([
-        fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=6&_embed').then(r => r.json()).catch(() => []),
-        fetch('/api/instagram').then(r => r.json()).catch(() => ({})),
-      ]);
-      const wpItems = (Array.isArray(wpRes) ? wpRes : []).map((p: any) => ({ ...p, _type: 'wp' }));
+      const igRes = await fetch('/api/instagram').then(r => r.json()).catch(() => ({}));
       const igItems = (Array.isArray(igRes?.data) ? igRes.data.slice(0, 5) : []).map((p: any) => ({ ...p, _type: 'ig' }));
-      const merged = [...wpItems, ...igItems].sort((a, b) => {
-        const da = new Date(a.date ?? a.timestamp).getTime();
-        const db = new Date(b.date ?? b.timestamp).getTime();
-        return db - da;
-      });
-      setNotifiche(merged);
+      setNotifiche(igItems);
     } catch (e) {}
     setLoadingNotifiche(false);
   }
