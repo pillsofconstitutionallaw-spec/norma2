@@ -193,6 +193,7 @@ export default function RootLayout({
                 navigator.serviceWorker.register('/sw.js')
                   .then(function(reg) {
                     console.log('Norma SW registrato:', reg.scope);
+                    reg.update();
                     reg.addEventListener('updatefound', function() {
                       const newWorker = reg.installing;
                       newWorker.addEventListener('statechange', function() {
