@@ -143,6 +143,9 @@ export default function Header() {
             Ultimi aggiornamenti
           </div>
           {loadingNotifiche && <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontFamily: 'Montserrat, sans-serif' }}>Caricamento...</div>}
+          {!loadingNotifiche && notifiche.length === 0 && (
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', fontFamily: 'Montserrat, sans-serif', padding: '8px 0' }}>Nessun post Instagram recente</div>
+          )}
           {notifiche.map((item, i) => {
             if (item._type === 'ig') {
               const caption = item.caption ? item.caption.split('\n')[0].slice(0, 72) : 'Post Instagram';

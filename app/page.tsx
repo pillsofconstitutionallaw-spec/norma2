@@ -152,7 +152,7 @@ const shortNames: Record<string, string> = {
 
 export default function NormaHome() {
   const [mounted, setMounted] = useState(false); // FIX: evita hydration mismatch
-  const [bannerVisible, setBannerVisible] = useState(true);
+  const [bannerVisible, setBannerVisible] = useState(false);
   const [cur, setCur] = useState(0);
   const touchStartX = useRef<number>(0);
   const wheelTimeout = useRef<any>(null);
@@ -202,6 +202,10 @@ export default function NormaHome() {
   // FIX: imposta mounted a true solo sul client
   useEffect(() => {
     setMounted(true);
+    const now = new Date();
+    if (now.getFullYear() === 2026 && now.getMonth() === 5 && now.getDate() === 2) {
+      setBannerVisible(true);
+    }
     // Carica seen map
     try {
       const rawSeen = localStorage.getItem(SEEN_KEY);
@@ -220,17 +224,10 @@ export default function NormaHome() {
     } catch {}
   }, []);
 
-  async function loadCatPosts(name: string, catId?: number): Promise<any[]> {
+  async function loadCatPosts(name: string, catId: number): Promise<any[]> {
     if (storyCache.current[name]) return storyCache.current[name];
     try {
-      let id = catId;
-      if (!id) {
-        const res = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/categories?search=${encodeURIComponent(name)}&per_page=1`);
-        const cats = await res.json();
-        if (!Array.isArray(cats) || cats.length === 0) return [];
-        id = cats[0].id;
-      }
-      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${id}&per_page=5`);
+      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${catId}&per_page=5`);
       const data = await postsRes.json();
       const posts = Array.isArray(data) ? data : [];
       storyCache.current[name] = posts;
@@ -262,7 +259,7 @@ export default function NormaHome() {
           // Preloading in background per categorie non ancora in cache
           merged.slice(0, 6).forEach(cat => {
             if (!storyCache.current[cat.name]) {
-              loadCatPosts(cat.name, cat.id || undefined);
+              loadCatPosts(cat.name, cat.id);
             }
           });
         }
@@ -270,7 +267,7 @@ export default function NormaHome() {
         if (f) setFascicolo(f);
       })
       .catch(() => {
-        staticCategories.slice(0, 6).forEach(cat => loadCatPosts(cat.name));
+        staticCategories.slice(0, 6).forEach(cat => loadCatPosts(cat.name, cat.id));
       });
   }, []);
 
@@ -288,13 +285,13 @@ export default function NormaHome() {
       setStoryLoading(false);
     } else {
       setStoryLoading(true);
-      const posts = await loadCatPosts(cat.name, cat.id || undefined);
+      const posts = await loadCatPosts(cat.name, cat.id);
       setStoryPosts(posts);
       setStoryLoading(false);
     }
     if (catIdx + 1 < categories.length) {
       const next = categories[catIdx + 1];
-      loadCatPosts(next.name, next.id || undefined);
+      loadCatPosts(next.name, next.id);
     }
   }
 
@@ -315,12 +312,12 @@ export default function NormaHome() {
           setStoryLoading(false);
         } else {
           setStoryLoading(true);
-          const posts = await loadCatPosts(name);
+          const posts = await loadCatPosts(name, categories[nextCatIdx].id);
           setStoryPosts(posts);
           setStoryLoading(false);
         }
         if (nextCatIdx + 1 < categories.length) {
-          loadCatPosts(categories[nextCatIdx + 1].name);
+          loadCatPosts(categories[nextCatIdx + 1].name, categories[nextCatIdx + 1].id);
         }
       } else {
         setStoryOpen(false);
