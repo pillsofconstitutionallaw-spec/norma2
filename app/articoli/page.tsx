@@ -84,6 +84,19 @@ export default function ArticoliPage() {
   const [storyProgress, setStoryProgress] = useState(0);
   const [categories, setCategories] = useState(staticCategories);
   const storyCache = useRef<Record<string, any[]>>({});
+  const STORY_LS_KEY = 'norma_story_cache_v2';
+  const STORY_LS_TTL = 60 * 60 * 1000;
+
+  // Carica cache da localStorage al mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORY_LS_KEY);
+      if (raw) {
+        const { ts, data } = JSON.parse(raw);
+        if (Date.now() - ts < STORY_LS_TTL && data) storyCache.current = data;
+      }
+    } catch {}
+  }, []);
 
   // Fetch categories with real IDs + preloading storie con ID noti
   useEffect(() => {
@@ -188,6 +201,7 @@ export default function ArticoliPage() {
       const data = await postsRes.json();
       const posts = Array.isArray(data) ? data : [];
       storyCache.current[name] = posts;
+      try { localStorage.setItem(STORY_LS_KEY, JSON.stringify({ ts: Date.now(), data: storyCache.current })); } catch {}
       return posts;
     } catch { return []; }
   }

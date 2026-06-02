@@ -166,10 +166,28 @@ export default function NormaHome() {
   const [storyLoading, setStoryLoading] = useState(false);
   const [storyProgress, setStoryProgress] = useState(0);
   const storyCache = useRef<Record<string, any[]>>({});
+  const STORY_LS_KEY = 'norma_story_cache_v2';
+  const STORY_LS_TTL = 60 * 60 * 1000; // 1 ora
+
+  function salvaStoryCacheLS() {
+    try {
+      localStorage.setItem(STORY_LS_KEY, JSON.stringify({ ts: Date.now(), data: storyCache.current }));
+    } catch {}
+  }
 
   // FIX: imposta mounted a true solo sul client
   useEffect(() => {
     setMounted(true);
+    // Carica cache da localStorage al mount — storie istantanee al secondo avvio
+    try {
+      const raw = localStorage.getItem(STORY_LS_KEY);
+      if (raw) {
+        const { ts, data } = JSON.parse(raw);
+        if (Date.now() - ts < STORY_LS_TTL && data && typeof data === 'object') {
+          storyCache.current = data;
+        }
+      }
+    } catch {}
   }, []);
 
   async function loadCatPosts(name: string, catId?: number): Promise<any[]> {
@@ -186,6 +204,7 @@ export default function NormaHome() {
       const data = await postsRes.json();
       const posts = Array.isArray(data) ? data : [];
       storyCache.current[name] = posts;
+      salvaStoryCacheLS();
       return posts;
     } catch { return []; }
   }
@@ -198,9 +217,10 @@ export default function NormaHome() {
         if (storyPosts && typeof storyPosts === 'object') {
           Object.entries(storyPosts).forEach(([name, posts]) => {
             if (Array.isArray(posts) && posts.length > 0) {
-              storyCache.current[name] = posts;
+              storyCache.current[name] = posts as any[];
             }
           });
+          salvaStoryCacheLS();
         }
         if (Array.isArray(cats)) {
           const merged = staticCategories.map(sc => {

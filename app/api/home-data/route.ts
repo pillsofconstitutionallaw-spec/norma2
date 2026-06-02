@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export const revalidate = 300; // cache 5 minuti
+export const revalidate = 3600; // cache 1 ora
 
 const STORY_CATS = ['Penale', 'Civile', 'Costituzionale', 'Ambiente', 'Legalità', 'Internazionale'];
 
