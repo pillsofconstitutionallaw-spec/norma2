@@ -549,25 +549,36 @@ export default function NormaHome() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 8 }}>
             <a href="https://www.instagram.com/orizzonte.giuridico/" target="_blank" rel="noreferrer"
               style={{ borderRadius: 16, background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-              <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width={28} height={28} style={{ width: 28, height: 28 }} />
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="2" width="20" height="20" rx="5" stroke="white" strokeWidth="2"/>
+                <circle cx="12" cy="12" r="4" stroke="white" strokeWidth="2"/>
+                <circle cx="17.5" cy="6.5" r="1.5" fill="white"/>
+              </svg>
               <span style={{ color: '#fff', fontSize: 10, fontWeight: 800 }}>INSTAGRAM</span>
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9 }}>@orizzonte.giuridico</span>
             </a>
             <a href="https://www.tiktok.com/@orizzonte.giuridi" target="_blank" rel="noreferrer"
               style={{ borderRadius: 16, background: '#111526', border: '0.5px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-              <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok" width={28} height={28} style={{ width: 28, height: 28 }} />
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+              </svg>
               <span style={{ color: '#fff', fontSize: 10, fontWeight: 800 }}>TIKTOK</span>
               <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 9 }}>@orizzonte.giuridi</span>
             </a>
             <a href="https://www.facebook.com/profile.php?id=61589319283875" target="_blank" rel="noreferrer"
               style={{ borderRadius: 16, background: '#1877F2', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-              <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" width={28} height={28} style={{ width: 28, height: 28 }} />
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+              </svg>
               <span style={{ color: '#fff', fontSize: 10, fontWeight: 800 }}>FACEBOOK</span>
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9 }}>Orizzonte Giuridico</span>
             </a>
             <a href="https://www.linkedin.com/company/orizzonte-giuridico" target="_blank" rel="noreferrer"
               style={{ borderRadius: 16, background: '#0A66C2', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-              <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn" width={28} height={28} style={{ width: 28, height: 28 }} />
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
               <span style={{ color: '#fff', fontSize: 10, fontWeight: 800 }}>LINKEDIN</span>
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9 }}>Orizzonte Giuridico</span>
             </a>

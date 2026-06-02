@@ -6,20 +6,20 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 
 const staticCategories = [
-  { id: 0, name: 'Penale' },
-  { id: 0, name: 'Civile' },
-  { id: 0, name: 'Costituzionale' },
-  { id: 0, name: 'Ambiente' },
-  { id: 0, name: 'Unione Europea' },
-  { id: 0, name: 'Amministrativo' },
-  { id: 0, name: 'Internazionale' },
-  { id: 0, name: 'Animali' },
-  { id: 0, name: 'Legalità' },
-  { id: 0, name: 'Economia' },
-  { id: 0, name: 'Politica' },
-  { id: 0, name: 'Dir. Comparato' },
-  { id: 0, name: "L'Intervista" },
-  { id: 0, name: 'Ripetiamo il Diritto' },
+  { id: 48, name: 'Penale' },
+  { id: 682, name: 'Civile' },
+  { id: 39, name: 'Costituzionale' },
+  { id: 220, name: 'Ambiente' },
+  { id: 249, name: 'Unione Europea' },
+  { id: 86, name: 'Amministrativo' },
+  { id: 140, name: 'Internazionale' },
+  { id: 834, name: 'Animali' },
+  { id: 320, name: 'Legalità' },
+  { id: 55, name: 'Economia' },
+  { id: 543, name: 'Politica' },
+  { id: 72, name: 'Dir. Comparato' },
+  { id: 333, name: "L'Intervista" },
+  { id: 707, name: 'Ripetiamo il Diritto' },
 ];
 
 const shortNames: Record<string, string> = {
@@ -111,7 +111,7 @@ export default function ArticoliPage() {
         setCategories(merged);
         // Preloading storie con ID già noti: salta la chiamata di ricerca categoria
         merged.slice(0, 6).forEach(cat => {
-          loadStoryCat(cat.name, cat.id || undefined);
+          loadStoryCat(cat.name, cat.id);
         });
         if (activeCat) {
           setLoading(true);
@@ -120,7 +120,7 @@ export default function ArticoliPage() {
         }
       })
       .catch(() => {
-        staticCategories.slice(0, 6).forEach(cat => loadStoryCat(cat.name));
+        staticCategories.slice(0, 6).forEach(cat => loadStoryCat(cat.name, cat.id));
       });
   }, []);
 
@@ -187,17 +187,10 @@ export default function ArticoliPage() {
     await fetchPosts(nextPage, activeCat);
   }
 
-  async function loadStoryCat(name: string, catId?: number): Promise<any[]> {
+  async function loadStoryCat(name: string, catId: number): Promise<any[]> {
     if (storyCache.current[name]) return storyCache.current[name];
     try {
-      let id = catId;
-      if (!id) {
-        const res = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/categories?search=${encodeURIComponent(name)}&per_page=1`);
-        const cats = await res.json();
-        if (!Array.isArray(cats) || cats.length === 0) return [];
-        id = cats[0].id;
-      }
-      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${id}&per_page=5`);
+      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${catId}&per_page=5`);
       const data = await postsRes.json();
       const posts = Array.isArray(data) ? data : [];
       storyCache.current[name] = posts;
@@ -206,7 +199,7 @@ export default function ArticoliPage() {
     } catch { return []; }
   }
 
-  async function openStory(name: string, catId?: number) {
+  async function openStory(name: string, catId: number) {
     setStoryCatName(name);
     setStoryIndex(0);
     setStoryProgress(0);
@@ -245,7 +238,7 @@ export default function ArticoliPage() {
           {categories.map((cat, i) => (
             <button
               key={i}
-              onClick={() => openStory(cat.name, cat.id || undefined)}
+              onClick={() => openStory(cat.name, cat.id)}
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, flexShrink: 0, background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}
             >
               <div style={{
