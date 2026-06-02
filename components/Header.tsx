@@ -37,9 +37,18 @@ export default function Header() {
     if (notifiche.length > 0) return;
     setLoadingNotifiche(true);
     try {
-      const res = await fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=6&_embed');
-      const data = await res.json();
-      setNotifiche(Array.isArray(data) ? data : []);
+      const [wpRes, igRes] = await Promise.all([
+        fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=6&_embed').then(r => r.json()).catch(() => []),
+        fetch('/api/instagram').then(r => r.json()).catch(() => ({})),
+      ]);
+      const wpItems = (Array.isArray(wpRes) ? wpRes : []).map((p: any) => ({ ...p, _type: 'wp' }));
+      const igItems = (Array.isArray(igRes?.data) ? igRes.data.slice(0, 5) : []).map((p: any) => ({ ...p, _type: 'ig' }));
+      const merged = [...wpItems, ...igItems].sort((a, b) => {
+        const da = new Date(a.date ?? a.timestamp).getTime();
+        const db = new Date(b.date ?? b.timestamp).getTime();
+        return db - da;
+      });
+      setNotifiche(merged);
     } catch (e) {}
     setLoadingNotifiche(false);
   }
@@ -143,15 +152,36 @@ export default function Header() {
             Ultimi aggiornamenti
           </div>
           {loadingNotifiche && <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontFamily: 'Montserrat, sans-serif' }}>Caricamento...</div>}
-          {notifiche.map((post, i) => {
-            const data = post?.date ? new Date(post.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' }) : '';
+          {notifiche.map((item, i) => {
+            if (item._type === 'ig') {
+              const caption = item.caption ? item.caption.split('\n')[0].slice(0, 72) : 'Post Instagram';
+              const ora = item.timestamp ? new Date(item.timestamp).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+              return (
+                <a key={i} href={item.permalink || 'https://www.instagram.com/orizzonte.giuridico/'} target="_blank" rel="noreferrer"
+                  onClick={() => setNotificheAperte(false)}
+                  style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '10px 0', borderBottom: '0.5px solid rgba(255,255,255,0.05)', textDecoration: 'none', borderLeft: '2px solid transparent', borderImage: 'linear-gradient(180deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888) 1', paddingLeft: 10 }}>
+                  <div style={{ width: 26, height: 26, borderRadius: 8, background: 'linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                      <rect x="2" y="2" width="20" height="20" rx="5" stroke="white" strokeWidth="2"/>
+                      <circle cx="12" cy="12" r="4" stroke="white" strokeWidth="2"/>
+                      <circle cx="17.5" cy="6.5" r="1.5" fill="white"/>
+                    </svg>
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'Montserrat, sans-serif' }}>{caption}</div>
+                    <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)', marginTop: 2, fontFamily: 'Montserrat, sans-serif' }}>Instagram · {ora}</div>
+                  </div>
+                </a>
+              );
+            }
+            const data = item?.date ? new Date(item.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' }) : '';
             return (
-              <a key={i} href={`/articoli/${post.slug}`} onClick={() => setNotificheAperte(false)}
+              <a key={i} href={`/articoli/${item.slug}`} onClick={() => setNotificheAperte(false)}
                 style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '10px 0', borderBottom: '0.5px solid rgba(255,255,255,0.05)', textDecoration: 'none' }}>
                 <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#8fd3ff', flexShrink: 0, marginTop: 5 }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 12, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'Montserrat, sans-serif' }}
-                    dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }} />
+                    dangerouslySetInnerHTML={{ __html: item?.title?.rendered || '' }} />
                   <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 2, fontFamily: 'Montserrat, sans-serif' }}>{data}</div>
                 </div>
               </a>
