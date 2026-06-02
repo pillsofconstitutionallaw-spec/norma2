@@ -12,6 +12,7 @@ type DeckSalvato = { id: string; titolo: string; pagine: string; carte: Carta[];
 type Fase =
   | 'upload'
   | 'selezione-pagine'
+  | 'selezione-foto'
   | 'caricamento'
   | 'flashcard-intro'
   | 'flashcard-studio'
@@ -26,6 +27,9 @@ const MAX_PAGINE = 8;
 export default function PdfStudioPage() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const fotoRef = useRef<HTMLInputElement>(null);
+  const [fotoBase64, setFotoBase64] = useState<string[]>([]);
+  const [fotoPreviews, setFotoPreviews] = useState<string[]>([]);
 
   const [fase, setFase] = useState<Fase>('upload');
   const [nomeFile, setNomeFile] = useState('');
@@ -60,6 +64,59 @@ export default function PdfStudioPage() {
       script.onerror = () => reject(new Error('Errore caricamento pdfjs'));
       document.head.appendChild(script);
     });
+  }
+
+  async function handleFoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files || []).slice(0, 8);
+    if (files.length === 0) return;
+    e.target.value = '';
+    setErrore('');
+    const previews: string[] = [];
+    const base64s: string[] = [];
+    await Promise.all(files.map(file => new Promise<void>(resolve => {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const result = ev.target?.result as string;
+        previews.push(result);
+        base64s.push(result.split(',')[1]);
+        resolve();
+      };
+      reader.readAsDataURL(file);
+    })));
+    setFotoPreviews(previews);
+    setFotoBase64(base64s);
+    setNomeFile(`${files.length} foto`);
+    setFase('selezione-foto');
+  }
+
+  async function avviaGenerazioneFoto() {
+    if (fotoBase64.length === 0) return;
+    setErrore('');
+    setFase('caricamento');
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 120000);
+      const res = await fetch('/api/studio-foto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tipo: 'flashcard', immagini: fotoBase64 }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+      const data = await res.json();
+      if (data.errore || !data.carte || !Array.isArray(data.carte)) {
+        setErrore(data.errore || 'Errore generazione flashcard');
+        setFase('selezione-foto');
+        return;
+      }
+      if (data.testo) setTestoEstratto(data.testo);
+      setCarte(data.carte.sort(() => Math.random() - 0.5));
+      setIndice(0); setGirata(false); setSapute(0); setNonSapute(0); setDaRipetere([]);
+      setFase('flashcard-intro');
+    } catch (err: any) {
+      setErrore(err?.name === 'AbortError' ? 'Timeout AI. Riprova.' : 'Errore connessione al server.');
+      setFase('selezione-foto');
+    }
   }
 
   // STEP 1: legge solo il numero di pagine, poi si FERMA
@@ -271,11 +328,18 @@ export default function PdfStudioPage() {
                 </button>
               </div>
               <input ref={inputRef} type="file" accept=".pdf" style={{ display: 'none' }} onChange={handleFile} />
-              <div onClick={() => inputRef.current?.click()} style={{ background: '#111526', border: '1.5px dashed rgba(255,255,255,0.15)', borderRadius: 20, padding: '44px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 16 }}>
+              <input ref={fotoRef} type="file" accept="image/*" multiple style={{ display: 'none' }} onChange={handleFoto} />
+              <div onClick={() => inputRef.current?.click()} style={{ background: '#111526', border: '1.5px dashed rgba(255,255,255,0.15)', borderRadius: 20, padding: '44px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 12 }}>
                 <div style={{ fontSize: 44, marginBottom: 14 }}>📄</div>
                 <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 6 }}>Tocca per caricare il PDF</div>
                 <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', marginBottom: 6 }}>Solo PDF con testo selezionabile</div>
                 <div style={{ fontSize: 11, color: '#f59e0b', fontWeight: 600 }}>⚠️ Max {MAX_PAGINE} pagine alla volta</div>
+              </div>
+              <div onClick={() => fotoRef.current?.click()} style={{ background: '#111526', border: '1.5px dashed rgba(56,189,248,0.25)', borderRadius: 20, padding: '28px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 16 }}>
+                <div style={{ fontSize: 36, marginBottom: 10 }}>📷</div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 6 }}>Scatta o carica foto</div>
+                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', marginBottom: 4 }}>Appunti, libri, lavagna — Groq legge l'immagine</div>
+                <div style={{ fontSize: 11, color: '#38bdf8', fontWeight: 600 }}>Max 8 foto alla volta</div>
               </div>
               {errore && (
                 <div style={{ background: 'rgba(239,68,68,0.1)', border: '0.5px solid rgba(239,68,68,0.3)', borderRadius: 12, padding: '12px 16px', color: '#ef4444', fontSize: 12, textAlign: 'center' }}>
@@ -382,6 +446,35 @@ export default function PdfStudioPage() {
 
               <button onClick={avviaGenerazione} disabled={!rangeValido} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: rangeValido ? 'linear-gradient(135deg, #38bdf8, #818cf8)' : '#1e2435', color: rangeValido ? '#fff' : 'rgba(255,255,255,0.3)', fontWeight: 800, fontSize: 15, cursor: rangeValido ? 'pointer' : 'not-allowed', fontFamily: 'Montserrat, sans-serif' }}>
                 ⚡ Genera flash card · {numPagine} {numPagine === 1 ? 'pagina' : 'pagine'}
+              </button>
+            </>
+          )}
+
+          {/* ── SELEZIONE FOTO ── */}
+          {fase === 'selezione-foto' && (
+            <>
+              <button onClick={() => { setFase('upload'); setFotoBase64([]); setFotoPreviews([]); }} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', marginBottom: 24, fontFamily: 'Montserrat, sans-serif' }}>
+                ← Indietro
+              </button>
+              <div style={{ fontSize: 20, fontWeight: 900, color: '#fff', marginBottom: 4 }}>{fotoPreviews.length} foto selezionate</div>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', marginBottom: 20 }}>Groq leggerà il testo da ogni immagine</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 20 }}>
+                {fotoPreviews.map((src, i) => (
+                  <div key={i} style={{ aspectRatio: '1/1', borderRadius: 12, overflow: 'hidden', border: '0.5px solid rgba(56,189,248,0.2)' }}>
+                    <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                ))}
+                {fotoPreviews.length < 8 && (
+                  <div onClick={() => fotoRef.current?.click()} style={{ aspectRatio: '1/1', borderRadius: 12, border: '1.5px dashed rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: 24, color: 'rgba(255,255,255,0.25)' }}>+</div>
+                )}
+              </div>
+              {errore && (
+                <div style={{ background: 'rgba(239,68,68,0.1)', border: '0.5px solid rgba(239,68,68,0.3)', borderRadius: 12, padding: '12px 16px', color: '#ef4444', fontSize: 12, textAlign: 'center', marginBottom: 16 }}>
+                  {errore}
+                </div>
+              )}
+              <button onClick={avviaGenerazioneFoto} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #38bdf8, #818cf8)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}>
+                ⚡ Genera flash card · {fotoPreviews.length} {fotoPreviews.length === 1 ? 'foto' : 'foto'}
               </button>
             </>
           )}
