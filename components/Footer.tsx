@@ -153,9 +153,10 @@ export default function Footer() {
         {/* AVVISI */}
         <button style={btnStyle(isActive('/avvisi'))} onClick={() => { setCercaAperta(false); navigator.vibrate?.(6); router.push('/avvisi'); }}>
           {isActive('/avvisi') && <div style={pill} />}
-          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
-            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
-            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 11V13C3 14.1 3.9 15 5 15H7L12 19V5L7 9H5C3.9 9 3 9.9 3 11Z" />
+            <path d="M16 9C16.5 9.83 17 10.9 17 12C17 13.1 16.5 14.17 16 15" />
+            <path d="M19.5 6.5C21.1 8.1 22 10 22 12C22 14 21.1 15.9 19.5 17.5" />
           </svg>
           <span style={lblStyle}>Avvisi</span>
         </button>
