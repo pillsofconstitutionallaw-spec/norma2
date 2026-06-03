@@ -667,26 +667,30 @@ function DeckContent() {
             <div style={{ fontSize:13, fontWeight:700, color:'#fff', lineHeight:1.55 }}>{carteGioco[indiceGioco].domanda}</div>
           </div>
 
-          {/* Oggetti in avvicinamento — tutti uguali, nessun indizio */}
-          {faseWave === 'caduta' && opzioni.map((op, i) => (
-            <div key={`obj-${indiceGioco}-${i}`} style={{ position:'absolute', width:68, display:'flex', flexDirection:'column', alignItems:'center', gap:3, animation:`approachLane${i} ${FALL_DURATION}ms ease-in forwards`, zIndex:12, pointerEvents:'none' }}>
+          {/* Oggetti in avvicinamento — solo monete, nessun testo */}
+          {faseWave === 'caduta' && opzioni.map((_, i) => (
+            <div key={`obj-${indiceGioco}-${i}`} style={{ position:'absolute', width:44, display:'flex', alignItems:'center', justifyContent:'center', animation:`approachLane${i} ${FALL_DURATION}ms ease-in forwards`, zIndex:12, pointerEvents:'none' }}>
               <div style={{ fontSize:32 }}>🪙</div>
-              <div style={{ fontSize:8, fontWeight:700, textAlign:'center', lineHeight:1.3, color:'rgba(255,255,255,0.85)', background:'rgba(255,255,255,0.07)', border:'0.5px solid rgba(255,255,255,0.15)', borderRadius:7, padding:'3px 6px', maxWidth:66 }}>
-                {op.testo.length > 22 ? op.testo.slice(0,22)+'…' : op.testo}
-              </div>
             </div>
           ))}
 
           {/* Personaggio */}
-          <div style={{ position:'absolute', bottom:'9%', left:`${[16.5,50,83.5][corsiaPersonaggio]}%`, fontSize:42, zIndex:15, transition:'left 0.14s cubic-bezier(0.34,1.56,0.64,1)', animation:isJumping?'runnerJump 0.65s ease':carattereStato==='inciampo'?'charStumbleCenter 0.45s ease':'charRunCenter 0.45s ease infinite', filter:esitoWave==='preso'?`drop-shadow(0 0 16px ${colore})`:esitoWave==='colpito'?'drop-shadow(0 0 16px rgba(239,68,68,0.9))':'none', pointerEvents:'none', transform:'translateX(-50%)' }}>
+          <div style={{ position:'absolute', bottom:'20%', left:`${[16.5,50,83.5][corsiaPersonaggio]}%`, fontSize:42, zIndex:15, transition:'left 0.14s cubic-bezier(0.34,1.56,0.64,1)', animation:isJumping?'runnerJump 0.65s ease':carattereStato==='inciampo'?'charStumbleCenter 0.45s ease':'charRunCenter 0.45s ease infinite', filter:esitoWave==='preso'?`drop-shadow(0 0 16px ${colore})`:esitoWave==='colpito'?'drop-shadow(0 0 16px rgba(239,68,68,0.9))':'none', pointerEvents:'none', transform:'translateX(-50%)' }}>
             {emojiPersonaggio}
           </div>
 
-          {/* Indicatori corsia */}
+          {/* Etichette risposte fisse in basso — leggibili mentre decidi */}
           {faseWave === 'caduta' && (
-            <div style={{ position:'absolute', bottom:'5.5%', left:0, right:0, display:'flex', justifyContent:'space-around', zIndex:16, pointerEvents:'none', padding:'0 8%' }}>
-              {[0,1,2].map(i => (
-                <div key={i} style={{ width:7, height:7, borderRadius:'50%', background:i===corsiaPersonaggio?colore:'rgba(255,255,255,0.18)', boxShadow:i===corsiaPersonaggio?`0 0 10px ${colore}`:'none', transition:'all 0.14s' }} />
+            <div style={{ position:'absolute', bottom:0, left:0, right:0, display:'flex', zIndex:20, pointerEvents:'none' }}>
+              {opzioni.map((op, i) => (
+                <div key={i} style={{ flex:1, borderTop: i === corsiaPersonaggio ? `2px solid ${colore}` : '1px solid rgba(255,255,255,0.08)', background: i === corsiaPersonaggio ? `rgba(255,255,255,0.06)` : 'rgba(6,14,31,0.85)', padding:'10px 8px 14px', transition:'border 0.14s, background 0.14s' }}>
+                  <div style={{ fontSize:10, fontWeight:700, color: i === corsiaPersonaggio ? colore : 'rgba(255,255,255,0.3)', letterSpacing:1.5, marginBottom:5, textAlign:'center' }}>
+                    {['A','B','C'][i]}
+                  </div>
+                  <div style={{ fontSize:11, fontWeight:600, color:'rgba(255,255,255,0.85)', lineHeight:1.5, textAlign:'center' }}>
+                    {op.testo}
+                  </div>
+                </div>
               ))}
             </div>
           )}
