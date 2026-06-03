@@ -197,7 +197,7 @@ function DeckContent() {
       setCorsiaPersonaggio(1); corsiaRef.current = 1;
       setEsitoWave(null);
       setFaseWave('caduta');
-    }, 1100);
+    }, 2500);
     return () => clearTimeout(id);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fase, faseWave]);
@@ -693,16 +693,17 @@ function DeckContent() {
 
           {/* Esito wave */}
           {faseWave === 'esito' && esitoWave && (
-            <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:14, zIndex:40, background:'rgba(6,14,31,0.75)', animation:'fadeUp 0.2s ease' }}>
-              <div style={{ fontSize:64 }}>{esitoWave==='preso'?'✅':esitoWave==='schivato'?'💨':'💥'}</div>
-              <div style={{ fontSize:22, fontWeight:900, color:esitoWave==='preso'?'#22c55e':esitoWave==='schivato'?'#fbbf24':'#ef4444' }}>
+            <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:16, zIndex:40, background:'rgba(6,14,31,0.88)', animation:'fadeUp 0.2s ease', padding:'0 24px' }}>
+              <div style={{ fontSize:56 }}>{esitoWave==='preso'?'✅':esitoWave==='schivato'?'💨':'💥'}</div>
+              <div style={{ fontSize:20, fontWeight:900, color:esitoWave==='preso'?'#22c55e':esitoWave==='schivato'?'#fbbf24':'#ef4444' }}>
                 {esitoWave==='preso'?'PRESO!':esitoWave==='schivato'?'SCHIVATO!':'COLPITO!'}
               </div>
-              {esitoWave !== 'preso' && (
-                <div style={{ fontSize:11, color:'rgba(255,255,255,0.6)', textAlign:'center', maxWidth:260, padding:'8px 18px', background:'rgba(34,197,94,0.08)', borderRadius:12, border:'0.5px solid rgba(34,197,94,0.25)', lineHeight:1.55 }}>
-                  ✓ {opzioni.find(o=>o.corretta)?.testo}
+              <div style={{ width:'100%', maxWidth:320, background:'rgba(34,197,94,0.08)', borderRadius:16, border:'0.5px solid rgba(34,197,94,0.25)', padding:'14px 18px' }}>
+                <div style={{ fontSize:8, fontWeight:700, letterSpacing:2, textTransform:'uppercase', color:'rgba(34,197,94,0.6)', marginBottom:8 }}>RISPOSTA CORRETTA</div>
+                <div style={{ fontSize:13, color:'#fff', lineHeight:1.65, overflowY:'auto', maxHeight:160 }}>
+                  {opzioni.find(o=>o.corretta)?.testo}
                 </div>
-              )}
+              </div>
             </div>
           )}
 
