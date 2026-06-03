@@ -198,7 +198,7 @@ function DeckContent() {
       setCorsiaPersonaggio(1); corsiaRef.current = 1;
       setEsitoWave(null);
       setFaseWave('caduta');
-    }, 2500);
+    }, 4000);
     return () => clearTimeout(id);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fase, faseWave]);
@@ -676,7 +676,7 @@ function DeckContent() {
           ))}
 
           {/* Personaggio 3D */}
-          <div style={{ position:'absolute', bottom:'18%', left:`${[16.5,50,83.5][corsiaPersonaggio]}%`, width:110, height:160, transform:'translateX(-50%)', zIndex:15, transition:'left 0.14s cubic-bezier(0.34,1.56,0.64,1)', pointerEvents:'none' }}>
+          <div style={{ position:'absolute', bottom:'17%', left:`${[16.5,50,83.5][corsiaPersonaggio]}%`, width:120, height:200, transform:'translateX(-50%)', zIndex:15, transition:'left 0.14s cubic-bezier(0.34,1.56,0.64,1)', pointerEvents:'none' }}>
             <RunnerCharacter3D
               stato={isJumping ? 'salto' : carattereStato}
               colore={colore}

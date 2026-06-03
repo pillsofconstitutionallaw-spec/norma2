@@ -151,7 +151,7 @@ export default function RunnerCharacter3D({
 }) {
   return (
     <Canvas
-      camera={{ position: [0, 1.1, 2.8], fov: 42 }}
+      camera={{ position: [0, 0.75, 3.2], fov: 48 }}
       style={{ background: 'transparent', width: '100%', height: '100%' }}
       gl={{ alpha: true, antialias: true }}
     >
