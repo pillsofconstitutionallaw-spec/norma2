@@ -106,13 +106,8 @@ function DeckContent() {
       if (materia) {
         if (s?.materiaId === slugDaUrl && s?.indice > 0) {
           setSessioneSalvata(s);
-          setFase('scelta');
-        } else {
-          setMateriaSelezionata(materia);
-          setCarte(mescolaArray(materia.carte));
-          setIndice(0); setSapute(0); setNonSapute(0); setDaRipetere([]); setGirata(false);
-          setFase('studio');
         }
+        // resta in 'scelta' così l'utente può scegliere 📚 o 🎮
       }
     } else if (s?.materiaId && s?.indice > 0) {
       setSessioneSalvata(s);
