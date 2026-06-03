@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -18,6 +18,8 @@ type Fase = 'scelta' | 'studio' | 'gioco' | 'risultati' | 'game_over';
 type Opzione = { testo: string; corretta: boolean };
 type Genere = 'M' | 'F';
 type CarattereStato = 'corsa' | 'salto' | 'inciampo';
+type FaseWave = 'attesa' | 'caduta' | 'esito';
+type EsitoWave = 'preso' | 'schivato' | 'colpito';
 
 const MATERIE: Materia[] = [
   { id: 'diritto-privato', titolo: metaPrivato.titolo, colore: metaPrivato.colore, bg: metaPrivato.bg, icona: metaPrivato.icona, carte: cartePrivato },
@@ -31,6 +33,7 @@ const MATERIE: Materia[] = [
 const STORAGE_KEY = 'norma_flashcard_segnalibro';
 const GAME_DOMANDE = 20;
 const TIMER_SECONDI = 15;
+const FALL_DURATION = 2400;
 
 function salvaSessione(materiaId: string, indice: number, sapute: number, nonSapute: number, daRipetere: Carta[]) {
   try {
@@ -56,7 +59,7 @@ function mescolaArray<T>(arr: T[]): T[] {
 function generaOpzioni(tutteLeCarteDiMateria: Carta[], cartaCorretta: Carta): Opzione[] {
   const altreRisposte = mescolaArray(
     tutteLeCarteDiMateria.filter(c => c.risposta !== cartaCorretta.risposta)
-  ).slice(0, 3);
+  ).slice(0, 2);
   return mescolaArray([
     { testo: cartaCorretta.risposta, corretta: true },
     ...altreRisposte.map(r => ({ testo: r.risposta, corretta: false })),
@@ -87,9 +90,9 @@ function DeckContent() {
   const [punteggio, setPunteggio] = useState(0);
   const [streak, setStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
-  const [tempoRimanente, setTempoRimanente] = useState(TIMER_SECONDI);
-  const [esitoRisposta, setEsitoRisposta] = useState<'corretta' | 'sbagliata' | null>(null);
-  const [opzioneCliccataIdx, setOpzioneCliccataIdx] = useState<number | null>(null);
+  const [, setTempoRimanente] = useState(TIMER_SECONDI);
+  const [, setEsitoRisposta] = useState<'corretta' | 'sbagliata' | null>(null);
+  const [, setOpzioneCliccataIdx] = useState<number | null>(null);
   const [puntiGuadagnati, setPuntiGuadagnati] = useState(0);
   const [screenFlash, setScreenFlash] = useState<'correct' | 'wrong' | null>(null);
   const [comboNotifica, setComboNotifica] = useState<number | null>(null);
@@ -97,6 +100,24 @@ function DeckContent() {
   // ── character state ──
   const [genere, setGenere] = useState<Genere>('M');
   const [carattereStato, setCarattereStato] = useState<CarattereStato>('corsa');
+
+  // ── runner state ──
+  const [corsiaPersonaggio, setCorsiaPersonaggio] = useState<0|1|2>(1);
+  const [isJumping, setIsJumping] = useState(false);
+  const [faseWave, setFaseWave] = useState<FaseWave>('attesa');
+  const [esitoWave, setEsitoWave] = useState<EsitoWave|null>(null);
+  const [tutorialAttivo, setTutorialAttivo] = useState(false);
+  const corsiaRef = useRef<0|1|2>(1);
+  const jumpingRef = useRef(false);
+  const viteRef = useRef(3);
+  const punteggioRef = useRef(0);
+  const streakRef = useRef(0);
+  const maxStreakRef = useRef(0);
+  const indiceGiocoRef = useRef(0);
+  const opzioniRef = useRef<Opzione[]>([]);
+  const carteGiocoRef = useRef<Carta[]>([]);
+  const materiaCarteRef = useRef<Carta[]>([]);
+  const touchStartRef = useRef<{x:number;y:number}|null>(null);
 
   useEffect(() => {
     const s = caricaSessione();
@@ -115,18 +136,71 @@ function DeckContent() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── timer gioco ──
+  // ── wave: oggetti cadono → collisione ──
   useEffect(() => {
-    if (fase !== 'gioco' || esitoRisposta !== null) return;
-    if (tempoRimanente <= 0) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      rispondiGioco(false, null);
-      return;
-    }
-    const id = setTimeout(() => setTempoRimanente(t => t - 1), 1000);
+    if (fase !== 'gioco' || faseWave !== 'caduta') return;
+    const id = setTimeout(() => {
+      const corsia = corsiaRef.current;
+      const jumping = jumpingRef.current;
+      const ops = opzioniRef.current;
+      const correttaIdx = ops.findIndex(o => o.corretta);
+      let esito: EsitoWave;
+      if (corsia === correttaIdx) esito = 'preso';
+      else if (jumping) esito = 'schivato';
+      else esito = 'colpito';
+
+      if (esito === 'preso') {
+        const nuovoStreak = streakRef.current + 1;
+        streakRef.current = nuovoStreak;
+        setStreak(nuovoStreak);
+        const nuovoMax = Math.max(maxStreakRef.current, nuovoStreak);
+        maxStreakRef.current = nuovoMax;
+        setMaxStreak(nuovoMax);
+        const punti = 100 * Math.min(nuovoStreak, 3);
+        punteggioRef.current += punti;
+        setPunteggio(punteggioRef.current);
+        setPuntiGuadagnati(punti);
+        setTimeout(() => setPuntiGuadagnati(0), 900);
+        if (nuovoStreak >= 3) { setComboNotifica(nuovoStreak); setTimeout(() => setComboNotifica(null), 900); }
+        setCarattereStato('salto');
+        setScreenFlash('correct');
+        setTimeout(() => { setScreenFlash(null); setCarattereStato('corsa'); }, 500);
+      } else if (esito === 'colpito') {
+        viteRef.current -= 1;
+        setVite(viteRef.current);
+        streakRef.current = 0; setStreak(0);
+        setCarattereStato('inciampo');
+        setScreenFlash('wrong');
+        setTimeout(() => { setScreenFlash(null); setCarattereStato('corsa'); }, 500);
+      } else {
+        streakRef.current = 0; setStreak(0);
+      }
+      setEsitoWave(esito);
+      setFaseWave('esito');
+    }, FALL_DURATION);
     return () => clearTimeout(id);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fase, tempoRimanente, esitoRisposta]);
+  }, [fase, faseWave]);
+
+  // ── wave: esito → prossima domanda ──
+  useEffect(() => {
+    if (fase !== 'gioco' || faseWave !== 'esito') return;
+    const id = setTimeout(() => {
+      if (viteRef.current <= 0) { setFase('game_over'); return; }
+      const newIndice = indiceGiocoRef.current + 1;
+      if (newIndice >= carteGiocoRef.current.length) { setFase('game_over'); return; }
+      indiceGiocoRef.current = newIndice;
+      setIndiceGioco(newIndice);
+      const newOps = generaOpzioni(materiaCarteRef.current, carteGiocoRef.current[newIndice]);
+      opzioniRef.current = newOps;
+      setOpzioni(newOps);
+      setCorsiaPersonaggio(1); corsiaRef.current = 1;
+      setEsitoWave(null);
+      setFaseWave('caduta');
+    }, 1100);
+    return () => clearTimeout(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fase, faseWave]);
 
   // ── studio functions ──
   function iniziaMateria(materia: Materia, fromIndice = 0, fromSapute = 0, fromNonSapute = 0, fromDaRipetere: Carta[] = []) {
@@ -181,68 +255,60 @@ function DeckContent() {
   // ── game functions ──
   function iniziaGioco(materia: Materia) {
     const carteMischiate = mescolaArray(materia.carte).slice(0, Math.min(GAME_DOMANDE, materia.carte.length));
+    const primaOps = generaOpzioni(materia.carte, carteMischiate[0]);
     setMateriaSelezionata(materia);
-    setCarteGioco(carteMischiate);
-    setIndiceGioco(0);
-    setOpzioni(generaOpzioni(materia.carte, carteMischiate[0]));
-    setVite(3); setPunteggio(0); setStreak(0); setMaxStreak(0);
-    setTempoRimanente(TIMER_SECONDI);
+    materiaCarteRef.current = materia.carte;
+    setCarteGioco(carteMischiate); carteGiocoRef.current = carteMischiate;
+    setIndiceGioco(0); indiceGiocoRef.current = 0;
+    setOpzioni(primaOps); opzioniRef.current = primaOps;
+    setVite(3); viteRef.current = 3;
+    setPunteggio(0); punteggioRef.current = 0;
+    setStreak(0); streakRef.current = 0;
+    setMaxStreak(0); maxStreakRef.current = 0;
+    setTempoRimanente(9999);
     setEsitoRisposta(null); setOpzioneCliccataIdx(null);
     setPuntiGuadagnati(0); setScreenFlash(null); setComboNotifica(null);
+    setCorsiaPersonaggio(1); corsiaRef.current = 1;
+    setIsJumping(false); jumpingRef.current = false;
+    setFaseWave('attesa');
+    setEsitoWave(null);
     setCarattereStato('corsa');
+    setTutorialAttivo(true);
     setFase('gioco');
   }
 
-  function rispondiGioco(corretta: boolean, idxOpzione: number | null) {
-    if (esitoRisposta !== null) return;
+  function handleTouchStart(e: React.TouchEvent) {
+    const t = e.touches[0];
+    touchStartRef.current = { x: t.clientX, y: t.clientY };
+  }
 
-    setOpzioneCliccataIdx(idxOpzione);
-    setEsitoRisposta(corretta ? 'corretta' : 'sbagliata');
-    setScreenFlash(corretta ? 'correct' : 'wrong');
-    setCarattereStato(corretta ? 'salto' : 'inciampo');
-    setTimeout(() => { setScreenFlash(null); setCarattereStato('corsa'); }, 500);
-
-    const nuoveVite = corretta ? vite : vite - 1;
-    const nuovoStreak = corretta ? streak + 1 : 0;
-    const nuovoMaxStreak = Math.max(maxStreak, nuovoStreak);
-    let nuovoPunteggio = punteggio;
-
-    if (corretta) {
-      const moltiplicatore = Math.min(streak + 1, 3);
-      const punti = (100 + tempoRimanente * 5) * moltiplicatore;
-      nuovoPunteggio = punteggio + punti;
-      setPuntiGuadagnati(punti);
-      setTimeout(() => setPuntiGuadagnati(0), 900);
-      if (nuovoStreak >= 3) {
-        setComboNotifica(nuovoStreak);
-        setTimeout(() => setComboNotifica(null), 900);
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (!touchStartRef.current || faseWave === 'esito' || tutorialAttivo) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartRef.current.x;
+    const dy = t.clientY - touchStartRef.current.y;
+    touchStartRef.current = null;
+    if (Math.abs(dy) > Math.abs(dx) && dy < -40) {
+      if (!jumpingRef.current) {
+        setIsJumping(true); jumpingRef.current = true;
+        setTimeout(() => { setIsJumping(false); jumpingRef.current = false; }, 650);
       }
+    } else if (Math.abs(dx) > 30) {
+      setCorsiaPersonaggio(prev => {
+        const next = (dx > 0 ? Math.min(2, prev + 1) : Math.max(0, prev - 1)) as 0|1|2;
+        corsiaRef.current = next;
+        return next;
+      });
     }
+  }
 
-    setVite(nuoveVite); setStreak(nuovoStreak);
-    setMaxStreak(nuovoMaxStreak); setPunteggio(nuovoPunteggio);
-
-    const nuovoIndice = indiceGioco + 1;
-    const isGameOver = nuoveVite <= 0;
-    const isLastCard = nuovoIndice >= carteGioco.length;
-
-    setTimeout(() => {
-      if (isGameOver || isLastCard) {
-        setFase('game_over');
-      } else {
-        setIndiceGioco(nuovoIndice);
-        setOpzioni(generaOpzioni(materiaSelezionata!.carte, carteGioco[nuovoIndice]));
-        setEsitoRisposta(null); setOpzioneCliccataIdx(null);
-        setTempoRimanente(TIMER_SECONDI);
-      }
-    }, 900);
+  function avviaTutorial() {
+    setTutorialAttivo(false);
+    setFaseWave('caduta');
   }
 
   const colore = materiaSelezionata?.colore ?? '#38bdf8';
   const progresso = carte.length > 0 ? (indice / carte.length) * 100 : 0;
-  const timerPerc = (tempoRimanente / TIMER_SECONDI) * 100;
-  const timerColore = tempoRimanente > 8 ? '#22c55e' : tempoRimanente > 4 ? '#f97316' : '#ef4444';
-  const caratterePosizionePerc = carteGioco.length > 0 ? Math.min((indiceGioco / carteGioco.length) * 82, 82) : 0;
   const emojiPersonaggio = genere === 'F' ? '🏃‍♀️' : '🏃‍♂️';
 
   return (
@@ -302,6 +368,27 @@ function DeckContent() {
         @keyframes napItemScroll {
           from { left: 112%; }
           to   { left: -14%; }
+        }
+        @keyframes objFall {
+          0%   { top: -90px; opacity: 0; transform: scale(0.6); }
+          10%  { opacity: 1; transform: scale(1); }
+          90%  { opacity: 1; transform: scale(1); }
+          100% { top: 108%; opacity: 0; transform: scale(0.7); }
+        }
+        @keyframes runnerJump {
+          0%   { transform: translateY(0); }
+          30%  { transform: translateY(-65px) scale(1.15); }
+          55%  { transform: translateY(-72px) scale(1.1); }
+          80%  { transform: translateY(-22px) scale(1.05); }
+          100% { transform: translateY(0) scale(1); }
+        }
+        @keyframes tutorialIn {
+          from { opacity: 0; transform: scale(0.92); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes laneBlink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
         }
       `}</style>
 
@@ -487,10 +574,11 @@ function DeckContent() {
             </div>
           )}
 
-          {/* ══ GIOCO ══ */}
+          {/* ══ GIOCO RUNNER ══ */}
           {fase === 'gioco' && materiaSelezionata && carteGioco.length > 0 && (
-            <div>
-              {/* Top bar */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+
+              {/* HUD */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                 <button onClick={() => setFase('scelta')} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.35)', fontSize: 13, cursor: 'pointer', padding: 0, fontFamily: 'Montserrat, sans-serif' }}>← Esci</button>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -502,137 +590,144 @@ function DeckContent() {
                 </div>
               </div>
 
-              {/* Timer bar */}
-              <div style={{ background: 'rgba(255,255,255,0.07)', borderRadius: 4, height: 5, marginBottom: 14 }}>
-                <div style={{ height: 5, borderRadius: 4, width: `${timerPerc}%`, background: timerColore, transition: 'width 1s linear, background 0.5s' }} />
-              </div>
-
-              {/* ── NAPOLI RUNNER TRACK ── */}
-              <div style={{ borderRadius: 20, marginBottom: 14, position: 'relative', overflow: 'hidden', height: 92, border: '1px solid rgba(255,160,50,0.15)' }}>
-
-                {/* Sky — notte napoletana */}
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, #07102a 0%, #0e2055 52%, #b05a1888 78%, #2a1004 100%)' }} />
-
-                {/* Stelle */}
-                {([[8,6],[20,4],[35,9],[50,3],[62,7],[80,5],[92,8]] as [number,number][]).map(([x,y],i) => (
-                  <div key={i} style={{ position:'absolute', left:`${x}%`, top:y, width: i%2===0 ? 2 : 1.5, height: i%2===0 ? 2 : 1.5, borderRadius:'50%', background:'rgba(255,255,255,0.75)' }} />
-                ))}
-
-                {/* Luna */}
-                <div style={{ position:'absolute', top:5, left:10, fontSize:14, opacity:0.9 }}>🌙</div>
-
-                {/* Vesuvio — lontano, fisso */}
-                <div style={{ position:'absolute', bottom:19, right:52, fontSize:26, opacity:0.7 }}>🌋</div>
-
-                {/* Edifici che scorrono — layer lento */}
-                {(['🏛️','🏠','⛪','🏚️','🏛️'] as const).map((e, i) => (
-                  <div key={i} style={{
-                    position:'absolute', bottom:18,
-                    fontSize:13, opacity:0.5,
-                    animation:`napItemScroll ${10 + i * 1.5}s linear infinite`,
-                    animationDelay:`${-i * 2.5}s`,
-                  }}>{e}</div>
-                ))}
-
-                {/* Motorini — 3 cicli a durate prime, mai sincronizzati */}
-                <div style={{ position:'absolute', bottom:20, fontSize:15, opacity:0.9,  animation:'napItemScroll 3.8s linear infinite', animationDelay:'-1.2s' }}>🛵</div>
-                <div style={{ position:'absolute', bottom:20, fontSize:12, opacity:0.6,  animation:'napItemScroll 5.3s linear infinite', animationDelay:'-4.1s' }}>🛵</div>
-                <div style={{ position:'absolute', bottom:20, fontSize:13, opacity:0.75, animation:'napItemScroll 7.1s linear infinite', animationDelay:'-2.6s' }}>🛵</div>
-
-                {/* Sampietrini — pavé che scorre */}
-                <div style={{
-                  position:'absolute', bottom:0, left:0, right:0, height:20,
-                  background:'#110e08',
-                  backgroundImage:'radial-gradient(ellipse 9px 5px at 50% 55%, #1e1a0e 80%, transparent 100%)',
-                  backgroundSize:'18px 10px',
-                  animation:'napGroundScroll 0.32s linear infinite',
-                }} />
-
-                {/* Linea di progresso */}
-                <div style={{ position:'absolute', bottom:19, left:0, right:0, height:1, background:'rgba(255,255,255,0.06)' }} />
-                <div style={{
-                  position:'absolute', bottom:18, left:0,
-                  height:2, borderRadius:2,
-                  width:`${(indiceGioco / carteGioco.length) * 100}%`,
-                  background:`linear-gradient(90deg, ${colore}, ${colore}77)`,
-                  boxShadow:`0 0 7px ${colore}99`,
-                  transition:'width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                }} />
-
-                {/* Bandiera di arrivo */}
-                <div style={{ position:'absolute', right:6, bottom:16, fontSize:18, zIndex:3 }}>🏁</div>
-
-                {/* Personaggio */}
-                <div style={{
-                  position:'absolute',
-                  bottom:18,
-                  left:`${caratterePosizionePerc}%`,
-                  fontSize:27,
-                  zIndex:4,
-                  transition:'left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                  animation:
-                    carattereStato === 'salto'    ? 'charJump 0.55s ease' :
-                    carattereStato === 'inciampo' ? 'charStumble 0.45s ease' :
-                    'charRun 0.45s ease infinite',
-                  transformOrigin:'bottom center',
-                  filter:
-                    esitoRisposta === 'corretta'  ? `drop-shadow(0 0 9px ${colore})` :
-                    esitoRisposta === 'sbagliata' ? 'drop-shadow(0 0 9px rgba(239,68,68,0.9))' : 'none',
-                }}>
-                  {emojiPersonaggio}
-                </div>
-              </div>
-
-              {/* Question number */}
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2.5, color: 'rgba(255,255,255,0.28)', textTransform: 'uppercase', marginBottom: 10 }}>
-                Domanda {indiceGioco + 1} / {carteGioco.length}
+              {/* Progress bar */}
+              <div style={{ background: 'rgba(255,255,255,0.07)', borderRadius: 4, height: 3, marginBottom: 14 }}>
+                <div style={{ height: 3, borderRadius: 4, width: `${(indiceGioco / carteGioco.length) * 100}%`, background: colore, transition: 'width 0.6s' }} />
               </div>
 
               {/* Question */}
-              <div
-                key={`q-${indiceGioco}`}
-                style={{ background: '#111526', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: '20px 20px', marginBottom: 14, animation: 'slideInRight 0.25s ease' }}
-              >
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', marginBottom: 10 }}>DOMANDA</div>
-                <div style={{ fontSize: 15, fontWeight: 700, color: '#fff', lineHeight: 1.75 }}>
+              <div key={`q-${indiceGioco}`} style={{ background: '#111526', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 18, padding: '16px 18px', marginBottom: 14, animation: 'slideInRight 0.2s ease' }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', marginBottom: 8 }}>
+                  DOMANDA {indiceGioco + 1}/{carteGioco.length}
+                </div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#fff', lineHeight: 1.6 }}>
                   {carteGioco[indiceGioco].domanda}
                 </div>
               </div>
 
-              {/* Options */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {opzioni.map((op, i) => {
-                  const lettere = ['A', 'B', 'C', 'D'];
-                  let bg = '#111526';
-                  let borderColor = 'rgba(255,255,255,0.08)';
-                  let textColor = 'rgba(255,255,255,0.85)';
-                  if (esitoRisposta !== null) {
-                    if (op.corretta) { bg = 'rgba(34,197,94,0.15)'; borderColor = '#22c55e'; textColor = '#fff'; }
-                    else if (i === opzioneCliccataIdx) { bg = 'rgba(239,68,68,0.15)'; borderColor = '#ef4444'; textColor = '#fff'; }
-                    else { textColor = 'rgba(255,255,255,0.28)'; }
-                  }
-                  return (
-                    <button
-                      key={`${indiceGioco}-${i}`}
-                      onClick={() => esitoRisposta === null && rispondiGioco(op.corretta, i)}
-                      disabled={esitoRisposta !== null}
-                      style={{
-                        width: '100%', textAlign: 'left', padding: '13px 16px',
-                        borderRadius: 14, border: `1px solid ${borderColor}`,
-                        background: bg, color: textColor, fontFamily: 'Montserrat, sans-serif',
-                        cursor: esitoRisposta === null ? 'pointer' : 'default',
-                        display: 'flex', gap: 12, alignItems: 'flex-start',
-                        transition: 'background 0.22s, border-color 0.22s, color 0.22s',
-                        animation: `slideInRight ${0.15 + i * 0.07}s ease`,
-                      }}
-                    >
-                      <span style={{ fontSize: 9, fontWeight: 900, letterSpacing: 1, color: esitoRisposta === null ? 'rgba(255,255,255,0.28)' : op.corretta ? '#22c55e' : i === opzioneCliccataIdx ? '#ef4444' : 'rgba(255,255,255,0.15)', flexShrink: 0, paddingTop: 2, transition: 'color 0.22s' }}>
-                        {lettere[i]}
-                      </span>
-                      <span style={{ fontSize: 12.5, fontWeight: 500, lineHeight: 1.65 }}>{op.testo}</span>
-                    </button>
-                  );
-                })}
+              {/* ── TRACK 3 CORSIE ── */}
+              <div
+                style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', height: 420, background: 'linear-gradient(180deg,#07102a 0%,#0d1a3a 60%,#0a1428 100%)', border: '1px solid rgba(255,255,255,0.07)', touchAction: 'none', userSelect: 'none' }}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+              >
+                {/* Sfondo stelle */}
+                {([[10,8],[22,5],[38,12],[52,4],[67,9],[83,6],[93,11]] as [number,number][]).map(([x,y],i) => (
+                  <div key={i} style={{ position:'absolute', left:`${x}%`, top:y, width:i%2===0?2:1.5, height:i%2===0?2:1.5, borderRadius:'50%', background:'rgba(255,255,255,0.6)', pointerEvents:'none' }} />
+                ))}
+
+                {/* Divisori corsie */}
+                <div style={{ position:'absolute', inset:0, display:'flex', pointerEvents:'none', zIndex:1 }}>
+                  <div style={{ flex:1, borderRight:'1px dashed rgba(255,255,255,0.08)' }} />
+                  <div style={{ flex:1, borderRight:'1px dashed rgba(255,255,255,0.08)' }} />
+                  <div style={{ flex:1 }} />
+                </div>
+
+                {/* Label corsie (visibili solo quando faseWave=caduta) */}
+                {faseWave === 'caduta' && opzioni.map((op, i) => (
+                  <div key={`label-${indiceGioco}-${i}`} style={{ position:'absolute', bottom:8, left:`${i * 33.33}%`, width:'33.33%', textAlign:'center', pointerEvents:'none', zIndex:2 }}>
+                    <div style={{ fontSize:9, fontWeight:700, color: op.corretta ? '#fbbf24' : 'rgba(255,80,80,0.6)', letterSpacing:1 }}>
+                      {op.corretta ? '🌟' : '⚠️'}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Pavimento */}
+                <div style={{ position:'absolute', bottom:0, left:0, right:0, height:40, background:'linear-gradient(180deg,transparent,rgba(255,255,255,0.03))', pointerEvents:'none' }} />
+                <div style={{ position:'absolute', bottom:0, left:0, right:0, height:2, background:`rgba(255,255,255,0.06)`, pointerEvents:'none' }} />
+
+                {/* Oggetti in caduta */}
+                {faseWave === 'caduta' && opzioni.map((op, i) => (
+                  <div
+                    key={`obj-${indiceGioco}-${i}`}
+                    style={{
+                      position:'absolute',
+                      left:`calc(${i * 33.33 + 16.67}% - 32px)`,
+                      width:64,
+                      display:'flex', flexDirection:'column', alignItems:'center', gap:4,
+                      animation:`objFall ${FALL_DURATION}ms linear forwards`,
+                      zIndex:5,
+                      pointerEvents:'none',
+                    }}
+                  >
+                    <div style={{ fontSize: op.corretta ? 32 : 26 }}>{op.corretta ? '🌟' : '🚧'}</div>
+                    <div style={{
+                      fontSize:8, fontWeight:700, lineHeight:1.3, textAlign:'center',
+                      color: op.corretta ? '#fbbf24' : 'rgba(255,100,100,0.9)',
+                      background: op.corretta ? 'rgba(251,191,36,0.12)' : 'rgba(239,68,68,0.12)',
+                      border:`0.5px solid ${op.corretta ? 'rgba(251,191,36,0.35)' : 'rgba(239,68,68,0.3)'}`,
+                      borderRadius:8, padding:'3px 5px', maxWidth:62,
+                    }}>
+                      {op.testo.length > 24 ? op.testo.slice(0, 24) + '…' : op.testo}
+                    </div>
+                  </div>
+                ))}
+
+                {/* Personaggio */}
+                <div style={{
+                  position:'absolute',
+                  bottom:16,
+                  left:`calc(${corsiaPersonaggio * 33.33 + 16.67}% - 18px)`,
+                  fontSize:32,
+                  zIndex:10,
+                  transition:'left 0.14s cubic-bezier(0.34,1.56,0.64,1)',
+                  animation: isJumping ? 'runnerJump 0.65s ease' :
+                    carattereStato === 'inciampo' ? 'charStumble 0.45s ease' :
+                    'charRun 0.45s ease infinite',
+                  transformOrigin:'bottom center',
+                  filter: esitoWave === 'preso' ? `drop-shadow(0 0 14px ${colore})` :
+                    esitoWave === 'colpito' ? 'drop-shadow(0 0 14px rgba(239,68,68,0.9))' : 'none',
+                  pointerEvents:'none',
+                }}>
+                  {emojiPersonaggio}
+                </div>
+
+                {/* Esito wave */}
+                {faseWave === 'esito' && esitoWave && (
+                  <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:12, zIndex:20, background:'rgba(10,13,24,0.55)', animation:'fadeUp 0.2s ease' }}>
+                    <div style={{ fontSize:52 }}>
+                      {esitoWave === 'preso' ? '✅' : esitoWave === 'schivato' ? '💨' : '💥'}
+                    </div>
+                    <div style={{ fontSize:18, fontWeight:900, color: esitoWave === 'preso' ? '#22c55e' : esitoWave === 'schivato' ? '#fbbf24' : '#ef4444' }}>
+                      {esitoWave === 'preso' ? 'PRESO!' : esitoWave === 'schivato' ? 'SCHIVATO!' : 'COLPITO!'}
+                    </div>
+                    {esitoWave !== 'preso' && (
+                      <div style={{ fontSize:10, color:'rgba(255,255,255,0.5)', textAlign:'center', maxWidth:200, padding:'6px 14px', background:'rgba(34,197,94,0.08)', borderRadius:10, border:'0.5px solid rgba(34,197,94,0.25)', lineHeight:1.5 }}>
+                        ✓ {opzioni.find(o => o.corretta)?.testo.slice(0, 55)}{(opzioni.find(o => o.corretta)?.testo.length ?? 0) > 55 ? '…' : ''}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Tutorial overlay */}
+                {tutorialAttivo && (
+                  <div
+                    onClick={avviaTutorial}
+                    style={{ position:'absolute', inset:0, background:'rgba(10,13,24,0.96)', zIndex:30, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:22, animation:'tutorialIn 0.3s ease', borderRadius:20 }}
+                  >
+                    <div style={{ fontSize:11, fontWeight:700, letterSpacing:3, color:colore, textTransform:'uppercase' }}>COME GIOCARE</div>
+                    <div style={{ display:'flex', flexDirection:'column', gap:12, width:'82%' }}>
+                      {[
+                        { emoji:'👈👉', testo:'Swipa sinistra / destra per cambiare corsia' },
+                        { emoji:'👆', testo:'Swipa su per saltare gli ostacoli 🚧' },
+                        { emoji:'🌟', testo:'Corri verso la risposta giusta!' },
+                      ].map((s, i) => (
+                        <div key={i} style={{ display:'flex', alignItems:'center', gap:14, background:'rgba(255,255,255,0.04)', borderRadius:14, padding:'12px 16px' }}>
+                          <span style={{ fontSize:22, flexShrink:0 }}>{s.emoji}</span>
+                          <span style={{ fontSize:12, fontWeight:600, color:'rgba(255,255,255,0.8)', lineHeight:1.4 }}>{s.testo}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ fontSize:11, color:'rgba(255,255,255,0.3)' }}>Tocca per iniziare</div>
+                  </div>
+                )}
+
+                {/* Hint corsia attiva */}
+                {faseWave === 'caduta' && !tutorialAttivo && (
+                  <div style={{ position:'absolute', bottom:46, left:`${corsiaPersonaggio * 33.33}%`, width:'33.33%', pointerEvents:'none', zIndex:3, display:'flex', justifyContent:'center' }}>
+                    <div style={{ width:6, height:6, borderRadius:'50%', background:colore, boxShadow:`0 0 8px ${colore}`, animation:'laneBlink 0.6s ease infinite' }} />
+                  </div>
+                )}
               </div>
             </div>
           )}
