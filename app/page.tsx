@@ -150,9 +150,213 @@ const shortNames: Record<string, string> = {
   'Ripetiamo il Diritto': 'Ripetiamo',
 };
 
+const FESTE_CIVILI = [
+  {
+    mese: 1, giorno: 1,
+    nome: 'Costituzione in vigore',
+    emoji: '📜', colore: '#38bdf8',
+    bordoTop: 'linear-gradient(90deg,#009246,#fff 50%,#ce2b37)',
+    breve: '1° gennaio 1948: entra in vigore la Costituzione della Repubblica.',
+    descrizione: 'Approvata dall\'Assemblea Costituente il 22 dicembre 1947 e promulgata il 27 dicembre, la Costituzione italiana entrò in vigore il 1° gennaio 1948. È composta da 139 articoli e 18 disposizioni transitorie. I primi 12 articoli — i Principi Fondamentali — non sono modificabili nella loro essenza.',
+  },
+  {
+    mese: 1, giorno: 27,
+    nome: 'Giorno della Memoria',
+    emoji: '🕯️', colore: '#a78bfa',
+    bordoTop: 'linear-gradient(90deg,#a78bfa,#818cf8)',
+    breve: 'Si ricordano le vittime della Shoah e delle leggi razziali.',
+    descrizione: 'Istituito con la legge n. 211/2000, il 27 gennaio commemora le vittime dell\'Olocausto. Il 27 gennaio 1945 le truppe sovietiche liberarono Auschwitz. In Italia, le leggi razziali fasciste del 1938 (R.D.L. n. 1381 e 1390) privarono migliaia di cittadini dei diritti fondamentali, incluso quello di lavorare e studiare.',
+  },
+  {
+    mese: 2, giorno: 10,
+    nome: 'Giorno del Ricordo',
+    emoji: '🕯️', colore: '#f59e0b',
+    bordoTop: 'linear-gradient(90deg,#f59e0b,#ef4444)',
+    breve: 'Si ricordano le vittime delle foibe e l\'esodo giuliano-dalmata.',
+    descrizione: 'Istituito con la legge n. 92/2004, commemora i massacri delle foibe perpetrati dai partigiani jugoslavi tra il 1943 e il 1945, e l\'esodo forzato di oltre 250.000 italiani dall\'Istria, Fiume e Dalmazia. Per decenni fu un tema rimosso dalla memoria pubblica.',
+  },
+  {
+    mese: 2, giorno: 11,
+    nome: 'Patti Lateranensi',
+    emoji: '✝️', colore: '#f59e0b',
+    bordoTop: 'linear-gradient(90deg,#f59e0b,#fbbf24)',
+    breve: '11 febbraio 1929: accordo tra lo Stato italiano e la Santa Sede.',
+    descrizione: 'L\'11 febbraio 1929 Mussolini e il Cardinale Gasparri firmarono i Patti Lateranensi, che riconobbero la sovranità della Città del Vaticano e pose fine alla "questione romana" aperta nel 1870. L\'art. 7 della Costituzione (1948) li richiama espressamente, pur in un sistema di separazione tra Stato e Chiesa.',
+  },
+  {
+    mese: 3, giorno: 8,
+    nome: 'Giornata Internazionale della Donna',
+    emoji: '♀️', colore: '#f472b6',
+    bordoTop: 'linear-gradient(90deg,#f472b6,#a78bfa)',
+    breve: 'Si celebrano i diritti delle donne e la parità di genere.',
+    descrizione: 'L\'8 marzo ricorda le lotte per i diritti delle donne. In Italia le donne ottennero il diritto di voto nel 1945 (D.Lgs.Lgt. n. 23). L\'art. 3 Cost. sancisce l\'uguaglianza senza distinzione di sesso; l\'art. 37 tutela il lavoro femminile. La legge n. 125/1991 e il Codice delle Pari Opportunità (D.Lgs. 198/2006) completano il quadro normativo.',
+  },
+  {
+    mese: 3, giorno: 16,
+    nome: 'Strage di Via Fani — Sequestro Moro',
+    emoji: '🕊️', colore: '#94a3b8',
+    bordoTop: 'linear-gradient(90deg,#64748b,#94a3b8)',
+    breve: '16 marzo 1978: le BR rapiscono Aldo Moro e uccidono 5 agenti.',
+    descrizione: 'Il 16 marzo 1978, in via Fani a Roma, un commando delle Brigate Rosse tese un\'imboscata al convoglio di Aldo Moro, presidente della DC, uccidendo i cinque uomini della scorta (Ricci, Zizzi, Leonardi, Rivera, Iozzino). Moro fu tenuto prigioniero 55 giorni e ucciso il 9 maggio 1978. Il caso segnò un\'intera stagione della Repubblica.',
+  },
+  {
+    mese: 3, giorno: 17,
+    nome: 'Anniversario dell\'Unità d\'Italia',
+    emoji: '🇮🇹', colore: '#22c55e',
+    bordoTop: 'linear-gradient(90deg,#009246,#fff 50%,#ce2b37)',
+    breve: '17 marzo 1861: nasce il Regno d\'Italia.',
+    descrizione: 'Il 17 marzo 1861 il Parlamento subalpino proclamò Vittorio Emanuele II Re d\'Italia, completando il Risorgimento. Non è festività: la legge n. 222/2012 l\'ha istituita come giornata celebrativa. Roma divenne capitale solo nel 1871, dopo la breccia di Porta Pia.',
+  },
+  {
+    mese: 3, giorno: 21,
+    nome: 'Giornata della Memoria delle vittime di mafia',
+    emoji: '🌸', colore: '#fb7185',
+    bordoTop: 'linear-gradient(90deg,#fb7185,#f97316)',
+    breve: 'Si ricordano le vittime innocenti di Cosa Nostra, Camorra, \'Ndrangheta.',
+    descrizione: 'Istituita dall\'associazione Libera di Don Luigi Ciotti nel 1996, il 21 marzo — primo giorno di primavera — si leggono pubblicamente i nomi delle oltre 1.000 vittime innocenti delle mafie. La giornata è riconosciuta dallo Stato con la legge n. 20/2017.',
+  },
+  {
+    mese: 4, giorno: 25,
+    nome: 'Festa della Liberazione',
+    emoji: '🕊️', colore: '#38bdf8',
+    bordoTop: 'linear-gradient(90deg,#38bdf8,#818cf8)',
+    breve: '25 aprile 1945: fine dell\'occupazione nazifascista.',
+    descrizione: 'Il 25 aprile 1945 i partigiani insorsero nelle principali città del Nord, ponendo fine alla Resistenza. Il CLN proclamò la liberazione. È festa nazionale dal 1949 (legge n. 260). La Resistenza ispira i valori fondanti della Repubblica ed è richiamata nel preambolo ideale della Costituzione.',
+  },
+  {
+    mese: 5, giorno: 1,
+    nome: 'Festa dei Lavoratori',
+    emoji: '⚙️', colore: '#ef4444',
+    bordoTop: 'linear-gradient(90deg,#ef4444,#f97316)',
+    breve: 'Si celebra il lavoro come fondamento della Repubblica.',
+    descrizione: 'L\'art. 1 Cost. recita: «L\'Italia è una Repubblica democratica, fondata sul lavoro». La Festa ricorda le lotte per i diritti dei lavoratori (Haymarket, Chicago 1886). È festa nazionale dal 1945. Il Titolo III della Costituzione (artt. 35–47) tutela il lavoro in tutte le sue forme.',
+  },
+  {
+    mese: 5, giorno: 9,
+    nome: 'Giornata dell\'Europa · Giornata della Legalità',
+    emoji: '🇪🇺', colore: '#818cf8',
+    bordoTop: 'linear-gradient(90deg,#818cf8,#38bdf8)',
+    breve: '9 maggio 1950: Dichiarazione Schuman. 9 maggio 1978: trovato il corpo di Aldo Moro.',
+    descrizione: 'Il 9 maggio è doppiamente significativo. Nel 1950 il ministro francese Robert Schuman propose la CECA, primo passo verso l\'UE. Nel 1978 fu ritrovato in Via Caetani a Roma il corpo di Aldo Moro, presidente della DC, assassinato dalle Brigate Rosse dopo 55 giorni di prigionia. È anche la Giornata Nazionale della Legalità.',
+  },
+  {
+    mese: 5, giorno: 23,
+    nome: 'Strage di Capaci — Giovanni Falcone',
+    emoji: '⚖️', colore: '#fbbf24',
+    bordoTop: 'linear-gradient(90deg,#fbbf24,#f97316)',
+    breve: '23 maggio 1992: la mafia uccise Giovanni Falcone.',
+    descrizione: 'Alle 17:58 del 23 maggio 1992, un\'autobomba sulla A29 vicino Capaci uccise il giudice Giovanni Falcone, la moglie Francesca Morvillo e gli agenti Schifani, Dicillo e Montinaro. Falcone aveva costruito il pool antimafia e il maxiprocesso del 1986-87 che portò alla condanna di 360 boss di Cosa Nostra.',
+  },
+  {
+    mese: 5, giorno: 28,
+    nome: 'Strage di Piazza della Loggia — Brescia',
+    emoji: '💣', colore: '#f97316',
+    bordoTop: 'linear-gradient(90deg,#f97316,#fbbf24)',
+    breve: '28 maggio 1974: bomba durante un comizio antifascista a Brescia.',
+    descrizione: 'Il 28 maggio 1974, durante un comizio della CISL contro il terrorismo neofascista, una bomba esplose in Piazza della Loggia a Brescia: 8 morti e 102 feriti. Dopo oltre trent\'anni di processi, la Corte di Cassazione ha definitivamente condannato nel 2017 gli esecutori, militanti di Ordine Nuovo.',
+  },
+  {
+    mese: 6, giorno: 2,
+    nome: 'Festa della Repubblica',
+    emoji: '🏛️', colore: '#38bdf8',
+    bordoTop: 'linear-gradient(90deg,#009246,#fff 50%,#ce2b37)',
+    breve: '2 giugno 1946: gli italiani scelgono la Repubblica.',
+    descrizione: 'Il 2 giugno 1946, con il referendum istituzionale, i cittadini italiani — per la prima volta anche le donne — votarono per la forma dello Stato. La Repubblica prevalse sulla Monarchia con il 54,3% dei voti. La Costituzione repubblicana entrò in vigore il 1° gennaio 1948.',
+  },
+  {
+    mese: 6, giorno: 27,
+    nome: 'Strage di Ustica',
+    emoji: '✈️', colore: '#94a3b8',
+    bordoTop: 'linear-gradient(90deg,#94a3b8,#64748b)',
+    breve: '27 giugno 1980: il DC-9 Itavia precipitò nel Mar Tirreno.',
+    descrizione: 'Il 27 giugno 1980, il volo Itavia Bologna-Palermo precipitò tra Ustica e Ponza: morirono 81 persone. Le cause restano ufficialmente non accertate; le ipotesi includono un missile. Le sentenze civili hanno condannato i Ministeri della Difesa e dei Trasporti per omissioni. È simbolo del diritto alla verità.',
+  },
+  {
+    mese: 7, giorno: 19,
+    nome: 'Strage di Via D\'Amelio — Paolo Borsellino',
+    emoji: '⚖️', colore: '#fbbf24',
+    bordoTop: 'linear-gradient(90deg,#fbbf24,#ef4444)',
+    breve: '19 luglio 1992: la mafia uccise Paolo Borsellino.',
+    descrizione: 'Solo 57 giorni dopo Capaci, il 19 luglio 1992 un\'autobomba in Via D\'Amelio a Palermo uccise il giudice Paolo Borsellino e gli agenti Catalano, Loi, Li Muli, Cosina e Traina. Borsellino, stretto collaboratore di Falcone, aveva già comunicato il proprio presentimento di morte agli inquirenti.',
+  },
+  {
+    mese: 8, giorno: 2,
+    nome: 'Strage della Stazione di Bologna',
+    emoji: '💣', colore: '#f97316',
+    bordoTop: 'linear-gradient(90deg,#f97316,#ef4444)',
+    breve: '2 agosto 1980: l\'attentato più grave del dopoguerra italiano.',
+    descrizione: 'Il 2 agosto 1980, alle 10:25, una bomba esplose nella sala d\'aspetto della Stazione Centrale di Bologna: 85 morti e oltre 200 feriti. Dopo decenni di processi, la Cassazione ha definitivamente condannato i neofascisti dei NAR e ha accertato il depistaggio dei servizi segreti deviati.',
+  },
+  {
+    mese: 9, giorno: 8,
+    nome: 'Armistizio di Cassibile',
+    emoji: '🤝', colore: '#a78bfa',
+    bordoTop: 'linear-gradient(90deg,#a78bfa,#38bdf8)',
+    breve: '8 settembre 1943: l\'Italia annuncia la resa agli Alleati.',
+    descrizione: 'L\'8 settembre 1943 il generale Badoglio annunciò l\'armistizio firmato a Cassibile con gli Alleati. Aprì una fase tragica: la Wehrmacht occupò il Centro-Nord, migliaia di soldati italiani furono catturati, nacque la Repubblica Sociale Italiana. È data complessa, tra resa e inizio della Resistenza.',
+  },
+  {
+    mese: 9, giorno: 20,
+    nome: 'Presa di Roma',
+    emoji: '🏛️', colore: '#f59e0b',
+    bordoTop: 'linear-gradient(90deg,#f59e0b,#22c55e)',
+    breve: '20 settembre 1870: breccia di Porta Pia, Roma capitale.',
+    descrizione: 'Il 20 settembre 1870 le truppe del Regno d\'Italia aprirono la breccia di Porta Pia, ponendo fine al potere temporale della Chiesa e completando l\'unificazione. Roma divenne capitale nel 1871. La Legge delle Guarentigie del 1871 regolò i rapporti Stato-Chiesa fino ai Patti Lateranensi del 1929.',
+  },
+  {
+    mese: 10, giorno: 16,
+    nome: 'Rastrellamento del Ghetto di Roma',
+    emoji: '🕯️', colore: '#a78bfa',
+    bordoTop: 'linear-gradient(90deg,#a78bfa,#818cf8)',
+    breve: '16 ottobre 1943: le SS rastrellano oltre 1.000 ebrei romani.',
+    descrizione: 'All\'alba del 16 ottobre 1943, le SS tedesche rastrellarono il Ghetto di Roma e altri quartieri: 1.259 persone furono deportate ad Auschwitz. Solo 16 sopravvissero. L\'episodio avvenne sotto gli occhi del Vaticano e rimase a lungo rimosso dalla memoria collettiva. Il 16 ottobre è ricordato dalla Comunità Ebraica di Roma.',
+  },
+  {
+    mese: 11, giorno: 4,
+    nome: 'Festa dell\'Unità Nazionale',
+    emoji: '🎖️', colore: '#22c55e',
+    bordoTop: 'linear-gradient(90deg,#009246,#fff 50%,#ce2b37)',
+    breve: '4 novembre 1918: fine della Prima Guerra Mondiale per l\'Italia.',
+    descrizione: 'Il 4 novembre 1918 entrò in vigore l\'armistizio che chiuse le ostilità sul fronte italiano: l\'Italia ottenne Trento, Trieste e Istria. È festa nazionale (legge n. 260/1949) e celebra anche le Forze Armate, richiamate dall\'art. 52 Cost. che sancisce la difesa della Patria come sacro dovere.',
+  },
+  {
+    mese: 11, giorno: 20,
+    nome: 'Giornata Mondiale dei Diritti dell\'Infanzia',
+    emoji: '🌱', colore: '#22c55e',
+    bordoTop: 'linear-gradient(90deg,#22c55e,#38bdf8)',
+    breve: '20 novembre 1989: l\'ONU adotta la Convenzione sui Diritti dell\'Infanzia.',
+    descrizione: 'Il 20 novembre 1989 l\'Assemblea Generale dell\'ONU approvò la CRC (Convention on the Rights of the Child), il trattato internazionale sui diritti dei minori più ratificato al mondo (196 stati). L\'Italia l\'ha ratificata con la legge n. 176/1991. Riconosce il diritto all\'istruzione, alla salute, alla protezione da ogni forma di abuso.',
+  },
+  {
+    mese: 12, giorno: 10,
+    nome: 'Giornata dei Diritti Umani',
+    emoji: '🌍', colore: '#38bdf8',
+    bordoTop: 'linear-gradient(90deg,#38bdf8,#a78bfa)',
+    breve: '10 dicembre 1948: l\'ONU adotta la Dichiarazione Universale dei Diritti Umani.',
+    descrizione: 'Il 10 dicembre 1948 l\'Assemblea Generale dell\'ONU approvò la UDHR (A/RES/217), 30 articoli che riconoscono i diritti fondamentali di ogni essere umano. L\'Italia recepisce i principi nella Costituzione (artt. 2, 3, 13-28) e tramite la CEDU, ratificata con la legge n. 848/1955.',
+  },
+  {
+    mese: 12, giorno: 12,
+    nome: 'Strage di Piazza Fontana',
+    emoji: '💣', colore: '#f97316',
+    bordoTop: 'linear-gradient(90deg,#f97316,#ef4444)',
+    breve: '12 dicembre 1969: la bomba alla Banca Nazionale dell\'Agricoltura di Milano.',
+    descrizione: 'Il 12 dicembre 1969, una bomba esplose nella sede milanese della Banca Nazionale dell\'Agricoltura in Piazza Fontana: 17 morti e 88 feriti. È l\'atto inaugurale della "strategia della tensione". Dopo decenni di depistaggi e processi, i responsabili non sono mai stati definitivamente condannati. Il ferroviere anarchico Giuseppe Pinelli morì cadendo dalla finestra della Questura di Milano.',
+  },
+  {
+    mese: 12, giorno: 27,
+    nome: 'Promulgazione della Costituzione',
+    emoji: '📜', colore: '#38bdf8',
+    bordoTop: 'linear-gradient(90deg,#009246,#fff 50%,#ce2b37)',
+    breve: '27 dicembre 1947: il Presidente De Nicola firma la Costituzione.',
+    descrizione: 'Il 27 dicembre 1947 il Capo provvisorio dello Stato Enrico De Nicola promulgò la Costituzione della Repubblica Italiana, approvata dall\'Assemblea Costituente il 22 dicembre. Fu pubblicata nella Gazzetta Ufficiale n. 298 (edizione straordinaria) ed entrò in vigore il 1° gennaio 1948.',
+  },
+];
+
 export default function NormaHome() {
   const [mounted, setMounted] = useState(false); // FIX: evita hydration mismatch
-  const [bannerVisible, setBannerVisible] = useState(false);
+  const [festaCivile, setFestaCivile] = useState<typeof FESTE_CIVILI[0] | null>(null);
+  const [festaEspansa, setFestaEspansa] = useState(false);
   const [cur, setCur] = useState(0);
   const touchStartX = useRef<number>(0);
   const wheelTimeout = useRef<any>(null);
@@ -203,8 +407,12 @@ export default function NormaHome() {
   useEffect(() => {
     setMounted(true);
     const now = new Date();
-    if (now.getFullYear() === 2026 && now.getMonth() === 5 && now.getDate() === 2) {
-      setBannerVisible(true);
+    const m = now.getMonth() + 1;
+    const g = now.getDate();
+    const festa = FESTE_CIVILI.find(f => f.mese === m && f.giorno === g);
+    if (festa) {
+      const chiaveChiusa = `norma_festa_chiusa_${now.getFullYear()}-${m}-${g}`;
+      if (!sessionStorage.getItem(chiaveChiusa)) setFestaCivile(festa);
     }
     // Carica seen map
     try {
@@ -379,28 +587,48 @@ export default function NormaHome() {
       <div className="app">
         <Header />
         <div className="feed">
-          {/* BANNER 80 ANNI REPUBBLICA */}
-          {bannerVisible && (
-            <div style={{ borderRadius: 18, overflow: 'hidden', marginBottom: 16, position: 'relative', background: 'linear-gradient(135deg,#0d1e3a 0%,#1a3a6e 50%,#0d1e3a 100%)', border: '0.5px solid rgba(0,100,200,0.35)' }}>
-              <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(90deg,transparent,transparent 32px,rgba(255,255,255,0.012) 32px,rgba(255,255,255,0.012) 33px)', pointerEvents: 'none' }} />
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg,#009246,#fff,#ce2b37)' }} />
-              <div style={{ padding: '16px 18px 18px', display: 'flex', alignItems: 'center', gap: 14 }}>
-                <div style={{ fontSize: 32, flexShrink: 0, lineHeight: 1 }}>🇮🇹</div>
+          {/* BANNER FESTA CIVILE */}
+          {festaCivile && (
+            <div style={{ borderRadius: 18, overflow: 'hidden', marginBottom: 16, position: 'relative', background: '#0d1526', border: `0.5px solid ${festaCivile.colore}44` }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: festaCivile.bordoTop }} />
+              {/* Header — sempre visibile */}
+              <div
+                onClick={() => setFestaEspansa(e => !e)}
+                style={{ padding: '14px 16px 14px', display: 'flex', alignItems: 'center', gap: 13, cursor: 'pointer' }}
+              >
+                <div style={{ fontSize: 28, flexShrink: 0, lineHeight: 1 }}>{festaCivile.emoji}</div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.45)', marginBottom: 5 }}>2 Giugno 2026</div>
-                  <div style={{ fontSize: 15, fontWeight: 900, color: '#fff', lineHeight: 1.2, marginBottom: 4 }}>
-                    <span style={{ color: '#8fd3ff' }}>80 anni</span> della Repubblica Italiana
+                  <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase' as const, color: festaCivile.colore, marginBottom: 4, opacity: 0.8 }}>
+                    Oggi · Festa Civile
                   </div>
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>
-                    Il 2 giugno 1946 gli italiani scelsero la Repubblica. Buona Festa a tutti.
+                  <div style={{ fontSize: 14, fontWeight: 900, color: '#fff', lineHeight: 1.25, marginBottom: 3 }}>
+                    {festaCivile.nome}
+                  </div>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', lineHeight: 1.5 }}>
+                    {festaCivile.breve}
                   </div>
                 </div>
-                <button
-                  onClick={() => setBannerVisible(false)}
-                  style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: 28, height: 28, color: 'rgba(255,255,255,0.5)', fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, alignSelf: 'flex-start' }}>
-                  ✕
-                </button>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0, alignSelf: 'flex-start', paddingTop: 2 }}>
+                  <button
+                    onClick={e => {
+                      e.stopPropagation();
+                      const now = new Date();
+                      sessionStorage.setItem(`norma_festa_chiusa_${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`, '1');
+                      setFestaCivile(null);
+                    }}
+                    style={{ background: 'rgba(255,255,255,0.08)', border: 'none', borderRadius: '50%', width: 26, height: 26, color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >✕</button>
+                  <div style={{ textAlign: 'center', fontSize: 13, color: `${festaCivile.colore}99`, transition: 'transform 0.2s', transform: festaEspansa ? 'rotate(180deg)' : 'none' }}>▾</div>
+                </div>
               </div>
+              {/* Contenuto espanso */}
+              {festaEspansa && (
+                <div style={{ padding: '0 16px 16px', borderTop: `0.5px solid ${festaCivile.colore}22` }}>
+                  <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.6)', lineHeight: 1.75, margin: '12px 0 0' }}>
+                    {festaCivile.descrizione}
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
