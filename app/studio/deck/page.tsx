@@ -667,11 +667,11 @@ function DeckContent() {
             <div style={{ fontSize:13, fontWeight:700, color:'#fff', lineHeight:1.55 }}>{carteGioco[indiceGioco].domanda}</div>
           </div>
 
-          {/* Oggetti in avvicinamento */}
+          {/* Oggetti in avvicinamento — tutti uguali, nessun indizio */}
           {faseWave === 'caduta' && opzioni.map((op, i) => (
-            <div key={`obj-${indiceGioco}-${i}`} style={{ position:'absolute', width:64, display:'flex', flexDirection:'column', alignItems:'center', gap:3, animation:`approachLane${i} ${FALL_DURATION}ms ease-in forwards`, zIndex:12, pointerEvents:'none' }}>
-              <div style={{ fontSize:36, filter:op.corretta?'drop-shadow(0 0 10px #fbbf24)':'none' }}>{op.corretta?'🌟':'🚧'}</div>
-              <div style={{ fontSize:8, fontWeight:700, textAlign:'center', lineHeight:1.3, color:op.corretta?'#fbbf24':'rgba(255,110,110,0.9)', background:op.corretta?'rgba(251,191,36,0.12)':'rgba(239,68,68,0.1)', border:`0.5px solid ${op.corretta?'rgba(251,191,36,0.3)':'rgba(239,68,68,0.25)'}`, borderRadius:7, padding:'2px 5px', maxWidth:62 }}>
+            <div key={`obj-${indiceGioco}-${i}`} style={{ position:'absolute', width:68, display:'flex', flexDirection:'column', alignItems:'center', gap:3, animation:`approachLane${i} ${FALL_DURATION}ms ease-in forwards`, zIndex:12, pointerEvents:'none' }}>
+              <div style={{ fontSize:32 }}>🪙</div>
+              <div style={{ fontSize:8, fontWeight:700, textAlign:'center', lineHeight:1.3, color:'rgba(255,255,255,0.85)', background:'rgba(255,255,255,0.07)', border:'0.5px solid rgba(255,255,255,0.15)', borderRadius:7, padding:'3px 6px', maxWidth:66 }}>
                 {op.testo.length > 22 ? op.testo.slice(0,22)+'…' : op.testo}
               </div>
             </div>
