@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import RunnerCharacter3D from '@/components/RunnerCharacter3D';
 
 import { carte as cartePrivato, meta as metaPrivato } from '@/src/data/cards/diritto-privato';
 import { carte as carteCostituzionale, meta as metaCostituzionale } from '@/src/data/cards/diritto-costituzionale';
@@ -674,9 +675,13 @@ function DeckContent() {
             </div>
           ))}
 
-          {/* Personaggio */}
-          <div style={{ position:'absolute', bottom:'20%', left:`${[16.5,50,83.5][corsiaPersonaggio]}%`, fontSize:42, zIndex:15, transition:'left 0.14s cubic-bezier(0.34,1.56,0.64,1)', animation:isJumping?'runnerJump 0.65s ease':carattereStato==='inciampo'?'charStumbleCenter 0.45s ease':'charRunCenter 0.45s ease infinite', filter:esitoWave==='preso'?`drop-shadow(0 0 16px ${colore})`:esitoWave==='colpito'?'drop-shadow(0 0 16px rgba(239,68,68,0.9))':'none', pointerEvents:'none', transform:'translateX(-50%)' }}>
-            {emojiPersonaggio}
+          {/* Personaggio 3D */}
+          <div style={{ position:'absolute', bottom:'18%', left:`${[16.5,50,83.5][corsiaPersonaggio]}%`, width:110, height:160, transform:'translateX(-50%)', zIndex:15, transition:'left 0.14s cubic-bezier(0.34,1.56,0.64,1)', pointerEvents:'none' }}>
+            <RunnerCharacter3D
+              stato={isJumping ? 'salto' : carattereStato}
+              colore={colore}
+              glow={esitoWave === 'preso' ? 'correct' : esitoWave === 'colpito' ? 'wrong' : null}
+            />
           </div>
 
           {/* Etichette risposte fisse in basso — leggibili mentre decidi */}
