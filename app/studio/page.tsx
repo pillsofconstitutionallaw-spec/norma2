@@ -35,6 +35,19 @@ export default function StudioPage() {
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', margin: 0 }}>Scegli una materia e inizia a studiare</p>
         </div>
 
+        {/* Impara Giocando */}
+        <div
+          onClick={() => router.push('/studio/gioca')}
+          style={{ background: 'linear-gradient(135deg, rgba(52,211,153,0.12), rgba(129,140,248,0.12))', border: '1px solid rgba(52,211,153,0.3)', borderRadius: 20, padding: '20px', marginBottom: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 16 }}
+        >
+          <div style={{ fontSize: 36 }}>🎮</div>
+          <div>
+            <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', marginBottom: 4 }}>Impara Giocando</div>
+            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5 }}>Chi vuole essere laureato · Trivia Track · Abbina</div>
+          </div>
+          <div style={{ marginLeft: 'auto', color: 'rgba(255,255,255,0.3)', fontSize: 18 }}>→</div>
+        </div>
+
         {/* Carica PDF con AI */}
         <div
           onClick={() => router.push('/studio/pdf')}
