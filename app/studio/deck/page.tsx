@@ -60,12 +60,30 @@ function mescolaArray<T>(arr: T[]): T[] {
 function generaOpzioni(tutteLeCarteDiMateria: Carta[], cartaCorretta: Carta): Opzione[] {
   const altreRisposte = mescolaArray(
     tutteLeCarteDiMateria.filter(c => c.risposta !== cartaCorretta.risposta)
-  ).slice(0, 2);
+  ).slice(0, 3);
   return mescolaArray([
     { testo: cartaCorretta.risposta, corretta: true },
     ...altreRisposte.map(r => ({ testo: r.risposta, corretta: false })),
   ]);
 }
+
+const SCALETTA = [
+  { n:1,  label:'Matricola',     safe:false },
+  { n:2,  label:'Primo esame',   safe:false },
+  { n:3,  label:'18/30',         safe:false },
+  { n:4,  label:'21/30',         safe:false },
+  { n:5,  label:'24/30',         safe:true  },
+  { n:6,  label:'25/30',         safe:false },
+  { n:7,  label:'26/30',         safe:false },
+  { n:8,  label:'27/30',         safe:false },
+  { n:9,  label:'28/30',         safe:false },
+  { n:10, label:'29/30',         safe:true  },
+  { n:11, label:'30/30',         safe:false },
+  { n:12, label:'30 e lode',     safe:false },
+  { n:13, label:'Tesi discussa', safe:false },
+  { n:14, label:'Dottore!',      safe:false },
+  { n:15, label:'🎓 Dottorato!', safe:false },
+];
 
 function DeckContent() {
   const router = useRouter();
@@ -119,6 +137,17 @@ function DeckContent() {
   const carteGiocoRef = useRef<Carta[]>([]);
   const materiaCarteRef = useRef<Carta[]>([]);
   const touchStartRef = useRef<{x:number;y:number}|null>(null);
+
+  // ── milionario state ──
+  const [livello, setLivello] = useState(1);
+  const [rispostaSelezionata, setRispostaSelezionata] = useState<number|null>(null);
+  const [rispostaConfermata, setRispostaConfermata] = useState<number|null>(null);
+  const [faseRisposta, setFaseRisposta] = useState<'scelta'|'conferma'|'rivelazione'|'avanzamento'>('scelta');
+  const [eliminateIdx, setEliminateIdx] = useState<number[]>([]);
+  const [aiutiUsati, setAiutiUsati] = useState({ cinquantaCinquanta:false, professore:false, compagno:false });
+  const [audienceVotes, setAudienceVotes] = useState<number[]|null>(null);
+  const [professoreRivela, setProfessoreRivela] = useState<number|null>(null);
+  const [mostraScaletta, setMostraScaletta] = useState(false);
 
   useEffect(() => {
     const s = caricaSessione();
@@ -253,12 +282,13 @@ function DeckContent() {
     setFase('studio');
   }
 
-  // ── game functions ──
-  function iniziaGioco(materia: Materia) {
-    const carteMischiate = mescolaArray(materia.carte).slice(0, Math.min(GAME_DOMANDE, materia.carte.length));
-    const primaOps = generaOpzioni(materia.carte, carteMischiate[0]);
+  // ── milionario functions ──
+  function iniziaGioco(materia: Materia, carteMiste?: Carta[]) {
+    const tutteCard = carteMiste ?? materia.carte;
+    const carteMischiate = mescolaArray(tutteCard).slice(0, Math.max(15, Math.min(GAME_DOMANDE, tutteCard.length)));
+    const primaOps = generaOpzioni(tutteCard, carteMischiate[0]);
     setMateriaSelezionata(materia);
-    materiaCarteRef.current = materia.carte;
+    materiaCarteRef.current = tutteCard;
     setCarteGioco(carteMischiate); carteGiocoRef.current = carteMischiate;
     setIndiceGioco(0); indiceGiocoRef.current = 0;
     setOpzioni(primaOps); opzioniRef.current = primaOps;
@@ -266,16 +296,105 @@ function DeckContent() {
     setPunteggio(0); punteggioRef.current = 0;
     setStreak(0); streakRef.current = 0;
     setMaxStreak(0); maxStreakRef.current = 0;
-    setTempoRimanente(9999);
     setEsitoRisposta(null); setOpzioneCliccataIdx(null);
     setPuntiGuadagnati(0); setScreenFlash(null); setComboNotifica(null);
-    setCorsiaPersonaggio(1); corsiaRef.current = 1;
-    setIsJumping(false); jumpingRef.current = false;
-    setFaseWave('attesa');
-    setEsitoWave(null);
-    setCarattereStato('corsa');
-    setTutorialAttivo(true);
+    setLivello(1);
+    setRispostaSelezionata(null);
+    setRispostaConfermata(null);
+    setFaseRisposta('scelta');
+    setEliminateIdx([]);
+    setAiutiUsati({ cinquantaCinquanta:false, professore:false, compagno:false });
+    setAudienceVotes(null);
+    setProfessoreRivela(null);
+    setMostraScaletta(false);
     setFase('gioco');
+  }
+
+  function iniziaGiocoTutteMaterie() {
+    const tutteCard = MATERIE.flatMap(m => m.carte);
+    const fake: Materia = { id:'tutte', titolo:'Tutte le materie', colore:'#818cf8', bg:'#1e1b4b', icona:'🎓', carte:tutteCard };
+    iniziaGioco(fake, tutteCard);
+  }
+
+  function selezionaRisposta(idx: number) {
+    if (eliminateIdx.includes(idx) || faseRisposta !== 'scelta') return;
+    setRispostaSelezionata(idx);
+    setFaseRisposta('conferma');
+  }
+
+  function cambiaMente() {
+    setRispostaSelezionata(null);
+    setFaseRisposta('scelta');
+  }
+
+  function confermaRisposta() {
+    if (rispostaSelezionata === null) return;
+    setRispostaConfermata(rispostaSelezionata);
+    setFaseRisposta('rivelazione');
+    setTimeout(() => {
+      const corretta = opzioni[rispostaSelezionata].corretta;
+      setScreenFlash(corretta ? 'correct' : 'wrong');
+      setTimeout(() => setScreenFlash(null), 600);
+      if (corretta) {
+        const nuovoLivello = livello + 1;
+        if (livello >= 15) { setTimeout(() => setFase('game_over'), 2000); return; }
+        setFaseRisposta('avanzamento');
+        setTimeout(() => {
+          const newIndice = indiceGiocoRef.current + 1;
+          const src = materiaCarteRef.current;
+          const card = carteGiocoRef.current[newIndice % carteGiocoRef.current.length];
+          const newOps = generaOpzioni(src, card);
+          indiceGiocoRef.current = newIndice;
+          setIndiceGioco(newIndice);
+          opzioniRef.current = newOps;
+          setOpzioni(newOps);
+          setLivello(nuovoLivello);
+          setRispostaSelezionata(null);
+          setRispostaConfermata(null);
+          setEliminateIdx([]);
+          setAudienceVotes(null);
+          setProfessoreRivela(null);
+          setFaseRisposta('scelta');
+        }, 2200);
+      } else {
+        setTimeout(() => setFase('game_over'), 2800);
+      }
+    }, 1600);
+  }
+
+  function usaCinquantaCinquanta() {
+    if (aiutiUsati.cinquantaCinquanta) return;
+    const corrIdx = opzioni.findIndex(o => o.corretta);
+    const altri = mescolaArray([0,1,2,3].filter(i => i !== corrIdx && !eliminateIdx.includes(i))).slice(0, 2);
+    setEliminateIdx(altri);
+    setAiutiUsati(a => ({...a, cinquantaCinquanta:true}));
+    if (rispostaSelezionata !== null && altri.includes(rispostaSelezionata)) {
+      setRispostaSelezionata(null);
+      setFaseRisposta('scelta');
+    }
+  }
+
+  function usaProfessore() {
+    if (aiutiUsati.professore) return;
+    setProfessoreRivela(opzioni.findIndex(o => o.corretta));
+    setAiutiUsati(a => ({...a, professore:true}));
+  }
+
+  function usaCompagno() {
+    if (aiutiUsati.compagno) return;
+    const corrIdx = opzioni.findIndex(o => o.corretta);
+    const disponibili = [0,1,2,3].filter(i => !eliminateIdx.includes(i));
+    const votes = [0,0,0,0];
+    const pCorr = 55 + Math.floor(Math.random() * 26);
+    votes[corrIdx] = pCorr;
+    const restanti = disponibili.filter(i => i !== corrIdx);
+    let rem = 100 - pCorr;
+    restanti.forEach((i, idx) => {
+      votes[i] = idx === restanti.length - 1 ? rem : Math.floor(rem * (0.3 + Math.random() * 0.4));
+      rem -= votes[i];
+    });
+    setAudienceVotes(votes);
+    setAiutiUsati(a => ({...a, compagno:true}));
   }
 
   function handleTouchStart(e: React.TouchEvent) {
@@ -284,28 +403,8 @@ function DeckContent() {
   }
 
   function handleTouchEnd(e: React.TouchEvent) {
-    if (!touchStartRef.current || faseWave === 'esito' || tutorialAttivo) return;
-    const t = e.changedTouches[0];
-    const dx = t.clientX - touchStartRef.current.x;
-    const dy = t.clientY - touchStartRef.current.y;
+    if (!touchStartRef.current) return;
     touchStartRef.current = null;
-    if (Math.abs(dy) > Math.abs(dx) && dy < -40) {
-      if (!jumpingRef.current) {
-        setIsJumping(true); jumpingRef.current = true;
-        setTimeout(() => { setIsJumping(false); jumpingRef.current = false; }, 650);
-      }
-    } else if (Math.abs(dx) > 30) {
-      setCorsiaPersonaggio(prev => {
-        const next = (dx > 0 ? Math.min(2, prev + 1) : Math.max(0, prev - 1)) as 0|1|2;
-        corsiaRef.current = next;
-        return next;
-      });
-    }
-  }
-
-  function avviaTutorial() {
-    setTutorialAttivo(false);
-    setFaseWave('caduta');
   }
 
   const colore = materiaSelezionata?.colore ?? '#38bdf8';
@@ -406,6 +505,10 @@ function DeckContent() {
         @keyframes tutorialIn {
           from { opacity: 0; transform: scale(0.92); }
           to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes milBlink {
+          0%,100% { background: linear-gradient(135deg,#713f12,#92400e); border-color:#f59e0b; }
+          50%      { background: linear-gradient(135deg,#1e3a5f,#1e40af); border-color:#60a5fa; }
         }
         @keyframes perspLines1 {
           from { background-position: 0 0; }
@@ -607,13 +710,121 @@ function DeckContent() {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* SKY */}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg,#060c1e 0%,#0c1a3a 38%,#0d1e38 55%,#0a1525 100%)', pointerEvents: 'none' }} />
+          {/* TOP BAR */}
+          <div style={{ padding:'16px 20px 10px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0, zIndex:10 }}>
+            <button onClick={() => setFase('scelta')} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.35)', fontSize:13, cursor:'pointer', fontFamily:'Montserrat, sans-serif', padding:0 }}>← Esci</button>
+            <div style={{ textAlign:'center' }}>
+              <div style={{ fontSize:8, fontWeight:700, letterSpacing:3, color:'rgba(255,200,50,0.5)', textTransform:'uppercase' }}>Chi vuole essere</div>
+              <div style={{ fontSize:16, fontWeight:900, color:'#fbbf24', letterSpacing:1 }}>LAUREATO?</div>
+            </div>
+            <button onClick={() => setMostraScaletta(s => !s)} style={{ background:'rgba(255,255,255,0.06)', border:'0.5px solid rgba(255,255,255,0.15)', borderRadius:10, padding:'6px 10px', color:'rgba(255,255,255,0.6)', fontSize:10, fontWeight:700, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>📊</button>
+          </div>
 
-          {/* Stelle */}
-          {([[7,3],[17,6],[29,2],[44,7],[58,4],[71,2],[82,8],[93,5],[38,10],[62,9]] as [number,number][]).map(([x,y],i) => (
-            <div key={i} style={{ position:'absolute', left:`${x}%`, top:`${y}%`, width:i%3===0?2:1.5, height:i%3===0?2:1.5, borderRadius:'50%', background:'rgba(255,255,255,0.65)', pointerEvents:'none', zIndex:1 }} />
-          ))}
+          {/* LIVELLO */}
+          <div style={{ textAlign:'center', flexShrink:0, marginBottom:8, zIndex:10 }}>
+            <div style={{ display:'inline-flex', alignItems:'center', gap:10, background:'rgba(251,191,36,0.08)', border:'0.5px solid rgba(251,191,36,0.3)', borderRadius:20, padding:'6px 20px' }}>
+              <span style={{ fontSize:9, color:'rgba(255,255,255,0.35)' }}>Livello {livello}/15</span>
+              <span style={{ fontSize:14, fontWeight:900, color:'#fbbf24' }}>{SCALETTA[livello-1].label}</span>
+              {SCALETTA[livello-1].safe && <span style={{ fontSize:9, color:'#22c55e' }}>✓ Safe</span>}
+            </div>
+          </div>
+
+          {/* AIUTI */}
+          <div style={{ display:'flex', justifyContent:'center', gap:14, flexShrink:0, marginBottom:10, zIndex:10 }}>
+            {[
+              { key:'cinquantaCinquanta', icon:'½', label:'50:50', usato:aiutiUsati.cinquantaCinquanta, fn:usaCinquantaCinquanta },
+              { key:'professore', icon:'👨‍🏫', label:'Prof', usato:aiutiUsati.professore, fn:usaProfessore },
+              { key:'compagno', icon:'👥', label:'Classe', usato:aiutiUsati.compagno, fn:usaCompagno },
+            ].map(a => (
+              <button key={a.key} onClick={a.fn} disabled={a.usato || faseRisposta === 'rivelazione'}
+                style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2, background:a.usato?'rgba(255,255,255,0.02)':'rgba(255,255,255,0.07)', border:`1px solid ${a.usato?'rgba(255,255,255,0.05)':'rgba(251,191,36,0.35)'}`, borderRadius:14, padding:'8px 14px', cursor:a.usato?'default':'pointer', opacity:a.usato?0.3:1, transition:'opacity 0.3s', fontFamily:'Montserrat, sans-serif' }}>
+                <span style={{ fontSize:20 }}>{a.icon}</span>
+                <span style={{ fontSize:8, fontWeight:700, color:'rgba(255,255,255,0.45)', letterSpacing:1 }}>{a.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* DOMANDA */}
+          <div style={{ padding:'0 16px', flexShrink:0, marginBottom:14, zIndex:10 }}>
+            <div key={`q-${indiceGioco}`} style={{ background:'linear-gradient(135deg,#0d1f3c,#061224)', border:'1px solid rgba(56,189,248,0.2)', borderRadius:20, padding:'20px 20px', textAlign:'center', animation:'fadeUp 0.25s ease' }}>
+              <div style={{ fontSize:8, letterSpacing:2, color:'rgba(255,255,255,0.22)', marginBottom:10, fontWeight:700 }}>DOMANDA {livello}</div>
+              <div style={{ fontSize:14, fontWeight:700, color:'#fff', lineHeight:1.72 }}>{carteGioco[indiceGioco % carteGioco.length].domanda}</div>
+            </div>
+          </div>
+
+          {/* RISPOSTE 2×2 */}
+          <div style={{ padding:'0 16px', flex:1, display:'flex', flexDirection:'column', gap:10, zIndex:10 }}>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+              {opzioni.map((op, i) => {
+                const letters = ['A','B','C','D'];
+                const eliminated = eliminateIdx.includes(i);
+                const isSelected = rispostaSelezionata === i;
+                const isConfirmed = rispostaConfermata === i;
+                const revealed = faseRisposta === 'rivelazione' || faseRisposta === 'avanzamento';
+                const isProfHint = professoreRivela === i;
+                let bg = 'linear-gradient(135deg,#0d1f3c,#061224)';
+                let border = '1.5px solid rgba(56,189,248,0.22)';
+                let textColor = eliminated?'transparent':'rgba(255,255,255,0.88)';
+                let letterColor = eliminated?'transparent':'#fbbf24';
+                let anim = '';
+                if (eliminated) { bg='rgba(0,0,0,0.1)'; border='1.5px solid rgba(255,255,255,0.03)'; }
+                else if (revealed) {
+                  if (op.corretta) { bg='linear-gradient(135deg,#14532d,#166534)'; border='1.5px solid #22c55e'; textColor='#fff'; }
+                  else if (isConfirmed) { bg='linear-gradient(135deg,#450a0a,#7f1d1d)'; border='1.5px solid #ef4444'; textColor='#fff'; }
+                  else { bg='rgba(0,0,0,0.2)'; border='1.5px solid rgba(255,255,255,0.04)'; textColor='rgba(255,255,255,0.2)'; letterColor='rgba(255,255,255,0.12)'; }
+                } else if (isConfirmed) { bg='linear-gradient(135deg,#713f12,#92400e)'; border='1.5px solid #f59e0b'; textColor='#fff'; anim='milBlink 0.9s ease infinite'; }
+                else if (isSelected) { bg='linear-gradient(135deg,#78350f,#92400e)'; border='1.5px solid #f59e0b'; textColor='#fff'; }
+                else if (isProfHint) { border='1.5px solid rgba(34,197,94,0.55)'; letterColor='#22c55e'; }
+                return (
+                  <button key={i} onClick={() => !eliminated && faseRisposta==='scelta' && selezionaRisposta(i)}
+                    style={{ textAlign:'left', padding:'12px 14px', borderRadius:16, border, background:bg, color:textColor, fontFamily:'Montserrat, sans-serif', cursor:eliminated||faseRisposta!=='scelta'?'default':'pointer', display:'flex', gap:10, alignItems:'flex-start', minHeight:68, transition:'background 0.3s,border 0.3s', animation:anim }}>
+                    <span style={{ fontSize:11, fontWeight:900, color:letterColor, flexShrink:0, minWidth:16, paddingTop:1, transition:'color 0.3s' }}>{letters[i]}</span>
+                    <span style={{ fontSize:11.5, fontWeight:600, lineHeight:1.55 }}>{eliminated?'':op.testo}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Poll compagno */}
+            {audienceVotes && faseRisposta === 'scelta' && (
+              <div style={{ background:'rgba(0,0,0,0.35)', borderRadius:14, padding:'12px 16px', border:'0.5px solid rgba(255,255,255,0.07)' }}>
+                <div style={{ fontSize:9, fontWeight:700, letterSpacing:2, color:'rgba(255,255,255,0.3)', marginBottom:10 }}>👥 LA CLASSE VOTA</div>
+                {[0,1,2,3].filter(i => !eliminateIdx.includes(i)).map(i => (
+                  <div key={i} style={{ display:'flex', alignItems:'center', gap:8, marginBottom:7 }}>
+                    <span style={{ fontSize:10, fontWeight:700, color:'#fbbf24', width:14 }}>{['A','B','C','D'][i]}</span>
+                    <div style={{ flex:1, height:10, background:'rgba(255,255,255,0.05)', borderRadius:5, overflow:'hidden' }}>
+                      <div style={{ height:'100%', width:`${audienceVotes[i]}%`, background:'linear-gradient(90deg,#3b82f6,#60a5fa)', borderRadius:5, transition:'width 0.9s ease' }} />
+                    </div>
+                    <span style={{ fontSize:10, fontWeight:700, color:'rgba(255,255,255,0.55)', minWidth:28, textAlign:'right' }}>{audienceVotes[i]}%</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Conferma / Cambia */}
+            {faseRisposta === 'conferma' && (
+              <div style={{ display:'flex', gap:10 }}>
+                <button onClick={cambiaMente} style={{ flex:1, padding:'14px', borderRadius:16, border:'1px solid rgba(255,255,255,0.1)', background:'rgba(255,255,255,0.04)', color:'rgba(255,255,255,0.55)', fontFamily:'Montserrat, sans-serif', fontWeight:700, fontSize:13, cursor:'pointer' }}>← Cambia</button>
+                <button onClick={confermaRisposta} style={{ flex:2, padding:'14px', borderRadius:16, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:900, fontSize:14, cursor:'pointer' }}>✓ Risposta finale!</button>
+              </div>
+            )}
+          </div>
+
+          {/* SCALETTA OVERLAY */}
+          {mostraScaletta && (
+            <div onClick={() => setMostraScaletta(false)} style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.65)', zIndex:50, display:'flex', justifyContent:'flex-end' }}>
+              <div onClick={e => e.stopPropagation()} style={{ width:'55%', height:'100%', background:'linear-gradient(180deg,#030509,#0d1f3c)', padding:'24px 14px', overflowY:'auto', display:'flex', flexDirection:'column', gap:4 }}>
+                <div style={{ fontSize:10, fontWeight:700, letterSpacing:2, color:'rgba(255,200,50,0.6)', marginBottom:12, textAlign:'center' }}>SCALETTA</div>
+                {[...SCALETTA].reverse().map(s => (
+                  <div key={s.n} style={{ display:'flex', alignItems:'center', gap:8, padding:'7px 10px', borderRadius:10, background:s.n===livello?'rgba(251,191,36,0.18)':s.n<livello?'rgba(34,197,94,0.06)':'transparent', border:s.n===livello?'1px solid rgba(251,191,36,0.45)':s.safe?'0.5px solid rgba(34,197,94,0.18)':'none' }}>
+                    <span style={{ fontSize:9, color:'rgba(255,255,255,0.25)', minWidth:16 }}>{s.n}</span>
+                    <span style={{ fontSize:11, fontWeight:s.n===livello?900:600, color:s.n===livello?'#fbbf24':s.n<livello?'#22c55e':s.safe?'rgba(34,197,94,0.65)':'rgba(255,255,255,0.55)' }}>{s.label}</span>
+                    {s.safe && <span style={{ fontSize:8, color:'#22c55e', marginLeft:'auto' }}>✓</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* BINARIO PROSPETTICO — SVG */}
           <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', zIndex:2, pointerEvents:'none' }} preserveAspectRatio="none" viewBox="0 0 100 100">
@@ -716,64 +927,39 @@ function DeckContent() {
             </div>
           )}
 
-          {/* Tutorial */}
-          {tutorialAttivo && (
-            <div onClick={avviaTutorial} style={{ position:'absolute', inset:0, background:'rgba(6,14,31,0.97)', zIndex:50, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:26, animation:'tutorialIn 0.3s ease' }}>
-              <div style={{ fontSize:12, fontWeight:700, letterSpacing:3, color:colore, textTransform:'uppercase' }}>COME GIOCARE</div>
-              <div style={{ display:'flex', flexDirection:'column', gap:14, width:'82%', maxWidth:340 }}>
-                {[
-                  { emoji:'👈👉', testo:'Swipa sinistra / destra per cambiare corsia' },
-                  { emoji:'👆', testo:'Swipa su per saltare gli ostacoli 🚧' },
-                  { emoji:'🌟', testo:'Corri verso la risposta giusta!' },
-                ].map((s, i) => (
-                  <div key={i} style={{ display:'flex', alignItems:'center', gap:16, background:'rgba(255,255,255,0.04)', borderRadius:16, padding:'14px 18px' }}>
-                    <span style={{ fontSize:26, flexShrink:0 }}>{s.emoji}</span>
-                    <span style={{ fontSize:13, fontWeight:600, color:'rgba(255,255,255,0.8)', lineHeight:1.4 }}>{s.testo}</span>
-                  </div>
-                ))}
-              </div>
-              <div style={{ fontSize:12, color:'rgba(255,255,255,0.3)' }}>Tocca per iniziare</div>
-            </div>
-          )}
         </div>
       )}
 
-          {/* ══ GAME OVER ══ */}
+          {/* ══ GAME OVER — CHI VUOLE ESSERE LAUREATO ══ */}
           {fase === 'game_over' && materiaSelezionata && (
-            <div style={{ textAlign: 'center', paddingTop: 16, animation: 'fadeUp 0.4s ease' }}>
-              <div style={{ fontSize: 58, marginBottom: 14 }}>
-                {vite <= 0 ? '💀' : punteggio >= 2000 ? '🏆' : punteggio >= 800 ? '🎯' : '🎮'}
+            <div style={{ textAlign: 'center', paddingTop: 20, animation: 'fadeUp 0.4s ease' }}>
+              <div style={{ fontSize: 60, marginBottom: 14 }}>
+                {livello > 15 ? '🎓' : livello >= 11 ? '🏆' : livello >= 6 ? '🎯' : '💀'}
               </div>
-              <div style={{ fontSize: 22, fontWeight: 900, color: '#fff', marginBottom: 10 }}>
-                {vite <= 0 ? 'Game Over!' : 'Completato!'}
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 3, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 6 }}>
+                {livello > 15 ? 'HAI VINTO!' : 'Sei arrivato a'}
               </div>
-              <div style={{ fontSize: 48, fontWeight: 900, color: '#fbbf24', marginBottom: 2, letterSpacing: -2 }}>
-                {punteggio}
+              <div style={{ fontSize: 32, fontWeight: 900, color: '#fbbf24', marginBottom: 4, letterSpacing: -1 }}>
+                {SCALETTA[Math.min(livello, 15) - 1].label}
               </div>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 3, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 28 }}>punti</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 28 }}>
-                <div style={{ background: '#111526', borderRadius: 16, padding: '16px 8px', border: '0.5px solid rgba(255,255,255,0.06)' }}>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: '#f97316' }}>{maxStreak}</div>
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 1.5, color: 'rgba(255,255,255,0.3)', marginTop: 5, textTransform: 'uppercase' }}>Streak</div>
-                </div>
-                <div style={{ background: '#111526', borderRadius: 16, padding: '16px 8px', border: '0.5px solid rgba(255,255,255,0.06)' }}>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: '#38bdf8' }}>{indiceGioco + 1}</div>
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 1.5, color: 'rgba(255,255,255,0.3)', marginTop: 5, textTransform: 'uppercase' }}>Domande</div>
-                </div>
-                <div style={{ background: '#111526', borderRadius: 16, padding: '16px 8px', border: '0.5px solid rgba(255,255,255,0.06)' }}>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: '#22c55e' }}>{vite}</div>
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 1.5, color: 'rgba(255,255,255,0.3)', marginTop: 5, textTransform: 'uppercase' }}>Vite</div>
-                </div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginBottom: 32 }}>
+                Livello {Math.min(livello, 15)} di 15
               </div>
               <button
                 onClick={() => iniziaGioco(materiaSelezionata!)}
-                style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: `linear-gradient(135deg, ${colore}, #818cf8)`, color: '#fff', fontWeight: 900, fontSize: 15, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', marginBottom: 10 }}
+                style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg,#b45309,#d97706)', color: '#fff', fontWeight: 900, fontSize: 15, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', marginBottom: 10 }}
               >
                 🎮 Rigioca
               </button>
               <button
+                onClick={iniziaGiocoTutteMaterie}
+                style={{ width: '100%', padding: '15px', borderRadius: 16, border: '0.5px solid rgba(251,191,36,0.25)', background: 'rgba(251,191,36,0.06)', color: '#fbbf24', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', marginBottom: 10 }}
+              >
+                🎓 Gioca con tutte le materie
+              </button>
+              <button
                 onClick={() => setFase('scelta')}
-                style={{ width: '100%', padding: '15px', borderRadius: 16, border: '0.5px solid rgba(255,255,255,0.1)', background: '#111526', color: 'rgba(255,255,255,0.55)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}
+                style={{ width: '100%', padding: '15px', borderRadius: 16, border: '0.5px solid rgba(255,255,255,0.08)', background: '#111526', color: 'rgba(255,255,255,0.45)', fontWeight: 700, fontSize: 14, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}
               >
                 Cambia materia
               </button>
