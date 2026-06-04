@@ -1,0 +1,625 @@
+'use client';
+
+import { useState, useRef, useEffect, Suspense } from 'react';
+import { useRouter } from 'next/navigation';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+
+import { carte as cartePrivato, meta as metaPrivato } from '@/src/data/cards/diritto-privato';
+import { carte as carteCostituzionale, meta as metaCostituzionale } from '@/src/data/cards/diritto-costituzionale';
+import { carte as carteInternazionale, meta as metaInternazionale } from '@/src/data/cards/diritto-internazionale';
+import { carte as carteIntPrivato, meta as metaIntPrivato } from '@/src/data/cards/diritto-internazionale-privato';
+import { carte as carteRomano, meta as metaRomano } from '@/src/data/cards/diritto-romano';
+import { carte as carteLavoro, meta as metaLavoro } from '@/src/data/cards/diritto-del-lavoro';
+
+type Carta = { domanda: string; risposta: string };
+type Materia = { id: string; titolo: string; colore: string; bg: string; icona: string; carte: Carta[] };
+type Opzione = { testo: string; corretta: boolean };
+type GameScreen = 'selezione' | 'milionario' | 'trivia';
+
+const MATERIE: Materia[] = [
+  { id: 'privato',        titolo: metaPrivato.titolo,         colore: metaPrivato.colore,         bg: metaPrivato.bg,         icona: metaPrivato.icona,         carte: cartePrivato },
+  { id: 'costituzionale', titolo: metaCostituzionale.titolo,  colore: metaCostituzionale.colore,  bg: metaCostituzionale.bg,  icona: metaCostituzionale.icona,  carte: carteCostituzionale },
+  { id: 'internazionale', titolo: metaInternazionale.titolo,  colore: metaInternazionale.colore,  bg: metaInternazionale.bg,  icona: metaInternazionale.icona,  carte: carteInternazionale },
+  { id: 'int-privato',    titolo: metaIntPrivato.titolo,      colore: metaIntPrivato.colore,      bg: metaIntPrivato.bg,      icona: metaIntPrivato.icona,      carte: carteIntPrivato },
+  { id: 'romano',         titolo: metaRomano.titolo,          colore: metaRomano.colore,          bg: metaRomano.bg,          icona: metaRomano.icona,          carte: carteRomano },
+  { id: 'lavoro',         titolo: metaLavoro.titolo,          colore: metaLavoro.colore,          bg: metaLavoro.bg,          icona: metaLavoro.icona,          carte: carteLavoro },
+];
+
+const SCALETTA = [
+  { n:1,  label:'Matricola',     safe:false },
+  { n:2,  label:'Primo esame',   safe:false },
+  { n:3,  label:'18/30',         safe:false },
+  { n:4,  label:'21/30',         safe:false },
+  { n:5,  label:'24/30',         safe:true  },
+  { n:6,  label:'25/30',         safe:false },
+  { n:7,  label:'26/30',         safe:false },
+  { n:8,  label:'27/30',         safe:false },
+  { n:9,  label:'28/30',         safe:false },
+  { n:10, label:'29/30',         safe:true  },
+  { n:11, label:'30/30',         safe:false },
+  { n:12, label:'30 e lode',     safe:false },
+  { n:13, label:'Tesi discussa', safe:false },
+  { n:14, label:'Dottore!',      safe:false },
+  { n:15, label:'🎓 Dottorato!', safe:false },
+];
+
+function mescola<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function opzioniPer(pool: Carta[], carta: Carta): Opzione[] {
+  const altri = mescola(pool.filter(c => c.risposta !== carta.risposta)).slice(0, 3);
+  return mescola([{ testo: carta.risposta, corretta: true }, ...altri.map(r => ({ testo: r.risposta, corretta: false }))]);
+}
+
+// ─────────────────────────────────────────────
+// SVG WHEEL (Trivia Track)
+// ─────────────────────────────────────────────
+function polarXY(cx: number, cy: number, r: number, deg: number) {
+  const rad = ((deg - 90) * Math.PI) / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+function WheelSVG({ rotation, size = 260 }: { rotation: number; size?: number }) {
+  const cx = size / 2, cy = size / 2, r = size / 2 - 4;
+  const n = MATERIE.length;
+  const deg = 360 / n;
+  return (
+    <svg width={size} height={size} style={{ transform: `rotate(${rotation}deg)`, transition: 'transform 3.2s cubic-bezier(0.17,0.67,0.12,1)', display: 'block' }}>
+      {MATERIE.map((m, i) => {
+        const start = polarXY(cx, cy, r, i * deg);
+        const end   = polarXY(cx, cy, r, (i + 1) * deg);
+        const mid   = polarXY(cx, cy, r * 0.62, i * deg + deg / 2);
+        return (
+          <g key={m.id}>
+            <path d={`M${cx},${cy} L${start.x},${start.y} A${r},${r} 0 0,1 ${end.x},${end.y} Z`} fill={m.colore} opacity={0.85} />
+            <text x={mid.x} y={mid.y} textAnchor="middle" dominantBaseline="middle" fontSize={20}>{m.icona}</text>
+          </g>
+        );
+      })}
+      <circle cx={cx} cy={cy} r={18} fill="#0a0d18" />
+      <circle cx={cx} cy={cy} r={14} fill="#fbbf24" opacity={0.9} />
+    </svg>
+  );
+}
+
+// ─────────────────────────────────────────────
+// MAIN COMPONENT
+// ─────────────────────────────────────────────
+function GiocaContent() {
+  const router = useRouter();
+  const [screen, setScreen] = useState<GameScreen>('selezione');
+  const [materiaTarget, setMateriaTarget] = useState<Materia | null>(null); // null = tutte
+
+  // ── Milionario state ──
+  const [livello, setLivello] = useState(1);
+  const [mCarteGioco, setMCarteGioco] = useState<Carta[]>([]);
+  const [mIndice, setMIndice] = useState(0);
+  const [mOpzioni, setMOpzioni] = useState<Opzione[]>([]);
+  const [mFase, setMFase] = useState<'scelta' | 'conferma' | 'rivelazione' | 'avanzamento'>('scelta');
+  const [mSelezionata, setMSelezionata] = useState<number | null>(null);
+  const [mConfermata, setMConfermata] = useState<number | null>(null);
+  const [mEliminate, setMEliminate] = useState<number[]>([]);
+  const [mAiuti, setMAiuti] = useState({ cinq: false, prof: false, comp: false });
+  const [mVotes, setMVotes] = useState<number[] | null>(null);
+  const [mProf, setMProf] = useState<number | null>(null);
+  const [mScaletta, setMScaletta] = useState(false);
+  const [mOver, setMOver] = useState(false);
+  const [mVinto, setMVinto] = useState(false);
+  const mPoolRef = useRef<Carta[]>([]);
+  const mCarteRef = useRef<Carta[]>([]);
+  const mIndiceRef = useRef(0);
+  const mOpzioniRef = useRef<Opzione[]>([]);
+  const [mScreenFlash, setMScreenFlash] = useState<'correct' | 'wrong' | null>(null);
+
+  // ── Trivia state ──
+  const [tRotazione, setTRotazione] = useState(0);
+  const [tSpinning, setTSpinning] = useState(false);
+  const [tMateria, setTMateria] = useState<Materia | null>(null);
+  const [tCarta, setTCarta] = useState<Carta | null>(null);
+  const [tOpzioni, setTOpzioni] = useState<Opzione[]>([]);
+  const [tFase, setTFase] = useState<'spin' | 'question' | 'result' | 'over'>('spin');
+  const [tVite, setTVite] = useState(3);
+  const [tScore, setTScore] = useState(0);
+  const [tRisposta, setTRisposta] = useState<'corretta' | 'sbagliata' | null>(null);
+  const [tFlash, setTFlash] = useState<'correct' | 'wrong' | null>(null);
+  const tPoolRef = useRef<Carta[]>([]);
+  const tUsedRef = useRef<Set<string>>(new Set());
+
+  // ── Milionario functions ──
+  function startMilionario(materia: Materia | null) {
+    const pool = materia ? materia.carte : MATERIE.flatMap(m => m.carte);
+    const carte = mescola(pool).slice(0, 15);
+    const ops = opzioniPer(pool, carte[0]);
+    mPoolRef.current = pool;
+    mCarteRef.current = carte;
+    mIndiceRef.current = 0;
+    mOpzioniRef.current = ops;
+    setMateriaTarget(materia);
+    setLivello(1);
+    setMCarteGioco(carte);
+    setMIndice(0);
+    setMOpzioni(ops);
+    setMFase('scelta');
+    setMSelezionata(null);
+    setMConfermata(null);
+    setMEliminate([]);
+    setMAiuti({ cinq: false, prof: false, comp: false });
+    setMVotes(null);
+    setMProf(null);
+    setMScaletta(false);
+    setMOver(false);
+    setMVinto(false);
+    setScreen('milionario');
+  }
+
+  function mSeleziona(idx: number) {
+    if (mEliminate.includes(idx) || mFase !== 'scelta') return;
+    setMSelezionata(idx);
+    setMFase('conferma');
+  }
+
+  function mCambia() {
+    setMSelezionata(null);
+    setMFase('scelta');
+  }
+
+  function mConferma() {
+    if (mSelezionata === null) return;
+    setMConfermata(mSelezionata);
+    setMFase('rivelazione');
+    setTimeout(() => {
+      const corr = mOpzioni[mSelezionata].corretta;
+      setMScreenFlash(corr ? 'correct' : 'wrong');
+      setTimeout(() => setMScreenFlash(null), 600);
+      if (corr) {
+        if (livello >= 15) { setMVinto(true); setMOver(true); return; }
+        setMFase('avanzamento');
+        setTimeout(() => {
+          const ni = mIndiceRef.current + 1;
+          const card = mCarteRef.current[ni % mCarteRef.current.length];
+          const ops = opzioniPer(mPoolRef.current, card);
+          mIndiceRef.current = ni;
+          mOpzioniRef.current = ops;
+          setMIndice(ni);
+          setMOpzioni(ops);
+          setLivello(l => l + 1);
+          setMSelezionata(null); setMConfermata(null); setMEliminate([]); setMVotes(null); setMProf(null);
+          setMFase('scelta');
+        }, 2000);
+      } else {
+        setTimeout(() => setMOver(true), 2500);
+      }
+    }, 1600);
+  }
+
+  function mCinquanta() {
+    if (mAiuti.cinq) return;
+    const ci = mOpzioni.findIndex(o => o.corretta);
+    const altri = mescola([0,1,2,3].filter(i => i !== ci && !mEliminate.includes(i))).slice(0, 2);
+    setMEliminate(altri);
+    setMAiuti(a => ({ ...a, cinq: true }));
+    if (mSelezionata !== null && altri.includes(mSelezionata)) { setMSelezionata(null); setMFase('scelta'); }
+  }
+
+  function mProfe() {
+    if (mAiuti.prof) return;
+    setMProf(mOpzioni.findIndex(o => o.corretta));
+    setMAiuti(a => ({ ...a, prof: true }));
+  }
+
+  function mCompagno() {
+    if (mAiuti.comp) return;
+    const ci = mOpzioni.findIndex(o => o.corretta);
+    const disp = [0,1,2,3].filter(i => !mEliminate.includes(i));
+    const votes = [0,0,0,0];
+    const pc = 58 + Math.floor(Math.random() * 23);
+    votes[ci] = pc;
+    const rest = disp.filter(i => i !== ci);
+    let rem = 100 - pc;
+    rest.forEach((i, idx) => { votes[i] = idx === rest.length-1 ? rem : Math.floor(rem * (0.3 + Math.random() * 0.4)); rem -= votes[i]; });
+    setMVotes(votes);
+    setMAiuti(a => ({ ...a, comp: true }));
+  }
+
+  // ── Trivia functions ──
+  function startTrivia(materia: Materia | null) {
+    const pool = materia ? materia.carte : MATERIE.flatMap(m => m.carte);
+    tPoolRef.current = pool;
+    tUsedRef.current = new Set();
+    setMateriaTarget(materia);
+    setTVite(3); setTScore(0); setTSpinning(false); setTMateria(null); setTCarta(null); setTOpzioni([]); setTRisposta(null); setTFlash(null);
+    setTFase(materia ? 'question' : 'spin'); // single materia: go straight to question
+    if (materia) {
+      const card = mescola(materia.carte)[0];
+      setTCarta(card);
+      setTOpzioni(opzioniPer(materia.carte, card));
+      setTMateria(materia);
+    }
+    setScreen('trivia');
+  }
+
+  function tSpin() {
+    if (tSpinning) return;
+    setTSpinning(true);
+    const idx = Math.floor(Math.random() * MATERIE.length);
+    const newRot = tRotazione + 1800 + idx * (360 / MATERIE.length) + Math.floor(Math.random() * (360 / MATERIE.length));
+    setTRotazione(newRot);
+    setTimeout(() => {
+      const materia = MATERIE[idx];
+      setTMateria(materia);
+      const pool = materia.carte.filter(c => !tUsedRef.current.has(c.domanda));
+      const src = pool.length > 0 ? pool : materia.carte;
+      const card = mescola(src)[0];
+      tUsedRef.current.add(card.domanda);
+      setTCarta(card);
+      setTOpzioni(opzioniPer(materia.carte, card));
+      setTFase('question');
+      setTRisposta(null);
+      setTSpinning(false);
+    }, 3300);
+  }
+
+  function tRispondi(idx: number) {
+    if (tRisposta !== null || !tCarta) return;
+    const corretta = tOpzioni[idx].corretta;
+    setTRisposta(corretta ? 'corretta' : 'sbagliata');
+    setTFlash(corretta ? 'correct' : 'wrong');
+    setTimeout(() => setTFlash(null), 500);
+    if (corretta) {
+      setTScore(s => s + 100);
+    } else {
+      setTVite(v => {
+        const nv = v - 1;
+        if (nv <= 0) setTimeout(() => setTFase('over'), 1800);
+        return nv;
+      });
+    }
+    setTimeout(() => {
+      if (tVite > 1 || corretta) {
+        if (materiaTarget) {
+          // single materia: next question directly
+          const pool = materiaTarget.carte.filter(c => !tUsedRef.current.has(c.domanda));
+          const src = pool.length > 0 ? pool : materiaTarget.carte;
+          const card = mescola(src)[0];
+          tUsedRef.current.add(card.domanda);
+          setTCarta(card);
+          setTOpzioni(opzioniPer(materiaTarget.carte, card));
+          setTRisposta(null);
+        } else {
+          setTFase('spin');
+          setTRisposta(null);
+        }
+      }
+    }, corretta ? 1500 : 2000);
+  }
+
+  const colore = materiaTarget?.colore ?? '#818cf8';
+
+  // ─────────────────────────────────────────────
+  // RENDER
+  // ─────────────────────────────────────────────
+  return (
+    <>
+      <style jsx global>{`
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #0a0d18; }
+        ::-webkit-scrollbar { display: none; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes flashFade { 0% { opacity:1; } 100% { opacity:0; } }
+        @keyframes milBlink {
+          0%,100% { background:linear-gradient(135deg,#713f12,#92400e); border-color:#f59e0b; }
+          50%      { background:linear-gradient(135deg,#1e3a5f,#1e40af); border-color:#60a5fa; }
+        }
+        @keyframes pulseStar { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
+      `}</style>
+
+      {/* Screen flash */}
+      {(mScreenFlash || tFlash) && (
+        <div style={{ position:'fixed', inset:0, pointerEvents:'none', zIndex:999, background:(mScreenFlash||tFlash)==='correct'?'rgba(34,197,94,0.12)':'rgba(239,68,68,0.12)', animation:'flashFade 0.4s ease forwards' }} />
+      )}
+
+      {/* ══ SELEZIONE ══ */}
+      {screen === 'selezione' && (
+        <div style={{ fontFamily:'Montserrat, sans-serif', background:'#0a0d18', minHeight:'100vh' }}>
+          <Header />
+          <div style={{ padding:'20px 16px 120px', maxWidth:650, margin:'0 auto' }}>
+            <button onClick={() => router.back()} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.4)', fontSize:13, cursor:'pointer', padding:0, fontFamily:'Montserrat, sans-serif', marginBottom:24 }}>← Indietro</button>
+
+            <div style={{ marginBottom:24 }}>
+              <div style={{ fontSize:9, fontWeight:700, letterSpacing:3, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:6 }}>Impara Giocando</div>
+              <div style={{ fontSize:24, fontWeight:900, color:'#fff' }}>🎮 Scegli il gioco</div>
+            </div>
+
+            {/* Quiz Generale */}
+            <div style={{ background:'linear-gradient(135deg,#0d1f3c,#061224)', border:'1px solid rgba(56,189,248,0.2)', borderRadius:20, padding:'20px 18px', marginBottom:20 }}>
+              <div style={{ fontSize:9, fontWeight:700, letterSpacing:3, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:6 }}>Quiz Generale</div>
+              <div style={{ fontSize:15, fontWeight:800, color:'#fff', marginBottom:4 }}>🎓 Tutte le materie</div>
+              <div style={{ fontSize:11, color:'rgba(255,255,255,0.35)', marginBottom:18 }}>{MATERIE.reduce((s,m) => s+m.carte.length, 0)} domande dal pool completo</div>
+              <div style={{ display:'flex', gap:10 }}>
+                <button onClick={() => startMilionario(null)} style={{ flex:1, padding:'14px 8px', borderRadius:14, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:12, cursor:'pointer' }}>
+                  🎓 Chi vuole essere laureato
+                </button>
+                <button onClick={() => startTrivia(null)} style={{ flex:1, padding:'14px 8px', borderRadius:14, border:'none', background:'linear-gradient(135deg,#4c1d95,#6d28d9)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:12, cursor:'pointer' }}>
+                  🎡 Trivia Track
+                </button>
+              </div>
+            </div>
+
+            {/* Materie singole */}
+            <div style={{ fontSize:9, fontWeight:700, letterSpacing:2.5, color:'rgba(255,255,255,0.25)', textTransform:'uppercase', marginBottom:12 }}>Scegli materia</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+              {MATERIE.map(m => (
+                <div key={m.id} style={{ background:'#111526', border:`0.5px solid ${m.colore}33`, borderRadius:18, padding:'14px 16px', display:'flex', alignItems:'center', gap:14 }}>
+                  <div style={{ width:46, height:46, borderRadius:13, background:m.bg, border:`0.5px solid ${m.colore}44`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0 }}>{m.icona}</div>
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontSize:13, fontWeight:800, color:'#fff', marginBottom:2 }}>{m.titolo}</div>
+                    <div style={{ fontSize:10, color:'rgba(255,255,255,0.3)' }}>{m.carte.length} carte</div>
+                  </div>
+                  <div style={{ display:'flex', gap:7, flexShrink:0 }}>
+                    <button onClick={() => startMilionario(m)} style={{ padding:'9px 12px', borderRadius:12, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontWeight:800, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>🎓</button>
+                    <button onClick={() => startTrivia(m)} style={{ padding:'9px 12px', borderRadius:12, border:`0.5px solid ${m.colore}55`, background:`${m.colore}18`, color:m.colore, fontWeight:800, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>🎡</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <Footer />
+        </div>
+      )}
+
+      {/* ══ MILIONARIO ══ */}
+      {screen === 'milionario' && !mOver && (
+        <div style={{ position:'fixed', inset:0, zIndex:100, background:'radial-gradient(ellipse at 50% 35%,#0d1f3c 0%,#030509 80%)', fontFamily:'Montserrat, sans-serif', display:'flex', flexDirection:'column', overflow:'hidden' }}>
+          {/* TOP */}
+          <div style={{ padding:'16px 20px 10px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
+            <button onClick={() => setScreen('selezione')} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.35)', fontSize:13, cursor:'pointer', fontFamily:'Montserrat, sans-serif', padding:0 }}>← Esci</button>
+            <div style={{ textAlign:'center' }}>
+              <div style={{ fontSize:8, fontWeight:700, letterSpacing:3, color:'rgba(255,200,50,0.5)', textTransform:'uppercase' }}>Chi vuole essere</div>
+              <div style={{ fontSize:15, fontWeight:900, color:'#fbbf24', letterSpacing:1 }}>LAUREATO?</div>
+            </div>
+            <button onClick={() => setMScaletta(s => !s)} style={{ background:'rgba(255,255,255,0.06)', border:'0.5px solid rgba(255,255,255,0.15)', borderRadius:10, padding:'6px 10px', color:'rgba(255,255,255,0.55)', fontSize:10, fontWeight:700, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>📊</button>
+          </div>
+
+          {/* LIVELLO */}
+          <div style={{ textAlign:'center', flexShrink:0, marginBottom:8 }}>
+            <div style={{ display:'inline-flex', alignItems:'center', gap:10, background:'rgba(251,191,36,0.08)', border:'0.5px solid rgba(251,191,36,0.3)', borderRadius:20, padding:'6px 20px' }}>
+              <span style={{ fontSize:9, color:'rgba(255,255,255,0.35)' }}>Livello {livello}/15</span>
+              <span style={{ fontSize:14, fontWeight:900, color:'#fbbf24' }}>{SCALETTA[livello-1].label}</span>
+              {SCALETTA[livello-1].safe && <span style={{ fontSize:9, color:'#22c55e' }}>✓ Safe</span>}
+            </div>
+          </div>
+
+          {/* AIUTI */}
+          <div style={{ display:'flex', justifyContent:'center', gap:14, flexShrink:0, marginBottom:10 }}>
+            {[
+              { k:'cinq',  icon:'½',   label:'50:50', usato:mAiuti.cinq,  fn:mCinquanta },
+              { k:'prof',  icon:'👨‍🏫', label:'Prof',  usato:mAiuti.prof,  fn:mProfe },
+              { k:'comp',  icon:'👥',   label:'Classe',usato:mAiuti.comp,  fn:mCompagno },
+            ].map(a => (
+              <button key={a.k} onClick={a.fn} disabled={a.usato || mFase==='rivelazione'}
+                style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2, background:a.usato?'rgba(255,255,255,0.02)':'rgba(255,255,255,0.07)', border:`1px solid ${a.usato?'rgba(255,255,255,0.05)':'rgba(251,191,36,0.35)'}`, borderRadius:14, padding:'8px 14px', cursor:a.usato?'default':'pointer', opacity:a.usato?0.28:1, transition:'opacity 0.3s', fontFamily:'Montserrat, sans-serif' }}>
+                <span style={{ fontSize:20 }}>{a.icon}</span>
+                <span style={{ fontSize:8, fontWeight:700, color:'rgba(255,255,255,0.4)', letterSpacing:1 }}>{a.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* DOMANDA */}
+          <div style={{ padding:'0 16px', flexShrink:0, marginBottom:12 }}>
+            <div key={`mil-${mIndice}`} style={{ background:'linear-gradient(135deg,#0d1f3c,#061224)', border:'1px solid rgba(56,189,248,0.18)', borderRadius:20, padding:'20px 20px', textAlign:'center', animation:'fadeUp 0.25s ease' }}>
+              <div style={{ fontSize:8, letterSpacing:2, color:'rgba(255,255,255,0.22)', marginBottom:10, fontWeight:700 }}>DOMANDA {livello}</div>
+              <div style={{ fontSize:14, fontWeight:700, color:'#fff', lineHeight:1.72 }}>{mCarteGioco[mIndice % mCarteGioco.length]?.domanda}</div>
+            </div>
+          </div>
+
+          {/* RISPOSTE */}
+          <div style={{ padding:'0 16px', flex:1, display:'flex', flexDirection:'column', gap:10 }}>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+              {mOpzioni.map((op, i) => {
+                const L = ['A','B','C','D'];
+                const elim = mEliminate.includes(i);
+                const isSel = mSelezionata === i;
+                const isConf = mConfermata === i;
+                const rev = mFase==='rivelazione'||mFase==='avanzamento';
+                let bg='linear-gradient(135deg,#0d1f3c,#061224)', border='1.5px solid rgba(56,189,248,0.2)';
+                let tc=elim?'transparent':'rgba(255,255,255,0.88)', lc=elim?'transparent':'#fbbf24', anim='';
+                if (elim) { bg='rgba(0,0,0,0.08)'; border='1.5px solid rgba(255,255,255,0.03)'; }
+                else if (rev) {
+                  if (op.corretta) { bg='linear-gradient(135deg,#14532d,#166534)'; border='1.5px solid #22c55e'; tc='#fff'; }
+                  else if (isConf) { bg='linear-gradient(135deg,#450a0a,#7f1d1d)'; border='1.5px solid #ef4444'; tc='#fff'; }
+                  else { bg='rgba(0,0,0,0.18)'; border='1.5px solid rgba(255,255,255,0.04)'; tc='rgba(255,255,255,0.2)'; lc='rgba(255,255,255,0.1)'; }
+                } else if (isConf) { bg='linear-gradient(135deg,#713f12,#92400e)'; border='1.5px solid #f59e0b'; tc='#fff'; anim='milBlink 0.9s ease infinite'; }
+                else if (isSel) { bg='linear-gradient(135deg,#78350f,#92400e)'; border='1.5px solid #f59e0b'; tc='#fff'; }
+                else if (mProf===i) { border='1.5px solid rgba(34,197,94,0.55)'; lc='#22c55e'; }
+                return (
+                  <button key={i} onClick={() => !elim && mFase==='scelta' && mSeleziona(i)}
+                    style={{ textAlign:'left', padding:'12px 12px', borderRadius:16, border, background:bg, color:tc, fontFamily:'Montserrat, sans-serif', cursor:elim||mFase!=='scelta'?'default':'pointer', display:'flex', gap:8, alignItems:'flex-start', minHeight:70, transition:'background 0.3s,border 0.3s', animation:anim }}>
+                    <span style={{ fontSize:11, fontWeight:900, color:lc, flexShrink:0, minWidth:14, paddingTop:1 }}>{L[i]}</span>
+                    <span style={{ fontSize:11, fontWeight:600, lineHeight:1.55 }}>{elim?'':op.testo}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Poll */}
+            {mVotes && mFase==='scelta' && (
+              <div style={{ background:'rgba(0,0,0,0.3)', borderRadius:14, padding:'12px 14px', border:'0.5px solid rgba(255,255,255,0.07)' }}>
+                <div style={{ fontSize:9, fontWeight:700, letterSpacing:2, color:'rgba(255,255,255,0.3)', marginBottom:8 }}>👥 LA CLASSE VOTA</div>
+                {[0,1,2,3].filter(i => !mEliminate.includes(i)).map(i => (
+                  <div key={i} style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
+                    <span style={{ fontSize:10, fontWeight:700, color:'#fbbf24', width:14 }}>{['A','B','C','D'][i]}</span>
+                    <div style={{ flex:1, height:9, background:'rgba(255,255,255,0.05)', borderRadius:5, overflow:'hidden' }}>
+                      <div style={{ height:'100%', width:`${mVotes[i]}%`, background:'linear-gradient(90deg,#3b82f6,#60a5fa)', borderRadius:5, transition:'width 0.9s ease' }} />
+                    </div>
+                    <span style={{ fontSize:10, fontWeight:700, color:'rgba(255,255,255,0.5)', minWidth:28, textAlign:'right' }}>{mVotes[i]}%</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Conferma */}
+            {mFase==='conferma' && (
+              <div style={{ display:'flex', gap:10 }}>
+                <button onClick={mCambia} style={{ flex:1, padding:'14px', borderRadius:16, border:'1px solid rgba(255,255,255,0.1)', background:'rgba(255,255,255,0.04)', color:'rgba(255,255,255,0.55)', fontFamily:'Montserrat, sans-serif', fontWeight:700, fontSize:13, cursor:'pointer' }}>← Cambia</button>
+                <button onClick={mConferma} style={{ flex:2, padding:'14px', borderRadius:16, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:900, fontSize:14, cursor:'pointer' }}>✓ Risposta finale!</button>
+              </div>
+            )}
+          </div>
+
+          {/* Scaletta overlay */}
+          {mScaletta && (
+            <div onClick={() => setMScaletta(false)} style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.65)', zIndex:50, display:'flex', justifyContent:'flex-end' }}>
+              <div onClick={e => e.stopPropagation()} style={{ width:'55%', height:'100%', background:'linear-gradient(180deg,#030509,#0d1f3c)', padding:'24px 14px', overflowY:'auto', display:'flex', flexDirection:'column', gap:4 }}>
+                <div style={{ fontSize:10, fontWeight:700, letterSpacing:2, color:'rgba(255,200,50,0.6)', marginBottom:12, textAlign:'center' }}>SCALETTA</div>
+                {[...SCALETTA].reverse().map(s => (
+                  <div key={s.n} style={{ display:'flex', alignItems:'center', gap:8, padding:'7px 10px', borderRadius:10, background:s.n===livello?'rgba(251,191,36,0.18)':s.n<livello?'rgba(34,197,94,0.06)':'transparent', border:s.n===livello?'1px solid rgba(251,191,36,0.45)':s.safe?'0.5px solid rgba(34,197,94,0.18)':'none' }}>
+                    <span style={{ fontSize:9, color:'rgba(255,255,255,0.25)', minWidth:16 }}>{s.n}</span>
+                    <span style={{ fontSize:11, fontWeight:s.n===livello?900:600, color:s.n===livello?'#fbbf24':s.n<livello?'#22c55e':s.safe?'rgba(34,197,94,0.65)':'rgba(255,255,255,0.55)' }}>{s.label}</span>
+                    {s.safe && <span style={{ fontSize:8, color:'#22c55e', marginLeft:'auto' }}>✓</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ══ MILIONARIO GAME OVER ══ */}
+      {screen === 'milionario' && mOver && (
+        <div style={{ fontFamily:'Montserrat, sans-serif', background:'#0a0d18', minHeight:'100vh' }}>
+          <Header />
+          <div style={{ padding:'40px 16px 120px', maxWidth:500, margin:'0 auto', textAlign:'center', animation:'fadeUp 0.4s ease' }}>
+            <div style={{ fontSize:64, marginBottom:14 }}>{mVinto ? '🎓' : livello >= 11 ? '🏆' : livello >= 6 ? '🎯' : '💀'}</div>
+            <div style={{ fontSize:11, fontWeight:700, letterSpacing:3, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:6 }}>{mVinto ? 'HAI VINTO!' : 'Sei arrivato a'}</div>
+            <div style={{ fontSize:30, fontWeight:900, color:'#fbbf24', marginBottom:4 }}>{SCALETTA[Math.min(livello,15)-1].label}</div>
+            <div style={{ fontSize:11, color:'rgba(255,255,255,0.3)', marginBottom:36 }}>Livello {Math.min(livello,15)} di 15</div>
+            <button onClick={() => startMilionario(materiaTarget)} style={{ width:'100%', padding:'16px', borderRadius:16, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily:'Montserrat, sans-serif', marginBottom:10 }}>🎮 Rigioca</button>
+            <button onClick={() => setScreen('selezione')} style={{ width:'100%', padding:'15px', borderRadius:16, border:'0.5px solid rgba(255,255,255,0.08)', background:'#111526', color:'rgba(255,255,255,0.45)', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>← Scegli altro gioco</button>
+          </div>
+          <Footer />
+        </div>
+      )}
+
+      {/* ══ TRIVIA TRACK ══ */}
+      {screen === 'trivia' && tFase !== 'over' && (
+        <div style={{ position:'fixed', inset:0, zIndex:100, background:'radial-gradient(ellipse at 50% 30%,#1a0a3a 0%,#030509 80%)', fontFamily:'Montserrat, sans-serif', display:'flex', flexDirection:'column', overflow:'hidden' }}>
+          {/* TOP */}
+          <div style={{ padding:'16px 20px 10px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
+            <button onClick={() => setScreen('selezione')} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.35)', fontSize:13, cursor:'pointer', fontFamily:'Montserrat, sans-serif', padding:0 }}>← Esci</button>
+            <div style={{ textAlign:'center' }}>
+              <div style={{ fontSize:8, fontWeight:700, letterSpacing:3, color:'rgba(180,130,255,0.6)', textTransform:'uppercase' }}>Trivia</div>
+              <div style={{ fontSize:15, fontWeight:900, color:'#c4b5fd', letterSpacing:1 }}>TRACK</div>
+            </div>
+            <div style={{ display:'flex', gap:12, alignItems:'center' }}>
+              <span style={{ fontSize:14, fontWeight:900, color:'#fbbf24' }}>⭐ {tScore}</span>
+              <div style={{ display:'flex', gap:2 }}>{[1,2,3].map(i => <span key={i} style={{ fontSize:14, opacity:i<=tVite?1:0.15 }}>❤️</span>)}</div>
+            </div>
+          </div>
+
+          <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'flex-start', padding:'0 16px', gap:16, overflowY:'auto' }}>
+
+            {/* Ruota (solo tutte le materie) */}
+            {!materiaTarget && (
+              <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:14, marginTop:8 }}>
+                {/* Pointer */}
+                <div style={{ fontSize:22, animation:'pulseStar 1.2s ease infinite', color:'#fbbf24' }}>▼</div>
+                <WheelSVG rotation={tRotazione} size={240} />
+                {tFase === 'spin' && (
+                  <button onClick={tSpin} disabled={tSpinning}
+                    style={{ padding:'14px 36px', borderRadius:20, border:'none', background:tSpinning?'rgba(255,255,255,0.06)':'linear-gradient(135deg,#6d28d9,#7c3aed)', color:'#fff', fontWeight:900, fontSize:15, cursor:tSpinning?'default':'pointer', fontFamily:'Montserrat, sans-serif', opacity:tSpinning?0.5:1, transition:'opacity 0.3s' }}>
+                    {tSpinning ? 'Girando…' : '🎡 Gira!'}
+                  </button>
+                )}
+                {tMateria && tFase==='question' && (
+                  <div style={{ fontSize:12, fontWeight:700, color:tMateria.colore }}>
+                    {tMateria.icona} {tMateria.titolo}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Materia singola: mostra icona */}
+            {materiaTarget && tFase==='question' && (
+              <div style={{ display:'flex', alignItems:'center', gap:10, background:`${materiaTarget.colore}18`, border:`0.5px solid ${materiaTarget.colore}44`, borderRadius:14, padding:'8px 16px' }}>
+                <span style={{ fontSize:20 }}>{materiaTarget.icona}</span>
+                <span style={{ fontSize:12, fontWeight:700, color:materiaTarget.colore }}>{materiaTarget.titolo}</span>
+              </div>
+            )}
+
+            {/* Domanda */}
+            {tFase==='question' && tCarta && (
+              <>
+                <div key={tCarta.domanda} style={{ width:'100%', background:'linear-gradient(135deg,#1a0a3a,#0a0416)', border:'1px solid rgba(196,181,253,0.2)', borderRadius:20, padding:'20px 18px', textAlign:'center', animation:'fadeUp 0.2s ease' }}>
+                  <div style={{ fontSize:9, letterSpacing:2, color:'rgba(255,255,255,0.22)', marginBottom:10, fontWeight:700 }}>DOMANDA</div>
+                  <div style={{ fontSize:14, fontWeight:700, color:'#fff', lineHeight:1.72 }}>{tCarta.domanda}</div>
+                </div>
+
+                <div style={{ width:'100%', display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+                  {tOpzioni.map((op, i) => {
+                    const L = ['A','B','C','D'];
+                    const answered = tRisposta !== null;
+                    let bg='linear-gradient(135deg,#1a0a3a,#0a0416)', border='1.5px solid rgba(196,181,253,0.18)', tc='rgba(255,255,255,0.88)', lc='#c4b5fd';
+                    if (answered) {
+                      if (op.corretta) { bg='linear-gradient(135deg,#14532d,#166534)'; border='1.5px solid #22c55e'; tc='#fff'; }
+                      else if (tRisposta==='sbagliata' && !op.corretta && tOpzioni.indexOf(op)===tOpzioni.findIndex((_,j) => j===i && !tOpzioni[j].corretta && tOpzioni.findIndex(o=>o.corretta) !== j)) {
+                        // Check if this was the selected one
+                      } else { bg='rgba(0,0,0,0.2)'; border='1.5px solid rgba(255,255,255,0.04)'; tc='rgba(255,255,255,0.25)'; lc='rgba(255,255,255,0.15)'; }
+                    }
+                    return (
+                      <button key={i} onClick={() => !answered && tRispondi(i)}
+                        style={{ textAlign:'left', padding:'12px 12px', borderRadius:16, border, background:bg, color:tc, fontFamily:'Montserrat, sans-serif', cursor:answered?'default':'pointer', display:'flex', gap:8, alignItems:'flex-start', minHeight:68, transition:'background 0.3s,border 0.3s' }}>
+                        <span style={{ fontSize:11, fontWeight:900, color:lc, flexShrink:0, minWidth:14, paddingTop:1 }}>{L[i]}</span>
+                        <span style={{ fontSize:11, fontWeight:600, lineHeight:1.55 }}>{op.testo}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {tRisposta && (
+                  <div style={{ fontSize:13, fontWeight:700, color:tRisposta==='corretta'?'#22c55e':'#ef4444', animation:'fadeUp 0.2s ease' }}>
+                    {tRisposta==='corretta' ? '✅ Corretto! +100' : '❌ Sbagliato!'}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ══ TRIVIA GAME OVER ══ */}
+      {screen === 'trivia' && tFase === 'over' && (
+        <div style={{ fontFamily:'Montserrat, sans-serif', background:'#0a0d18', minHeight:'100vh' }}>
+          <Header />
+          <div style={{ padding:'40px 16px 120px', maxWidth:500, margin:'0 auto', textAlign:'center', animation:'fadeUp 0.4s ease' }}>
+            <div style={{ fontSize:60, marginBottom:14 }}>{tScore >= 500 ? '🏆' : tScore >= 200 ? '🎯' : '💀'}</div>
+            <div style={{ fontSize:11, fontWeight:700, letterSpacing:3, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:8 }}>Partita terminata</div>
+            <div style={{ fontSize:44, fontWeight:900, color:'#fbbf24', marginBottom:4, letterSpacing:-2 }}>{tScore}</div>
+            <div style={{ fontSize:11, color:'rgba(255,255,255,0.3)', marginBottom:36 }}>punti</div>
+            <button onClick={() => startTrivia(materiaTarget)} style={{ width:'100%', padding:'16px', borderRadius:16, border:'none', background:'linear-gradient(135deg,#6d28d9,#7c3aed)', color:'#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily:'Montserrat, sans-serif', marginBottom:10 }}>🎡 Rigioca</button>
+            <button onClick={() => setScreen('selezione')} style={{ width:'100%', padding:'15px', borderRadius:16, border:'0.5px solid rgba(255,255,255,0.08)', background:'#111526', color:'rgba(255,255,255,0.45)', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>← Scegli altro gioco</button>
+          </div>
+          <Footer />
+        </div>
+      )}
+    </>
+  );
+}
+
+export default function GiocaPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ background:'#0a0d18', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center' }}>
+        <div style={{ color:'rgba(255,255,255,0.4)', fontSize:14, fontFamily:'Montserrat, sans-serif' }}>Caricamento...</div>
+      </div>
+    }>
+      <GiocaContent />
+    </Suspense>
+  );
+}
