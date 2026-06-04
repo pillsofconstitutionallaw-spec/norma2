@@ -15,7 +15,8 @@ import { carte as carteLavoro, meta as metaLavoro } from '@/src/data/cards/dirit
 type Carta = { domanda: string; risposta: string };
 type Materia = { id: string; titolo: string; colore: string; bg: string; icona: string; carte: Carta[] };
 type Opzione = { testo: string; corretta: boolean };
-type GameScreen = 'selezione' | 'milionario' | 'trivia';
+type GameScreen = 'selezione' | 'milionario' | 'trivia' | 'abbina';
+type AbbinaPair = { id: string; termine: string; definizione: string };
 
 const MATERIE: Materia[] = [
   { id: 'privato',        titolo: metaPrivato.titolo,         colore: metaPrivato.colore,         bg: metaPrivato.bg,         icona: metaPrivato.icona,         carte: cartePrivato },
@@ -131,6 +132,23 @@ function GiocaContent() {
   const [tFlash, setTFlash] = useState<'correct' | 'wrong' | null>(null);
   const tPoolRef = useRef<Carta[]>([]);
   const tUsedRef = useRef<Set<string>>(new Set());
+
+  // ── Abbina state ──
+  const [aPairs, setAPairs] = useState<AbbinaPair[]>([]);
+  const [aLeftOrder, setALeftOrder] = useState<string[]>([]);
+  const [aRightOrder, setARightOrder] = useState<string[]>([]);
+  const [aSelectedLeft, setASelectedLeft] = useState<string | null>(null);
+  const [aMatched, setAMatched] = useState<string[]>([]);
+  const [aWrong, setAWrong] = useState<string | null>(null); // pair id that was wrong
+  const [aCorrectFlash, setACorrectFlash] = useState<string | null>(null);
+  const [aVite, setAVite] = useState(3);
+  const [aScore, setAScore] = useState(0);
+  const [aRound, setARound] = useState(1);
+  const [aOver, setAOver] = useState(false);
+  const [aVinto, setAVinto] = useState(false);
+  const [aRoundFlash, setARoundFlash] = useState(false);
+  const aPoolRef = useRef<Carta[]>([]);
+  const aOffsetRef = useRef(0);
 
   // ── Milionario functions ──
   function startMilionario(materia: Materia | null) {
@@ -300,6 +318,71 @@ function GiocaContent() {
     }, corretta ? 1500 : 2000);
   }
 
+  // ── Abbina functions ──
+  function caricaRoundAbbina(pool: Carta[], offset: number, round: number) {
+    const slice = pool.slice(offset, offset + 4);
+    if (slice.length < 2) { setAVinto(true); setAOver(true); return; }
+    const pairs: AbbinaPair[] = slice.map(c => ({ id: c.domanda, termine: c.domanda, definizione: c.risposta }));
+    const ids = pairs.map(p => p.id);
+    setAPairs(pairs);
+    setALeftOrder(mescola(ids));
+    setARightOrder(mescola(ids));
+    setAMatched([]);
+    setASelectedLeft(null);
+    setAWrong(null);
+    setACorrectFlash(null);
+    setARound(round);
+  }
+
+  function startAbbina(materia: Materia | null) {
+    const pool = mescola(materia ? materia.carte : MATERIE.flatMap(m => m.carte));
+    aPoolRef.current = pool;
+    aOffsetRef.current = 0;
+    setMateriaTarget(materia);
+    setAVite(3); setAScore(0); setAOver(false); setAVinto(false);
+    caricaRoundAbbina(pool, 0, 1);
+    setScreen('abbina');
+  }
+
+  function aTapLeft(id: string) {
+    if (aMatched.includes(id) || aWrong !== null) return;
+    setASelectedLeft(prev => prev === id ? null : id);
+  }
+
+  function aTapRight(id: string) {
+    if (aMatched.includes(id) || aWrong !== null) return;
+    if (!aSelectedLeft) return;
+    if (aSelectedLeft === id) {
+      // MATCH
+      setACorrectFlash(id);
+      setASelectedLeft(null);
+      const newMatched = [...aMatched, id];
+      setAMatched(newMatched);
+      setAScore(s => s + 100);
+      setTimeout(() => setACorrectFlash(null), 600);
+      if (newMatched.length === aPairs.length) {
+        // Round completato
+        setARoundFlash(true);
+        setTimeout(() => {
+          setARoundFlash(false);
+          const newOffset = aOffsetRef.current + 4;
+          aOffsetRef.current = newOffset;
+          caricaRoundAbbina(aPoolRef.current, newOffset, aRound + 1);
+        }, 1200);
+      }
+    } else {
+      // WRONG
+      setAWrong(aSelectedLeft);
+      const newVite = aVite - 1;
+      setAVite(newVite);
+      setTimeout(() => {
+        setAWrong(null);
+        setASelectedLeft(null);
+        if (newVite <= 0) { setAOver(true); }
+      }, 800);
+    }
+  }
+
   const colore = materiaTarget?.colore ?? '#818cf8';
 
   // ─────────────────────────────────────────────
@@ -342,12 +425,15 @@ function GiocaContent() {
               <div style={{ fontSize:9, fontWeight:700, letterSpacing:3, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:6 }}>Quiz Generale</div>
               <div style={{ fontSize:15, fontWeight:800, color:'#fff', marginBottom:4 }}>🎓 Tutte le materie</div>
               <div style={{ fontSize:11, color:'rgba(255,255,255,0.35)', marginBottom:18 }}>{MATERIE.reduce((s,m) => s+m.carte.length, 0)} domande dal pool completo</div>
-              <div style={{ display:'flex', gap:10 }}>
-                <button onClick={() => startMilionario(null)} style={{ flex:1, padding:'14px 8px', borderRadius:14, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:12, cursor:'pointer' }}>
-                  🎓 Chi vuole essere laureato
+              <div style={{ display:'flex', gap:8 }}>
+                <button onClick={() => startMilionario(null)} style={{ flex:1, padding:'13px 6px', borderRadius:14, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:11, cursor:'pointer' }}>
+                  🎓 Laureato
                 </button>
-                <button onClick={() => startTrivia(null)} style={{ flex:1, padding:'14px 8px', borderRadius:14, border:'none', background:'linear-gradient(135deg,#4c1d95,#6d28d9)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:12, cursor:'pointer' }}>
-                  🎡 Trivia Track
+                <button onClick={() => startTrivia(null)} style={{ flex:1, padding:'13px 6px', borderRadius:14, border:'none', background:'linear-gradient(135deg,#4c1d95,#6d28d9)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:11, cursor:'pointer' }}>
+                  🎡 Trivia
+                </button>
+                <button onClick={() => startAbbina(null)} style={{ flex:1, padding:'13px 6px', borderRadius:14, border:'none', background:'linear-gradient(135deg,#065f46,#059669)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:11, cursor:'pointer' }}>
+                  🔗 Abbina
                 </button>
               </div>
             </div>
@@ -362,9 +448,10 @@ function GiocaContent() {
                     <div style={{ fontSize:13, fontWeight:800, color:'#fff', marginBottom:2 }}>{m.titolo}</div>
                     <div style={{ fontSize:10, color:'rgba(255,255,255,0.3)' }}>{m.carte.length} carte</div>
                   </div>
-                  <div style={{ display:'flex', gap:7, flexShrink:0 }}>
-                    <button onClick={() => startMilionario(m)} style={{ padding:'9px 12px', borderRadius:12, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontWeight:800, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>🎓</button>
-                    <button onClick={() => startTrivia(m)} style={{ padding:'9px 12px', borderRadius:12, border:`0.5px solid ${m.colore}55`, background:`${m.colore}18`, color:m.colore, fontWeight:800, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>🎡</button>
+                  <div style={{ display:'flex', gap:6, flexShrink:0 }}>
+                    <button onClick={() => startMilionario(m)} style={{ padding:'9px 11px', borderRadius:12, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontWeight:800, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>🎓</button>
+                    <button onClick={() => startTrivia(m)} style={{ padding:'9px 11px', borderRadius:12, border:`0.5px solid ${m.colore}55`, background:`${m.colore}18`, color:m.colore, fontWeight:800, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>🎡</button>
+                    <button onClick={() => startAbbina(m)} style={{ padding:'9px 11px', borderRadius:12, border:'0.5px solid rgba(5,150,105,0.4)', background:'rgba(5,150,105,0.12)', color:'#34d399', fontWeight:800, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>🔗</button>
                   </div>
                 </div>
               ))}
@@ -590,6 +677,118 @@ function GiocaContent() {
               </>
             )}
           </div>
+        </div>
+      )}
+
+      {/* ══ ABBINA DEFINIZIONE ══ */}
+      {screen === 'abbina' && !aOver && (
+        <div style={{ position:'fixed', inset:0, zIndex:100, background:'linear-gradient(180deg,#022c22 0%,#030e0a 100%)', fontFamily:'Montserrat, sans-serif', display:'flex', flexDirection:'column', overflow:'hidden' }}>
+          {/* TOP */}
+          <div style={{ padding:'16px 20px 10px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
+            <button onClick={() => setScreen('selezione')} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.35)', fontSize:13, cursor:'pointer', fontFamily:'Montserrat, sans-serif', padding:0 }}>← Esci</button>
+            <div style={{ textAlign:'center' }}>
+              <div style={{ fontSize:8, fontWeight:700, letterSpacing:3, color:'rgba(52,211,153,0.5)', textTransform:'uppercase' }}>Abbina</div>
+              <div style={{ fontSize:15, fontWeight:900, color:'#34d399', letterSpacing:1 }}>LA DEFINIZIONE</div>
+            </div>
+            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+              <span style={{ fontSize:13, fontWeight:900, color:'#fbbf24' }}>⭐ {aScore}</span>
+              <div style={{ display:'flex', gap:2 }}>{[1,2,3].map(i => <span key={i} style={{ fontSize:13, opacity:i<=aVite?1:0.15 }}>❤️</span>)}</div>
+            </div>
+          </div>
+
+          {/* Round info */}
+          <div style={{ textAlign:'center', flexShrink:0, marginBottom:10 }}>
+            <div style={{ display:'inline-flex', alignItems:'center', gap:10, background:'rgba(52,211,153,0.08)', border:'0.5px solid rgba(52,211,153,0.25)', borderRadius:20, padding:'5px 18px' }}>
+              <span style={{ fontSize:9, color:'rgba(255,255,255,0.3)' }}>Round {aRound}</span>
+              <span style={{ fontSize:11, fontWeight:700, color:'#34d399' }}>{aMatched.length}/{aPairs.length} coppie</span>
+              {materiaTarget && <span style={{ fontSize:11 }}>{materiaTarget.icona}</span>}
+            </div>
+          </div>
+
+          {/* Istruzione */}
+          {aSelectedLeft === null && aMatched.length === 0 && (
+            <div style={{ textAlign:'center', fontSize:10, color:'rgba(255,255,255,0.25)', marginBottom:6, flexShrink:0 }}>
+              Tocca un termine → poi la definizione giusta
+            </div>
+          )}
+
+          {/* Round flash */}
+          {aRoundFlash && (
+            <div style={{ position:'absolute', inset:0, zIndex:20, display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(2,44,34,0.9)', animation:'fadeUp 0.2s ease' }}>
+              <div style={{ textAlign:'center' }}>
+                <div style={{ fontSize:52, marginBottom:8 }}>✅</div>
+                <div style={{ fontSize:18, fontWeight:900, color:'#34d399' }}>Round completato!</div>
+                <div style={{ fontSize:12, color:'rgba(255,255,255,0.4)', marginTop:6 }}>Prossime coppie in arrivo…</div>
+              </div>
+            </div>
+          )}
+
+          {/* Due colonne */}
+          <div style={{ flex:1, display:'flex', gap:10, padding:'0 14px 20px', overflowY:'auto' }}>
+            {/* Colonna sinistra — Termini */}
+            <div style={{ flex:1, display:'flex', flexDirection:'column', gap:8 }}>
+              <div style={{ fontSize:8, fontWeight:700, letterSpacing:2, color:'rgba(255,255,255,0.2)', textAlign:'center', marginBottom:2 }}>TERMINE</div>
+              {aLeftOrder.map(id => {
+                const pair = aPairs.find(p => p.id === id)!;
+                const matched = aMatched.includes(id);
+                const selected = aSelectedLeft === id;
+                const wrong = aWrong === id;
+                const correct = aCorrectFlash === id;
+                let bg = 'rgba(255,255,255,0.04)';
+                let border = '1px solid rgba(255,255,255,0.08)';
+                let tc = 'rgba(255,255,255,0.75)';
+                let opacity = matched ? 0 : 1;
+                let transform = wrong ? 'translateX(-6px)' : 'none';
+                if (selected) { bg = 'rgba(52,211,153,0.15)'; border = '1px solid #34d399'; tc = '#fff'; }
+                if (correct) { bg = 'rgba(34,197,94,0.2)'; border = '1px solid #22c55e'; }
+                if (wrong) { bg = 'rgba(239,68,68,0.15)'; border = '1px solid #ef4444'; }
+                return (
+                  <button key={id} onClick={() => !matched && aTapLeft(id)}
+                    style={{ padding:'12px 10px', borderRadius:14, border, background:bg, color:tc, fontFamily:'Montserrat, sans-serif', fontWeight:600, fontSize:11, lineHeight:1.5, cursor:matched?'default':'pointer', textAlign:'left', transition:'all 0.2s', opacity, transform, pointerEvents:matched?'none':'auto' }}>
+                    {pair.termine}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Colonna destra — Definizioni */}
+            <div style={{ flex:1, display:'flex', flexDirection:'column', gap:8 }}>
+              <div style={{ fontSize:8, fontWeight:700, letterSpacing:2, color:'rgba(255,255,255,0.2)', textAlign:'center', marginBottom:2 }}>DEFINIZIONE</div>
+              {aRightOrder.map(id => {
+                const pair = aPairs.find(p => p.id === id)!;
+                const matched = aMatched.includes(id);
+                const correct = aCorrectFlash === id;
+                const wrong = aWrong !== null && aSelectedLeft === aWrong && id === aSelectedLeft; // not applicable to right
+                let bg = 'rgba(255,255,255,0.04)';
+                let border = '1px solid rgba(255,255,255,0.08)';
+                let tc = 'rgba(255,255,255,0.75)';
+                let opacity = matched ? 0 : 1;
+                if (correct) { bg = 'rgba(34,197,94,0.2)'; border = '1px solid #22c55e'; tc = '#fff'; }
+                return (
+                  <button key={id} onClick={() => !matched && aTapRight(id)}
+                    style={{ padding:'12px 10px', borderRadius:14, border, background:bg, color:tc, fontFamily:'Montserrat, sans-serif', fontWeight:500, fontSize:11, lineHeight:1.5, cursor:matched?'default':'pointer', textAlign:'left', transition:'all 0.25s', opacity, pointerEvents:matched?'none':'auto' }}>
+                    {pair.definizione}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══ ABBINA GAME OVER ══ */}
+      {screen === 'abbina' && aOver && (
+        <div style={{ fontFamily:'Montserrat, sans-serif', background:'#0a0d18', minHeight:'100vh' }}>
+          <Header />
+          <div style={{ padding:'40px 16px 120px', maxWidth:500, margin:'0 auto', textAlign:'center', animation:'fadeUp 0.4s ease' }}>
+            <div style={{ fontSize:60, marginBottom:14 }}>{aVinto ? '🎓' : aScore >= 400 ? '🏆' : aScore >= 200 ? '🎯' : '💀'}</div>
+            <div style={{ fontSize:11, fontWeight:700, letterSpacing:3, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:8 }}>{aVinto ? 'Hai abbinato tutto!' : 'Partita terminata'}</div>
+            <div style={{ fontSize:44, fontWeight:900, color:'#34d399', marginBottom:4, letterSpacing:-2 }}>{aScore}</div>
+            <div style={{ fontSize:11, color:'rgba(255,255,255,0.3)', marginBottom:36 }}>punti · {aRound - 1} round completati</div>
+            <button onClick={() => startAbbina(materiaTarget)} style={{ width:'100%', padding:'16px', borderRadius:16, border:'none', background:'linear-gradient(135deg,#065f46,#059669)', color:'#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily:'Montserrat, sans-serif', marginBottom:10 }}>🔗 Rigioca</button>
+            <button onClick={() => setScreen('selezione')} style={{ width:'100%', padding:'15px', borderRadius:16, border:'0.5px solid rgba(255,255,255,0.08)', background:'#111526', color:'rgba(255,255,255,0.45)', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>← Scegli altro gioco</button>
+          </div>
+          <Footer />
         </div>
       )}
 
