@@ -511,7 +511,7 @@ function GiocaContent() {
 
       {/* ══ MILIONARIO ══ */}
       {screen === 'milionario' && !mOver && (
-        <div style={{ position:'fixed', inset:0, zIndex:100, background:'radial-gradient(ellipse at 50% 35%,#0d1f3c 0%,#030509 80%)', fontFamily:'Montserrat, sans-serif', display:'flex', flexDirection:'column', overflow:'clip' }}>
+        <div style={{ position:'fixed', inset:0, zIndex:100, background:'radial-gradient(ellipse at 50% 35%,#0d1f3c 0%,#030509 80%)', fontFamily:'Montserrat, sans-serif', display:'flex', flexDirection:'column', overflow:'hidden' }}>
           {/* TOP */}
           <div style={{ padding:'16px 20px 10px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
             <button onClick={() => setScreen('selezione')} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.35)', fontSize:13, cursor:'pointer', fontFamily:'Montserrat, sans-serif', padding:0 }}>← Esci</button>
@@ -555,7 +555,7 @@ function GiocaContent() {
           </div>
 
           {/* RISPOSTE */}
-          <div style={{ padding:'0 16px', flex:1, display:'flex', flexDirection:'column', gap:10, overflowY:'auto', minHeight:0 }}>
+          <div style={{ padding:'0 16px', flex:'1 1 0', display:'flex', flexDirection:'column', gap:10, overflowY:'auto' }}>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
               {mOpzioni.map((op, i) => {
                 const L = ['A','B','C','D'];
