@@ -11,6 +11,8 @@ import { carte as carteInternazionale, meta as metaInternazionale } from '@/src/
 import { carte as carteIntPrivato, meta as metaIntPrivato } from '@/src/data/cards/diritto-internazionale-privato';
 import { carte as carteRomano, meta as metaRomano } from '@/src/data/cards/diritto-romano';
 import { carte as carteLavoro, meta as metaLavoro } from '@/src/data/cards/diritto-del-lavoro';
+import { carte as cartePenale, meta as metaPenale } from '@/src/data/cards/diritto-penale';
+import { carte as carteUE, meta as metaUE } from '@/src/data/cards/diritto-ue';
 
 type Carta = { domanda: string; risposta: string };
 type Materia = { id: string; titolo: string; colore: string; bg: string; icona: string; carte: Carta[] };
@@ -25,6 +27,8 @@ const MATERIE: Materia[] = [
   { id: 'int-privato',    titolo: metaIntPrivato.titolo,      colore: metaIntPrivato.colore,      bg: metaIntPrivato.bg,      icona: metaIntPrivato.icona,      carte: carteIntPrivato },
   { id: 'romano',         titolo: metaRomano.titolo,          colore: metaRomano.colore,          bg: metaRomano.bg,          icona: metaRomano.icona,          carte: carteRomano },
   { id: 'lavoro',         titolo: metaLavoro.titolo,          colore: metaLavoro.colore,          bg: metaLavoro.bg,          icona: metaLavoro.icona,          carte: carteLavoro },
+  { id: 'penale',         titolo: metaPenale.titolo,          colore: metaPenale.colore,          bg: metaPenale.bg,          icona: metaPenale.icona,          carte: cartePenale },
+  { id: 'ue',             titolo: metaUE.titolo,              colore: metaUE.colore,              bg: metaUE.bg,              icona: metaUE.icona,              carte: carteUE },
 ];
 
 const SCALETTA = [
@@ -129,9 +133,16 @@ function GiocaContent() {
   const [tVite, setTVite] = useState(3);
   const [tScore, setTScore] = useState(0);
   const [tRisposta, setTRisposta] = useState<'corretta' | 'sbagliata' | null>(null);
+  const [tSelezionata, setTSelezionata] = useState<number | null>(null);
   const [tFlash, setTFlash] = useState<'correct' | 'wrong' | null>(null);
+  const [tRound, setTRound] = useState(1);
+  const [tQCount, setTQCount] = useState(0);
+  const [tRoundFlash, setTRoundFlash] = useState(false);
+  const [tVinto, setTVinto] = useState(false);
   const tPoolRef = useRef<Carta[]>([]);
   const tUsedRef = useRef<Set<string>>(new Set());
+  const tQCountRef = useRef(0);
+  const tRoundRef = useRef(1);
 
   // ── Abbina state ──
   const [aPairs, setAPairs] = useState<AbbinaPair[]>([]);
@@ -252,8 +263,11 @@ function GiocaContent() {
     tPoolRef.current = pool;
     tUsedRef.current = new Set();
     setMateriaTarget(materia);
-    setTVite(3); setTScore(0); setTSpinning(false); setTMateria(null); setTCarta(null); setTOpzioni([]); setTRisposta(null); setTFlash(null);
-    setTFase(materia ? 'question' : 'spin'); // single materia: go straight to question
+    setTVite(3); setTScore(0); setTSpinning(false); setTMateria(null); setTCarta(null); setTOpzioni([]); setTRisposta(null); setTSelezionata(null); setTFlash(null);
+    setTRound(1); tRoundRef.current = 1;
+    setTQCount(0); tQCountRef.current = 0;
+    setTRoundFlash(false); setTVinto(false);
+    setTFase(materia ? 'question' : 'spin');
     if (materia) {
       const card = mescola(materia.carte)[0];
       setTCarta(card);
@@ -287,6 +301,7 @@ function GiocaContent() {
   function tRispondi(idx: number) {
     if (tRisposta !== null || !tCarta) return;
     const corretta = tOpzioni[idx].corretta;
+    setTSelezionata(idx);
     setTRisposta(corretta ? 'corretta' : 'sbagliata');
     setTFlash(corretta ? 'correct' : 'wrong');
     setTimeout(() => setTFlash(null), 500);
@@ -301,18 +316,51 @@ function GiocaContent() {
     }
     setTimeout(() => {
       if (tVite > 1 || corretta) {
-        if (materiaTarget) {
-          // single materia: next question directly
-          const pool = materiaTarget.carte.filter(c => !tUsedRef.current.has(c.domanda));
-          const src = pool.length > 0 ? pool : materiaTarget.carte;
+        const newQ = tQCountRef.current + 1;
+        tQCountRef.current = newQ;
+        setTQCount(newQ);
+
+        function nextCard(mat: Materia) {
+          const pool = mat.carte.filter(c => !tUsedRef.current.has(c.domanda));
+          const src = pool.length > 0 ? pool : mat.carte;
           const card = mescola(src)[0];
           tUsedRef.current.add(card.domanda);
           setTCarta(card);
-          setTOpzioni(opzioniPer(materiaTarget.carte, card));
+          setTOpzioni(opzioniPer(mat.carte, card));
           setTRisposta(null);
+          setTSelezionata(null);
+        }
+
+        if (newQ >= 10) {
+          if (tRoundRef.current >= 3) {
+            setTVinto(true);
+            setTFase('over');
+          } else {
+            setTRoundFlash(true);
+            setTimeout(() => {
+              const next = tRoundRef.current + 1;
+              tRoundRef.current = next;
+              tQCountRef.current = 0;
+              setTRound(next);
+              setTQCount(0);
+              setTRoundFlash(false);
+              if (materiaTarget) {
+                nextCard(materiaTarget);
+              } else {
+                setTFase('spin');
+                setTRisposta(null);
+                setTSelezionata(null);
+              }
+            }, 2200);
+          }
         } else {
-          setTFase('spin');
-          setTRisposta(null);
+          if (materiaTarget) {
+            nextCard(materiaTarget);
+          } else {
+            setTFase('spin');
+            setTRisposta(null);
+            setTSelezionata(null);
+          }
         }
       }
     }, corretta ? 1500 : 2000);
@@ -320,7 +368,7 @@ function GiocaContent() {
 
   // ── Abbina functions ──
   function caricaRoundAbbina(pool: Carta[], offset: number, round: number) {
-    const slice = pool.slice(offset, offset + 4);
+    const slice = pool.slice(offset, offset + 6);
     if (slice.length < 2) { setAVinto(true); setAOver(true); return; }
     const pairs: AbbinaPair[] = slice.map(c => ({ id: c.domanda, termine: c.domanda, definizione: c.risposta }));
     const ids = pairs.map(p => p.id);
@@ -365,7 +413,7 @@ function GiocaContent() {
         setARoundFlash(true);
         setTimeout(() => {
           setARoundFlash(false);
-          const newOffset = aOffsetRef.current + 4;
+          const newOffset = aOffsetRef.current + 6;
           aOffsetRef.current = newOffset;
           caricaRoundAbbina(aPoolRef.current, newOffset, aRound + 1);
         }, 1200);
@@ -463,7 +511,7 @@ function GiocaContent() {
 
       {/* ══ MILIONARIO ══ */}
       {screen === 'milionario' && !mOver && (
-        <div style={{ position:'fixed', inset:0, zIndex:100, background:'radial-gradient(ellipse at 50% 35%,#0d1f3c 0%,#030509 80%)', fontFamily:'Montserrat, sans-serif', display:'flex', flexDirection:'column', overflow:'hidden' }}>
+        <div style={{ position:'fixed', inset:0, zIndex:100, background:'radial-gradient(ellipse at 50% 35%,#0d1f3c 0%,#030509 80%)', fontFamily:'Montserrat, sans-serif', display:'flex', flexDirection:'column', overflow:'clip' }}>
           {/* TOP */}
           <div style={{ padding:'16px 20px 10px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
             <button onClick={() => setScreen('selezione')} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.35)', fontSize:13, cursor:'pointer', fontFamily:'Montserrat, sans-serif', padding:0 }}>← Esci</button>
@@ -507,7 +555,7 @@ function GiocaContent() {
           </div>
 
           {/* RISPOSTE */}
-          <div style={{ padding:'0 16px', flex:1, display:'flex', flexDirection:'column', gap:10 }}>
+          <div style={{ padding:'0 16px', flex:1, display:'flex', flexDirection:'column', gap:10, overflowY:'auto', minHeight:0 }}>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
               {mOpzioni.map((op, i) => {
                 const L = ['A','B','C','D'];
@@ -527,7 +575,7 @@ function GiocaContent() {
                 else if (mProf===i) { border='1.5px solid rgba(34,197,94,0.55)'; lc='#22c55e'; }
                 return (
                   <button key={i} onClick={() => !elim && mFase==='scelta' && mSeleziona(i)}
-                    style={{ textAlign:'left', padding:'12px 12px', borderRadius:16, border, background:bg, color:tc, fontFamily:'Montserrat, sans-serif', cursor:elim||mFase!=='scelta'?'default':'pointer', display:'flex', gap:8, alignItems:'flex-start', minHeight:70, transition:'background 0.3s,border 0.3s', animation:anim }}>
+                    style={{ textAlign:'left', padding:'12px 12px', borderRadius:16, border, background:bg, color:tc, fontFamily:'Montserrat, sans-serif', cursor:elim||mFase!=='scelta'?'default':'pointer', display:'flex', gap:8, alignItems:'flex-start', minHeight:60, transition:'background 0.3s,border 0.3s', animation:anim }}>
                     <span style={{ fontSize:11, fontWeight:900, color:lc, flexShrink:0, minWidth:14, paddingTop:1 }}>{L[i]}</span>
                     <span style={{ fontSize:11, fontWeight:600, lineHeight:1.55 }}>{elim?'':op.testo}</span>
                   </button>
@@ -550,15 +598,17 @@ function GiocaContent() {
                 ))}
               </div>
             )}
+          </div>
 
-            {/* Conferma */}
-            {mFase==='conferma' && (
+          {/* Conferma — sempre visibile in fondo */}
+          {mFase==='conferma' && (
+            <div style={{ padding:'10px 16px 20px', flexShrink:0 }}>
               <div style={{ display:'flex', gap:10 }}>
                 <button onClick={mCambia} style={{ flex:1, padding:'14px', borderRadius:16, border:'1px solid rgba(255,255,255,0.1)', background:'rgba(255,255,255,0.04)', color:'rgba(255,255,255,0.55)', fontFamily:'Montserrat, sans-serif', fontWeight:700, fontSize:13, cursor:'pointer' }}>← Cambia</button>
                 <button onClick={mConferma} style={{ flex:2, padding:'14px', borderRadius:16, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:900, fontSize:14, cursor:'pointer' }}>✓ Risposta finale!</button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Scaletta overlay */}
           {mScaletta && (
@@ -601,8 +651,8 @@ function GiocaContent() {
           <div style={{ padding:'16px 20px 10px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
             <button onClick={() => setScreen('selezione')} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.35)', fontSize:13, cursor:'pointer', fontFamily:'Montserrat, sans-serif', padding:0 }}>← Esci</button>
             <div style={{ textAlign:'center' }}>
-              <div style={{ fontSize:8, fontWeight:700, letterSpacing:3, color:'rgba(180,130,255,0.6)', textTransform:'uppercase' }}>Trivia</div>
-              <div style={{ fontSize:15, fontWeight:900, color:'#c4b5fd', letterSpacing:1 }}>TRACK</div>
+              <div style={{ fontSize:8, fontWeight:700, letterSpacing:3, color:'rgba(180,130,255,0.6)', textTransform:'uppercase' }}>Trivia Track</div>
+              <div style={{ fontSize:11, fontWeight:800, color:'#c4b5fd' }}>Round {tRound}/3 · {tQCount}/10</div>
             </div>
             <div style={{ display:'flex', gap:12, alignItems:'center' }}>
               <span style={{ fontSize:14, fontWeight:900, color:'#fbbf24' }}>⭐ {tScore}</span>
@@ -610,17 +660,47 @@ function GiocaContent() {
             </div>
           </div>
 
-          <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'flex-start', padding:'0 16px', gap:16, overflowY:'auto' }}>
+          {/* Round flash overlay */}
+          {tRoundFlash && (
+            <div style={{ position:'absolute', inset:0, zIndex:20, display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(10,4,30,0.93)' }}>
+              <div style={{ textAlign:'center', animation:'fadeUp 0.25s ease' }}>
+                <div style={{ fontSize:56, marginBottom:10 }}>⭐</div>
+                <div style={{ fontSize:22, fontWeight:900, color:'#c4b5fd', marginBottom:6 }}>Round {tRound} completato!</div>
+                <div style={{ fontSize:12, color:'rgba(255,255,255,0.35)' }}>
+                  {tRound < 3 ? `Prossimo round in arrivo…` : ''}
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:(!materiaTarget && tFase==='spin') ? 'center' : 'flex-start', padding:'0 16px 20px', gap:14, overflowY:'auto' }}>
 
             {/* Ruota (solo tutte le materie) */}
             {!materiaTarget && (
-              <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:14, marginTop:8 }}>
+              <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap: tFase==='spin' ? 18 : 8, transition:'gap 0.45s ease' }}>
                 {/* Pointer */}
-                <div style={{ fontSize:22, animation:'pulseStar 1.2s ease infinite', color:'#fbbf24' }}>▼</div>
-                <WheelSVG rotation={tRotazione} size={240} />
+                <div style={{ fontSize: tFase==='spin' ? 28 : 18, color:'#fbbf24', animation:'pulseStar 1.2s ease infinite', transition:'font-size 0.45s ease', lineHeight:1 }}>▼</div>
+                {/* Wheel con shrink animato */}
+                <div style={{
+                  width:  tFase==='spin' ? 300 : 150,
+                  height: tFase==='spin' ? 300 : 150,
+                  overflow:'hidden',
+                  flexShrink:0,
+                  position:'relative',
+                  transition:'width 0.5s cubic-bezier(0.4,0,0.2,1), height 0.5s cubic-bezier(0.4,0,0.2,1)',
+                }}>
+                  <div style={{
+                    position:'absolute', top:0, left:0,
+                    transformOrigin:'top left',
+                    transform:`scale(${tFase==='spin' ? 1 : 0.5})`,
+                    transition:'transform 0.5s cubic-bezier(0.4,0,0.2,1)',
+                  }}>
+                    <WheelSVG rotation={tRotazione} size={300} />
+                  </div>
+                </div>
                 {tFase === 'spin' && (
                   <button onClick={tSpin} disabled={tSpinning}
-                    style={{ padding:'14px 36px', borderRadius:20, border:'none', background:tSpinning?'rgba(255,255,255,0.06)':'linear-gradient(135deg,#6d28d9,#7c3aed)', color:'#fff', fontWeight:900, fontSize:15, cursor:tSpinning?'default':'pointer', fontFamily:'Montserrat, sans-serif', opacity:tSpinning?0.5:1, transition:'opacity 0.3s' }}>
+                    style={{ padding:'14px 40px', borderRadius:20, border:'none', background:tSpinning?'rgba(255,255,255,0.06)':'linear-gradient(135deg,#6d28d9,#7c3aed)', color:'#fff', fontWeight:900, fontSize:16, cursor:tSpinning?'default':'pointer', fontFamily:'Montserrat, sans-serif', opacity:tSpinning?0.5:1, transition:'opacity 0.3s' }}>
                     {tSpinning ? 'Girando…' : '🎡 Gira!'}
                   </button>
                 )}
@@ -655,9 +735,8 @@ function GiocaContent() {
                     let bg='linear-gradient(135deg,#1a0a3a,#0a0416)', border='1.5px solid rgba(196,181,253,0.18)', tc='rgba(255,255,255,0.88)', lc='#c4b5fd';
                     if (answered) {
                       if (op.corretta) { bg='linear-gradient(135deg,#14532d,#166534)'; border='1.5px solid #22c55e'; tc='#fff'; }
-                      else if (tRisposta==='sbagliata' && !op.corretta && tOpzioni.indexOf(op)===tOpzioni.findIndex((_,j) => j===i && !tOpzioni[j].corretta && tOpzioni.findIndex(o=>o.corretta) !== j)) {
-                        // Check if this was the selected one
-                      } else { bg='rgba(0,0,0,0.2)'; border='1.5px solid rgba(255,255,255,0.04)'; tc='rgba(255,255,255,0.25)'; lc='rgba(255,255,255,0.15)'; }
+                      else if (i === tSelezionata) { bg='linear-gradient(135deg,#450a0a,#7f1d1d)'; border='1.5px solid #ef4444'; tc='#fff'; }
+                      else { bg='rgba(0,0,0,0.2)'; border='1.5px solid rgba(255,255,255,0.04)'; tc='rgba(255,255,255,0.25)'; lc='rgba(255,255,255,0.15)'; }
                     }
                     return (
                       <button key={i} onClick={() => !answered && tRispondi(i)}
@@ -797,10 +876,10 @@ function GiocaContent() {
         <div style={{ fontFamily:'Montserrat, sans-serif', background:'#0a0d18', minHeight:'100vh' }}>
           <Header />
           <div style={{ padding:'40px 16px 120px', maxWidth:500, margin:'0 auto', textAlign:'center', animation:'fadeUp 0.4s ease' }}>
-            <div style={{ fontSize:60, marginBottom:14 }}>{tScore >= 500 ? '🏆' : tScore >= 200 ? '🎯' : '💀'}</div>
-            <div style={{ fontSize:11, fontWeight:700, letterSpacing:3, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:8 }}>Partita terminata</div>
+            <div style={{ fontSize:60, marginBottom:14 }}>{tVinto ? '🎓' : tScore >= 500 ? '🏆' : tScore >= 200 ? '🎯' : '💀'}</div>
+            <div style={{ fontSize:11, fontWeight:700, letterSpacing:3, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:8 }}>{tVinto ? 'HAI VINTO!' : 'Partita terminata'}</div>
             <div style={{ fontSize:44, fontWeight:900, color:'#fbbf24', marginBottom:4, letterSpacing:-2 }}>{tScore}</div>
-            <div style={{ fontSize:11, color:'rgba(255,255,255,0.3)', marginBottom:36 }}>punti</div>
+            <div style={{ fontSize:11, color:'rgba(255,255,255,0.3)', marginBottom:36 }}>{tVinto ? '3 round completati' : 'punti'}</div>
             <button onClick={() => startTrivia(materiaTarget)} style={{ width:'100%', padding:'16px', borderRadius:16, border:'none', background:'linear-gradient(135deg,#6d28d9,#7c3aed)', color:'#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily:'Montserrat, sans-serif', marginBottom:10 }}>🎡 Rigioca</button>
             <button onClick={() => setScreen('selezione')} style={{ width:'100%', padding:'15px', borderRadius:16, border:'0.5px solid rgba(255,255,255,0.08)', background:'#111526', color:'rgba(255,255,255,0.45)', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>← Scegli altro gioco</button>
           </div>

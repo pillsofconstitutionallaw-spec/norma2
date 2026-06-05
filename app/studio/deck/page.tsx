@@ -11,6 +11,7 @@ import { carte as carteInternazionale, meta as metaInternazionale } from '@/src/
 import { carte as carteIntPrivato, meta as metaIntPrivato } from '@/src/data/cards/diritto-internazionale-privato';
 import { carte as carteRomano, meta as metaRomano } from '@/src/data/cards/diritto-romano';
 import { carte as carteLavoro, meta as metaLavoro } from '@/src/data/cards/diritto-del-lavoro';
+import { carte as carteUE, meta as metaUE } from '@/src/data/cards/diritto-ue';
 
 type Carta = { domanda: string; risposta: string };
 type Materia = { id: string; titolo: string; colore: string; bg: string; icona: string; carte: Carta[] };
@@ -23,6 +24,7 @@ const MATERIE: Materia[] = [
   { id: 'diritto-internazionale-privato', titolo: metaIntPrivato.titolo,   colore: metaIntPrivato.colore,     bg: metaIntPrivato.bg,     icona: metaIntPrivato.icona,     carte: carteIntPrivato },
   { id: 'diritto-romano',               titolo: metaRomano.titolo,         colore: metaRomano.colore,         bg: metaRomano.bg,         icona: metaRomano.icona,         carte: carteRomano },
   { id: 'diritto-del-lavoro',           titolo: metaLavoro.titolo,         colore: metaLavoro.colore,         bg: metaLavoro.bg,         icona: metaLavoro.icona,         carte: carteLavoro },
+  { id: 'diritto-ue',                   titolo: metaUE.titolo,             colore: metaUE.colore,             bg: metaUE.bg,             icona: metaUE.icona,             carte: carteUE },
 ];
 
 const STORAGE_KEY = 'norma_flashcard_segnalibro';
