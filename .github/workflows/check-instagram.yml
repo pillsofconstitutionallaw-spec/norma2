@@ -1,0 +1,16 @@
+name: Controlla Instagram
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chiama endpoint controlla-instagram
+        run: |
+          curl -s -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "https://norma2.vercel.app/api/controlla-instagram"
