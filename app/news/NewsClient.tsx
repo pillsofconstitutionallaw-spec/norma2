@@ -85,6 +85,95 @@ function labelGiorno(isoString: string): string {
   }
 }
 
+function NewsCard({ item }: { item: NewsItem }) {
+  const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const colFonte = COLORE_FONTE[item.fonte] ?? '#8fd3ff';
+
+  function share(e: React.MouseEvent) {
+    e.preventDefault();
+    if (navigator.share) navigator.share({ title: item.titolo, url: item.link }).catch(() => {});
+  }
+
+  function toggleSave(e: React.MouseEvent) {
+    e.preventDefault();
+    setSaved(s => !s);
+    navigator.vibrate?.(6);
+  }
+
+  return (
+    <article style={{ background: '#0a0d18', borderBottom: '0.5px solid rgba(255,255,255,0.07)', paddingBottom: 2 }}>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px' }}>
+        <div style={{ width: 36, height: 36, borderRadius: '50%', flexShrink: 0, background: colFonte + '22', border: `1.5px solid ${colFonte}44`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontSize: 14, fontWeight: 900, color: colFonte, fontFamily: 'Montserrat, sans-serif' }}>{item.fonte[0]}</span>
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 12.5, fontWeight: 800, color: '#fff', fontFamily: 'Montserrat, sans-serif', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.fonte}</div>
+          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.38)', fontFamily: 'Montserrat, sans-serif' }}>{item.categoria}</div>
+        </div>
+        <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 6px', color: 'rgba(255,255,255,0.55)', fontSize: 18, lineHeight: 1, letterSpacing: 1 }}>···</button>
+      </div>
+
+      {/* Media 4:5 */}
+      <a href={item.link} target="_blank" rel="noreferrer noopener" aria-label={item.titolo}
+        style={{ display: 'block', position: 'relative', aspectRatio: '4/5', background: '#07162b', overflow: 'hidden', textDecoration: 'none' }}>
+        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${colFonte}12 0%, #07162b 60%)` }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 100%)' }} />
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 14px 20px' }}>
+          <div style={{ fontSize: 20, fontWeight: 900, color: '#fff', lineHeight: 1.15, letterSpacing: -0.3, fontFamily: 'Montserrat, sans-serif' }}>{item.titolo}</div>
+        </div>
+      </a>
+
+      {/* Azioni */}
+      <div style={{ display: 'flex', alignItems: 'center', padding: '10px 14px 6px', gap: 16 }}>
+        <button aria-label={liked ? 'Togli like' : 'Metti like'}
+          onClick={e => { e.preventDefault(); setLiked(l => !l); navigator.vibrate?.(6); }}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill={liked ? '#ef4444' : 'none'} stroke={liked ? '#ef4444' : 'rgba(255,255,255,0.85)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'fill 0.15s, stroke 0.15s' }}>
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+        <a href={item.link} target="_blank" rel="noreferrer noopener" aria-label="Leggi e commenta" style={{ display: 'flex', alignItems: 'center' }}>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </a>
+        <button aria-label="Condividi" onClick={share} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2" fill="rgba(255,255,255,0.85)" stroke="none"/>
+          </svg>
+        </button>
+        <button aria-label={saved ? 'Rimuovi dai salvati' : 'Salva'} onClick={toggleSave}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill={saved ? '#8fd3ff' : 'none'} stroke={saved ? '#8fd3ff' : 'rgba(255,255,255,0.85)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'fill 0.15s, stroke 0.15s' }}>
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+          </svg>
+        </button>
+      </div>
+
+      {/* Caption */}
+      <div style={{ padding: '2px 14px 12px' }}>
+        {item.anteprima && (
+          <div style={{ fontSize: 13, lineHeight: 1.55, fontFamily: 'Montserrat, sans-serif', color: 'rgba(255,255,255,0.85)', marginBottom: 7 }}>
+            <span style={{ fontWeight: 800, color: '#fff', marginRight: 6 }}>{item.fonte}</span>
+            <span style={{ color: 'rgba(255,255,255,0.7)', fontWeight: 400 }}>{item.anteprima}</span>
+          </div>
+        )}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <a href={item.link} target="_blank" rel="noreferrer noopener"
+            style={{ fontSize: 11.5, fontWeight: 700, color: colFonte, textDecoration: 'none', fontFamily: 'Montserrat, sans-serif' }}>
+            Leggi la notizia →
+          </a>
+          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', fontFamily: 'Montserrat, sans-serif' }}>{dataRelativa(item.data)}</span>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function NewsClient({
   news,
   aggiornato,
@@ -185,7 +274,7 @@ export default function NewsClient({
         </div>
 
         {/* NEWS */}
-        <div style={{ padding: '0 16px 140px' }}>
+        <div style={{ paddingBottom: 140 }}>
           {filtrate.length === 0 ? (
             <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.25)', fontSize: 13, marginTop: 48 }}>
               Nessuna notizia disponibile al momento
@@ -196,107 +285,27 @@ export default function NewsClient({
                 <div style={{
                   fontSize: 9, fontWeight: 700, letterSpacing: 3,
                   textTransform: 'uppercase', color: 'rgba(255,255,255,0.28)',
-                  margin: gi === 0 ? '0 0 12px' : '20px 0 12px',
+                  margin: gi === 0 ? '0 16px 12px' : '4px 16px 12px',
                   display: 'flex', alignItems: 'center', gap: 8,
                 }}>
                   <div style={{ width: 20, height: 1, background: 'rgba(255,255,255,0.08)' }} />
                   {gruppo.label}
                   <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.04)' }} />
                 </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  {gruppo.items.map((item, ii) => {
-                    const colFonte = COLORE_FONTE[item.fonte] ?? '#8fd3ff';
-                    const colCat = COLORE_CATEGORIA[item.categoria] ?? '#8fd3ff';
-                    const titolo = decodeHtml(item.titolo);
-                    const anteprima = decodeHtml(item.anteprima);
-
-                    return (
-                      <a
-                        key={ii}
-                        href={item.link}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="news-card-link"
-                      >
-                        <div style={{
-                          background: '#111526',
-                          borderRadius: 16,
-                          border: '0.5px solid rgba(255,255,255,0.06)',
-                          padding: '13px 14px',
-                          display: 'flex', flexDirection: 'column', gap: 8,
-                        }}>
-                          {/* Meta */}
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                            <div style={{
-                              background: `${colFonte}14`, border: `0.5px solid ${colFonte}30`,
-                              borderRadius: 5, padding: '2px 7px',
-                              fontSize: 8, fontWeight: 700, color: colFonte,
-                              letterSpacing: 0.8, textTransform: 'uppercase' as const,
-                            }}>
-                              {item.fonte}
-                            </div>
-                            <div style={{
-                              background: `${colCat}0e`, border: `0.5px solid ${colCat}28`,
-                              borderRadius: 5, padding: '2px 7px',
-                              fontSize: 8, fontWeight: 700, color: colCat,
-                              letterSpacing: 0.8, textTransform: 'uppercase' as const,
-                            }}>
-                              {item.categoria}
-                            </div>
-                            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginLeft: 'auto' }}>
-                              {dataRelativa(item.data)}
-                            </span>
-                          </div>
-
-                          {/* Titolo — decodificato */}
-                          <div style={{ fontSize: 13.5, fontWeight: 800, color: '#fff', lineHeight: 1.35 }}>
-                            {titolo}
-                          </div>
-
-                          {/* Anteprima — decodificata */}
-                          {anteprima && (
-                            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8 }}>
-                              <div style={{
-                                fontSize: 11.5, color: 'rgba(255,255,255,0.38)',
-                                lineHeight: 1.55, flex: 1,
-                              }}>
-                                {anteprima}{anteprima.length >= 158 ? '…' : ''}
-                              </div>
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                stroke="rgba(255,255,255,0.2)" strokeWidth="2.5" strokeLinecap="round"
-                                style={{ flexShrink: 0 }}>
-                                <path d="M9 18l6-6-6-6" />
-                              </svg>
-                            </div>
-                          )}
-                        </div>
-                      </a>
-                    );
-                  })}
-                </div>
+                {gruppo.items.map((item, ii) => (
+                  <NewsCard key={ii} item={{ ...item, titolo: decodeHtml(item.titolo), anteprima: decodeHtml(item.anteprima) }} />
+                ))}
               </div>
             ))
           )}
 
-          <div style={{
-            marginTop: 24, background: 'rgba(143,211,255,0.04)',
-            border: '0.5px solid rgba(143,211,255,0.1)',
-            borderRadius: 14, padding: '14px',
-            display: 'flex', alignItems: 'center', gap: 12,
-          }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="rgba(143,211,255,0.45)" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0 }}>
-              <path d="M21 2H3v16h5l3 3 3-3h7V2z" />
-              <path d="M8 8h8M8 12h5" />
+          <div style={{ margin: '24px 16px 0', background: 'rgba(143,211,255,0.04)', border: '0.5px solid rgba(143,211,255,0.1)', borderRadius: 14, padding: '14px', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(143,211,255,0.45)" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0 }}>
+              <path d="M21 2H3v16h5l3 3 3-3h7V2z" /><path d="M8 8h8M8 12h5" />
             </svg>
             <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(143,211,255,0.65)', marginBottom: 2 }}>
-                Fonti ufficiali
-              </div>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', lineHeight: 1.5 }}>
-                Altalex · Gazzetta Ufficiale · Diritto.it · Corte Costituzionale
-              </div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(143,211,255,0.65)', marginBottom: 2 }}>Fonti ufficiali</div>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', lineHeight: 1.5 }}>Altalex · Gazzetta Ufficiale · Diritto.it · Corte Costituzionale</div>
             </div>
           </div>
         </div>

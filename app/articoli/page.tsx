@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Link from 'next/link';
+import FeedCard from '@/components/home/FeedCard';
 
 const staticCategories = [
   { id: 48, name: 'Penale' },
@@ -75,7 +75,7 @@ export default function ArticoliPage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [activeCat, setActiveCat] = useState<string>('');
+  const [activeCat] = useState<string>('');
   const [storyOpen, setStoryOpen] = useState(false);
   const [storyCatName, setStoryCatName] = useState('');
   const [storyPosts, setStoryPosts] = useState<any[]>([]);
@@ -216,10 +216,6 @@ export default function ArticoliPage() {
     }
   }
 
-  async function filterByCategory(catName: string) {
-    setActiveCat(catName === activeCat ? '' : catName);
-  }
-
   return (
     <div style={{ minHeight: '100vh', background: '#050816', color: '#fff', fontFamily: "'Montserrat', sans-serif", paddingBottom: 100 }}>
       <Header />
@@ -260,70 +256,30 @@ export default function ArticoliPage() {
       </div>
 
       {/* Feed articoli */}
-      <div style={{ padding: '14px 12px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div>
         {loading ? (
-          Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} style={{ aspectRatio: '4/5', borderRadius: 20, background: '#0d1829', border: '0.5px solid rgba(255,255,255,0.06)' }} />
+          <div style={{ padding: '14px 12px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} style={{ aspectRatio: '4/5', borderRadius: 20, background: '#0d1829', border: '0.5px solid rgba(255,255,255,0.06)' }} />
+            ))}
+          </div>
+        ) : (
+          posts.map((post, i) => (
+            <FeedCard key={post.id ?? `${post.slug}-${i}`} post={post} />
           ))
-        ) : posts.map((post, i) => {
-          const isOdl = post._source === 'odl';
-          const img = post?._embedded?.['wp:featuredmedia']?.[0]?.source_url;
-          const cat = post?._embedded?.['wp:term']?.[0]?.[0]?.name || '';
-          const autore = post?._embedded?.['author']?.[0]?.name || '';
-          const data = post?.date ? new Date(post.date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' }) : '';
-          const tempoLettura = Math.ceil((post?.content?.rendered?.replace(/<[^>]+>/g, '').split(' ').length || 0) / 200);
-          const href = isOdl ? post.link : `/articoli/${post.slug}`;
-
-          return (
-            <Link
-              key={i}
-              href={href}
-              target={isOdl ? '_blank' : '_self'}
-              style={{ display: 'block', position: 'relative', aspectRatio: '4/5', overflow: 'hidden', background: '#07162b', textDecoration: 'none', borderRadius: 20, border: '0.5px solid rgba(255,255,255,0.06)' }}
-            >
-              {img && (
-                <img src={img} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-              )}
-              <div style={{ position: 'absolute', inset: 0, background: img ? 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.1) 100%)' : 'linear-gradient(135deg,#0d1f3c,#07162b)' }} />
-
-              {/* Badge OG/OdD + categoria */}
-              <div style={{ position: 'absolute', top: 14, left: 14, display: 'flex', gap: 6, alignItems: 'center' }}>
-                <div style={{ padding: '4px 10px', borderRadius: 99, background: isOdl ? 'rgba(168,200,240,0.12)' : 'rgba(143,211,255,0.12)', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(143,211,255,0.3)'}`, fontSize: 8, fontWeight: 800, color: isOdl ? '#a8c8f0' : '#8fd3ff', letterSpacing: 1 }}>
-                  {isOdl ? 'OdD' : 'OG'}
-                </div>
-                {cat && (
-                  <div style={{ padding: '4px 10px', borderRadius: 99, background: 'rgba(0,0,0,0.3)', border: '0.5px solid rgba(255,255,255,0.1)', fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.6)' }}>
-                    {cat}
-                  </div>
-                )}
-              </div>
-
-              {/* Contenuto in basso */}
-              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px 18px 24px' }}>
-                <div
-                  style={{ fontSize: 20, fontWeight: 900, color: '#fff', lineHeight: 1.15, letterSpacing: -0.3, marginBottom: 10 }}
-                  dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }}
-                />
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)' }}>
-                    {autore && `${autore} · `}{data}{tempoLettura > 0 && ` · ${tempoLettura} min`}
-                  </div>
-                  <div style={{ fontSize: 9, fontWeight: 800, color: isOdl ? '#a8c8f0' : '#8fd3ff', letterSpacing: 1 }}>LEGGI →</div>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
+        )}
 
         {/* Carica altri */}
         {hasMore && !loading && (
-          <button
-            onClick={loadMore}
-            disabled={loadingMore}
-            style={{ width: '100%', padding: 14, borderRadius: 16, background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 800, letterSpacing: 1, cursor: 'pointer' }}
-          >
-            {loadingMore ? '...' : 'CARICA ALTRI'}
-          </button>
+          <div style={{ padding: '8px 16px 4px' }}>
+            <button
+              onClick={loadMore}
+              disabled={loadingMore}
+              style={{ width: '100%', padding: 14, borderRadius: 16, background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 800, letterSpacing: 1, cursor: 'pointer' }}
+            >
+              {loadingMore ? '...' : 'CARICA ALTRI'}
+            </button>
+          </div>
         )}
       </div>
 

@@ -471,17 +471,20 @@ function GiocaContent() {
             {/* Quiz Generale */}
             <div style={{ background:'linear-gradient(135deg,#0d1f3c,#061224)', border:'1px solid rgba(56,189,248,0.2)', borderRadius:20, padding:'20px 18px', marginBottom:20 }}>
               <div style={{ fontSize:9, fontWeight:700, letterSpacing:3, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:6 }}>Quiz Generale</div>
-              <div style={{ fontSize:15, fontWeight:800, color:'#fff', marginBottom:4 }}>🎓 Tutte le materie</div>
+              <div style={{ fontSize:15, fontWeight:800, color:'#fff', marginBottom:4 }}>Tutte le materie</div>
               <div style={{ fontSize:11, color:'rgba(255,255,255,0.35)', marginBottom:18 }}>{MATERIE.reduce((s,m) => s+m.carte.length, 0)} domande dal pool completo</div>
               <div style={{ display:'flex', gap:8 }}>
-                <button onClick={() => startMilionario(null)} style={{ flex:1, padding:'13px 6px', borderRadius:14, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:11, cursor:'pointer' }}>
-                  🎓 Laureato
+                <button onClick={() => startMilionario(null)} style={{ flex:1, padding:'14px 6px 10px', borderRadius:14, border:'1px solid rgba(251,191,36,0.25)', background:'linear-gradient(135deg,#1c0e00,#2d1a00)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:10, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
+                  <img src="/game-logo-laureato.png" alt="Chi vuole essere Laureato" style={{ width:52, height:52, borderRadius:'50%', objectFit:'cover', display:'block' }} />
+                  <span style={{ color:'#fbbf24', lineHeight:1.2, textAlign:'center' }}>Chi vuole essere Laureato</span>
                 </button>
-                <button onClick={() => startTrivia(null)} style={{ flex:1, padding:'13px 6px', borderRadius:14, border:'none', background:'linear-gradient(135deg,#4c1d95,#6d28d9)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:11, cursor:'pointer' }}>
-                  🎡 Trivia
+                <button onClick={() => startTrivia(null)} style={{ flex:1, padding:'14px 6px 10px', borderRadius:14, border:'1px solid rgba(196,181,253,0.25)', background:'linear-gradient(135deg,#0d0520,#1a0a3a)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:10, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
+                  <img src="/game-logo-trivia.png" alt="Trivia Track" style={{ width:52, height:52, borderRadius:'50%', objectFit:'cover', display:'block' }} />
+                  <span style={{ color:'#c4b5fd', lineHeight:1.2, textAlign:'center' }}>Trivia Track</span>
                 </button>
-                <button onClick={() => startAbbina(null)} style={{ flex:1, padding:'13px 6px', borderRadius:14, border:'none', background:'linear-gradient(135deg,#065f46,#059669)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:11, cursor:'pointer' }}>
-                  🔗 Abbina
+                <button onClick={() => startAbbina(null)} style={{ flex:1, padding:'14px 6px 10px', borderRadius:14, border:'1px solid rgba(52,211,153,0.25)', background:'linear-gradient(135deg,#001a10,#022c22)', color:'#fff', fontFamily:'Montserrat, sans-serif', fontWeight:800, fontSize:10, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
+                  <img src="/game-logo-abbina.png" alt="Associa le Definizioni" style={{ width:52, height:52, borderRadius:'50%', objectFit:'cover', display:'block' }} />
+                  <span style={{ color:'#34d399', lineHeight:1.2, textAlign:'center' }}>Associa le Definizioni</span>
                 </button>
               </div>
             </div>
@@ -497,9 +500,15 @@ function GiocaContent() {
                     <div style={{ fontSize:10, color:'rgba(255,255,255,0.3)' }}>{m.carte.length} carte</div>
                   </div>
                   <div style={{ display:'flex', gap:6, flexShrink:0 }}>
-                    <button onClick={() => startMilionario(m)} style={{ padding:'9px 11px', borderRadius:12, border:'none', background:'linear-gradient(135deg,#b45309,#d97706)', color:'#fff', fontWeight:800, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>🎓</button>
-                    <button onClick={() => startTrivia(m)} style={{ padding:'9px 11px', borderRadius:12, border:`0.5px solid ${m.colore}55`, background:`${m.colore}18`, color:m.colore, fontWeight:800, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>🎡</button>
-                    <button onClick={() => startAbbina(m)} style={{ padding:'9px 11px', borderRadius:12, border:'0.5px solid rgba(5,150,105,0.4)', background:'rgba(5,150,105,0.12)', color:'#34d399', fontWeight:800, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>🔗</button>
+                    <button onClick={() => startMilionario(m)} style={{ padding:'6px', borderRadius:12, border:'1px solid rgba(251,191,36,0.3)', background:'linear-gradient(135deg,#1c0e00,#2d1a00)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                      <img src="/game-logo-laureato.png" alt="Laureato" style={{ width:32, height:32, borderRadius:'50%', objectFit:'cover', display:'block' }} />
+                    </button>
+                    <button onClick={() => startTrivia(m)} style={{ padding:'6px', borderRadius:12, border:'1px solid rgba(196,181,253,0.3)', background:'linear-gradient(135deg,#0d0520,#1a0a3a)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                      <img src="/game-logo-trivia.png" alt="Trivia" style={{ width:32, height:32, borderRadius:'50%', objectFit:'cover', display:'block' }} />
+                    </button>
+                    <button onClick={() => startAbbina(m)} style={{ padding:'6px', borderRadius:12, border:'1px solid rgba(52,211,153,0.3)', background:'linear-gradient(135deg,#001a10,#022c22)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                      <img src="/game-logo-abbina.png" alt="Abbina" style={{ width:32, height:32, borderRadius:'50%', objectFit:'cover', display:'block' }} />
+                    </button>
                   </div>
                 </div>
               ))}

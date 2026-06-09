@@ -15,8 +15,8 @@ export async function GET() {
   try {
     const [catsRes, ogRes, odlRes, fascicoloRes] = await Promise.all([
       fetch('https://orizzontegiuridico.com/wp-json/wp/v2/categories?per_page=100', { next: { revalidate: 300 } }),
-      fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=3', { next: { revalidate: 300 } }),
-      fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=3', { next: { revalidate: 300 } }),
+      fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=6', { next: { revalidate: 300 } }),
+      fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=4', { next: { revalidate: 300 } }),
       fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/media?mime_type=application/pdf&per_page=1&orderby=date&order=desc', { next: { revalidate: 300 } }),
     ]);
 
@@ -31,7 +31,7 @@ export async function GET() {
     const odlPosts = Array.isArray(odl) ? odl.map((p: any) => ({ ...p, _source: 'odl' })) : [];
     const articles = [...ogPosts, ...odlPosts]
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      .slice(0, 3);
+      .slice(0, 10);
 
     const fascicolo = Array.isArray(fascicoli) && fascicoli.length > 0
       ? { url: fascicoli[0].source_url, title: fascicoli[0].title?.rendered || 'Ultimo fascicolo' }
