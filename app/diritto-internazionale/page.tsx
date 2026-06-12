@@ -322,6 +322,79 @@ Si distinguono dai principi propri dell'ordinamento internazionale, ricavati per
           { n: 'Principio di precauzione', caso: 'Fondamento dell\'azione climatica', testo: 'L\'Accordo si fonda sul principio di precauzione e sullo sviluppo sostenibile, già affermati nella Dichiarazione di Rio del 1992.', link: 'https://unfccc.int' },
         ],
       },
+      {
+        nome: 'Convenzione di Vienna sulle relazioni consolari (1963)',
+        def: `Codifica il diritto consuetudinario sulle relazioni consolari, parallela a quella sulle relazioni diplomatiche del 1961. Disciplina funzioni, immunità e privilegi dei consoli e, in particolare, il diritto dello straniero arrestato a comunicare con il proprio consolato.`,
+        esempi: ['Funzioni consolari (assistenza ai cittadini)', 'Immunità funzionale dei consoli', 'Art. 36 — notifica consolare allo straniero arrestato', 'Inviolabilità degli archivi consolari'],
+        rifLabel: 'Giurisprudenza',
+        rif: [
+          { n: 'CIG, LaGrand (2001)', caso: 'Diritto alla notifica consolare', testo: 'L\'art. 36 attribuisce diritti individuali allo straniero arrestato; gli USA hanno violato la Convenzione non informando i fratelli LaGrand del diritto all\'assistenza consolare.', link: 'https://www.icj-cij.org' },
+          { n: 'CIG, Avena (2004)', caso: 'Rimedi per la violazione', testo: 'La Corte impone agli USA il riesame delle condanne di 51 cittadini messicani pronunciate in violazione del diritto alla notifica consolare.', link: 'https://www.icj-cij.org' },
+        ],
+      },
+      {
+        nome: 'Convenzione contro la discriminazione razziale (1965)',
+        def: `La CERD (International Convention on the Elimination of All Forms of Racial Discrimination) è il primo grande trattato ONU sui diritti umani a vocazione universale. Vieta ogni distinzione fondata su razza, colore, ascendenza o origine nazionale ed etnica, istituendo un apposito Comitato di controllo (CERD).`,
+        esempi: ['Divieto di discriminazione razziale', 'Obbligo di misure positive', 'Divieto di propaganda razzista', 'Comitato CERD e ricorsi interstatali'],
+        rifLabel: 'Giurisprudenza',
+        rif: [
+          { n: 'CIG, Georgia c. Russia (2011)', caso: 'Condizioni di accesso alla Corte', testo: 'La clausola compromissoria della CERD richiede il previo esperimento delle procedure di negoziato e davanti al Comitato prima del ricorso alla CIG.', link: 'https://www.icj-cij.org' },
+        ],
+      },
+      {
+        nome: 'Convenzione contro la discriminazione delle donne (1979)',
+        def: `La CEDAW (Convention on the Elimination of All Forms of Discrimination Against Women) è la "carta dei diritti delle donne". Impone agli Stati di eliminare ogni discriminazione di genere in ambito politico, economico, sociale e familiare, con un Protocollo opzionale (1999) che ammette ricorsi individuali.`,
+        esempi: ['Eliminazione della discriminazione di genere', 'Misure speciali temporanee (azioni positive)', 'Parità in famiglia e lavoro', 'Comitato CEDAW e Protocollo opzionale'],
+        rifLabel: 'Riferimenti',
+        rif: [
+          { n: 'Comitato CEDAW', caso: 'Controllo e raccomandazioni', testo: 'Il Comitato esamina i rapporti statali e le comunicazioni individuali; con la Raccomandazione gen. n. 19 ha qualificato la violenza di genere come forma di discriminazione.', link: 'https://www.ohchr.org' },
+        ],
+      },
+      {
+        nome: 'Convenzione sui diritti delle persone con disabilità (2006)',
+        def: `La CRPD segna il passaggio dal modello medico-assistenziale al modello sociale della disabilità: la persona disabile è titolare di diritti su base di eguaglianza con gli altri. Impone accessibilità, accomodamento ragionevole e piena partecipazione alla vita sociale.`,
+        esempi: ['Modello sociale della disabilità', 'Accomodamento ragionevole', 'Accessibilità e vita indipendente', 'Capacità giuridica su base di eguaglianza'],
+        rifLabel: 'Riferimenti',
+        rif: [
+          { n: 'Comitato CRPD', caso: 'Organo di controllo', testo: 'Il Comitato vigila sull\'attuazione della Convenzione tramite rapporti periodici, comunicazioni individuali e commenti generali interpretativi.', link: 'https://www.ohchr.org' },
+        ],
+      },
+      {
+        nome: 'Patto Briand-Kellogg (1928)',
+        def: `Patto generale di rinuncia alla guerra, sottoscritto a Parigi. Per la prima volta gli Stati rinunciano alla guerra come strumento di politica nazionale. Pur privo di efficaci meccanismi di garanzia, ha posto le basi del divieto dell'uso della forza poi sancito dalla Carta ONU.`,
+        esempi: ['Rinuncia alla guerra come strumento politico', 'Soluzione pacifica delle controversie', 'Precedente dell\'art. 2.4 della Carta ONU'],
+        rifLabel: 'Giurisprudenza',
+        rif: [
+          { n: 'Processo di Norimberga (1946)', caso: 'Crimini contro la pace', testo: 'Il Tribunale di Norimberga richiama il Patto come fondamento dell\'illiceità della guerra di aggressione e della responsabilità penale individuale per crimini contro la pace.', link: 'https://www.un.org' },
+        ],
+      },
+      {
+        nome: 'Convenzioni dell\'Aja (1899 e 1907)',
+        def: `Adottate dalle Conferenze internazionali della pace dell'Aja, codificano le leggi e gli usi della guerra terrestre (ius in bello) e i mezzi di soluzione pacifica delle controversie. Costituiscono, insieme alle Convenzioni di Ginevra, il nucleo del diritto bellico.`,
+        esempi: ['Leggi e usi della guerra terrestre', 'Clausola Martens (umanità e coscienza pubblica)', 'Istituzione della Corte permanente di arbitrato', 'Divieto di mezzi che causano mali superflui'],
+        rifLabel: 'Giurisprudenza',
+        rif: [
+          { n: 'CIG, parere armi nucleari (1996)', caso: 'Principi cardine dello ius in bello', testo: 'La Corte richiama il diritto dell\'Aja per i principi di distinzione tra combattenti e civili e di divieto di causare sofferenze inutili.', link: 'https://www.icj-cij.org' },
+        ],
+      },
+      {
+        nome: 'Convenzione di Palermo sul crimine organizzato (2000)',
+        def: `Convenzione ONU contro la criminalità organizzata transnazionale (UNTOC), aperta alla firma a Palermo. Principale strumento di cooperazione internazionale contro le mafie, completata da tre Protocolli (tratta di persone, traffico di migranti, armi da fuoco).`,
+        esempi: ['Definizione di gruppo criminale organizzato', 'Protocollo sulla tratta di esseri umani', 'Protocollo sul traffico di migranti', 'Cooperazione giudiziaria ed estradizione'],
+        rifLabel: 'Riferimenti',
+        rif: [
+          { n: 'Protocolli di Palermo', caso: 'Estensione della Convenzione', testo: 'I tre Protocolli addizionali estendono la cooperazione alla tratta di persone, al traffico di migranti e alla fabbricazione e traffico illeciti di armi da fuoco.', link: 'https://www.unodc.org' },
+        ],
+      },
+      {
+        nome: 'Convenzione ONU contro la corruzione (2003)',
+        def: `La UNCAC (Convenzione di Merida) è il primo strumento globale giuridicamente vincolante contro la corruzione. Impone agli Stati misure di prevenzione, incriminazione, cooperazione internazionale e recupero dei beni (asset recovery).`,
+        esempi: ['Prevenzione e incriminazione della corruzione', 'Recupero dei beni (asset recovery)', 'Cooperazione internazionale', 'Trasparenza della pubblica amministrazione'],
+        rifLabel: 'Riferimenti',
+        rif: [
+          { n: 'Meccanismo di riesame UNCAC', caso: 'Controllo sull\'attuazione', testo: 'Un meccanismo tra pari (peer review) verifica l\'attuazione della Convenzione da parte degli Stati membri, individuando buone pratiche e carenze.', link: 'https://www.unodc.org' },
+        ],
+      },
     ],
   },
   {
@@ -340,6 +413,11 @@ Si distinguono dai principi propri dell'ordinamento internazionale, ricavati per
           { n: 'Nicaragua c. USA (1986)', caso: 'Uso della forza e non ingerenza', testo: 'Distingue le norme consuetudinarie dalle norme pattizie sul divieto dell\'uso della forza e afferma il principio di non ingerenza negli affari interni.', link: 'https://www.icj-cij.org' },
           { n: 'Barcelona Traction (1970)', caso: 'Obblighi erga omnes', testo: 'Introduce la categoria degli obblighi verso la comunità internazionale nel suo complesso, alla cui tutela tutti gli Stati hanno interesse giuridico.', link: 'https://www.icj-cij.org' },
           { n: 'CPGI, Lotus (1927)', caso: 'Sovranità e libertà degli Stati', testo: 'In assenza di norma proibitiva, gli Stati restano liberi: pietra angolare del diritto internazionale classico imperniato sulla sovranità.', link: 'https://www.icj-cij.org' },
+          { n: 'Canale di Corfù (1949)', caso: 'Prima sentenza della CIG', testo: 'L\'Albania è responsabile per i danni alle navi britanniche: ogni Stato ha l\'obbligo di non lasciare utilizzare il proprio territorio per atti lesivi dei diritti altrui.', link: 'https://www.icj-cij.org' },
+          { n: 'Piattaforma continentale Mare del Nord (1969)', caso: 'Formazione della consuetudine', testo: 'Una norma pattizia può trasformarsi in consuetudine solo con una prassi estesa, uniforme e accompagnata da opinio iuris: l\'equidistanza non era ancora consuetudinaria.', link: 'https://www.icj-cij.org' },
+          { n: 'Personale diplomatico USA a Teheran (1980)', caso: 'Inviolabilità diplomatica', testo: 'L\'Iran ha violato gli obblighi sulle relazioni diplomatiche e consolari non proteggendo l\'ambasciata e il personale statunitense durante la crisi degli ostaggi.', link: 'https://www.icj-cij.org' },
+          { n: 'Mandato d\'arresto (RDC c. Belgio, 2002)', caso: 'Immunità dei ministri in carica', testo: 'Il Ministro degli esteri in carica gode di immunità penale assoluta dalla giurisdizione straniera, anche per crimini internazionali, finché resta in carica.', link: 'https://www.icj-cij.org' },
+          { n: 'Gabčíkovo-Nagymaros (1997)', caso: 'Diritto dei trattati e ambiente', testo: 'Applica le regole di Vienna su estinzione e sospensione e valorizza lo sviluppo sostenibile nella gestione delle risorse idriche condivise.', link: 'https://www.icj-cij.org' },
         ],
       },
       {
@@ -350,6 +428,36 @@ Si distinguono dai principi propri dell'ordinamento internazionale, ricavati per
         rif: [
           { n: 'Soering c. Regno Unito (1989)', caso: 'Estradizione e divieto di tortura', testo: 'L\'estradizione verso uno Stato in cui si rischiano trattamenti inumani viola l\'art. 3 CEDU.', link: 'https://hudoc.echr.coe.int' },
           { n: 'Scoppola c. Italia (2009)', caso: 'Legge penale più favorevole', testo: 'L\'art. 7 CEDU comprende il diritto all\'applicazione della pena più mite sopravvenuta.', link: 'https://hudoc.echr.coe.int' },
+          { n: 'Hirsi Jamaa c. Italia (2012)', caso: 'Respingimenti in alto mare', testo: 'I respingimenti collettivi di migranti verso la Libia violano il divieto di trattamenti inumani, di espulsioni collettive e il principio di non-refoulement (art. 3 e Prot. 4).', link: 'https://hudoc.echr.coe.int' },
+          { n: 'Torreggiani c. Italia (2013)', caso: 'Sovraffollamento carcerario', testo: 'Sentenza "pilota": il sovraffollamento delle carceri italiane costituisce trattamento inumano e degradante (art. 3) e impone misure strutturali allo Stato.', link: 'https://hudoc.echr.coe.int' },
+          { n: 'Lautsi c. Italia (2011)', caso: 'Crocifisso nelle aule', testo: 'La Grande Camera riconosce un ampio margine di apprezzamento allo Stato: l\'esposizione del crocifisso non viola di per sé la libertà religiosa e il diritto all\'istruzione.', link: 'https://hudoc.echr.coe.int' },
+          { n: 'M.S.S. c. Belgio e Grecia (2011)', caso: 'Trasferimenti Dublino', testo: 'Il trasferimento di un richiedente asilo verso uno Stato con un sistema d\'accoglienza carente può violare l\'art. 3 CEDU.', link: 'https://hudoc.echr.coe.int' },
+        ],
+      },
+      {
+        nome: 'Tribunali penali internazionali (TPIY, TPIR, CPI)',
+        def: `La giustizia penale internazionale persegue la responsabilità individuale per i crimini più gravi. Dai processi di Norimberga e Tokyo ai tribunali ad hoc per l'ex Jugoslavia (TPIY) e il Ruanda (TPIR), fino alla Corte Penale Internazionale (CPI), permanente, istituita con lo Statuto di Roma.`,
+        esempi: ['Responsabilità penale individuale', 'Irrilevanza della qualifica ufficiale', 'Genocidio, crimini contro l\'umanità, crimini di guerra', 'Principio di complementarità (CPI)'],
+        rifLabel: 'Sentenze chiave',
+        rif: [
+          { n: 'TPIY, Tadić (1995)', caso: 'Competenza e nozione di conflitto armato', testo: 'Il Tribunale afferma la propria competenza e definisce i criteri per distinguere conflitti armati internazionali e interni, estendendo le garanzie umanitarie.', link: 'https://www.icty.org' },
+          { n: 'TPIR, Akayesu (1998)', caso: 'Prima condanna per genocidio', testo: 'Prima sentenza che applica la Convenzione sul genocidio, qualificando anche la violenza sessuale come atto di genocidio.', link: 'https://unictr.irmct.org' },
+          { n: 'TPIY, Furundžija (1998)', caso: 'Tortura come ius cogens', testo: 'Il divieto di tortura ha rango di norma imperativa, gerarchicamente superiore alle norme pattizie e consuetudinarie ordinarie.', link: 'https://www.icty.org' },
+          { n: 'CPI, Lubanga (2012)', caso: 'Prima condanna della CPI', testo: 'Prima sentenza della Corte Penale Internazionale: condanna per il crimine di guerra di arruolamento e impiego di bambini soldato.', link: 'https://www.icc-cpi.int' },
+        ],
+      },
+      {
+        nome: 'Pareri consultivi della CIG',
+        def: `Oltre alle controversie tra Stati, la Corte Internazionale di Giustizia rende pareri consultivi su richiesta dell'Assemblea Generale, del Consiglio di Sicurezza o di altri organi e agenzie ONU. Pur non vincolanti, hanno grande autorità nella ricostruzione del diritto internazionale generale.`,
+        esempi: ['Richiesti da organi e agenzie ONU', 'Non vincolanti ma autorevoli', 'Ricostruzione del diritto consuetudinario'],
+        rifLabel: 'Pareri chiave',
+        rif: [
+          { n: 'Riserve alla Convenzione sul genocidio (1951)', caso: 'Riserve ai trattati sui diritti umani', testo: 'Uno Stato può formulare riserve compatibili con l\'oggetto e lo scopo del trattato: criterio poi codificato nella Convenzione di Vienna.', link: 'https://www.icj-cij.org' },
+          { n: 'Namibia (1971)', caso: 'Effetti delle risoluzioni ONU', testo: 'La presenza sudafricana in Namibia è illegittima: le decisioni del Consiglio di Sicurezza sono obbligatorie per tutti gli Stati membri.', link: 'https://www.icj-cij.org' },
+          { n: 'Sahara Occidentale (1975)', caso: 'Autodeterminazione dei popoli', testo: 'Il principio di autodeterminazione si applica ai territori non autonomi: decisiva è la volontà liberamente espressa del popolo.', link: 'https://www.icj-cij.org' },
+          { n: 'Liceità delle armi nucleari (1996)', caso: 'Uso della forza e ius in bello', testo: 'L\'uso delle armi nucleari è generalmente contrario al diritto umanitario; permane l\'obbligo di negoziare in buona fede il disarmo nucleare.', link: 'https://www.icj-cij.org' },
+          { n: 'Muro in Palestina (2004)', caso: 'Occupazione e diritto umanitario', testo: 'La costruzione del muro nei territori palestinesi occupati viola il diritto internazionale umanitario e i diritti umani; Israele deve cessarne la costruzione e riparare.', link: 'https://www.icj-cij.org' },
+          { n: 'Dichiarazione d\'indipendenza del Kosovo (2010)', caso: 'Secessione e diritto internazionale', testo: 'La dichiarazione unilaterale d\'indipendenza del Kosovo non viola, in sé, alcuna norma di diritto internazionale generale.', link: 'https://www.icj-cij.org' },
         ],
       },
       {
