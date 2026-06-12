@@ -17,6 +17,19 @@ const sezioni: Sezione[] = [
     icon: '<path d="M12 3V21M12 3L5 7L12 11L19 7L12 3Z"/><path d="M5 7L2 14C2 16 3.5 17 5 17C6.5 17 8 16 8 14L5 7Z"/><path d="M19 7L16 14C16 16 17.5 17 19 17C20.5 17 22 16 22 14L19 7Z"/><path d="M3 21H21"/>',
     voci: [
       {
+        nome: 'Ius cogens (norme imperative)',
+        def: `Lo ius cogens è al vertice della gerarchia delle fonti del diritto internazionale: norme imperative del diritto internazionale generale, inderogabili da accordi tra Stati. Sono definite dall'art. 53 della Convenzione di Vienna del 1969: una norma accettata e riconosciuta dalla comunità internazionale degli Stati nel suo insieme come norma alla quale non è permessa alcuna deroga.
+
+Un trattato in contrasto con una norma di ius cogens è nullo (art. 53) e, se la norma imperativa è sopravvenuta, il trattato si estingue (art. 64).`,
+        esempi: ['Divieto di genocidio', 'Divieto di tortura', 'Divieto di schiavitù', 'Divieto di aggressione', 'Principio di autodeterminazione dei popoli'],
+        rifLabel: 'Giurisprudenza',
+        rif: [
+          { n: 'CIG, Barcelona Traction (1970)', caso: 'Obblighi erga omnes', testo: 'Esistono obblighi degli Stati verso la comunità internazionale nel suo complesso (erga omnes): per la loro importanza, tutti gli Stati hanno un interesse giuridico alla loro protezione.', link: 'https://www.icj-cij.org' },
+          { n: 'TPIY, Furundžija (1998)', caso: 'Divieto di tortura come ius cogens', testo: 'Il divieto di tortura ha assunto il rango di norma imperativa, gerarchicamente superiore alle norme pattizie e consuetudinarie ordinarie.', link: 'https://www.icty.org' },
+          { n: 'CIG, Immunità giurisdizionali (Germania c. Italia, 2012)', caso: 'Rapporto tra ius cogens e norme procedurali', testo: 'La Corte distingue le norme sostanziali di ius cogens dalle norme procedurali sull\'immunità: il contrasto non determina automaticamente la prevalenza delle prime.', link: 'https://www.icj-cij.org' },
+        ],
+      },
+      {
         nome: 'Consuetudine internazionale',
         def: `È la fonte primaria del diritto internazionale generale: norme non scritte che vincolano tutti gli Stati della comunità internazionale.
 
@@ -31,18 +44,6 @@ In Italia entra automaticamente nell'ordinamento tramite l'adattamento automatic
           { n: 'CIG, Nicaragua c. USA (1986)', caso: 'Prova della consuetudine e opinio iuris', testo: 'La Corte ricostruisce il divieto dell\'uso della forza e il principio di non ingerenza come norme consuetudinarie, distinte dalle corrispondenti norme pattizie della Carta ONU.', link: 'https://www.icj-cij.org' },
           { n: 'CPGI, Lotus (1927)', caso: 'Formazione della consuetudine e sovranità', testo: 'In assenza di una norma proibitiva gli Stati restano liberi di agire: la consuetudine si ricava dalla prassi accompagnata dalla convinzione di obbligatorietà.', link: 'https://www.icj-cij.org' },
           { n: 'Corte Cost. n. 238/2014', caso: 'Limite dei controlimiti alla consuetudine', testo: 'La consuetudine sull\'immunità degli Stati non entra nell\'ordinamento italiano quando contrasta con il diritto alla tutela giurisdizionale (art. 24 Cost.).', link: 'https://www.cortecostituzionale.it/actionSchedaPronuncia.do?anno=2014&numero=238' },
-        ],
-      },
-      {
-        nome: 'Ius cogens (norme imperative)',
-        def: `Lo ius cogens è costituito dalle norme imperative del diritto internazionale generale, inderogabili da accordi tra Stati. Sono definite dall'art. 53 della Convenzione di Vienna del 1969: una norma accettata e riconosciuta dalla comunità internazionale degli Stati nel suo insieme come norma alla quale non è permessa alcuna deroga.
-
-Un trattato in contrasto con una norma di ius cogens è nullo.`,
-        esempi: ['Divieto di genocidio', 'Divieto di tortura', 'Divieto di schiavitù', 'Divieto di aggressione', 'Principio di autodeterminazione dei popoli'],
-        rifLabel: 'Giurisprudenza',
-        rif: [
-          { n: 'CIG, Barcelona Traction (1970)', caso: 'Obblighi erga omnes', testo: 'Esistono obblighi degli Stati verso la comunità internazionale nel suo complesso (erga omnes): per la loro importanza, tutti gli Stati hanno un interesse giuridico alla loro protezione.', link: 'https://www.icj-cij.org' },
-          { n: 'TPIY, Furundžija (1998)', caso: 'Divieto di tortura come ius cogens', testo: 'Il divieto di tortura ha assunto il rango di norma imperativa, gerarchicamente superiore alle norme pattizie e consuetudinarie ordinarie.', link: 'https://www.icty.org' },
         ],
       },
       {
@@ -84,6 +85,47 @@ Si distinguono dai principi propri dell'ordinamento internazionale, ricavati per
         rifLabel: 'Giurisprudenza',
         rif: [
           { n: 'CIG, parere sulle armi nucleari (1996)', caso: 'Valore delle risoluzioni dell\'Assemblea Generale', testo: 'Le risoluzioni dell\'Assemblea Generale, pur non vincolanti, possono avere valore normativo e fornire prova dell\'esistenza di una norma o dell\'emergere di un\'opinio iuris.', link: 'https://www.icj-cij.org' },
+        ],
+      },
+      {
+        nome: 'Atti unilaterali degli Stati',
+        def: `Sono manifestazioni di volontà di un singolo Stato idonee a produrre effetti giuridici sul piano internazionale, anche in assenza di accordo. Per la loro vincolatività rilevano la chiarezza della dichiarazione, l'intenzione di obbligarsi e il principio di buona fede.`,
+        esempi: ['Promessa', 'Rinuncia', 'Riconoscimento', 'Protesta', 'Notifica'],
+        rifLabel: 'Giurisprudenza',
+        rif: [
+          { n: 'CIG, Esperimenti nucleari (1974)', caso: 'Vincolatività della promessa unilaterale', testo: 'Le dichiarazioni pubbliche della Francia di cessare gli esperimenti nucleari atmosferici, fatte con l\'intenzione di obbligarsi, sono giuridicamente vincolanti in base alla buona fede.', link: 'https://www.icj-cij.org' },
+        ],
+      },
+      {
+        nome: 'Equità (art. 38, par. 2, Statuto CIG)',
+        def: `La Corte Internazionale di Giustizia può decidere una controversia ex aequo et bono, cioè secondo equità anziché secondo le norme giuridiche, ma solo se le parti vi consentono espressamente. Distinta è l'equità infra legem, che opera all'interno del diritto come criterio di interpretazione e integrazione.`,
+        esempi: ['Equità infra legem (nel diritto)', 'Equità praeter legem (oltre il diritto)', 'Equità contra legem (deroga al diritto, solo col consenso delle parti)', 'Delimitazioni marittime'],
+        rifLabel: 'Giurisprudenza',
+        rif: [
+          { n: 'CIG, Piattaforma continentale Mare del Nord (1969)', caso: 'Principi equitativi nelle delimitazioni', testo: 'La delimitazione della piattaforma continentale va effettuata secondo principi equitativi, tenendo conto di tutte le circostanze rilevanti.', link: 'https://www.icj-cij.org' },
+        ],
+      },
+      {
+        nome: 'Mezzi sussidiari: giurisprudenza e dottrina',
+        def: `L'art. 38, par. 1, lett. d), dello Statuto della CIG indica le decisioni giudiziarie e la dottrina dei più qualificati pubblicisti come mezzi sussidiari per la determinazione delle norme. Non sono fonti autonome, ma strumenti per accertare il contenuto delle norme esistenti.`,
+        esempi: ['Decisioni giudiziarie (senza efficacia di precedente vincolante)', 'Dottrina dei pubblicisti più qualificati', 'Funzione ricognitiva, non creativa'],
+        rifLabel: 'Riferimenti',
+        rif: [
+          { n: 'Art. 59 Statuto CIG', caso: 'Assenza dello stare decisis', testo: 'Le decisioni della Corte vincolano solo le parti e per il caso deciso: non esiste un vero precedente vincolante, pur godendo la giurisprudenza di forte autorità persuasiva.', link: 'https://www.icj-cij.org' },
+        ],
+      },
+      {
+        nome: 'Adattamento dell\'ordinamento italiano',
+        def: `Disciplina il modo in cui il diritto internazionale entra nell'ordinamento interno italiano.
+
+• Art. 10, comma 1, Cost.: adattamento automatico al diritto internazionale generale (consuetudini)
+• Art. 117, comma 1, Cost.: i trattati vincolano il legislatore come norme interposte
+• Art. 11 Cost.: limitazioni di sovranità per ordinamenti che assicurano pace e giustizia (base dell'adesione a ONU e UE)`,
+        esempi: ['Adattamento automatico (art. 10 Cost.)', 'Ordine di esecuzione (per i trattati)', 'Norme interposte (art. 117 Cost.)', 'Teoria dei controlimiti'],
+        rifLabel: 'Giurisprudenza',
+        rif: [
+          { n: 'Corte Cost. nn. 348-349/2007', caso: 'Trattati come norme interposte', testo: 'I trattati (in specie la CEDU) integrano il parametro dell\'art. 117 Cost.: una legge ordinaria con essi contrastante è incostituzionale.', link: 'https://www.cortecostituzionale.it/actionSchedaPronuncia.do?anno=2007&numero=348' },
+          { n: 'Corte Cost. n. 238/2014', caso: 'Controlimiti all\'adattamento automatico', testo: 'La consuetudine internazionale non entra nell\'ordinamento nella parte in cui contrasta con i principi fondamentali e i diritti inviolabili (art. 24 Cost.).', link: 'https://www.cortecostituzionale.it/actionSchedaPronuncia.do?anno=2014&numero=238' },
         ],
       },
     ],
@@ -183,6 +225,51 @@ Si distinguono dai principi propri dell'ordinamento internazionale, ricavati per
         rifLabel: 'Riferimenti',
         rif: [
           { n: 'Costituzione OIL', caso: 'Integrazione nei principi OIL', testo: 'La Dichiarazione è allegata alla Costituzione dell\'OIL e ne costituisce parte integrante, ispirando le convenzioni internazionali sul lavoro.', link: 'https://www.ilo.org' },
+        ],
+      },
+      {
+        nome: 'Atto finale di Helsinki (1975)',
+        def: `Documento conclusivo della Conferenza sulla sicurezza e la cooperazione in Europa (CSCE, oggi OSCE). Pur non essendo un trattato vincolante, fissa il "decalogo" dei principi che regolano i rapporti tra gli Stati partecipanti, in piena Guerra fredda.`,
+        esempi: ['Inviolabilità delle frontiere', 'Rispetto dei diritti umani e libertà fondamentali', 'Soluzione pacifica delle controversie', 'Cooperazione tra Stati (i "tre cesti")'],
+        rifLabel: 'Riferimenti',
+        rif: [
+          { n: 'Dall\'CSCE all\'OSCE', caso: 'Evoluzione istituzionale', testo: 'Il processo di Helsinki ha portato nel 1995 alla nascita dell\'OSCE, organizzazione per la sicurezza e la cooperazione in Europa.', link: 'https://www.osce.org' },
+        ],
+      },
+      {
+        nome: 'Dichiarazione dei diritti del fanciullo (1959)',
+        def: `Risoluzione 1386 (XIV) dell'Assemblea Generale ONU. Sviluppa la precedente Dichiarazione di Ginevra del 1924, affermando in dieci principi la tutela del minore. Ha aperto la strada alla Convenzione vincolante del 1989.`,
+        esempi: ['Superiore interesse del minore', 'Diritto al nome e alla nazionalità', 'Protezione speciale e cure', 'Precedente della Convenzione del 1989'],
+        rifLabel: 'Riferimenti',
+        rif: [
+          { n: 'Convenzione sui diritti del fanciullo (1989)', caso: 'Trasposizione vincolante', testo: 'I principi della Dichiarazione sono confluiti nel trattato sui diritti umani più ratificato al mondo.', link: 'https://www.ohchr.org' },
+        ],
+      },
+      {
+        nome: 'Dichiarazione sul diritto allo sviluppo (1986)',
+        def: `Risoluzione 41/128 dell'Assemblea Generale ONU. Riconosce lo sviluppo come diritto umano inalienabile, di natura sia individuale che collettiva, e afferma la responsabilità degli Stati nel creare condizioni favorevoli alla sua realizzazione.`,
+        esempi: ['Sviluppo come diritto umano', 'Dimensione individuale e collettiva', 'Cooperazione internazionale', 'Equa distribuzione dei benefici'],
+        rifLabel: 'Riferimenti',
+        rif: [
+          { n: 'Agenda 2030', caso: 'Attuazione contemporanea', testo: 'Il diritto allo sviluppo è oggi declinato negli Obiettivi di Sviluppo Sostenibile, che ne traducono i principi in traguardi misurabili.', link: 'https://www.ohchr.org' },
+        ],
+      },
+      {
+        nome: 'Dichiarazione sui difensori dei diritti umani (1998)',
+        def: `Risoluzione 53/144 dell'Assemblea Generale ONU. Riconosce il diritto di ogni persona, individualmente o in associazione, di promuovere e proteggere i diritti umani e impone agli Stati di garantire chi svolge tale attività.`,
+        esempi: ['Diritto di promuovere i diritti umani', 'Tutela degli attivisti', 'Libertà di riunione e associazione', 'Obbligo di protezione statale'],
+        rifLabel: 'Riferimenti',
+        rif: [
+          { n: 'Relatore speciale ONU', caso: 'Meccanismo di monitoraggio', testo: 'Un Relatore speciale sui difensori dei diritti umani vigila sull\'attuazione della Dichiarazione e riferisce su minacce e violazioni.', link: 'https://www.ohchr.org' },
+        ],
+      },
+      {
+        nome: 'Agenda 2030 e Obiettivi di Sviluppo Sostenibile (2015)',
+        def: `Risoluzione 70/1 dell'Assemblea Generale ONU "Trasformare il nostro mondo". Fissa 17 Obiettivi di Sviluppo Sostenibile (SDGs) e 169 traguardi che integrano dimensione economica, sociale e ambientale, succedendo agli Obiettivi del Millennio.`,
+        esempi: ['17 Obiettivi di Sviluppo Sostenibile', 'Sconfiggere povertà e fame', 'Azione per il clima', 'Pace, giustizia e istituzioni solide (SDG 16)'],
+        rifLabel: 'Riferimenti',
+        rif: [
+          { n: 'Dagli MDGs agli SDGs', caso: 'Continuità con il Millennio', testo: 'L\'Agenda 2030 raccoglie e amplia gli Obiettivi del Millennio del 2000, estendendoli a tutti gli Stati e non solo a quelli in via di sviluppo.', link: 'https://www.un.org' },
         ],
       },
     ],
