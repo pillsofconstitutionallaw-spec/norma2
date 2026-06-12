@@ -52,9 +52,22 @@ function stripHtml(html: string): string {
   return decodeEntities(html.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
 }
 
+function titleFontSize(strippedText: string): number {
+  const len = strippedText.length;
+  if (len <= 30) return 52;
+  if (len <= 50) return 44;
+  if (len <= 70) return 36;
+  if (len <= 90) return 30;
+  return 26;
+}
+
 export default function FeedCard({ post }: { post: Post }) {
   const isOdl = post._source === 'odl';
-  const img = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+  const _media = post._embedded?.['wp:featuredmedia']?.[0];
+  const img =
+    _media?.media_details?.sizes?.medium_large?.source_url ||
+    _media?.media_details?.sizes?.large?.source_url ||
+    _media?.source_url;
   const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || '';
   const href = isOdl ? post.link : `/articoli/${post.slug}`;
   const handle = isOdl ? 'orizzontideldiritto' : 'orizzonte.giuridico';
@@ -205,9 +218,37 @@ export default function FeedCard({ post }: { post: Post }) {
             <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 48, color: 'rgba(143,211,255,0.2)' }}>OG</span>
           </div>
         )}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0) 100%)' }} />
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 14px 20px' }}>
-          <div style={{ fontSize: 20, fontWeight: 900, color: '#fff', lineHeight: 1.15, letterSpacing: -0.3, fontFamily: 'Montserrat, sans-serif' }}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.05) 100%)' }} />
+        {cat && (
+          <div style={{
+            position: 'absolute', top: 14, left: 14, zIndex: 2,
+            background: 'transparent',
+            color: '#fff',
+            fontSize: 10,
+            fontWeight: 700,
+            fontFamily: 'Montserrat, sans-serif',
+            padding: '5px 12px',
+            borderRadius: 100,
+            border: '1.5px solid #fff',
+            letterSpacing: 0.8,
+            textTransform: 'uppercase',
+            lineHeight: 1,
+          }}>
+            {cat}
+          </div>
+        )}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '0 14px 22px' }}>
+          <div style={{
+            fontSize: titleFontSize(titleText),
+            fontWeight: 700,
+            color: '#fff',
+            lineHeight: 1.08,
+            letterSpacing: -0.5,
+            fontFamily: 'Montserrat, sans-serif',
+            wordBreak: 'break-word',
+            textTransform: 'uppercase',
+            maxWidth: '78%',
+          } as React.CSSProperties}
             dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
         </div>
       </a>

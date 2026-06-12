@@ -24,13 +24,12 @@ function StoryTimer({ onTick, onEnd }: { onTick: (p: number) => void; onEnd: () 
 /* ─── InstagramEmbed (invariato) ─── */
 function InstagramEmbed() {
   const [posts, setPosts] = useState<any[]>([]);
-  const [profilePic, setProfilePic] = useState('https://i.imgur.com/2DhmtJ4.png');
+  const [profilePic] = useState('/logo-og.png');
   useEffect(() => {
     fetch('/api/instagram')
       .then(r => r.json())
       .then(data => {
         if (data.data) setPosts(data.data.slice(0, 9));
-        if (data.profile?.profile_picture_url) setProfilePic(data.profile.profile_picture_url);
       })
       .catch(() => {});
   }, []);
@@ -649,7 +648,8 @@ export default function NormaHome() {
               <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>Nessun articolo trovato</div>
             ) : (() => {
               const post = storyPosts[storyIndex];
-              const img = post?._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+              const _m = post?._embedded?.['wp:featuredmedia']?.[0];
+              const img = _m?.media_details?.sizes?.medium_large?.source_url || _m?.media_details?.sizes?.large?.source_url || _m?.source_url;
               const excerpt = post?.excerpt?.rendered?.replace(/<[^>]+>/g, '').slice(0, 120) + '...';
               const link = post?.link;
               return (
