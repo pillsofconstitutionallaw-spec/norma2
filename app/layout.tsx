@@ -131,60 +131,9 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Service Worker — OneSignal + auto-aggiornamento PWA */}
+        {/* Service Worker — OneSignal + aggiornamento PWA silenzioso (nessun banner) */}
         <Script id="sw-register" strategy="afterInteractive">
           {`
-            function mostraAggiornamento(newWorker) {
-              if (document.getElementById('norma-update-banner')) return;
-              const banner = document.createElement('div');
-              banner.id = 'norma-update-banner';
-              banner.style.cssText = \`
-                position: fixed;
-                bottom: 80px;
-                left: 12px;
-                right: 12px;
-                z-index: 99999;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                padding: 14px 16px;
-                background: #0d1f3c;
-                border: 1px solid rgba(143,211,255,0.3);
-                border-radius: 16px;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-                font-family: 'Montserrat', sans-serif;
-                transform: translateY(120px);
-                transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
-              \`;
-              banner.innerHTML = \`
-                <div style="flex:1;min-width:0;">
-                  <div style="font-size:13px;font-weight:800;color:#fff;margin-bottom:2px;">Aggiornamento disponibile</div>
-                  <div style="font-size:11px;color:rgba(255,255,255,0.5);">È pronta una nuova versione di Norma</div>
-                </div>
-                <button id="norma-update-btn" style="
-                  background: #8fd3ff;
-                  border: none;
-                  border-radius: 20px;
-                  padding: 8px 16px;
-                  color: #041428;
-                  font-size: 11px;
-                  font-weight: 800;
-                  font-family: Montserrat, sans-serif;
-                  cursor: pointer;
-                  flex-shrink: 0;
-                  letter-spacing: 0.5px;
-                ">AGGIORNA</button>
-              \`;
-              document.body.appendChild(banner);
-              setTimeout(function() { banner.style.transform = 'translateY(0)'; }, 50);
-              document.getElementById('norma-update-btn').addEventListener('click', function() {
-                banner.style.transform = 'translateY(120px)';
-                setTimeout(function() { banner.remove(); }, 400);
-                newWorker.postMessage('SKIP_WAITING');
-                window.location.reload();
-              });
-            }
-
             if ('serviceWorker' in navigator) {
               window.addEventListener('load', function () {
                 navigator.serviceWorker.register('/OneSignalSDKWorker.js')
@@ -193,11 +142,14 @@ export default function RootLayout({
                 navigator.serviceWorker.register('/sw.js')
                   .then(function(reg) {
                     console.log('Norma SW registrato:', reg.scope);
+                    // Aggiornamento silenzioso: il nuovo worker fa skipWaiting + clients.claim
+                    // e si applica alla navigazione successiva. Nessun banner, nessun reload forzato.
                     reg.addEventListener('updatefound', function() {
                       const newWorker = reg.installing;
+                      if (!newWorker) return;
                       newWorker.addEventListener('statechange', function() {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                          mostraAggiornamento(newWorker);
+                          newWorker.postMessage('SKIP_WAITING');
                         }
                       });
                     });

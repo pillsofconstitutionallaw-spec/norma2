@@ -61,7 +61,7 @@ function titleFontSize(strippedText: string): number {
   return 26;
 }
 
-export default function FeedCard({ post }: { post: Post }) {
+export default function FeedCard({ post, priority = false }: { post: Post; priority?: boolean }) {
   const isOdl = post._source === 'odl';
   const _media = post._embedded?.['wp:featuredmedia']?.[0];
   const img =
@@ -211,7 +211,8 @@ export default function FeedCard({ post }: { post: Post }) {
       <a href={href} target={isOdl ? '_blank' : '_self'} rel={isOdl ? 'noreferrer noopener' : undefined} aria-label={`Leggi: ${titleText}`}
         style={{ display: 'block', position: 'relative', aspectRatio: '4/5', background: '#07162b', overflow: 'hidden' }}>
         {img ? (
-          <img src={img} alt={titleText} loading="lazy" decoding="async"
+          <img src={img} alt={titleText} loading={priority ? 'eager' : 'lazy'} decoding="async"
+            fetchPriority={priority ? 'high' : 'auto'}
             style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
         ) : (
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#07162b,#0d2040)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

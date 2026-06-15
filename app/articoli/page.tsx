@@ -199,6 +199,36 @@ export default function ArticoliPage() {
     } catch { return []; }
   }
 
+  /* ── Ordinamento storie per recency (stile IG: categoria con l'articolo più recente prima) ── */
+  function ordinaPerRecency(cats: { id: number; name: string }[]) {
+    const dates: Record<string, string> = {};
+    posts.forEach((p: any) => {
+      const terms = p?._embedded?.['wp:term']?.[0] || [];
+      terms.forEach((t: any) => {
+        if (t?.name && p?.date && (!dates[t.name] || p.date > dates[t.name])) dates[t.name] = p.date;
+      });
+    });
+    Object.entries(storyCache.current).forEach(([name, sp]) => {
+      const d = (sp as any[])?.[0]?.date;
+      if (d && (!dates[name] || d > dates[name])) dates[name] = d;
+    });
+    return [...cats].sort((a, b) => {
+      const da = dates[a.name];
+      const db = dates[b.name];
+      if (da && db) return db.localeCompare(da);
+      if (da) return -1;
+      if (db) return 1;
+      return 0;
+    });
+  }
+
+  // Riordina la rail storie quando arrivano nuovi articoli (mai mentre una storia è aperta)
+  useEffect(() => {
+    if (storyOpen) return;
+    setCategories(prev => ordinaPerRecency(prev));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [posts, storyOpen]);
+
   async function openStory(name: string, catId: number) {
     setStoryCatName(name);
     setStoryIndex(0);
@@ -265,7 +295,7 @@ export default function ArticoliPage() {
           </div>
         ) : (
           posts.map((post, i) => (
-            <FeedCard key={post.id ?? `${post.slug}-${i}`} post={post} />
+            <FeedCard key={post.id ?? `${post.slug}-${i}`} post={post} priority={i === 0} />
           ))
         )}
 

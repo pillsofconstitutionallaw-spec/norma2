@@ -259,6 +259,41 @@ export default function NormaHome() {
     } catch { return []; }
   }
 
+  /* ── Ordinamento storie per recency (stile IG: categoria con l'articolo più recente prima) ── */
+  function categoryLatestDates(): Record<string, string> {
+    const map: Record<string, string> = {};
+    feedPosts.forEach((p: any) => {
+      const terms = p?._embedded?.['wp:term']?.[0] || [];
+      terms.forEach((t: any) => {
+        if (t?.name && p?.date && (!map[t.name] || p.date > map[t.name])) map[t.name] = p.date;
+      });
+    });
+    Object.entries(storyCache.current).forEach(([name, posts]) => {
+      const d = (posts as any[])?.[0]?.date;
+      if (d && (!map[name] || d > map[name])) map[name] = d;
+    });
+    return map;
+  }
+
+  function ordinaPerRecency(cats: { id: number; name: string }[]) {
+    const dates = categoryLatestDates();
+    return [...cats].sort((a, b) => {
+      const da = dates[a.name];
+      const db = dates[b.name];
+      if (da && db) return db.localeCompare(da);
+      if (da) return -1;
+      if (db) return 1;
+      return 0; // categorie senza data: mantengono l'ordine statico
+    });
+  }
+
+  // Riordina la rail storie quando arrivano nuovi articoli (mai mentre una storia è aperta)
+  useEffect(() => {
+    if (storyOpen) return;
+    setCategories(prev => ordinaPerRecency(prev));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feedPosts, storyOpen]);
+
   /* ── Mount ── */
   useEffect(() => {
     setMounted(true);
@@ -286,6 +321,20 @@ export default function NormaHome() {
     } catch {}
   }, []);
 
+  /* ── Fallback: feed direttamente da WordPress se l'API è lenta o vuota ── */
+  async function caricaFeedDiretto() {
+    try {
+      const [ogRes, odlRes] = await Promise.all([
+        fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=6').then(r => r.json()).catch(() => []),
+        fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=4').then(r => r.json()).catch(() => []),
+      ]);
+      const og = Array.isArray(ogRes) ? ogRes.map((p: any) => ({ ...p, _source: 'og' })) : [];
+      const odl = Array.isArray(odlRes) ? odlRes.map((p: any) => ({ ...p, _source: 'odl' })) : [];
+      const merged = [...og, ...odl].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      if (merged.length > 0) setFeedPosts(prev => (prev.length === 0 ? merged : prev));
+    } catch {}
+  }
+
   /* ── Home data (stories + feed iniziale) ── */
   useEffect(() => {
     fetch('/api/home-data')
@@ -308,10 +357,12 @@ export default function NormaHome() {
             if (!storyCache.current[cat.name]) loadCatPosts(cat.name, cat.id);
           });
         }
-        if (Array.isArray(articles)) setFeedPosts(articles);
+        if (Array.isArray(articles) && articles.length > 0) setFeedPosts(articles);
+        else caricaFeedDiretto();
         if (f) setFascicolo(f);
       })
       .catch(() => {
+        caricaFeedDiretto();
         staticCategories.slice(0, 6).forEach(cat => loadCatPosts(cat.name, cat.id));
       });
   }, []);
@@ -527,7 +578,7 @@ export default function NormaHome() {
                   </div>
                 ))
               : feedPosts.map((post, i) => (
-                  <FeedCard key={post.id ?? `${post.slug}-${i}`} post={post} />
+                  <FeedCard key={post.id ?? `${post.slug}-${i}`} post={post} priority={i === 0} />
                 ))
             }
 
