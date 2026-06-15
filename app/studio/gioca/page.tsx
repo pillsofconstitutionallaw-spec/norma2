@@ -5,31 +5,38 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-import { carte as cartePrivato, meta as metaPrivato } from '@/src/data/cards/diritto-privato';
-import { carte as carteCostituzionale, meta as metaCostituzionale } from '@/src/data/cards/diritto-costituzionale';
-import { carte as carteInternazionale, meta as metaInternazionale } from '@/src/data/cards/diritto-internazionale';
-import { carte as carteIntPrivato, meta as metaIntPrivato } from '@/src/data/cards/diritto-internazionale-privato';
-import { carte as carteRomano, meta as metaRomano } from '@/src/data/cards/diritto-romano';
-import { carte as carteLavoro, meta as metaLavoro } from '@/src/data/cards/diritto-del-lavoro';
-import { carte as cartePenale, meta as metaPenale } from '@/src/data/cards/diritto-penale';
-import { carte as carteUE, meta as metaUE } from '@/src/data/cards/diritto-ue';
+import { carte as cartePrivato, meta as metaPrivato, argomenti as argomentiPrivato } from '@/src/data/cards/diritto-privato';
+import { carte as carteCostituzionale, meta as metaCostituzionale, argomenti as argomentiCostituzionale } from '@/src/data/cards/diritto-costituzionale';
+import { carte as carteInternazionale, meta as metaInternazionale, argomenti as argomentiInternazionale } from '@/src/data/cards/diritto-internazionale';
+import { carte as carteIntPrivato, meta as metaIntPrivato, argomenti as argomentiIntPrivato } from '@/src/data/cards/diritto-internazionale-privato';
+import { carte as carteRomano, meta as metaRomano, argomenti as argomentiRomano } from '@/src/data/cards/diritto-romano';
+import { carte as carteLavoro, meta as metaLavoro, argomenti as argomentiLavoro } from '@/src/data/cards/diritto-del-lavoro';
+import { carte as cartePenale, meta as metaPenale, argomenti as argomentiPenale } from '@/src/data/cards/diritto-penale';
+import { carte as carteUE, meta as metaUE, argomenti as argomentiUE } from '@/src/data/cards/diritto-ue';
 
-type Carta = { domanda: string; risposta: string };
-type Materia = { id: string; titolo: string; colore: string; bg: string; icona: string; carte: Carta[] };
+type Carta = { domanda: string; risposta: string; argomento?: string };
+type Materia = { id: string; titolo: string; colore: string; bg: string; icona: string; carte: Carta[]; argomenti?: string[] };
 type Opzione = { testo: string; corretta: boolean };
-type GameScreen = 'selezione' | 'milionario' | 'trivia' | 'abbina';
+type GameScreen = 'selezione' | 'argomenti' | 'milionario' | 'trivia' | 'abbina';
+type GameId = 'milionario' | 'trivia' | 'abbina';
 type AbbinaPair = { id: string; termine: string; definizione: string };
 
 const MATERIE: Materia[] = [
-  { id: 'privato',        titolo: metaPrivato.titolo,         colore: metaPrivato.colore,         bg: metaPrivato.bg,         icona: metaPrivato.icona,         carte: cartePrivato },
-  { id: 'costituzionale', titolo: metaCostituzionale.titolo,  colore: metaCostituzionale.colore,  bg: metaCostituzionale.bg,  icona: metaCostituzionale.icona,  carte: carteCostituzionale },
-  { id: 'internazionale', titolo: metaInternazionale.titolo,  colore: metaInternazionale.colore,  bg: metaInternazionale.bg,  icona: metaInternazionale.icona,  carte: carteInternazionale },
-  { id: 'int-privato',    titolo: metaIntPrivato.titolo,      colore: metaIntPrivato.colore,      bg: metaIntPrivato.bg,      icona: metaIntPrivato.icona,      carte: carteIntPrivato },
-  { id: 'romano',         titolo: metaRomano.titolo,          colore: metaRomano.colore,          bg: metaRomano.bg,          icona: metaRomano.icona,          carte: carteRomano },
-  { id: 'lavoro',         titolo: metaLavoro.titolo,          colore: metaLavoro.colore,          bg: metaLavoro.bg,          icona: metaLavoro.icona,          carte: carteLavoro },
-  { id: 'penale',         titolo: metaPenale.titolo,          colore: metaPenale.colore,          bg: metaPenale.bg,          icona: metaPenale.icona,          carte: cartePenale },
-  { id: 'ue',             titolo: metaUE.titolo,              colore: metaUE.colore,              bg: metaUE.bg,              icona: metaUE.icona,              carte: carteUE },
+  { id: 'privato',        titolo: metaPrivato.titolo,         colore: metaPrivato.colore,         bg: metaPrivato.bg,         icona: metaPrivato.icona,         carte: cartePrivato,        argomenti: argomentiPrivato },
+  { id: 'costituzionale', titolo: metaCostituzionale.titolo,  colore: metaCostituzionale.colore,  bg: metaCostituzionale.bg,  icona: metaCostituzionale.icona,  carte: carteCostituzionale, argomenti: argomentiCostituzionale },
+  { id: 'internazionale', titolo: metaInternazionale.titolo,  colore: metaInternazionale.colore,  bg: metaInternazionale.bg,  icona: metaInternazionale.icona,  carte: carteInternazionale, argomenti: argomentiInternazionale },
+  { id: 'int-privato',    titolo: metaIntPrivato.titolo,      colore: metaIntPrivato.colore,      bg: metaIntPrivato.bg,      icona: metaIntPrivato.icona,      carte: carteIntPrivato,     argomenti: argomentiIntPrivato },
+  { id: 'romano',         titolo: metaRomano.titolo,          colore: metaRomano.colore,          bg: metaRomano.bg,          icona: metaRomano.icona,          carte: carteRomano,         argomenti: argomentiRomano },
+  { id: 'lavoro',         titolo: metaLavoro.titolo,          colore: metaLavoro.colore,          bg: metaLavoro.bg,          icona: metaLavoro.icona,          carte: carteLavoro,         argomenti: argomentiLavoro },
+  { id: 'penale',         titolo: metaPenale.titolo,          colore: metaPenale.colore,          bg: metaPenale.bg,          icona: metaPenale.icona,          carte: cartePenale,         argomenti: argomentiPenale },
+  { id: 'ue',             titolo: metaUE.titolo,              colore: metaUE.colore,              bg: metaUE.bg,              icona: metaUE.icona,              carte: carteUE,             argomenti: argomentiUE },
 ];
+
+const GIOCHI: Record<GameId, { nome: string; logo: string; colore: string }> = {
+  milionario: { nome: 'Chi vuole essere Laureato', logo: '/game-logo-laureato.png', colore: '#fbbf24' },
+  trivia:     { nome: 'Trivia Track',              logo: '/game-logo-trivia.png',   colore: '#c4b5fd' },
+  abbina:     { nome: 'Associa le Definizioni',    logo: '/game-logo-abbina.png',   colore: '#34d399' },
+};
 
 const SCALETTA = [
   { n:1,  label:'Matricola',     safe:false },
@@ -101,6 +108,11 @@ function GiocaContent() {
   const router = useRouter();
   const [screen, setScreen] = useState<GameScreen>('selezione');
   const [materiaTarget, setMateriaTarget] = useState<Materia | null>(null); // null = tutte
+
+  // ── Selezione argomenti ──
+  const [argMateria, setArgMateria] = useState<Materia | null>(null);
+  const [argGame, setArgGame] = useState<GameId>('milionario');
+  const [argSel, setArgSel] = useState<string[]>([]);
 
   // ── Milionario state ──
   const [livello, setLivello] = useState(1);
@@ -431,6 +443,47 @@ function GiocaContent() {
     }
   }
 
+  // ── Avvio gioco (con eventuale selezione argomenti) ──
+  function avviaGioco(game: GameId, materia: Materia | null) {
+    if (game === 'milionario') startMilionario(materia);
+    else if (game === 'trivia') startTrivia(materia);
+    else startAbbina(materia);
+  }
+
+  function apriGioco(game: GameId, materia: Materia | null) {
+    // Se la materia ha argomenti, mostra prima la scelta; altrimenti parti subito.
+    if (materia && materia.argomenti && materia.argomenti.length > 1) {
+      setArgMateria(materia);
+      setArgGame(game);
+      setArgSel([]);
+      setScreen('argomenti');
+    } else {
+      avviaGioco(game, materia);
+    }
+  }
+
+  function argToggle(t: string) {
+    setArgSel(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t]);
+  }
+
+  function argCount(materia: Materia, t: string) {
+    return materia.carte.filter(c => c.argomento === t).length;
+  }
+
+  const argSelCount = argMateria ? argMateria.carte.filter(c => c.argomento && argSel.includes(c.argomento)).length : 0;
+
+  function avviaConArgomenti() {
+    if (!argMateria || argSel.length === 0) return;
+    const filtrate = argMateria.carte.filter(c => c.argomento && argSel.includes(c.argomento));
+    const tutta = argMateria.argomenti && argSel.length === argMateria.argomenti.length;
+    const derivata: Materia = {
+      ...argMateria,
+      titolo: tutta ? argMateria.titolo : `${argMateria.titolo} · ${argSel.length === 1 ? argSel[0] : `${argSel.length} argomenti`}`,
+      carte: filtrate,
+    };
+    avviaGioco(argGame, derivata);
+  }
+
   const colore = materiaTarget?.colore ?? '#818cf8';
 
   // ─────────────────────────────────────────────
@@ -500,13 +553,13 @@ function GiocaContent() {
                     <div style={{ fontSize:10, color:'rgba(255,255,255,0.3)' }}>{m.carte.length} carte</div>
                   </div>
                   <div style={{ display:'flex', gap:6, flexShrink:0 }}>
-                    <button onClick={() => startMilionario(m)} style={{ padding:'6px', borderRadius:12, border:'1px solid rgba(251,191,36,0.3)', background:'linear-gradient(135deg,#1c0e00,#2d1a00)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                    <button onClick={() => apriGioco('milionario', m)} style={{ padding:'6px', borderRadius:12, border:'1px solid rgba(251,191,36,0.3)', background:'linear-gradient(135deg,#1c0e00,#2d1a00)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
                       <img src="/game-logo-laureato.png" alt="Laureato" style={{ width:32, height:32, borderRadius:'50%', objectFit:'cover', display:'block' }} />
                     </button>
-                    <button onClick={() => startTrivia(m)} style={{ padding:'6px', borderRadius:12, border:'1px solid rgba(196,181,253,0.3)', background:'linear-gradient(135deg,#0d0520,#1a0a3a)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                    <button onClick={() => apriGioco('trivia', m)} style={{ padding:'6px', borderRadius:12, border:'1px solid rgba(196,181,253,0.3)', background:'linear-gradient(135deg,#0d0520,#1a0a3a)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
                       <img src="/game-logo-trivia.png" alt="Trivia" style={{ width:32, height:32, borderRadius:'50%', objectFit:'cover', display:'block' }} />
                     </button>
-                    <button onClick={() => startAbbina(m)} style={{ padding:'6px', borderRadius:12, border:'1px solid rgba(52,211,153,0.3)', background:'linear-gradient(135deg,#001a10,#022c22)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                    <button onClick={() => apriGioco('abbina', m)} style={{ padding:'6px', borderRadius:12, border:'1px solid rgba(52,211,153,0.3)', background:'linear-gradient(135deg,#001a10,#022c22)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
                       <img src="/game-logo-abbina.png" alt="Abbina" style={{ width:32, height:32, borderRadius:'50%', objectFit:'cover', display:'block' }} />
                     </button>
                   </div>
@@ -515,6 +568,74 @@ function GiocaContent() {
             </div>
           </div>
           <Footer />
+        </div>
+      )}
+
+      {/* ══ SELEZIONE ARGOMENTI ══ */}
+      {screen === 'argomenti' && argMateria && (
+        <div style={{ fontFamily:'Montserrat, sans-serif', background:'#0a0d18', minHeight:'100vh' }}>
+          <Header />
+          <div style={{ padding:'20px 16px 140px', maxWidth:650, margin:'0 auto' }}>
+            <button onClick={() => setScreen('selezione')} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.4)', fontSize:13, cursor:'pointer', padding:0, fontFamily:'Montserrat, sans-serif', marginBottom:24 }}>← Indietro</button>
+
+            {/* Gioco scelto */}
+            <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:20 }}>
+              <img src={GIOCHI[argGame].logo} alt={GIOCHI[argGame].nome} style={{ width:46, height:46, borderRadius:'50%', objectFit:'cover', display:'block', flexShrink:0 }} />
+              <div>
+                <div style={{ fontSize:9, fontWeight:700, letterSpacing:2.5, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', marginBottom:3 }}>{argMateria.icona} {argMateria.titolo}</div>
+                <div style={{ fontSize:18, fontWeight:900, color:'#fff' }}>{GIOCHI[argGame].nome}</div>
+              </div>
+            </div>
+
+            <div style={{ fontSize:13, fontWeight:700, color:'#fff', marginBottom:4 }}>Su quali argomenti vuoi giocare?</div>
+            <div style={{ fontSize:11, color:'rgba(255,255,255,0.35)', marginBottom:16 }}>Scegline uno, più di uno, oppure tutta la materia.</div>
+
+            {/* Tutta la materia */}
+            {(() => {
+              const tutta = argSel.length === argMateria.argomenti!.length;
+              return (
+                <button onClick={() => setArgSel(tutta ? [] : [...argMateria.argomenti!])}
+                  style={{ width:'100%', textAlign:'left', display:'flex', alignItems:'center', gap:12, padding:'14px 16px', borderRadius:16, marginBottom:14, cursor:'pointer', fontFamily:'Montserrat, sans-serif',
+                    background: tutta ? `${argMateria.colore}22` : '#111526',
+                    border: `1px solid ${tutta ? argMateria.colore : 'rgba(255,255,255,0.08)'}` }}>
+                  <span style={{ width:22, height:22, borderRadius:7, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, color:'#fff', background: tutta ? argMateria.colore : 'transparent', border:`1.5px solid ${tutta ? argMateria.colore : 'rgba(255,255,255,0.25)'}` }}>{tutta ? '✓' : ''}</span>
+                  <span style={{ flex:1 }}>
+                    <span style={{ display:'block', fontSize:13, fontWeight:800, color:'#fff' }}>Tutta la materia</span>
+                    <span style={{ display:'block', fontSize:10, color:'rgba(255,255,255,0.35)' }}>{argMateria.carte.length} carte · {argMateria.argomenti!.length} argomenti</span>
+                  </span>
+                </button>
+              );
+            })()}
+
+            <div style={{ fontSize:9, fontWeight:700, letterSpacing:2.5, color:'rgba(255,255,255,0.25)', textTransform:'uppercase', marginBottom:10 }}>Oppure scegli gli argomenti</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+              {argMateria.argomenti!.map(t => {
+                const sel = argSel.includes(t);
+                return (
+                  <button key={t} onClick={() => argToggle(t)}
+                    style={{ width:'100%', textAlign:'left', display:'flex', alignItems:'center', gap:12, padding:'13px 15px', borderRadius:14, cursor:'pointer', fontFamily:'Montserrat, sans-serif',
+                      background: sel ? `${argMateria.colore}1c` : '#111526',
+                      border: `1px solid ${sel ? argMateria.colore : 'rgba(255,255,255,0.06)'}` }}>
+                    <span style={{ width:20, height:20, borderRadius:6, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, color:'#fff', background: sel ? argMateria.colore : 'transparent', border:`1.5px solid ${sel ? argMateria.colore : 'rgba(255,255,255,0.22)'}` }}>{sel ? '✓' : ''}</span>
+                    <span style={{ flex:1, fontSize:12, fontWeight:700, color: sel ? '#fff' : 'rgba(255,255,255,0.8)' }}>{t}</span>
+                    <span style={{ fontSize:10, fontWeight:700, color:'rgba(255,255,255,0.3)' }}>{argCount(argMateria, t)}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Barra Gioca fissa */}
+          <div style={{ position:'fixed', left:0, right:0, bottom:0, padding:'14px 16px calc(14px + env(safe-area-inset-bottom))', background:'linear-gradient(180deg, rgba(10,13,24,0) 0%, #0a0d18 35%)', zIndex:30 }}>
+            <div style={{ maxWidth:650, margin:'0 auto' }}>
+              <button onClick={avviaConArgomenti} disabled={argSel.length === 0}
+                style={{ width:'100%', padding:'16px', borderRadius:16, border:'none', fontFamily:'Montserrat, sans-serif', fontWeight:900, fontSize:15,
+                  cursor: argSel.length === 0 ? 'default' : 'pointer', opacity: argSel.length === 0 ? 0.35 : 1, transition:'opacity 0.2s',
+                  background:`linear-gradient(135deg, ${argMateria.colore}, ${argMateria.colore}cc)`, color:'#0a0d18' }}>
+                {argSel.length === 0 ? 'Seleziona almeno un argomento' : `🎮 Gioca · ${argSelCount} carte`}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
