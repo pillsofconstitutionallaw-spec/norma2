@@ -32,13 +32,17 @@ export default function ArticoloPage() {
     async function fetchPost() {
       try {
         setLoading(true);
-        const res = await fetch(
-          `https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&slug=${encodeURIComponent(slug)}&per_page=1`,
-          { cache: 'no-store' }
-        );
+        const res = await fetch(`/api/articolo?slug=${encodeURIComponent(slug)}`);
         const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) setPost(data[0]);
-        else setPost(null);
+        if (data?.post) {
+          setPost(data.post);
+        } else {
+          // Fallback: chiamata diretta a WordPress se l'endpoint cache non risponde
+          const direct = await fetch(
+            `https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&slug=${encodeURIComponent(slug)}&per_page=1`
+          ).then(r => r.json()).catch(() => []);
+          setPost(Array.isArray(direct) && direct.length > 0 ? direct[0] : null);
+        }
       } catch (e) {
         setPost(null);
       } finally {
