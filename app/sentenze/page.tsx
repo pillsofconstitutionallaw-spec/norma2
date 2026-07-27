@@ -74,6 +74,14 @@ const sentenze = [
     principio: 'La Corte applica i controlimiti in modo diretto e coraggioso: l\'immunità assoluta dello Stato straniero, così come interpretata dalla Corte internazionale di giustizia, sacrifica il diritto fondamentale delle vittime di accedere al giudice. Questo diritto — l\'art. 24 Cost. — è un principio supremo dell\'ordinamento italiano che prevale sul diritto internazionale consuetudinario. La sentenza della CIG non viene applicata nella parte in cui nega ogni tutela giurisdizionale alle vittime.',
   },
   {
+    numero: '348/2007',
+    titolo: 'Espropriazione e CEDU come norma interposta',
+    tag: 'Diritto internazionale',
+    anno: '2007',
+    caso: 'La legge italiana calcolava l\'indennità di espropriazione per pubblica utilità con un criterio che la fissava ben al di sotto del valore di mercato del bene. Il proprietario espropriato riceveva così un ristoro fortemente ridotto. La Corte europea dei diritti dell\'uomo, però, interpretando l\'art. 1 del Primo Protocollo CEDU (tutela della proprietà), aveva più volte affermato che l\'indennizzo deve essere ragionevolmente proporzionato al valore reale del bene. La legge italiana era in contrasto con questa lettura?',
+    principio: 'La Corte chiarisce il rango della CEDU nell\'ordinamento: le sue norme, come interpretate dalla Corte di Strasburgo, sono "norme interposte" che integrano il parametro dell\'art. 117, primo comma, Cost. (rispetto degli obblighi internazionali). Il giudice comune non può disapplicare direttamente la legge interna in contrasto con la CEDU — a differenza di quanto avviene con il diritto UE — ma deve sollevare questione di legittimità costituzionale. Su questa base la Corte dichiara incostituzionale il criterio di calcolo dell\'indennità, perché irragionevolmente lontano dal valore del bene e quindi in violazione della CEDU e, di riflesso, della Costituzione. È una delle due "sentenze gemelle", insieme alla n. 349/2007.',
+  },
+  {
     numero: '349/2007',
     titolo: 'CEDU come norma interposta',
     tag: 'Diritto internazionale',

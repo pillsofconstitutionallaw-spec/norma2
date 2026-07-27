@@ -202,7 +202,7 @@ export default function FeedCard({ post, priority = false }: { post: Post; prior
         )}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 12.5, fontWeight: 800, color: '#fff', fontFamily: 'Montserrat, sans-serif', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{handle}</div>
-          {cat && <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.38)', fontFamily: 'Montserrat, sans-serif' }}>{cat}</div>}
+          {cat && <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', fontFamily: 'Montserrat, sans-serif' }}>{cat}</div>}
         </div>
         <button aria-label="Opzioni articolo" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 6px', color: 'rgba(255,255,255,0.55)', fontSize: 18, lineHeight: 1, letterSpacing: 1 }}>···</button>
       </div>
@@ -243,11 +243,11 @@ export default function FeedCard({ post, priority = false }: { post: Post; prior
             fontSize: titleFontSize(titleText),
             fontWeight: 700,
             color: '#fff',
-            lineHeight: 1.08,
-            letterSpacing: -0.5,
+            lineHeight: titleText.length <= 50 ? 1.08 : 1.18,
+            letterSpacing: titleText.length <= 50 ? -0.5 : -0.2,
             fontFamily: 'Montserrat, sans-serif',
             wordBreak: 'break-word',
-            textTransform: 'uppercase',
+            textTransform: titleText.length <= 50 ? 'uppercase' : 'none',
             maxWidth: '78%',
           } as React.CSSProperties}
             dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
@@ -305,7 +305,7 @@ export default function FeedCard({ post, priority = false }: { post: Post; prior
             style={{ fontSize: 11.5, fontWeight: 700, color: '#8fd3ff', textDecoration: 'none', fontFamily: 'Montserrat, sans-serif' }}>
             Leggi l'articolo →
           </a>
-          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', fontFamily: 'Montserrat, sans-serif' }}>{dataRelativa(post.date)}</span>
+          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', fontFamily: 'Montserrat, sans-serif' }}>{dataRelativa(post.date)}</span>
         </div>
       </div>
 
