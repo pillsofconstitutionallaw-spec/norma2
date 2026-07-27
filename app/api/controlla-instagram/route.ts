@@ -74,6 +74,14 @@ async function esegui(): Promise<NextResponse> {
     return NextResponse.json({ message: 'Nessuna novità', id: ultimoId });
   }
 
+  // Primo avvio, stato vuoto: il post più recente è già pubblicato da giorni,
+  // non è una novità. Si memorizza in silenzio; la notifica parte dal primo
+  // post pubblicato davvero dopo questo momento.
+  if (!salvato) {
+    await scriviEdgeConfig([{ key: 'ultimo-instagram-id', value: ultimoId }]);
+    return NextResponse.json({ message: 'Stato inizializzato, nessuna notifica', id: ultimoId });
+  }
+
   // Prima si salva, poi si notifica: se la scrittura fallisce niente notifica,
   // altrimenti lo stesso post verrebbe rinotificato ad ogni run del cron.
   await scriviEdgeConfig([{ key: 'ultimo-instagram-id', value: ultimoId }]);

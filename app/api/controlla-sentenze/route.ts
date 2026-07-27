@@ -50,6 +50,14 @@ async function esegui(): Promise<NextResponse> {
     return NextResponse.json({ message: 'Nessuna novità', deposito: depositoAttuale });
   }
 
+  // Primo avvio, stato vuoto: il deposito che troviamo adesso esiste già da
+  // giorni, non è una novità. Si memorizza in silenzio; la notifica parte dal
+  // primo deposito pubblicato davvero dopo questo momento.
+  if (!ultimoSalvato) {
+    await scriviEdgeConfig([{ key: 'ultimo-deposito', value: depositoAttuale }]);
+    return NextResponse.json({ message: 'Stato inizializzato, nessuna notifica', deposito: depositoAttuale });
+  }
+
   // Prima si salva, poi si notifica: se la scrittura fallisce niente notifica,
   // altrimenti lo stesso deposito verrebbe rinotificato ad ogni run del cron.
   await scriviEdgeConfig([{ key: 'ultimo-deposito', value: depositoAttuale }]);
