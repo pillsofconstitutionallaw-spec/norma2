@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 
-export const revalidate = 3600; // cache 1 ora
+// 5 minuti, allineato ai fetch verso WordPress qui sotto: con 3600 la
+// risposta restava in cache CDN un'ora anche ad articolo già pubblicato.
+export const revalidate = 300;
 
 const STORY_CATS = [
   { name: 'Penale', id: 48 },
