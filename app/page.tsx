@@ -29,9 +29,12 @@ function InstagramEmbed() {
     fetch('/api/instagram')
       .then(r => r.json())
       .then(data => {
-        if (data.data) setPosts(data.data.slice(0, 9));
+        if (data.data?.length) setPosts(data.data.slice(0, 9));
+        // Griglia vuota = token scaduto o mancante: senza questo log
+        // il feed sparisce senza lasciare traccia da nessuna parte.
+        else console.error('[instagram] feed vuoto:', data.error ?? data);
       })
-      .catch(() => {});
+      .catch(e => console.error('[instagram] fetch fallita:', e));
   }, []);
   return (
     <div style={{ background: '#111526', borderRadius: 18, overflow: 'hidden', border: '0.5px solid rgba(255,255,255,0.06)', marginBottom: 10 }}>

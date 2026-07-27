@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@vercel/edge-config';
+import { leggiEdgeConfig, scriviEdgeConfig } from '@/lib/edge-config';
+import { CHIAVE_TOKEN, CHIAVE_TOKEN_REFRESH, IG_USER_ID, tokenInstagram } from '@/lib/instagram';
 
-const IG_USER_ID = '17841472725782214';
 const ONESIGNAL_APP_ID = 'cb2f63d9-6736-47a6-97e7-913f41abd463';
 const REFRESH_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000; // 7 giorni
 
@@ -10,23 +10,11 @@ function verificaAuth(req: NextRequest): boolean {
   return auth === `Bearer ${process.env.CRON_SECRET}`;
 }
 
-async function aggiornaEdgeConfig(items: { key: string; value: string }[]) {
-  await fetch(`https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`, {
-    method: 'PATCH',
-    headers: {
-      Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ items: items.map(i => ({ operation: 'upsert', ...i })) }),
-  });
-}
-
-async function refreshTokenSeNecessario(edgeConfig: ReturnType<typeof createClient>): Promise<string> {
-  const tokenAttuale = (await edgeConfig.get('instagram-token') as string | null)
-    ?? process.env.INSTAGRAM_TOKEN ?? '';
+async function refreshTokenSeNecessario(): Promise<string> {
+  const tokenAttuale = await tokenInstagram();
 
   try {
-    const lastRefreshRaw = await edgeConfig.get('instagram-token-refreshed-at') as string | null;
+    const lastRefreshRaw = await leggiEdgeConfig(CHIAVE_TOKEN_REFRESH);
     // null → mai rinfrescato → fai subito il refresh
     const lastRefresh = lastRefreshRaw ? new Date(lastRefreshRaw).getTime() : 0;
     const scaduto = Date.now() - lastRefresh >= REFRESH_INTERVAL_MS;
@@ -44,9 +32,9 @@ async function refreshTokenSeNecessario(edgeConfig: ReturnType<typeof createClie
       return tokenAttuale; // continua con il token attuale, NON aggiorna timestamp
     }
 
-    await aggiornaEdgeConfig([
-      { key: 'instagram-token', value: data.access_token },
-      { key: 'instagram-token-refreshed-at', value: new Date().toISOString() },
+    await scriviEdgeConfig([
+      { key: CHIAVE_TOKEN, value: data.access_token },
+      { key: CHIAVE_TOKEN_REFRESH, value: new Date().toISOString() },
     ]);
 
     return data.access_token;
@@ -57,9 +45,7 @@ async function refreshTokenSeNecessario(edgeConfig: ReturnType<typeof createClie
 }
 
 async function esegui(): Promise<NextResponse> {
-  const edgeConfig = createClient(process.env.EDGE_CONFIG!);
-
-  const token = await refreshTokenSeNecessario(edgeConfig);
+  const token = await refreshTokenSeNecessario();
   if (!token) {
     return NextResponse.json({ error: 'Token Instagram mancante' }, { status: 500 });
   }
@@ -70,6 +56,11 @@ async function esegui(): Promise<NextResponse> {
   );
   const data = await res.json();
 
+  if (data?.error) {
+    console.error('Graph API ha rifiutato il token:', data.error);
+    return NextResponse.json({ error: data.error.message ?? 'Errore Graph API' }, { status: 502 });
+  }
+
   if (!data?.data?.length) {
     return NextResponse.json({ message: 'Nessun post trovato' });
   }
@@ -77,13 +68,15 @@ async function esegui(): Promise<NextResponse> {
   const ultimoPost = data.data[0];
   const ultimoId = ultimoPost.id;
 
-  const salvato = await edgeConfig.get('ultimo-instagram-id') as string | null;
+  const salvato = await leggiEdgeConfig('ultimo-instagram-id');
 
   if (salvato === ultimoId) {
     return NextResponse.json({ message: 'Nessuna novità', id: ultimoId });
   }
 
-  await aggiornaEdgeConfig([{ key: 'ultimo-instagram-id', value: ultimoId }]);
+  // Prima si salva, poi si notifica: se la scrittura fallisce niente notifica,
+  // altrimenti lo stesso post verrebbe rinotificato ad ogni run del cron.
+  await scriviEdgeConfig([{ key: 'ultimo-instagram-id', value: ultimoId }]);
 
   const caption = ultimoPost.caption
     ? ultimoPost.caption.split('\n')[0].slice(0, 80)
