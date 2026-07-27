@@ -1,7 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@vercel/edge-config';
+import { leggiEdgeConfig, scriviEdgeConfig } from '@/lib/edge-config';
 
 const ONESIGNAL_APP_ID = 'cb2f63d9-6736-47a6-97e7-913f41abd463';
+const URL_DEPOSITO = 'https://www.cortecostituzionale.it/ultimo-deposito';
+
+// Il sito della Corte è dietro un bot manager (Radware/ShieldSquare): con uno
+// user-agent da bot la richiesta viene dirottata su validate.perfdrive.com e
+// l'HTML che torna non contiene il deposito. Servono header da browser vero.
+const HEADERS_BROWSER = {
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+  Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+  'Accept-Language': 'it-IT,it;q=0.9,en;q=0.8',
+  'Sec-Fetch-Dest': 'document',
+  'Sec-Fetch-Mode': 'navigate',
+  'Sec-Fetch-Site': 'none',
+  'Sec-Fetch-User': '?1',
+  'Upgrade-Insecure-Requests': '1',
+};
 
 function verificaAuth(req: NextRequest): boolean {
   const auth = req.headers.get('Authorization');
@@ -9,41 +24,35 @@ function verificaAuth(req: NextRequest): boolean {
 }
 
 async function esegui(): Promise<NextResponse> {
-  // Scraping pagina Corte Costituzionale
-  const res = await fetch('https://www.cortecostituzionale.it/actionCommuniqueStampa.do', {
-    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; NormaBot/1.0)' },
-    next: { revalidate: 0 },
-  });
+  // Scraping pagina "Ultimo deposito" della Corte Costituzionale
+  const res = await fetch(URL_DEPOSITO, { headers: HEADERS_BROWSER, next: { revalidate: 0 } });
   const html = await res.text();
 
-  // Cerca pattern es. "Deposito 14/05/2026 (dalla 77 alla 80)"
-  const match = html.match(/Deposito\s+[\d/]+\s*\([^)]+\)/i)
-    ?? html.match(/deposito[^<"]{5,80}/i);
+  // Cerca il titolo, es. "Deposito 24/07/2026 (dalla 148 alla 153)"
+  const match = html.match(/Deposito\s+[\d/]+\s*\([^)]+\)/i);
 
   if (!match) {
-    return NextResponse.json({ message: 'Nessun deposito trovato nell\'HTML' });
+    // Distinguere il blocco anti-bot da un cambio di layout: sono due problemi
+    // diversi e prima finivano entrambi in un silenzioso "nessun deposito".
+    const bloccato = /validate\.perfdrive\.com|ShieldSquare/i.test(html);
+    const motivo = bloccato
+      ? 'richiesta bloccata dal bot manager della Corte'
+      : `deposito non trovato nell'HTML (${res.status}, ${html.length} byte)`;
+    console.error('controlla-sentenze:', motivo);
+    return NextResponse.json({ error: motivo }, { status: 502 });
   }
 
   const depositoAttuale = match[0].trim();
 
-  const edgeConfig = createClient(process.env.EDGE_CONFIG!);
-  const ultimoSalvato = await edgeConfig.get('ultimo-deposito') as string | null;
+  const ultimoSalvato = await leggiEdgeConfig('ultimo-deposito');
 
   if (depositoAttuale === ultimoSalvato) {
     return NextResponse.json({ message: 'Nessuna novità', deposito: depositoAttuale });
   }
 
-  // Aggiorna Edge Config
-  await fetch(`https://api.vercel.com/v1/edge-config/${process.env.EDGE_CONFIG_ID}/items`, {
-    method: 'PATCH',
-    headers: {
-      Authorization: `Bearer ${process.env.VERCEL_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      items: [{ operation: 'upsert', key: 'ultimo-deposito', value: depositoAttuale }],
-    }),
-  });
+  // Prima si salva, poi si notifica: se la scrittura fallisce niente notifica,
+  // altrimenti lo stesso deposito verrebbe rinotificato ad ogni run del cron.
+  await scriviEdgeConfig([{ key: 'ultimo-deposito', value: depositoAttuale }]);
 
   // Manda notifica push via OneSignal
   const notifRes = await fetch('https://onesignal.com/api/v1/notifications', {
