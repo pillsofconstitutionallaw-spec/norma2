@@ -143,7 +143,7 @@ export default function RootLayout({
                   .then(function(reg) {
                     console.log('Norma SW registrato:', reg.scope);
                     // Aggiornamento silenzioso: il nuovo worker fa skipWaiting + clients.claim
-                    // e si applica alla navigazione successiva. Nessun banner, nessun reload forzato.
+                    // e si applica alla navigazione successiva. Nessun banner.
                     reg.addEventListener('updatefound', function() {
                       const newWorker = reg.installing;
                       if (!newWorker) return;
@@ -153,8 +153,29 @@ export default function RootLayout({
                         }
                       });
                     });
+
+                    // Una PWA installata, riaperta dal multitasking, ripristina la
+                    // pagina già in memoria: nessuna navigazione, quindi nessun
+                    // aggiornamento. Al ritorno in primo piano chiediamo noi se
+                    // esiste una versione nuova.
+                    document.addEventListener('visibilitychange', function() {
+                      if (document.visibilityState === 'visible') reg.update();
+                    });
                   })
                   .catch(function(err) { console.log('Norma SW errore:', err); });
+
+                // Quando il worker nuovo prende il controllo, ricarichiamo una
+                // volta sola per applicarlo. Il flag evita il loop di reload che
+                // aveva reso necessario togliere il vecchio banner "Aggiorna";
+                // avevaController evita il reload alla primissima installazione,
+                // quando il worker prende il controllo per la prima volta.
+                var avevaController = !!navigator.serviceWorker.controller;
+                var ricaricando = false;
+                navigator.serviceWorker.addEventListener('controllerchange', function() {
+                  if (!avevaController || ricaricando) return;
+                  ricaricando = true;
+                  window.location.reload();
+                });
               });
             }
           `}

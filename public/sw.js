@@ -1,4 +1,6 @@
-const CACHE_NAME = 'norma-1750000000000';
+// Cambiare ad ogni deploy che deve raggiungere le PWA già installate: è la
+// differenza nel contenuto di questo file che fa scattare l'aggiornamento.
+const CACHE_NAME = 'norma-2026-07-27';
 
 // Asset statici sempre in cache
 const STATIC_ASSETS = [
