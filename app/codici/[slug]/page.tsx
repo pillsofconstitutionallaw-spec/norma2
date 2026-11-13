@@ -53,6 +53,7 @@ export default async function CodicePage({
 
   return (
     <CodiceViewer
+      slug={slug}
       titolo={codice.nome}
       sottotitolo={SOTTOTITOLI[slug] ?? ''}
       colore={COLORI[slug] ?? '#8fd3ff'}

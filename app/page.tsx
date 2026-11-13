@@ -178,6 +178,42 @@ const SCORCIATOIE: { nome: string; href: string; sfondo: string; ombra: string; 
     icona: <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /> },
 ];
 
+type Sezione = { nome: string; href: string; colore: string; icona: React.ReactNode };
+const SEZIONI: { gruppo: string; voci: Sezione[] }[] = [
+  { gruppo: 'Studia e allenati', voci: [
+    { nome: 'Studio', href: '/studio', colore: '#9333ea', icona: <><path d="M2 9l10-5 10 5-10 5L2 9z" /><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" /></> },
+    { nome: 'Test', href: '/test', colore: '#0ea5e9', icona: <><path d="M9 11l3 3 8-8" /><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9" /></> },
+    { nome: 'Consulenza AI', href: '/consulenza', colore: '#e11d48', icona: <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /><path d="M8 9h8M8 13h5" /></> },
+  ] },
+  { gruppo: 'Norme e fonti', voci: [
+    { nome: 'Costituzione', href: '/costituzione', colore: '#16a34a', icona: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6" /><path d="M8 13h8M8 17h5" /></> },
+    { nome: 'Codici', href: '/codici', colore: '#4f46e5', icona: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5z" /><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5" /></> },
+    { nome: 'Fonti del diritto', href: '/fonti', colore: '#0891b2', icona: <><path d="M12 2 2 7l10 5 10-5z" /><path d="m2 12 10 5 10-5" /><path d="m2 17 10 5 10-5" /></> },
+  ] },
+  { gruppo: 'Istituzioni e giurisprudenza', voci: [
+    { nome: 'Istituzioni', href: '/istituzioni', colore: '#475569', icona: <><path d="M2.5 10 12 4l9.5 6" /><path d="M6 10v8M10 10v8M14 10v8M18 10v8" /><path d="M3 21h18" /></> },
+    { nome: 'Corte Cost.', href: '/corte-costituzionale', colore: '#b45309', icona: <><path d="M12 3v17" /><path d="M5 7h14" /><path d="M5 7 2.5 13a2.5 2.5 0 0 0 5 0z" /><path d="M19 7l-2.5 6a2.5 2.5 0 0 0 5 0z" /><path d="M8 20h8" /></> },
+    { nome: 'Sentenze', href: '/sentenze', colore: '#ea580c', icona: <><path d="m14.5 3.5 6 6" /><path d="m11 7 6 6" /><path d="M14 10 5 19" /><path d="M3 21h9" /></> },
+    { nome: 'Referendum', href: '/referendum', colore: '#7c3aed', icona: <><path d="M4 11h16v10H4z" /><path d="M9 7l3 3 5-6" /><path d="M8 15h8" /></> },
+  ] },
+  { gruppo: 'Internazionale ed europeo', voci: [
+    { nome: 'Diritto internaz.', href: '/diritto-internazionale', colore: '#0284c7', icona: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></> },
+    { nome: 'Unione Europea', href: '/unione-europea', colore: '#1d4ed8', icona: <><circle cx="12" cy="4.5" r="1" /><circle cx="18.5" cy="8.5" r="1" /><circle cx="18.5" cy="15.5" r="1" /><circle cx="12" cy="19.5" r="1" /><circle cx="5.5" cy="15.5" r="1" /><circle cx="5.5" cy="8.5" r="1" /></> },
+    { nome: 'ONU', href: '/onu', colore: '#0369a1', icona: <><circle cx="12" cy="11" r="7" /><path d="M5 11h14M12 4v14" /><path d="M4 20c2-1 4 1 8 1s6-2 8-1" /></> },
+  ] },
+  { gruppo: 'Cultura e approfondimenti', voci: [
+    { nome: 'Glossario', href: '/glossario', colore: '#0284c7', icona: <><path d="M4 7V4h16v3" /><path d="M9 20h6M12 4v16" /></> },
+    { nome: 'Articoli', href: '/articoli', colore: '#db2777', icona: <><path d="M4 4h16v16H4z" /><path d="M8 8h8M8 12h8M8 16h5" /></> },
+    { nome: 'News', href: '/news', colore: '#dc2626', icona: <><path d="M4 22h14a2 2 0 0 0 2-2V4H8v16a2 2 0 0 1-4 0V9h4" /><path d="M12 8h4M12 12h4M12 16h4" /></> },
+    { nome: 'Cultura', href: '/cultura', colore: '#c026d3', icona: <><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z" /></> },
+    { nome: 'Libri', href: '/libri', colore: '#ca8a04', icona: <><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z" /><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z" /></> },
+  ] },
+  { gruppo: 'Storia e progetto', voci: [
+    { nome: 'Cost. Napoletana', href: '/costituzione-napoletana', colore: '#0d9488', icona: <><path d="M3 21h18" /><path d="M12 3 4 9h16z" /><path d="M7 9v9M12 9v9M17 9v9" /></> },
+    { nome: 'Chi siamo', href: '/chi-siamo', colore: '#4f46e5', icona: <><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" /><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .6 3.5 2.6 3.5 6" /></> },
+  ] },
+];
+
 function saluto() {
   const h = new Date().getHours();
   if (h < 5) return 'Buonanotte';
@@ -209,6 +245,7 @@ export default function NormaHome() {
   const [festaEspansa, setFestaEspansa] = useState(false);
   const [cur, setCur] = useState(0);
   const caroselloRef = useRef<HTMLDivElement>(null);
+  const [sezioniAperte, setSezioniAperte] = useState(false);
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(staticCategories);
   const [fascicolo, setFascicolo] = useState<{ url: string; title: string } | null>(null);
 
@@ -341,9 +378,15 @@ export default function NormaHome() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feedPosts, storyOpen]);
 
+  useEffect(() => {
+    document.body.style.overflow = sezioniAperte ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [sezioniAperte]);
+
   /* ── Mount ── */
   useEffect(() => {
     setMounted(true);
+    if (window.location.hash === '#sezioni') setSezioniAperte(true);
     const now = new Date();
     const m = now.getMonth() + 1;
     const g = now.getDate();
@@ -539,14 +582,19 @@ export default function NormaHome() {
           <div className="sezione-label appare" style={{ animationDelay: '220ms' }}>Strumenti</div>
           <div className="scorciatoie">
             {SCORCIATOIE.map((sc, i) => (
-              <a key={sc.href} href={sc.href} className="scorciatoia tap appare" style={{ animationDelay: `${240 + i * 35}ms` }}>
-                <span className="scorciatoia-icona" style={{ background: sc.sfondo, ['--ombra' as string]: sc.ombra }}>
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">{sc.icona}</svg>
+              <a key={sc.href} href={sc.href} className="scorciatoia tap">
+                <span className="scorciatoia-icona tessera" style={{ background: sc.sfondo, ['--ombra' as string]: sc.ombra, ['--d' as string]: `${240 + i * 60}ms` }}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" className="disegna" style={{ ['--d' as string]: `${240 + i * 60}ms` }}>{sc.icona}</svg>
                 </span>
                 <span className="scorciatoia-nome">{sc.nome}</span>
               </a>
             ))}
           </div>
+
+          <button className="btn btn-secondario tap" style={{ width: '100%', marginTop: 18 }} onClick={() => setSezioniAperte(true)}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="2" /><rect x="14" y="3" width="7" height="7" rx="2" /><rect x="3" y="14" width="7" height="7" rx="2" /><rect x="14" y="14" width="7" height="7" rx="2" /></svg>
+            Tutte le sezioni
+          </button>
 
           {/* ── Ultimi articoli ── */}
           <div className="sezione-label">
@@ -610,6 +658,40 @@ export default function NormaHome() {
           </div>
         </main>
         <Footer />
+
+        {/* ── Pannello: tutte le sezioni (ex Esplora) ── */}
+        {sezioniAperte && (
+          <div className="sheet-sfondo" onClick={() => setSezioniAperte(false)}>
+            <div className="sheet" onClick={e => e.stopPropagation()}>
+              <div className="sheet-maniglia" />
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h2 className="sheet-titolo" style={{ fontSize: 24 }}>Tutte le sezioni</h2>
+                <button className="btn-chiudi tap" aria-label="Chiudi" onClick={() => setSezioniAperte(false)}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+                </button>
+              </div>
+              {SEZIONI.map((g, gi) => (
+                <div key={g.gruppo}>
+                  <div className="sezione-label" style={{ fontSize: 17, margin: '22px 2px 12px' }}>{g.gruppo}</div>
+                  <div className="scorciatoie">
+                    {g.voci.map((v, vi) => {
+                      const d = 120 + gi * 110 + vi * 55;
+                      return (
+                        <a key={v.href} href={v.href} className="scorciatoia tap">
+                          <span className="scorciatoia-icona tessera" style={{ background: `linear-gradient(150deg, ${v.colore}, color-mix(in srgb, ${v.colore} 70%, #1e1b4b))`, ['--ombra' as string]: `${v.colore}99`, ['--d' as string]: `${d}ms` }}>
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" className="disegna" style={{ ['--d' as string]: `${d}ms` }}>{v.icona}</svg>
+                          </span>
+                          <span className="scorciatoia-nome">{v.nome}</span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+              <div style={{ height: 'calc(var(--safe-bottom) + 20px)' }} />
+            </div>
+          </div>
+        )}
         {/* ── Story modal (invariato) ── */}
         {storyOpen && (
           <div

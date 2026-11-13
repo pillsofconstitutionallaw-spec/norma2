@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { IconaCodice } from './IconaCodice';
 
 export type ArticoloCodice = {
   numero: number | string;
@@ -13,6 +14,7 @@ export type ArticoloCodice = {
 };
 
 type Props = {
+  slug?: string;
   titolo: string;
   sottotitolo: string;
   colore: string;
@@ -21,7 +23,7 @@ type Props = {
 
 type AICache = Record<string, { spiega?: string; giurisprudenza?: string }>;
 
-export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: Props) {
+export default function CodiceViewer({ slug, titolo, sottotitolo, colore, articoli }: Props) {
   const [search, setSearch] = useState('');
   const [libroAttivo, setLibroAttivo] = useState<string | null>(null);
   const [aperto, setAperto] = useState<ArticoloCodice | null>(null);
@@ -185,6 +187,11 @@ export default function CodiceViewer({ titolo, sottotitolo, colore, articoli }: 
       <main className="pagina">
         {/* ── Copertina del codice ── */}
         <div className="codice-hero appare">
+          {slug && (
+            <div className="codice-hero-icona tessera" style={{ ['--d' as string]: '120ms' }}>
+              <IconaCodice slug={slug} size={30} colore="#fff" anima ritardo={120} />
+            </div>
+          )}
           <div className="codice-hero-atto">{sottotitolo}</div>
           <h1 className="codice-hero-titolo">{titolo}</h1>
           <div className="codice-hero-stat">

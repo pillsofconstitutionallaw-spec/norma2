@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import { IconaCodice } from './IconaCodice';
 
 type Codice = {
   slug: string;
@@ -57,15 +58,6 @@ const ALTRI: Codice[] = [
     icona: <><path d="M3 20h18" /><path d="M6 20V10l6-4 6 4v10" /></> },
 ];
 
-function Icona({ c, size = 22, colore }: { c: Codice; size?: number; colore?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={{ color: colore ?? c.colore }}>
-      {c.icona}
-    </svg>
-  );
-}
-
 const normalizza = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
 export default function ListaCodici({ conteggi }: { conteggi: Record<string, number> }) {
@@ -101,7 +93,7 @@ export default function ListaCodici({ conteggi }: { conteggi: Record<string, num
                   background: `linear-gradient(150deg, ${c.colore} 0%, color-mix(in srgb, ${c.colore} 62%, #0b1f3a) 100%)`,
                   boxShadow: `0 10px 24px -10px color-mix(in srgb, ${c.colore} 70%, transparent)`,
                 }}>
-                <div className="card-codice-icona"><Icona c={c} colore="#fff" /></div>
+                <div className="card-codice-icona tessera" style={{ ['--d' as string]: `${150 + i * 90}ms` }}><IconaCodice slug={c.slug} colore="#fff" anima ritardo={150 + i * 90} /></div>
                 <div>
                   <div className="card-codice-titolo">{c.breve}</div>
                   <div className="card-codice-sub">
@@ -118,9 +110,9 @@ export default function ListaCodici({ conteggi }: { conteggi: Record<string, num
         <>
           <div className="sezione-label appare" style={{ animationDelay: '280ms' }}>Altri codici</div>
           <div className="lista appare" style={{ animationDelay: '300ms' }}>
-            {altri.map(c => (
+            {altri.map((c, i) => (
               <Link key={c.slug} href={`/codici/${c.slug}`} className="riga">
-                <div className="riga-icona" style={{ background: `linear-gradient(150deg, ${c.colore}, color-mix(in srgb, ${c.colore} 75%, #0b1f3a))` }}><Icona c={c} size={21} colore="#fff" /></div>
+                <div className="riga-icona tessera" style={{ background: `linear-gradient(150deg, ${c.colore}, color-mix(in srgb, ${c.colore} 75%, #0b1f3a))`, ['--d' as string]: `${380 + i * 45}ms` }}><IconaCodice slug={c.slug} size={21} colore="#fff" anima ritardo={380 + i * 45} /></div>
                 <div className="riga-testo">
                   <div className="riga-titolo">{c.titolo}</div>
                   <div className="riga-sub">{c.atto}{articoli(c.slug) && ` · ${articoli(c.slug)} articoli`}</div>

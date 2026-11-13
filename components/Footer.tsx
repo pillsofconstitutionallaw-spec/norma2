@@ -22,11 +22,11 @@ const TABS: Tab[] = [
     ),
   },
   {
-    id: 'esplora', label: 'Esplora', path: '/esplora',
+    id: 'codici', label: 'Codici', path: '/codici',
     icon: a => (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill={a ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={a ? 0 : 1.8} strokeLinejoin="round">
-        <rect x="3" y="3" width="7" height="7" rx="2" /><rect x="14" y="3" width="7" height="7" rx="2" />
-        <rect x="3" y="14" width="7" height="7" rx="2" /><rect x="14" y="14" width="7" height="7" rx="2" />
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5z" fill={a ? 'currentColor' : 'none'} />
+        <path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5" />
       </svg>
     ),
   },
