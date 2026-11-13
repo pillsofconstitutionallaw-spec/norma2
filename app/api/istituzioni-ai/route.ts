@@ -1,5 +1,3 @@
-import { opzioniModello } from '@/lib/groq';
-
 export async function POST(req: Request) {
   try {
     const { istituzione, tipo } = await req.json();
@@ -56,7 +54,7 @@ Scrivi un testo fluido, discorsivo e professionale.
           Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          ...opzioniModello(2048),
+          model: 'llama-3.3-70b-versatile',
           messages: [
             {
               role: 'user',
@@ -64,6 +62,7 @@ Scrivi un testo fluido, discorsivo e professionale.
             },
           ],
           temperature: 0.15,
+          max_tokens: 2048,
         }),
       }
     );

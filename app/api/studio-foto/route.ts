@@ -1,77 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { opzioniModello, eseguiGroq, estraiJson, GroqLimiteRaggiunto } from '@/lib/groq';
 
-export const maxDuration = 60;
+const VISION_MODEL = 'llama-3.2-11b-vision-preview';
+const TEXT_MODEL = 'llama-3.3-70b-versatile';
 
-/* L'OCR non passa più da Groq: il modello vision che usavamo (llama-3.2-11b-vision)
-   è stato dismesso e sull'account Groq non c'è nessun modello che legga immagini.
-   Ora le foto vanno a un Worker Cloudflare (cartella ocr-worker/) che usa Workers AI
-   con Mistral Small 3.1. Il Worker sta su Cloudflare perché lì il binding AI è già
-   autenticato: nessun token API da creare o rinnovare.
-   Variabili: OCR_URL e OCR_SECRET. */
-
-async function ocrFoto(base64: string): Promise<string> {
-  const url = process.env.OCR_URL;
-  const segreto = process.env.OCR_SECRET;
-  if (!url || !segreto) throw new Error('OCR non configurato');
-
-  const risposta = await fetch(url, {
+async function groqVision(base64: string, apiKey: string): Promise<string> {
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-ocr-secret': segreto },
-    body: JSON.stringify({ immagine: base64 }),
-    signal: AbortSignal.timeout(30000),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: VISION_MODEL,
+      messages: [{
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'Estrai tutto il testo presente in questa immagine mantenendo la struttura. Se ci sono titoli, elenchi o paragrafi preservali. Rispondi solo con il testo estratto, senza commenti.',
+          },
+          {
+            type: 'image_url',
+            image_url: { url: `data:image/jpeg;base64,${base64}` },
+          },
+        ],
+      }],
+      max_tokens: 2000,
+      temperature: 0.1,
+    }),
   });
-  const dati = await risposta.json().catch(() => ({}));
-  if (!risposta.ok) throw new Error(dati?.errore || `OCR HTTP ${risposta.status}`);
-  return String(dati?.testo || '');
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
 }
 
-/* Misurato sul caso peggiore (35 flash card): 2063 token di risposta.
-   Prenotarne 4096 come prima dimezzava le richieste possibili al minuto,
-   perché Groq scala dal budget lo spazio PRENOTATO, non quello usato. */
-const TOKEN_RISPOSTA = 2800;
-
-/* Quanto tempo lasciarsi per il piano B. Il Worker, nel caso peggiore
-   (35 flash card), ci mette ~42s: sotto questa soglia non lo chiamiamo
-   nemmeno, meglio un 429 onesto che una funzione che scade a metà. */
-const SOGLIA_FALLBACK_MS = 45_000;
-
-/* Piano B quando Groq è al limite del suo piano: stesso Worker dell'OCR,
-   che ha una quota separata. Non sostituisce Groq, interviene solo dove
-   prima restituivamo un errore. */
-async function generaConWorker(prompt: string, millisecondiDisponibili: number): Promise<string> {
-  const url = process.env.OCR_URL;
-  const segreto = process.env.OCR_SECRET;
-  if (!url || !segreto) throw new Error('Worker non configurato');
-
-  const risposta = await fetch(url, {
+async function groqGenerate(prompt: string, apiKey: string, maxTokens = 4096): Promise<string> {
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-ocr-secret': segreto },
-    body: JSON.stringify({ prompt, maxTokens: TOKEN_RISPOSTA }),
-    signal: AbortSignal.timeout(Math.max(5000, millisecondiDisponibili - 2000)),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: TEXT_MODEL,
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.1,
+      max_tokens: maxTokens,
+    }),
   });
-  const dati = await risposta.json().catch(() => ({}));
-  if (!risposta.ok) throw new Error(dati?.errore || `Worker HTTP ${risposta.status}`);
-  return String(dati?.testo || '');
-}
-
-async function groqGenerate(prompt: string, apiKey: string, restano: () => number): Promise<string> {
-  const puoRipiegare = restano() > SOGLIA_FALLBACK_MS;
-  try {
-    /* se abbiamo un piano B non stiamo ad aspettare Groq: lo usiamo subito */
-    return await eseguiGroq(
-      apiKey,
-      { ...opzioniModello(TOKEN_RISPOSTA), messages: [{ role: 'user', content: prompt }], temperature: 0.1 },
-      { ritenta: !puoRipiegare },
-    );
-  } catch (errore) {
-    if (!(errore instanceof GroqLimiteRaggiunto) || !puoRipiegare) throw errore;
-    try {
-      return await generaConWorker(prompt, restano());
-    } catch {
-      throw errore;            /* piano B fallito: resta il messaggio onesto sul limite */
-    }
-  }
+  const data = await response.json();
+  return data.choices?.[0]?.message?.content || '';
 }
 
 function calcolaNumeroCard(len: number): number {
@@ -90,8 +67,6 @@ function calcolaNumeroTest(len: number): number {
 }
 
 export async function POST(req: NextRequest) {
-  const inizio = Date.now();
-  const restano = () => 58_000 - (Date.now() - inizio);   /* maxDuration è 60s: 2s di margine */
   try {
     const body = await req.json();
     const { tipo, immagini } = body; // immagini: string[] (base64)
@@ -105,13 +80,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ errore: 'Nessuna immagine ricevuta' }, { status: 400 });
     }
 
-    /* Le foto si leggono in parallelo: una alla volta, con 8 immagini,
-       si sforerebbe il tempo massimo della funzione. Se una foto fallisce
-       le altre proseguono. */
-    const esiti = await Promise.allSettled(immagini.slice(0, 8).map((b64: string) => ocrFoto(b64)));
-    const testi: string[] = esiti
-      .filter((e): e is PromiseFulfilledResult<string> => e.status === 'fulfilled' && !!e.value.trim())
-      .map((e) => e.value.trim());
+    // Estrae testo da ogni immagine in sequenza (vision model)
+    const testi: string[] = [];
+    for (const b64 of immagini.slice(0, 8)) {
+      const testo = await groqVision(b64, apiKey);
+      if (testo.trim()) testi.push(testo.trim());
+    }
 
     if (testi.length === 0) {
       return NextResponse.json({ errore: 'Nessun testo leggibile nelle foto. Riprova con immagini più nitide.' }, { status: 400 });
@@ -131,7 +105,7 @@ Regole: no markdown, no backtick, risposte max 3 righe, copri tutti gli argoment
 Rispondi SOLO con JSON valido:
 [{"domanda":"...","risposta":"..."}]`;
 
-      const raw = estraiJson(await groqGenerate(prompt, apiKey, restano));
+      const raw = (await groqGenerate(prompt, apiKey, 4096)).replace(/```json|```/g, '').trim();
       try {
         const carte = JSON.parse(raw);
         if (!Array.isArray(carte)) throw new Error();
@@ -151,7 +125,7 @@ Regole: no markdown, 4 opzioni per domanda, una sola corretta, opzioni plausibil
 Rispondi SOLO con JSON valido:
 [{"domanda":"...","opzioni":["A) ...","B) ...","C) ...","D) ..."],"corretta":0}]`;
 
-      const raw = estraiJson(await groqGenerate(prompt, apiKey, restano));
+      const raw = (await groqGenerate(prompt, apiKey, 4096)).replace(/```json|```/g, '').trim();
       try {
         const domande = JSON.parse(raw);
         if (!Array.isArray(domande)) throw new Error();
@@ -164,12 +138,6 @@ Rispondi SOLO con JSON valido:
     return NextResponse.json({ errore: 'Tipo non valido' }, { status: 400 });
 
   } catch (error: any) {
-    if (error instanceof GroqLimiteRaggiunto) {
-      return NextResponse.json(
-        { errore: `Troppe richieste in poco tempo. Riprova tra ${error.attesaSecondi} secondi.` },
-        { status: 429 },
-      );
-    }
     console.error('Errore studio-foto:', error);
     return NextResponse.json({ errore: 'Errore interno. Riprova.' }, { status: 500 });
   }
