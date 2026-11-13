@@ -3,8 +3,14 @@ import { NextResponse } from 'next/server';
 // 1 minuto: con 300 (e prima 3600) le storie restavano indietro anche ad
 // articolo già pubblicato. In più /api/controlla-articoli invalida questa
 // cache appena trova un articolo nuovo (revalidatePath).
-export const revalidate = 60;
-const CACHE = { next: { revalidate: 60 } };
+//
+// La route è dinamica: prerenderla al build significava 18 chiamate a
+// WordPress dentro il limite di 60 secondi della build, che con WordPress
+// lento falliva. Le chiamate restano in cache 60 s (data cache) e la
+// risposta 60 s sulla CDN; ogni chiamata ha un tempo massimo di 8 s.
+export const dynamic = 'force-dynamic';
+const CACHE = () => ({ next: { revalidate: 60 }, signal: AbortSignal.timeout(8000) });
+const INTESTAZIONI = { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' };
 
 // Tutte le categorie della barra delle storie in Home (prima solo 6: le
 // altre restavano nella cache del telefono fino a un'ora).
@@ -27,18 +33,13 @@ const STORY_CATS = [
 
 export async function GET() {
   try {
-    const [catsRes, ogRes, odlRes, fascicoloRes] = await Promise.all([
-      fetch('https://orizzontegiuridico.com/wp-json/wp/v2/categories?per_page=100', CACHE),
-      fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=6', CACHE),
-      fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=4', CACHE),
-      fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/media?mime_type=application/pdf&per_page=1&orderby=date&order=desc', CACHE),
-    ]);
-
+    // Ogni chiamata è indipendente: se una va in timeout, le altre restano.
+    const json = (url: string) => fetch(url, CACHE()).then(r => r.json()).catch(() => []);
     const [cats, og, odl, fascicoli] = await Promise.all([
-      catsRes.json(),
-      ogRes.json(),
-      odlRes.json(),
-      fascicoloRes.json(),
+      json('https://orizzontegiuridico.com/wp-json/wp/v2/categories?per_page=100'),
+      json('https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=6'),
+      json('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=4'),
+      json('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/media?mime_type=application/pdf&per_page=1&orderby=date&order=desc'),
     ]);
 
     const ogPosts = Array.isArray(og) ? og.map((p: any) => ({ ...p, _source: 'og' })) : [];
@@ -53,9 +54,7 @@ export async function GET() {
 
     const storyResults = await Promise.all(
       STORY_CATS.map(({ id }) =>
-        fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${id}&per_page=5`, CACHE)
-          .then(r => r.json())
-          .catch(() => [])
+        json(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${id}&per_page=5`)
       )
     );
 
@@ -64,7 +63,7 @@ export async function GET() {
       storyPosts[name] = Array.isArray(storyResults[i]) ? storyResults[i] : [];
     });
 
-    return NextResponse.json({ cats, articles, fascicolo, storyPosts });
+    return NextResponse.json({ cats, articles, fascicolo, storyPosts }, { headers: INTESTAZIONI });
   } catch {
     return NextResponse.json({ cats: [], articles: [], fascicolo: null, storyPosts: {} });
   }
