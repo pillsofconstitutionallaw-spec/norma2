@@ -4,9 +4,13 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useSearch } from '@/hooks/useSearch';
 
+// Barra superiore in vetro sfocato (stile iOS). Si "solidifica" con
+// un bordo sottile appena la pagina scorre. La ricerca si apre come
+// pannello che scende dall'alto con lo sfondo sfocato.
 export default function Header() {
   const [hasNew, setHasNew] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [scrollato, setScrollato] = useState(false);
   const { query, setQuery, risultati, cercando, reset: resetSearch } = useSearch(8);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -14,13 +18,14 @@ export default function Header() {
     try {
       if (!localStorage.getItem('norma_notif_lette')) setHasNew(true);
     } catch {}
+    const onScroll = () => setScrollato(window.scrollY > 4);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
-    const handler = () => {
-      setSearchOpen(true);
-      setTimeout(() => inputRef.current?.focus(), 150);
-    };
+    const handler = () => setSearchOpen(true);
     window.addEventListener('norma:open-search', handler);
     window.addEventListener('apri-ricerca', handler);
     return () => {
@@ -30,8 +35,9 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (searchOpen) setTimeout(() => inputRef.current?.focus(), 100);
+    if (searchOpen) setTimeout(() => inputRef.current?.focus(), 120);
     else resetSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchOpen]);
 
   function markNotifRead() {
@@ -40,163 +46,75 @@ export default function Header() {
   }
 
   return (
-    <header style={{
-      position: 'sticky',
-      top: 0,
-      zIndex: 50,
-      background: '#0a0d18',
-      borderBottom: '0.5px solid rgba(255,255,255,0.07)',
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 14px',
-        height: 52,
-        maxWidth: 480,
-        margin: '0 auto',
-      }}>
-        {/* Sinistra: segnalibro → salvati */}
-        <Link
-          href="/salvati"
-          aria-label="Articoli salvati"
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40 }}
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-          </svg>
-        </Link>
-
-        {/* Centro: wordmark Norma serif + chevron */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 3, textDecoration: 'none' }}>
-          <span style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 30,
-            fontWeight: 600,
-            color: '#fff',
-            lineHeight: 1,
-            letterSpacing: 1,
-          }}>
-            Norma
-          </span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2.2" strokeLinecap="round">
-            <path d="M6 9l6 6 6-6"/>
-          </svg>
-        </Link>
-
-        {/* Destra: campanella con badge */}
-        <button
-          aria-label="Notifiche"
-          onClick={markNotifRead}
-          style={{
-            position: 'relative',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            width: 40, height: 40,
-            background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-          }}
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="1.8" strokeLinecap="round">
-            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-          </svg>
-          {hasNew && (
-            <span style={{
-              position: 'absolute', top: 7, right: 7,
-              width: 8, height: 8, borderRadius: '50%',
-              background: '#ef4444',
-              border: '1.5px solid #0a0d18',
-            }} />
-          )}
-        </button>
-      </div>
-
-      {/* Pannello ricerca — fixed, visibile a qualsiasi posizione di scroll */}
-      {searchOpen && (
-        <div style={{
-          position: 'fixed',
-          top: 52,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '100%',
-          maxWidth: 480,
-          zIndex: 99,
-          padding: '8px 14px 12px',
-          background: '#0a0d18',
-          borderBottom: '0.5px solid rgba(255,255,255,0.1)',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
-        }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 10,
-            background: '#111526', borderRadius: 12,
-            padding: '10px 14px',
-            border: '0.5px solid rgba(143,211,255,0.25)',
-          }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8fd3ff" strokeWidth="2">
-              <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    <>
+      <header className="navbar" data-scrollato={scrollato}>
+        <div className="navbar-inner">
+          <Link href="/salvati" aria-label="Articoli salvati" className="navbar-btn tap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
-            <input
-              ref={inputRef}
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-              placeholder="Cerca articoli..."
-              style={{
-                flex: 1, background: 'none', border: 'none', outline: 'none',
-                color: '#fff', fontSize: 13,
-                fontFamily: 'Montserrat, sans-serif', fontWeight: 600,
-              }}
-            />
-            <button
-              onClick={() => setSearchOpen(false)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#8fd3ff', fontSize: 11, fontFamily: 'Montserrat, sans-serif', fontWeight: 700, padding: 0 }}
-            >
-              Chiudi
-            </button>
-          </div>
+          </Link>
 
-          {cercando && (
-            <div style={{ padding: '10px 0', fontSize: 11, color: 'rgba(255,255,255,0.3)', fontFamily: 'Montserrat, sans-serif' }}>
-              Ricerca in corso…
+          <Link href="/" className="navbar-logo tap" aria-label="Norma, home">
+            <span className="logo-tile" aria-hidden>N</span>
+            <span className="logo-testo">Norma</span>
+          </Link>
+
+          <button aria-label="Notifiche" onClick={markNotifRead} className="navbar-btn tap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            {hasNew && <span className="badge-punto" />}
+          </button>
+        </div>
+      </header>
+
+      {searchOpen && (
+        <div className="ricerca-overlay" onClick={() => setSearchOpen(false)}>
+          <div className="ricerca-pannello" onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <label className="campo-ricerca" style={{ marginTop: 0, flex: 1 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+                  <circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input ref={inputRef} value={query} onChange={e => setQuery(e.target.value)}
+                  placeholder="Cerca articoli" enterKeyHint="search" />
+              </label>
+              <button onClick={() => setSearchOpen(false)} className="link-azione tap">Annulla</button>
             </div>
-          )}
 
-          {!cercando && risultati.length > 0 && (
-            <div style={{ marginTop: 8, maxHeight: 280, overflowY: 'auto' }}>
-              {risultati.map((post, i) => {
-                const img = post?._embedded?.['wp:featuredmedia']?.[0]?.source_url;
-                const href = post._src === 'odl' ? post.link : `/articoli/${post.slug}`;
-                return (
-                  <a
-                    key={i} href={href}
-                    target={post._src === 'odl' ? '_blank' : '_self'} rel="noreferrer"
-                    onClick={() => setSearchOpen(false)}
-                    style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderBottom: '0.5px solid rgba(255,255,255,0.05)', textDecoration: 'none' }}
-                  >
-                    {img
-                      ? <img src={img} alt="" style={{ width: 40, height: 40, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
-                      : <div style={{ width: 40, height: 40, borderRadius: 8, background: '#07162b', flexShrink: 0 }} />
-                    }
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div
-                        style={{ fontSize: 12, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'Montserrat, sans-serif' }}
-                        dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }}
-                      />
-                      <div style={{ fontSize: 9, color: post._src === 'odl' ? '#a8c8f0' : '#8fd3ff', fontWeight: 700, marginTop: 2, fontFamily: 'Montserrat, sans-serif' }}>
-                        {post._src === 'odl' ? 'Orizzonti del Diritto' : 'Orizzonte Giuridico'}
+            {cercando && <div className="ricerca-stato"><span className="spinner" /> Ricerca in corso…</div>}
+
+            {!cercando && risultati.length > 0 && (
+              <div className="ricerca-risultati">
+                {risultati.map((post, i) => {
+                  const img = post?._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+                  const href = post._src === 'odl' ? post.link : `/articoli/${post.slug}`;
+                  return (
+                    <a key={i} href={href} className="riga appare" style={{ animationDelay: `${i * 35}ms`, minHeight: 60, padding: '10px 4px' }}
+                      target={post._src === 'odl' ? '_blank' : '_self'} rel="noreferrer"
+                      onClick={() => setSearchOpen(false)}>
+                      {img
+                        ? <img src={img} alt="" style={{ width: 44, height: 44, borderRadius: 10, objectFit: 'cover', flexShrink: 0 }} />
+                        : <div style={{ width: 44, height: 44, borderRadius: 10, background: 'var(--fill)', flexShrink: 0 }} />}
+                      <div className="riga-testo">
+                        <div className="riga-titolo" style={{ fontSize: 14, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                          dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }} />
+                        <div className="riga-sub">{post._src === 'odl' ? 'Orizzonti del Diritto' : 'Orizzonte Giuridico'}</div>
                       </div>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-          )}
+                    </a>
+                  );
+                })}
+              </div>
+            )}
 
-          {!cercando && query.trim() && risultati.length === 0 && (
-            <div style={{ padding: '10px 0', fontSize: 11, color: 'rgba(255,255,255,0.3)', fontFamily: 'Montserrat, sans-serif' }}>
-              Nessun risultato per "{query}"
-            </div>
-          )}
+            {!cercando && query.trim() && risultati.length === 0 && (
+              <div className="ricerca-stato">Nessun risultato per “{query}”</div>
+            )}
+          </div>
         </div>
       )}
-    </header>
+    </>
   );
 }

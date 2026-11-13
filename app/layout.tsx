@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "default",
     title: "Norma",
   },
   icons: {
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#041428",
+  themeColor: "#f2f2f7",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -49,14 +49,14 @@ export default function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Norma" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png" />
         <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png" />
       </head>
-      <body className="min-h-full flex flex-col" style={{ background: "#0a0d18" }}>
+      <body className="min-h-full flex flex-col">
         {children}
 
         {/* OneSignal SDK */}
@@ -91,7 +91,7 @@ export default function RootLayout({
                   banner.id = 'norma-notif-banner';
                   banner.style.cssText = \`
                     position: fixed;
-                    top: -100px;
+                    top: -160px;
                     left: 0;
                     right: 0;
                     z-index: 99999;
@@ -99,30 +99,30 @@ export default function RootLayout({
                     align-items: center;
                     gap: 12px;
                     padding: 14px 16px;
-                    background: #041428;
-                    border-bottom: 1px solid rgba(143,211,255,0.2);
+                    background: rgba(249,249,252,0.86); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); box-shadow: 0 8px 30px rgba(16,24,40,0.12);
+                    border-bottom: 0.5px solid rgba(60,60,67,0.13); padding-top: calc(14px + env(safe-area-inset-top, 0px));
                     cursor: pointer;
                     transition: top 0.4s cubic-bezier(0.16,1,0.3,1);
-                    font-family: 'Montserrat', sans-serif;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
                   \`;
                   banner.innerHTML = \`
                     <img src="/apple-touch-icon.png" style="width:40px;height:40px;border-radius:10px;flex-shrink:0;" />
                     <div style="flex:1;min-width:0;">
-                      <div style="font-size:13px;font-weight:800;color:#fff;margin-bottom:2px;">Norma</div>
-                      <div style="font-size:11px;color:rgba(255,255,255,0.5);">Tocca per attivare le notifiche push</div>
+                      <div style="font-size:13px;font-weight:800;color:#0b0b0f;margin-bottom:2px;">Norma</div>
+                      <div style="font-size:11px;color:rgba(60,60,67,0.6);">Tocca per attivare le notifiche push</div>
                     </div>
-                    <div style="font-size:10px;font-weight:700;color:#8fd3ff;letter-spacing:1px;flex-shrink:0;border:1px solid rgba(143,211,255,0.3);border-radius:20px;padding:5px 12px;">ATTIVA</div>
+                    <div style="font-size:13px;font-weight:600;color:#fff;flex-shrink:0;background:#0a66ff;border-radius:20px;padding:7px 14px;">Attiva</div>
                   \`;
                   document.body.appendChild(banner);
                   setTimeout(() => { banner.style.top = '0px'; }, 50);
                   banner.addEventListener('click', async function() {
-                    banner.style.top = '-100px';
+                    banner.style.top = '-160px';
                     setTimeout(() => { banner.remove(); }, 400);
                     await OneSignal.Notifications.requestPermission();
                   });
                   setTimeout(() => {
                     if (document.getElementById('norma-notif-banner')) {
-                      banner.style.top = '-100px';
+                      banner.style.top = '-160px';
                       setTimeout(() => { banner.remove(); }, 400);
                     }
                   }, 6000);

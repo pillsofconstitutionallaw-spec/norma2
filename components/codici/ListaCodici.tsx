@@ -57,10 +57,10 @@ const ALTRI: Codice[] = [
     icona: <><path d="M3 20h18" /><path d="M6 20V10l6-4 6 4v10" /></> },
 ];
 
-function Icona({ c, size = 22 }: { c: Codice; size?: number }) {
+function Icona({ c, size = 22, colore }: { c: Codice; size?: number; colore?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: c.colore }}>
+      strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={{ color: colore ?? c.colore }}>
       {c.icona}
     </svg>
   );
@@ -92,24 +92,19 @@ export default function ListaCodici({ conteggi }: { conteggi: Record<string, num
 
       {principali.length > 0 && (
         <>
-          <div className="sezione-label">Principali</div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          <div className="sezione-label appare" style={{ animationDelay: '80ms' }}>Principali</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: 12 }}>
             {principali.map((c, i) => (
-              <Link key={c.slug} href={`/codici/${c.slug}`} className="tap appare"
+              <Link key={c.slug} href={`/codici/${c.slug}`} className="tap appare card-codice"
                 style={{
-                  animationDelay: `${100 + i * 50}ms`,
-                  position: 'relative', overflow: 'hidden', textDecoration: 'none',
-                  borderRadius: 'var(--radius-card)', padding: 16, minHeight: 132,
-                  display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-                  background: `linear-gradient(150deg, ${c.colore}2e 0%, ${c.colore}0d 55%, var(--surface) 100%)`,
-                  border: `0.5px solid ${c.colore}33`,
+                  animationDelay: `${100 + i * 60}ms`,
+                  background: `linear-gradient(150deg, ${c.colore} 0%, color-mix(in srgb, ${c.colore} 62%, #0b1f3a) 100%)`,
+                  boxShadow: `0 10px 24px -10px color-mix(in srgb, ${c.colore} 70%, transparent)`,
                 }}>
-                <div style={{ width: 40, height: 40, borderRadius: 12, background: `${c.colore}22`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Icona c={c} />
-                </div>
+                <div className="card-codice-icona"><Icona c={c} colore="#fff" /></div>
                 <div>
-                  <div style={{ color: 'var(--text)', fontSize: 16, fontWeight: 800, lineHeight: 1.2 }}>{c.breve}</div>
-                  <div style={{ color: 'var(--text-3)', fontSize: 11.5, marginTop: 3 }}>
+                  <div className="card-codice-titolo">{c.breve}</div>
+                  <div className="card-codice-sub">
                     {articoli(c.slug) && `${articoli(c.slug)} articoli`}
                   </div>
                 </div>
@@ -121,11 +116,11 @@ export default function ListaCodici({ conteggi }: { conteggi: Record<string, num
 
       {altri.length > 0 && (
         <>
-          <div className="sezione-label">Altri codici</div>
+          <div className="sezione-label appare" style={{ animationDelay: '280ms' }}>Altri codici</div>
           <div className="lista appare" style={{ animationDelay: '300ms' }}>
             {altri.map(c => (
               <Link key={c.slug} href={`/codici/${c.slug}`} className="riga">
-                <div className="riga-icona" style={{ background: `${c.colore}1f` }}><Icona c={c} size={20} /></div>
+                <div className="riga-icona" style={{ background: `linear-gradient(150deg, ${c.colore}, color-mix(in srgb, ${c.colore} 75%, #0b1f3a))` }}><Icona c={c} size={21} colore="#fff" /></div>
                 <div className="riga-testo">
                   <div className="riga-titolo">{c.titolo}</div>
                   <div className="riga-sub">{c.atto}{articoli(c.slug) && ` · ${articoli(c.slug)} articoli`}</div>
