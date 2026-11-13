@@ -56,8 +56,7 @@ export default function Header() {
           </Link>
 
           <Link href="/" className="navbar-logo tap" aria-label="Norma, home">
-            <span className="logo-tile" aria-hidden>N</span>
-            <span className="logo-testo">Norma</span>
+            <span className="logo-testo">Norma<span className="logo-punto" aria-hidden /></span>
           </Link>
 
           <button aria-label="Notifiche" onClick={markNotifRead} className="navbar-btn tap">

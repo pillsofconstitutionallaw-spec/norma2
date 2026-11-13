@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@300;400;500;600&family=Sora:wght@500;600;700;800&display=swap');
 @import "tailwindcss";
 /* Tailwind non deve scansionare i dati: 11 MB di codici e 22 MB di XML
    rallentano compilazione e build senza contenere classi. */
@@ -83,7 +83,7 @@ img {
    Le pagine ridisegnate usano solo queste variabili e classi. */
 :root {
   --font-ui: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-  --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Sora', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
   --font-logo: 'Cormorant Garamond', Georgia, serif;
 
   --bg: #f2f2f7;               /* systemGroupedBackground */
@@ -94,9 +94,13 @@ img {
   --text: #0b0b0f;
   --text-2: rgba(60, 60, 67, 0.78);
   --text-3: rgba(60, 60, 67, 0.5);
-  --accent: #0a66ff;
-  --accent-soft: rgba(10, 102, 255, 0.1);
-  --brand: #0b1f3a;            /* blu notte del marchio Norma */
+  --accent: #4f46e5;           /* indaco del logo */
+  --accent-strong: #312e81;
+  --accent-soft: rgba(79, 70, 229, 0.1);
+  --coral: #f43f5e;            /* il "punto" del logo */
+  --grad-brand: linear-gradient(135deg, #4f46e5 0%, #312e81 100%);
+  --grad-punto: linear-gradient(90deg, #fb923c 0%, #f43f5e 100%);
+  --brand: #312e81;
   --danger: #ff3b30;
 
   --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 16px rgba(16, 24, 40, 0.06);
@@ -142,15 +146,14 @@ button, nav, .tap { -webkit-user-select: none; user-select: none; -webkit-touch-
   display: flex; align-items: center; justify-content: center;
   background: none; border: none; cursor: pointer; color: var(--text);
 }
-.navbar-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text); }
-.logo-tile {
-  width: 30px; height: 30px; border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(145deg, #2b7bff 0%, #0b3ea8 55%, #0b1f3a 100%);
-  color: #fff; font-family: var(--font-logo); font-size: 21px; font-weight: 600; line-height: 1;
-  box-shadow: 0 3px 10px rgba(10, 102, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+.navbar-logo { display: flex; align-items: center; text-decoration: none; color: var(--text); }
+.logo-testo { font-family: var(--font-display); font-size: 25px; font-weight: 800; letter-spacing: -1.2px; line-height: 1; }
+.logo-punto {
+  display: inline-block; width: 0.2em; height: 0.2em; margin-left: 0.04em; border-radius: 2px;
+  background: var(--grad-punto); vertical-align: baseline;
+  animation: punto-respira 3.2s ease-in-out infinite;
 }
-.logo-testo { font-family: var(--font-logo); font-size: 26px; font-weight: 600; letter-spacing: 0.3px; }
+@keyframes punto-respira { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
 .badge-punto {
   position: absolute; top: 9px; right: 10px; width: 9px; height: 9px; border-radius: 50%;
   background: var(--danger); border: 2px solid var(--surface);
