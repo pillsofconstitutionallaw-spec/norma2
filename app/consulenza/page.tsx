@@ -129,18 +129,18 @@ export default function ConsulenzaPage() {
           <div style={{
             background: 'linear-gradient(135deg, var(--surface), var(--surface))',
             borderRadius: 24, padding: '24px 20px',
-            border: '0.5px solid rgba(143,211,255,0.15)',
+            border: '0.5px solid rgba(79,70,229,0.15)',
             marginBottom: 24, position: 'relative', overflow: 'hidden',
           }}>
             <div style={{
               position: 'absolute', top: -40, right: -40,
               width: 160, height: 160, borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(143,211,255,0.06) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(79,70,229,0.06) 0%, transparent 70%)',
               pointerEvents: 'none',
             }} />
             <div style={{
               display: 'inline-block',
-              border: '1px solid rgba(143,211,255,0.25)',
+              border: '1px solid rgba(79,70,229,0.25)',
               borderRadius: 99, padding: '4px 14px',
               fontSize: 9, letterSpacing: 3, textTransform: 'uppercase' as const,
               color: 'var(--accent)', fontWeight: 700, marginBottom: 14,
@@ -262,9 +262,9 @@ export default function ConsulenzaPage() {
                 style={{
                   width: '100%', height: 52,
                   borderRadius: 16,
-                  background: loading ? 'rgba(143,211,255,0.08)' : 'rgba(143,211,255,0.12)',
-                  border: `0.5px solid rgba(143,211,255,${loading ? '0.15' : '0.3'})`,
-                  color: loading ? 'rgba(143,211,255,0.4)' : 'var(--accent)',
+                  background: loading ? 'rgba(79,70,229,0.08)' : 'rgba(79,70,229,0.12)',
+                  border: `0.5px solid rgba(79,70,229,${loading ? '0.15' : '0.3'})`,
+                  color: loading ? 'rgba(79,70,229,0.4)' : 'var(--accent)',
                   fontSize: 13, fontWeight: 800,
                   cursor: loading ? 'not-allowed' : 'pointer',
                   fontFamily: 'var(--font-ui)',
@@ -275,7 +275,7 @@ export default function ConsulenzaPage() {
                 {loading ? (
                   <>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                      stroke="rgba(143,211,255,0.4)" strokeWidth="2" strokeLinecap="round">
+                      stroke="rgba(79,70,229,0.4)" strokeWidth="2" strokeLinecap="round">
                       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                     </svg>
                     Analisi in corso...
@@ -300,11 +300,11 @@ export default function ConsulenzaPage() {
               <div style={{
                 background: 'var(--surface)',
                 borderRadius: 20, padding: '18px 16px',
-                border: '0.5px solid rgba(143,211,255,0.2)',
+                border: '0.5px solid rgba(79,70,229,0.2)',
               }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10, marginBottom: 12 }}>
                   <div>
-                    <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'rgba(143,211,255,0.6)', fontWeight: 700, marginBottom: 6 }}>
+                    <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'rgba(79,70,229,0.6)', fontWeight: 700, marginBottom: 6 }}>
                       Materia individuata
                     </div>
                     <div style={{ fontSize: 18, fontWeight: 900, color: 'var(--text)', lineHeight: 1.2 }}>
@@ -327,7 +327,7 @@ export default function ConsulenzaPage() {
                   </div>
                 </div>
                 <div style={{
-                  background: 'rgba(143,211,255,0.05)',
+                  background: 'rgba(79,70,229,0.05)',
                   borderRadius: 12, padding: '12px',
                   fontSize: 13, color: 'rgba(255,255,255,0.65)', lineHeight: 1.75,
                 }}>
@@ -348,8 +348,8 @@ export default function ConsulenzaPage() {
                     <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                       <div style={{
                         width: 20, height: 20, borderRadius: '50%', flexShrink: 0,
-                        background: 'rgba(143,211,255,0.1)',
-                        border: '0.5px solid rgba(143,211,255,0.2)',
+                        background: 'rgba(79,70,229,0.1)',
+                        border: '0.5px solid rgba(79,70,229,0.2)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: 9, fontWeight: 900, color: 'var(--accent)',
                       }}>
@@ -378,7 +378,7 @@ export default function ConsulenzaPage() {
                       background: copiato ? 'rgba(34,197,94,0.12)' : 'var(--fill)',
                       border: `0.5px solid ${copiato ? 'rgba(34,197,94,0.3)' : 'var(--line)'}`,
                       borderRadius: 8, padding: '5px 10px',
-                      color: copiato ? '#16a34a' : 'rgba(255,255,255,0.45)',
+                      color: copiato ? '#16a34a' : 'var(--text-2)',
                       fontSize: 10, fontWeight: 700, cursor: 'pointer',
                       fontFamily: 'var(--font-ui)',
                       display: 'flex', alignItems: 'center', gap: 5,
@@ -443,8 +443,8 @@ export default function ConsulenzaPage() {
                   onClick={apriCNF}
                   style={{
                     width: '100%', height: 48, borderRadius: 14,
-                    background: 'rgba(143,211,255,0.07)',
-                    border: '0.5px solid rgba(143,211,255,0.2)',
+                    background: 'rgba(79,70,229,0.07)',
+                    border: '0.5px solid rgba(79,70,229,0.2)',
                     color: 'var(--accent)', fontSize: 13, fontWeight: 800,
                     cursor: 'pointer', fontFamily: 'var(--font-ui)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
@@ -456,7 +456,7 @@ export default function ConsulenzaPage() {
                   </svg>
                   Albo CNF ufficiale
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                    stroke="rgba(143,211,255,0.4)" strokeWidth="2" strokeLinecap="round">
+                    stroke="rgba(79,70,229,0.4)" strokeWidth="2" strokeLinecap="round">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
                   </svg>
                 </button>

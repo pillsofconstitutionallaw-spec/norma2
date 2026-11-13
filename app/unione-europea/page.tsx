@@ -794,7 +794,7 @@ export default function UnioneEuropeaPage() {
 
           {/* HERO */}
           <div style={{
-            background: 'linear-gradient(135deg, #0a1428, #0d1a38)',
+            background: 'linear-gradient(135deg, var(--surface), var(--surface))',
             borderRadius: 28,
             padding: '28px 24px',
             border: '0.5px solid rgba(255,215,0,0.2)',

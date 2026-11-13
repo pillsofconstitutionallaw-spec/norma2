@@ -457,7 +457,7 @@ export default function TestMateriaPage() {
         {(haRisposto || scaduto) && domanda?.spiegazione && (
 
           <div style={{
-            background: '#0b1322',
+            background: 'var(--surface)',
             borderRadius: 14,
             padding: '16px',
             marginTop: 10,

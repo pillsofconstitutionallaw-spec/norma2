@@ -546,7 +546,7 @@ export default function ONUPage() {
 
           {/* HERO */}
           <div style={{
-            background: 'linear-gradient(135deg, #071428, #0a1a2e)',
+            background: 'linear-gradient(135deg, var(--surface), var(--surface))',
             borderRadius: 28, padding: '28px 24px',
             border: '0.5px solid rgba(56,189,248,0.2)',
             marginBottom: 24, position: 'relative', overflow: 'hidden',

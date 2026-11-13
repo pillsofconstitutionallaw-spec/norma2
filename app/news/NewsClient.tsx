@@ -262,7 +262,7 @@ export default function NewsClient({
                   padding: '5px 11px', borderRadius: 8,
                   background: attivo ? `${col}18` : 'var(--fill)',
                   border: `0.5px solid ${attivo ? col + '55' : 'var(--line)'}`,
-                  color: attivo ? col : 'rgba(255,255,255,0.35)',
+                  color: attivo ? col : 'var(--text-3)',
                   fontSize: 10, fontWeight: 700, cursor: 'pointer',
                   fontFamily: 'var(--font-ui)',
                 }}
@@ -299,12 +299,12 @@ export default function NewsClient({
             ))
           )}
 
-          <div style={{ margin: '24px 16px 0', background: 'rgba(143,211,255,0.04)', border: '0.5px solid rgba(143,211,255,0.1)', borderRadius: 14, padding: '14px', display: 'flex', alignItems: 'center', gap: 12 }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(143,211,255,0.45)" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0 }}>
+          <div style={{ margin: '24px 16px 0', background: 'rgba(79,70,229,0.04)', border: '0.5px solid rgba(79,70,229,0.1)', borderRadius: 14, padding: '14px', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(79,70,229,0.45)" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0 }}>
               <path d="M21 2H3v16h5l3 3 3-3h7V2z" /><path d="M8 8h8M8 12h5" />
             </svg>
             <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(143,211,255,0.65)', marginBottom: 2 }}>Fonti ufficiali</div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(79,70,229,0.65)', marginBottom: 2 }}>Fonti ufficiali</div>
               <div style={{ fontSize: 10, color: 'var(--text-3)', lineHeight: 1.5 }}>Altalex · Gazzetta Ufficiale · Diritto.it · Corte Costituzionale</div>
             </div>
           </div>

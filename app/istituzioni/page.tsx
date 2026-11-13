@@ -243,11 +243,11 @@ export default function IstituzioniPage() {
                 padding: '18px',
                 borderRadius: 18,
                 background: categoriaAttiva === livello.titolo
-                    ? 'rgba(143,211,255,0.08)'
+                    ? 'rgba(79,70,229,0.08)'
                     : 'var(--surface)',
 
                 border: categoriaAttiva === livello.titolo
-                    ? '1px solid rgba(143,211,255,0.25)'
+                    ? '1px solid rgba(79,70,229,0.25)'
                     : '1px solid rgba(255,255,255,0.05)',
 
                 cursor: 'pointer',
@@ -319,12 +319,12 @@ export default function IstituzioniPage() {
 
                     background: istituzioneAttiva ===
                       istituzione
-                        ? 'rgba(143,211,255,0.08)'
+                        ? 'rgba(79,70,229,0.08)'
                         : 'var(--surface)',
 
                     border: istituzioneAttiva ===
                       istituzione
-                        ? '1px solid rgba(143,211,255,0.25)'
+                        ? '1px solid rgba(79,70,229,0.25)'
                         : '1px solid rgba(255,255,255,0.05)',
 
                     cursor: 'pointer',

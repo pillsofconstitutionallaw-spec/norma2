@@ -444,7 +444,7 @@ export default function PdfStudioPage() {
                 </div>
               )}
 
-              <button onClick={avviaGenerazione} disabled={!rangeValido} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: rangeValido ? 'linear-gradient(135deg, #0284c7, #4f46e5)' : '#1e2435', color: rangeValido ? '#fff' : 'rgba(255,255,255,0.3)', fontWeight: 800, fontSize: 15, cursor: rangeValido ? 'pointer' : 'not-allowed', fontFamily: 'var(--font-ui)'}}>
+              <button onClick={avviaGenerazione} disabled={!rangeValido} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: rangeValido ? 'linear-gradient(135deg, #0284c7, #4f46e5)' : '#1e2435', color: rangeValido ? '#fff' : 'var(--text-3)', fontWeight: 800, fontSize: 15, cursor: rangeValido ? 'pointer' : 'not-allowed', fontFamily: 'var(--font-ui)'}}>
                 ⚡ Genera flash card · {numPagine} {numPagine === 1 ? 'pagina' : 'pagine'}
               </button>
             </>
@@ -502,7 +502,7 @@ export default function PdfStudioPage() {
               <button onClick={() => { setIndice(0); setGirata(false); setSapute(0); setNonSapute(0); setDaRipetere([]); setFase('flashcard-studio'); }} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #0284c7, #4f46e5)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: 'pointer', marginBottom: 12, fontFamily: 'var(--font-ui)'}}>
                 ⚡ Inizia studio
               </button>
-              <button onClick={salvaDeck} disabled={deckSalvato} style={{ width: '100%', padding: '15px', borderRadius: 16, border: `0.5px solid ${deckSalvato ? 'rgba(34,197,94,0.3)' : 'var(--line)'}`, background: deckSalvato ? 'rgba(34,197,94,0.08)' : 'transparent', color: deckSalvato ? '#16a34a' : 'rgba(255,255,255,0.6)', fontWeight: 700, fontSize: 13, cursor: deckSalvato ? 'default' : 'pointer', fontFamily: 'var(--font-ui)'}}>
+              <button onClick={salvaDeck} disabled={deckSalvato} style={{ width: '100%', padding: '15px', borderRadius: 16, border: `0.5px solid ${deckSalvato ? 'rgba(34,197,94,0.3)' : 'var(--line)'}`, background: deckSalvato ? 'rgba(34,197,94,0.08)' : 'transparent', color: deckSalvato ? '#16a34a' : 'var(--text-2)', fontWeight: 700, fontSize: 13, cursor: deckSalvato ? 'default' : 'pointer', fontFamily: 'var(--font-ui)'}}>
                 {deckSalvato ? '✅ Deck salvato' : '💾 Salva deck'}
               </button>
             </div>
@@ -559,7 +559,7 @@ export default function PdfStudioPage() {
               <button onClick={generaTest} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #a855f7, #4f46e5)', color: '#fff', fontWeight: 800, cursor: 'pointer', marginBottom: 12, fontFamily: 'var(--font-ui)'}}>
                 📝 Fai il test
               </button>
-              <button onClick={salvaDeck} disabled={deckSalvato} style={{ width: '100%', padding: '15px', borderRadius: 16, border: `0.5px solid ${deckSalvato ? 'rgba(34,197,94,0.3)' : 'var(--line)'}`, background: deckSalvato ? 'rgba(34,197,94,0.08)' : 'transparent', color: deckSalvato ? '#16a34a' : 'rgba(255,255,255,0.6)', fontWeight: 700, fontSize: 13, cursor: deckSalvato ? 'default' : 'pointer', fontFamily: 'var(--font-ui)', marginBottom: 12 }}>
+              <button onClick={salvaDeck} disabled={deckSalvato} style={{ width: '100%', padding: '15px', borderRadius: 16, border: `0.5px solid ${deckSalvato ? 'rgba(34,197,94,0.3)' : 'var(--line)'}`, background: deckSalvato ? 'rgba(34,197,94,0.08)' : 'transparent', color: deckSalvato ? '#16a34a' : 'var(--text-2)', fontWeight: 700, fontSize: 13, cursor: deckSalvato ? 'default' : 'pointer', fontFamily: 'var(--font-ui)', marginBottom: 12 }}>
                 {deckSalvato ? '✅ Deck salvato' : '💾 Salva deck'}
               </button>
               <button onClick={() => { setDeckSalvato(false); setFase('selezione-pagine'); }} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: '#0284c7', color: '#fff', fontWeight: 800, cursor: 'pointer', marginBottom: 12, fontFamily: 'var(--font-ui)'}}>

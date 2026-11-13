@@ -150,9 +150,9 @@ export default function GlossarioPage() {
               style={{
                 padding: '6px 11px',
                 borderRadius: 9,
-                background: letteraAttiva === l ? 'rgba(143,211,255,0.1)' : 'var(--fill)',
-                border: `0.5px solid ${letteraAttiva === l ? 'rgba(143,211,255,0.2)' : 'var(--line)'}`,
-                color: letteraAttiva === l ? 'var(--accent)' : 'rgba(255,255,255,0.4)',
+                background: letteraAttiva === l ? 'rgba(79,70,229,0.1)' : 'var(--fill)',
+                border: `0.5px solid ${letteraAttiva === l ? 'rgba(79,70,229,0.2)' : 'var(--line)'}`,
+                color: letteraAttiva === l ? 'var(--accent)' : 'var(--text-3)',
                 fontSize: 11,
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -179,7 +179,7 @@ export default function GlossarioPage() {
                 marginTop: 8,
               }}
             >
-              <div style={{ width: 24, height: 1, background: 'rgba(143,211,255,0.4)' }} />
+              <div style={{ width: 24, height: 1, background: 'rgba(79,70,229,0.4)' }} />
               <span
                 style={{
                   color: 'var(--accent)',

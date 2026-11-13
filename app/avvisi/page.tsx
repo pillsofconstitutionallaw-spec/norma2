@@ -84,7 +84,7 @@ export default function Avvisi() {
 
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                    <span style={{ fontSize: 8, fontWeight: 700, color: isOdl ? 'var(--accent)' : 'var(--accent)', letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: 'var(--font-ui)', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(143,211,255,0.3)'}`, borderRadius: 20, padding: '2px 7px' }}>
+                    <span style={{ fontSize: 8, fontWeight: 700, color: isOdl ? 'var(--accent)' : 'var(--accent)', letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: 'var(--font-ui)', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(79,70,229,0.3)'}`, borderRadius: 20, padding: '2px 7px' }}>
                       {isOdl ? 'OdD' : cat || 'OG'}
                     </span>
                     <span style={{ fontSize: 10, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>{data}</span>

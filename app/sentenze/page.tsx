@@ -363,8 +363,8 @@ export default function SentenzePage() {
               { num: '1956–2025', label: 'periodo' },
             ].map((s, i) => (
               <div key={i} style={{
-                background: 'rgba(143,211,255,0.07)',
-                border: '0.5px solid rgba(143,211,255,0.15)',
+                background: 'rgba(79,70,229,0.07)',
+                border: '0.5px solid rgba(79,70,229,0.15)',
                 borderRadius: 10, padding: '6px 12px',
                 display: 'flex', alignItems: 'center', gap: 6,
               }}>
@@ -381,9 +381,9 @@ export default function SentenzePage() {
             onClick={() => { setFiltroTag(null); setAttiva(null); }}
             style={{
               padding: '5px 12px', borderRadius: 8,
-              background: !filtroTag ? 'rgba(143,211,255,0.12)' : 'var(--fill)',
-              border: `0.5px solid ${!filtroTag ? 'rgba(143,211,255,0.3)' : 'var(--line)'}`,
-              color: !filtroTag ? 'var(--accent)' : 'rgba(255,255,255,0.35)',
+              background: !filtroTag ? 'rgba(79,70,229,0.12)' : 'var(--fill)',
+              border: `0.5px solid ${!filtroTag ? 'rgba(79,70,229,0.3)' : 'var(--line)'}`,
+              color: !filtroTag ? 'var(--accent)' : 'var(--text-3)',
               fontSize: 10, fontWeight: 700, cursor: 'pointer',
               fontFamily: 'var(--font-ui)',
             }}
@@ -401,7 +401,7 @@ export default function SentenzePage() {
                   padding: '5px 12px', borderRadius: 8,
                   background: attivo ? `${col}18` : 'var(--fill)',
                   border: `0.5px solid ${attivo ? col + '55' : 'var(--line)'}`,
-                  color: attivo ? col : 'rgba(255,255,255,0.35)',
+                  color: attivo ? col : 'var(--text-3)',
                   fontSize: 10, fontWeight: 700, cursor: 'pointer',
                   fontFamily: 'var(--font-ui)',
                 }}
@@ -424,7 +424,7 @@ export default function SentenzePage() {
                 key={idx}
                 onClick={() => setAttiva(aperta ? null : idx)}
                 style={{
-                  background: aperta ? '#111a30' : '#0f1424',
+                  background: aperta ? 'var(--surface)' : 'var(--surface)',
                   border: `0.5px solid ${aperta ? col + '44' : 'var(--line)'}`,
                   borderRadius: 20,
                   overflow: 'hidden',

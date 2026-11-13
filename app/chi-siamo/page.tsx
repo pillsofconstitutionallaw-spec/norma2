@@ -54,7 +54,7 @@ export default function ChiSiamo() {
           </div>
 
           {/* CITAZIONE */}
-          <div style={{ borderRadius: 18, background: 'var(--surface)', border: '0.5px solid rgba(143,211,255,0.15)', padding: '20px 18px', marginBottom: 20, position: 'relative', overflow: 'hidden' }}>
+          <div style={{ borderRadius: 18, background: 'var(--surface)', border: '0.5px solid rgba(79,70,229,0.15)', padding: '20px 18px', marginBottom: 20, position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(to right, transparent, var(--accent), transparent)' }} />
             <div style={{ fontSize: 40, color: 'var(--accent)', opacity: 0.2, fontFamily: 'var(--font-ui)', fontWeight: 900, lineHeight: 1, marginBottom: 6 }}>"</div>
             <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', lineHeight: 1.75, fontFamily: 'var(--font-ui)', fontStyle: 'italic', marginBottom: 14 }}>
@@ -158,7 +158,7 @@ export default function ChiSiamo() {
             <div className="slbl-l" />
           </div>
 
-          <div style={{ borderRadius: 18, background: 'rgba(143,211,255,0.07)', border: '0.5px solid rgba(143,211,255,0.2)', padding: '18px', marginBottom: 10 }}>
+          <div style={{ borderRadius: 18, background: 'rgba(79,70,229,0.07)', border: '0.5px solid rgba(79,70,229,0.2)', padding: '18px', marginBottom: 10 }}>
             <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.8, fontFamily: 'var(--font-ui)', marginBottom: 16 }}>
               Sei ricercatore, avvocato, studioso, studente o appassionato di diritto? Invia il tuo contributo originale. Tutti i testi sono sottoposti a double blind peer review e controllo antiplagio.
             </div>

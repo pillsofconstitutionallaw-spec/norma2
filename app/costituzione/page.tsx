@@ -144,7 +144,7 @@ export default function CostituzionePage() {
       {!search && (
         <div style={{ padding: '20px 16px 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-            <div style={{ width: 24, height: 1, background: 'rgba(143,211,255,0.4)' }} />
+            <div style={{ width: 24, height: 1, background: 'rgba(79,70,229,0.4)' }} />
             <span style={{ color: 'var(--accent)', fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', fontWeight: 800 }}>Sommario</span>
             <div style={{ flex: 1, height: 1, background: 'var(--fill)' }} />
           </div>
@@ -190,7 +190,7 @@ export default function CostituzionePage() {
         {Object.entries(grouped).map(([sezione, arts]) => (
           <div key={sezione}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14, marginTop: 8 }}>
-              <div style={{ width: 24, height: 1, background: 'rgba(143,211,255,0.4)' }} />
+              <div style={{ width: 24, height: 1, background: 'rgba(79,70,229,0.4)' }} />
               <span style={{ color: 'var(--accent)', fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', fontWeight: 800 }}>{sezione}</span>
               <div style={{ flex: 1, height: 1, background: 'var(--fill)' }} />
             </div>
@@ -201,7 +201,7 @@ export default function CostituzionePage() {
 
                   {/* CARD BODY */}
                   <div style={{ padding: '20px 20px 0', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', right: -4, top: -14, fontSize: 110, fontWeight: 900, color: 'rgba(143,211,255,0.07)', lineHeight: 1, userSelect: 'none', letterSpacing: -4, fontFamily: 'var(--font-ui)'}}>
+                    <div style={{ position: 'absolute', right: -4, top: -14, fontSize: 110, fontWeight: 900, color: 'rgba(79,70,229,0.07)', lineHeight: 1, userSelect: 'none', letterSpacing: -4, fontFamily: 'var(--font-ui)'}}>
                       {articolo.n}
                     </div>
                     <div style={{ color: 'var(--accent)', fontSize: 9, letterSpacing: 2.5, textTransform: 'uppercase', fontWeight: 800, marginBottom: 5, position: 'relative', zIndex: 1 }}>
@@ -215,15 +215,15 @@ export default function CostituzionePage() {
                     </div>
 
                     {/* PLAYER AUDIO */}
-                    <div onClick={() => ascoltaArticolo(articolo.testo)} style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '14px 0 18px', padding: '11px 14px', background: 'rgba(143,211,255,0.05)', border: '0.5px solid rgba(143,211,255,0.1)', borderRadius: 12, cursor: 'pointer', position: 'relative', zIndex: 1 }}>
-                      <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#123055', border: '0.5px solid rgba(143,211,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div onClick={() => ascoltaArticolo(articolo.testo)} style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '14px 0 18px', padding: '11px 14px', background: 'rgba(79,70,229,0.05)', border: '0.5px solid rgba(79,70,229,0.1)', borderRadius: 12, cursor: 'pointer', position: 'relative', zIndex: 1 }}>
+                      <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#123055', border: '0.5px solid rgba(79,70,229,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3" /></svg>
                       </div>
                       <div style={{ flex: 1 }}>
                         <div style={{ color: 'var(--accent)', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', fontWeight: 800, marginBottom: 2 }}>Ascolta</div>
                         <div style={{ color: 'var(--text-3)', fontSize: 10 }}>Lettura in italiano · velocità naturale</div>
                       </div>
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(143,211,255,0.4)" strokeWidth="2">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(79,70,229,0.4)" strokeWidth="2">
                         <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
                         <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z" />
                         <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
@@ -246,7 +246,7 @@ export default function CostituzionePage() {
 
                     <button
                       onClick={() => salvaArticolo(articolo)}
-                      style={{ width: 42, height: 42, borderRadius: 12, background: salvati[articolo.n] ? 'rgba(143,211,255,0.15)' : 'var(--fill)', border: `0.5px solid ${salvati[articolo.n] ? 'rgba(143,211,255,0.3)' : 'var(--line)'}`, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
+                      style={{ width: 42, height: 42, borderRadius: 12, background: salvati[articolo.n] ? 'rgba(79,70,229,0.15)' : 'var(--fill)', border: `0.5px solid ${salvati[articolo.n] ? 'rgba(79,70,229,0.3)' : 'var(--line)'}`, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill={salvati[articolo.n] ? '#4f46e5' : 'none'} stroke={salvati[articolo.n] ? '#4f46e5' : 'rgba(255,255,255,0.4)'} strokeWidth="2">
                         <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>

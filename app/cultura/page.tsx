@@ -282,13 +282,13 @@ export default function CulturaPage() {
             <div style={{
               position: 'absolute', top: -40, right: -40,
               width: 160, height: 160, borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(143,211,255,0.06) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(79,70,229,0.06) 0%, transparent 70%)',
               pointerEvents: 'none',
             }} />
 
             <div style={{
               display: 'inline-block',
-              border: '1px solid rgba(143,211,255,0.25)',
+              border: '1px solid rgba(79,70,229,0.25)',
               borderRadius: 99, padding: '4px 14px',
               fontSize: 9, letterSpacing: 3,
               textTransform: 'uppercase' as const,
@@ -319,8 +319,8 @@ export default function CulturaPage() {
                 style={{
                   flex: 1, padding: '12px 8px',
                   borderRadius: 14,
-                  background: attivo ? 'rgba(143,211,255,0.1)' : 'var(--fill)',
-                  border: `0.5px solid ${attivo ? 'rgba(143,211,255,0.3)' : 'var(--line)'}`,
+                  background: attivo ? 'rgba(79,70,229,0.1)' : 'var(--fill)',
+                  border: `0.5px solid ${attivo ? 'rgba(79,70,229,0.3)' : 'var(--line)'}`,
                   cursor: 'pointer', fontFamily: 'var(--font-ui)',
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
                 }}
@@ -331,7 +331,7 @@ export default function CulturaPage() {
                 </span>
                 <span style={{
                   fontSize: 9, fontWeight: 700,
-                  color: attivo ? 'rgba(143,211,255,0.6)' : 'var(--text-3)',
+                  color: attivo ? 'rgba(79,70,229,0.6)' : 'var(--text-3)',
                 }}>
                   {t.num} titoli
                 </span>

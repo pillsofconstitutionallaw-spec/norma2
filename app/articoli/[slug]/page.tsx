@@ -232,7 +232,7 @@ function toggleSalva() {
 
   // Stile comune per tutti e 4 i bottoni AI
   const aiBtnStyle = (active: boolean, hasTopBorder?: boolean): React.CSSProperties => ({
-    background: active ? '#0f2040' : 'var(--bg)',
+    background: active ? 'var(--surface)' : 'var(--bg)',
     border: 'none',
     borderTop: hasTopBorder ? '0.5px solid rgba(255,255,255,0.04)' : 'none',
     padding: '16px',
@@ -250,8 +250,8 @@ function toggleSalva() {
 
   const aiIconStyle: React.CSSProperties = {
     width: 36, height: 36, borderRadius: 12,
-    background: 'rgba(143,211,255,0.08)',
-    border: '0.5px solid rgba(143,211,255,0.15)',
+    background: 'rgba(79,70,229,0.08)',
+    border: '0.5px solid rgba(79,70,229,0.15)',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     flexShrink: 0,
   };
@@ -284,10 +284,10 @@ function toggleSalva() {
     padding: '0 14px',
     borderRadius: 10,
     background: salvato
-      ? 'rgba(143,211,255,0.14)'
+      ? 'rgba(79,70,229,0.14)'
       : 'rgba(255,255,255,0.06)',
     border: salvato
-      ? '0.5px solid rgba(143,211,255,0.25)'
+      ? '0.5px solid rgba(79,70,229,0.25)'
       : '0.5px solid rgba(255,255,255,0.08)',
     display: 'flex',
     alignItems: 'center',
@@ -337,7 +337,7 @@ function toggleSalva() {
             dangerouslySetInnerHTML={{ __html: contenuto }} />
 
           {/* BARRA AI */}
-          <div style={{ background: 'var(--surface)', borderRadius: 22, overflow: 'hidden', border: '0.5px solid rgba(143,211,255,0.12)', marginBottom: 24 }}>
+          <div style={{ background: 'var(--surface)', borderRadius: 22, overflow: 'hidden', border: '0.5px solid rgba(79,70,229,0.12)', marginBottom: 24 }}>
 
             {/* Header AI */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px', borderBottom: '0.5px solid var(--line)' }}>
@@ -352,8 +352,8 @@ function toggleSalva() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, background: 'var(--fill)' }}>
 
               {/* Lettura vocale */}
-              <button onClick={toggleVocale} style={{ ...aiBtnStyle(vocaleAttiva), background: vocaleAttiva ? '#0f2040' : 'var(--bg)' }}>
-                <div style={{ ...aiIconStyle, background: vocaleAttiva ? 'rgba(143,211,255,0.2)' : 'rgba(143,211,255,0.08)', border: `0.5px solid rgba(143,211,255,${vocaleAttiva ? '0.4' : '0.15'})` }}>
+              <button onClick={toggleVocale} style={{ ...aiBtnStyle(vocaleAttiva), background: vocaleAttiva ? 'var(--surface)' : 'var(--bg)' }}>
+                <div style={{ ...aiIconStyle, background: vocaleAttiva ? 'rgba(79,70,229,0.2)' : 'rgba(79,70,229,0.08)', border: `0.5px solid rgba(79,70,229,${vocaleAttiva ? '0.4' : '0.15'})` }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" strokeWidth="2">
                     <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
                     <path d="M15.54 8.46a5 5 0 010 7.07"/>
@@ -408,7 +408,7 @@ function toggleSalva() {
 
             {/* Output AI */}
             {sezione !== 'none' && (
-              <div style={{ padding: '16px 18px', borderTop: '0.5px solid var(--line)', background: '#080f1e' }}>
+              <div style={{ padding: '16px 18px', borderTop: '0.5px solid var(--line)', background: 'var(--surface)' }}>
 
                 {sezione === 'sintesi' && (
                   <div>
@@ -423,7 +423,7 @@ function toggleSalva() {
                     {loadingParole ? <LoadingDots /> : (
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                         {paroleChiave.map((p, i) => (
-                          <div key={i} style={{ padding: '6px 14px', borderRadius: 99, background: 'rgba(143,211,255,0.08)', border: '0.5px solid rgba(143,211,255,0.2)', color: 'var(--accent)', fontSize: 11, fontWeight: 700 }}>{p}</div>
+                          <div key={i} style={{ padding: '6px 14px', borderRadius: 99, background: 'rgba(79,70,229,0.08)', border: '0.5px solid rgba(79,70,229,0.2)', color: 'var(--accent)', fontSize: 11, fontWeight: 700 }}>{p}</div>
                         ))}
                       </div>
                     )}

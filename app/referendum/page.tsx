@@ -245,7 +245,7 @@ export default function ReferendumPage() {
                 padding: '5px 11px', borderRadius: 8, cursor: 'pointer',
                 background: filtroTipo === f.id ? 'rgba(255,215,0,0.12)' : 'var(--fill)',
                 border: `0.5px solid ${filtroTipo === f.id ? 'rgba(255,215,0,0.35)' : 'var(--line)'}`,
-                color: filtroTipo === f.id ? '#ca8a04' : 'rgba(255,255,255,0.35)',
+                color: filtroTipo === f.id ? '#ca8a04' : 'var(--text-3)',
                 fontSize: 10, fontWeight: 700, fontFamily: 'var(--font-ui)',
               }}>{f.label}</button>
             ))}
@@ -263,7 +263,7 @@ export default function ReferendumPage() {
                 padding: '5px 11px', borderRadius: 8, cursor: 'pointer',
                 background: filtroEsito === f.id ? `${f.c}14` : 'var(--fill)',
                 border: `0.5px solid ${filtroEsito === f.id ? f.c + '40' : 'var(--line)'}`,
-                color: filtroEsito === f.id ? f.c : 'rgba(255,255,255,0.35)',
+                color: filtroEsito === f.id ? f.c : 'var(--text-3)',
                 fontSize: 10, fontWeight: 700, fontFamily: 'var(--font-ui)',
               }}>{f.label}</button>
             ))}

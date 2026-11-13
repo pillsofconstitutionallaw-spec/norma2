@@ -442,7 +442,7 @@ export default function PdfStudioPage() {
                 })}
               </div>
               {!confermata ? (
-                <button onClick={confermaRisposta} disabled={rispostaScelta === null} style={{ width: '100%', padding: '15px', borderRadius: 16, border: 'none', background: rispostaScelta !== null ? 'linear-gradient(135deg, #7c3aed, #4f46e5)' : '#1e2435', color: rispostaScelta !== null ? '#fff' : 'rgba(255,255,255,0.3)', fontWeight: 800, fontSize: 14, cursor: rispostaScelta !== null ? 'pointer' : 'not-allowed', fontFamily: 'var(--font-ui)'}}>
+                <button onClick={confermaRisposta} disabled={rispostaScelta === null} style={{ width: '100%', padding: '15px', borderRadius: 16, border: 'none', background: rispostaScelta !== null ? 'linear-gradient(135deg, #7c3aed, #4f46e5)' : '#1e2435', color: rispostaScelta !== null ? '#fff' : 'var(--text-3)', fontWeight: 800, fontSize: 14, cursor: rispostaScelta !== null ? 'pointer' : 'not-allowed', fontFamily: 'var(--font-ui)'}}>
                   Conferma risposta
                 </button>
               ) : (

@@ -139,9 +139,9 @@ export default function Salvati() {
                   onClick={() => setTab(t.id as typeof tab)}
                   style={{
                     padding: '6px 12px', borderRadius: 10, cursor: 'pointer',
-                    background: tab === t.id ? 'rgba(143,211,255,0.12)' : 'var(--fill)',
-                    border: `0.5px solid ${tab === t.id ? 'rgba(143,211,255,0.3)' : 'var(--line)'}`,
-                    color: tab === t.id ? 'var(--accent)' : 'rgba(255,255,255,0.35)',
+                    background: tab === t.id ? 'rgba(79,70,229,0.12)' : 'var(--fill)',
+                    border: `0.5px solid ${tab === t.id ? 'rgba(79,70,229,0.3)' : 'var(--line)'}`,
+                    color: tab === t.id ? 'var(--accent)' : 'var(--text-3)',
                     fontSize: 10, fontWeight: 700, fontFamily: 'var(--font-ui)',
                   }}
                 >
@@ -253,7 +253,7 @@ export default function Salvati() {
                       {post.img && <img src={post.img} alt="" style={{ width: '100%', height: 130, objectFit: 'cover', display: 'block' }} />}
                       <div style={{ padding: '12px 14px 14px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                          <span style={{ fontSize: 8, fontWeight: 700, letterSpacing: 1.5, color: isOdl ? 'var(--accent)' : 'var(--accent)', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(143,211,255,0.3)'}`, borderRadius: 20, padding: '3px 8px', textTransform: 'uppercase' }}>
+                          <span style={{ fontSize: 8, fontWeight: 700, letterSpacing: 1.5, color: isOdl ? 'var(--accent)' : 'var(--accent)', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(79,70,229,0.3)'}`, borderRadius: 20, padding: '3px 8px', textTransform: 'uppercase' }}>
                             {isOdl ? 'Orizzonti del Diritto' : 'Orizzonte Giuridico'}
                           </span>
                           <button onClick={() => rimuoviBlog(post.slug)} style={{ background: 'var(--fill)', border: 'none', borderRadius: 8, padding: '5px 8px', cursor: 'pointer', fontSize: 9, color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-ui)'}}>Rimuovi</button>

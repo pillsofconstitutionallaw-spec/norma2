@@ -646,7 +646,7 @@ export default function DirittoInternazionale() {
                       const subKey = `${f.id}-${si}`;
                       const isSubOpen = apertaVoce === subKey;
                       return (
-                        <div key={si} style={{ background: '#0d1830', borderRadius: 10, marginBottom: 6, overflow: 'hidden', border: `0.5px solid ${isSubOpen ? f.colore + '66' : 'var(--line)'}`, transition: 'border-color 0.15s' }}>
+                        <div key={si} style={{ background: 'var(--surface)', borderRadius: 10, marginBottom: 6, overflow: 'hidden', border: `0.5px solid ${isSubOpen ? f.colore + '66' : 'var(--line)'}`, transition: 'border-color 0.15s' }}>
 
                           <button
                             onClick={() => toggleVoce(subKey)}

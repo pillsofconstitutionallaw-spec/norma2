@@ -90,7 +90,7 @@ const materie: Materia[] = [
   {
     nome: 'Codici Commentati',
     colore: '#4f46e5',
-    bg: 'rgba(143,211,255,0.1)',
+    bg: 'rgba(79,70,229,0.1)',
     libri: [
       { titolo: 'Codice Civile e Leggi Collegate — Commentato', autore: 'a cura di Giorgio De Nova', editore: 'Zanichelli', perche: 'Il codice civile commentato più autorevole e utilizzato nella pratica professionale. Ogni articolo è corredato di commento dottrinale e massime giurisprudenziali aggiornate. Indispensabile per avvocati e notai.', cerca: 'Codice Civile Commentato De Nova Zanichelli', tipo: 'codice' },
       { titolo: 'Codice Penale Commentato', autore: 'a cura di Emilio Dolcini, Gian Luigi Gatta', editore: 'IPSOA Wolters Kluwer', perche: 'Il commentario più completo al codice penale italiano. Ogni disposizione è analizzata con riferimenti dottrinali e giurisprudenziali esaustivi. Strumento fondamentale per la pratica forense penalistica.', cerca: 'Codice Penale Commentato Dolcini Gatta IPSOA', tipo: 'codice' },
@@ -155,7 +155,7 @@ export default function LibriPage() {
                       </svg>
                     </button>
                     {isOpen && (
-                      <div style={{ background: '#0c1420', borderRadius: '0 0 14px 14px', border: `0.5px solid ${m.colore}44`, borderTop: 'none', padding: '14px 16px' }}>
+                      <div style={{ background: 'var(--surface)', borderRadius: '0 0 14px 14px', border: `0.5px solid ${m.colore}44`, borderTop: 'none', padding: '14px 16px' }}>
                         <div style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.8, marginBottom: 16 }}>{l.perche}</div>
                         <button onClick={() => trovaprezzi(l.cerca)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, width: '100%', padding: '13px', borderRadius: 12, background: m.colore, color: 'var(--accent-strong)', fontWeight: 800, fontSize: 12, border: 'none', cursor: 'pointer', letterSpacing: 0.5 }}>
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#312e81" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
