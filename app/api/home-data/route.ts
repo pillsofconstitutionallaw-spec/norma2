@@ -1,25 +1,37 @@
 import { NextResponse } from 'next/server';
 
-// 5 minuti, allineato ai fetch verso WordPress qui sotto: con 3600 la
-// risposta restava in cache CDN un'ora anche ad articolo già pubblicato.
-export const revalidate = 300;
+// 1 minuto: con 300 (e prima 3600) le storie restavano indietro anche ad
+// articolo già pubblicato. In più /api/controlla-articoli invalida questa
+// cache appena trova un articolo nuovo (revalidatePath).
+export const revalidate = 60;
+const CACHE = { next: { revalidate: 60 } };
 
+// Tutte le categorie della barra delle storie in Home (prima solo 6: le
+// altre restavano nella cache del telefono fino a un'ora).
 const STORY_CATS = [
   { name: 'Penale', id: 48 },
   { name: 'Civile', id: 682 },
   { name: 'Costituzionale', id: 39 },
   { name: 'Ambiente', id: 220 },
-  { name: 'Legalità', id: 320 },
+  { name: 'Unione Europea', id: 249 },
+  { name: 'Amministrativo', id: 86 },
   { name: 'Internazionale', id: 140 },
+  { name: 'Animali', id: 834 },
+  { name: 'Legalità', id: 320 },
+  { name: 'Economia', id: 55 },
+  { name: 'Politica', id: 543 },
+  { name: 'Dir. Comparato', id: 72 },
+  { name: "L'Intervista", id: 333 },
+  { name: 'Ripetiamo il Diritto', id: 707 },
 ];
 
 export async function GET() {
   try {
     const [catsRes, ogRes, odlRes, fascicoloRes] = await Promise.all([
-      fetch('https://orizzontegiuridico.com/wp-json/wp/v2/categories?per_page=100', { next: { revalidate: 300 } }),
-      fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=6', { next: { revalidate: 300 } }),
-      fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=4', { next: { revalidate: 300 } }),
-      fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/media?mime_type=application/pdf&per_page=1&orderby=date&order=desc', { next: { revalidate: 300 } }),
+      fetch('https://orizzontegiuridico.com/wp-json/wp/v2/categories?per_page=100', CACHE),
+      fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=6', CACHE),
+      fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=4', CACHE),
+      fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/media?mime_type=application/pdf&per_page=1&orderby=date&order=desc', CACHE),
     ]);
 
     const [cats, og, odl, fascicoli] = await Promise.all([
@@ -41,7 +53,7 @@ export async function GET() {
 
     const storyResults = await Promise.all(
       STORY_CATS.map(({ id }) =>
-        fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${id}&per_page=5`, { next: { revalidate: 300 } })
+        fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${id}&per_page=5`, CACHE)
           .then(r => r.json())
           .catch(() => [])
       )
