@@ -142,41 +142,42 @@ export default function RootLayout({
           {`
             if ('serviceWorker' in navigator) {
               window.addEventListener('load', function () {
-                navigator.serviceWorker.register('/sw.js')
-                  .then(function(reg) {
-                    console.log('Norma SW registrato:', reg.scope);
-                    // Aggiornamento silenzioso: il nuovo worker fa skipWaiting + clients.claim
-                    // e si applica alla navigazione successiva. Nessun banner.
-                    reg.addEventListener('updatefound', function() {
-                      const newWorker = reg.installing;
-                      if (!newWorker) return;
-                      newWorker.addEventListener('statechange', function() {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                          newWorker.postMessage('SKIP_WAITING');
-                        }
-                      });
+                // OneSignal registra lo stesso worker come /sw.js?appId=...&sdkVersion=...
+                // Se lo registrassimo anche noi come /sw.js, per il browser
+                // sarebbero due script diversi: si sostituirebbero a vicenda e
+                // ogni sostituzione farebbe ricaricare la pagina, all'infinito.
+                // Quindi lo registriamo solo se non ce n'è già uno.
+                function gestisci(reg) {
+                  // Aggiornamento silenzioso: il nuovo worker fa skipWaiting + clients.claim.
+                  reg.addEventListener('updatefound', function() {
+                    var nuovo = reg.installing;
+                    if (!nuovo) return;
+                    nuovo.addEventListener('statechange', function() {
+                      if (nuovo.state === 'installed' && navigator.serviceWorker.controller) nuovo.postMessage('SKIP_WAITING');
                     });
+                  });
+                  // Una PWA riaperta dal multitasking non naviga: al ritorno in
+                  // primo piano chiediamo noi se c'è una versione nuova.
+                  document.addEventListener('visibilitychange', function() {
+                    if (document.visibilityState === 'visible') reg.update().catch(function() {});
+                  });
+                }
+                navigator.serviceWorker.getRegistration('/').then(function(esistente) {
+                  if (esistente) return gestisci(esistente);
+                  return navigator.serviceWorker.register('/sw.js').then(gestisci);
+                }).catch(function(err) { console.log('Norma SW errore:', err); });
 
-                    // Una PWA installata, riaperta dal multitasking, ripristina la
-                    // pagina già in memoria: nessuna navigazione, quindi nessun
-                    // aggiornamento. Al ritorno in primo piano chiediamo noi se
-                    // esiste una versione nuova.
-                    document.addEventListener('visibilitychange', function() {
-                      if (document.visibilityState === 'visible') reg.update();
-                    });
-                  })
-                  .catch(function(err) { console.log('Norma SW errore:', err); });
-
-                // Quando il worker nuovo prende il controllo, ricarichiamo una
-                // volta sola per applicarlo. Il flag evita il loop di reload che
-                // aveva reso necessario togliere il vecchio banner "Aggiorna";
-                // avevaController evita il reload alla primissima installazione,
-                // quando il worker prende il controllo per la prima volta.
+                // Quando un worker nuovo prende il controllo si ricarica per
+                // applicarlo, ma al massimo una volta al minuto: qualunque
+                // ciclo di sostituzioni non può più diventare un loop di reload.
                 var avevaController = !!navigator.serviceWorker.controller;
-                var ricaricando = false;
                 navigator.serviceWorker.addEventListener('controllerchange', function() {
-                  if (!avevaController || ricaricando) return;
-                  ricaricando = true;
+                  if (!avevaController) return;
+                  try {
+                    var ultimo = Number(sessionStorage.getItem('norma_sw_reload') || 0);
+                    if (Date.now() - ultimo < 60000) return;
+                    sessionStorage.setItem('norma_sw_reload', String(Date.now()));
+                  } catch (e) { return; }
                   window.location.reload();
                 });
               });
