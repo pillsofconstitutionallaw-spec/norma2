@@ -12,6 +12,11 @@ import { carte as carteIntPrivato, meta as metaIntPrivato } from '@/src/data/car
 import { carte as carteRomano, meta as metaRomano } from '@/src/data/cards/diritto-romano';
 import { carte as carteLavoro, meta as metaLavoro } from '@/src/data/cards/diritto-del-lavoro';
 import { carte as carteUE, meta as metaUE } from '@/src/data/cards/diritto-ue';
+import { carte as cartePenale, meta as metaPenale } from '@/src/data/cards/diritto-penale';
+import { carte as carteAmm, meta as metaAmm } from '@/src/data/cards/diritto-amministrativo';
+import { carte as carteComm, meta as metaComm } from '@/src/data/cards/diritto-commerciale';
+import { carte as carteTrib, meta as metaTrib } from '@/src/data/cards/diritto-tributario';
+import { carte as carteProcCiv, meta as metaProcCiv } from '@/src/data/cards/diritto-processuale-civile';
 
 type Carta = { domanda: string; risposta: string };
 type Materia = { id: string; titolo: string; colore: string; bg: string; icona: string; carte: Carta[] };
@@ -25,6 +30,11 @@ const MATERIE: Materia[] = [
   { id: 'diritto-romano',               titolo: metaRomano.titolo,         colore: metaRomano.colore,         bg: metaRomano.bg,         icona: metaRomano.icona,         carte: carteRomano },
   { id: 'diritto-del-lavoro',           titolo: metaLavoro.titolo,         colore: metaLavoro.colore,         bg: metaLavoro.bg,         icona: metaLavoro.icona,         carte: carteLavoro },
   { id: 'diritto-ue',                   titolo: metaUE.titolo,             colore: metaUE.colore,             bg: metaUE.bg,             icona: metaUE.icona,             carte: carteUE },
+  { id: 'diritto-penale',               titolo: metaPenale.titolo,         colore: metaPenale.colore,         bg: metaPenale.bg,         icona: metaPenale.icona,         carte: cartePenale },
+  { id: 'diritto-amministrativo',       titolo: metaAmm.titolo,            colore: metaAmm.colore,            bg: metaAmm.bg,            icona: metaAmm.icona,            carte: carteAmm },
+  { id: 'diritto-commerciale',          titolo: metaComm.titolo,           colore: metaComm.colore,           bg: metaComm.bg,           icona: metaComm.icona,           carte: carteComm },
+  { id: 'diritto-tributario',           titolo: metaTrib.titolo,           colore: metaTrib.colore,           bg: metaTrib.bg,           icona: metaTrib.icona,           carte: carteTrib },
+  { id: 'diritto-processuale-civile',   titolo: metaProcCiv.titolo,        colore: metaProcCiv.colore,        bg: metaProcCiv.bg,        icona: metaProcCiv.icona,        carte: carteProcCiv },
 ];
 
 const STORAGE_KEY = 'norma_flashcard_segnalibro';

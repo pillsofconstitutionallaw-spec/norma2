@@ -11,13 +11,12 @@ const materie = [
   { slug: 'diritto-internazionale-privato', titolo: 'Dir. Internazionale Privato', icona: '⚖️', colore: '#7c3aed', bg: 'rgba(167,139,250,0.1)', carte: 28 },
   { slug: 'diritto-romano', titolo: 'Diritto Romano', icona: '🏺', colore: '#c026d3', bg: 'rgba(232,121,249,0.1)', carte: 56 },
   { slug: 'diritto-del-lavoro', titolo: 'Diritto del Lavoro', icona: '👷', colore: '#16a34a', bg: 'rgba(34,197,94,0.1)', carte: 42 },
-  // ── PLACEHOLDER ──
   { slug: 'diritto-penale', titolo: 'Diritto Penale', icona: '⚖️', colore: '#dc2626', bg: 'rgba(248,113,113,0.1)', carte: 50 },
-  { slug: 'diritto-amministrativo', titolo: 'Diritto Amministrativo', icona: '🏢', colore: '#facc15', bg: 'rgba(250,204,21,0.1)', carte: null },
-  { slug: 'diritto-commerciale', titolo: 'Diritto Commerciale', icona: '💼', colore: '#0284c7', bg: 'rgba(56,189,248,0.1)', carte: null },
+  { slug: 'diritto-amministrativo', titolo: 'Diritto Amministrativo', icona: '🏢', colore: '#facc15', bg: 'rgba(250,204,21,0.1)', carte: 50 },
+  { slug: 'diritto-commerciale', titolo: 'Diritto Commerciale', icona: '💼', colore: '#0284c7', bg: 'rgba(56,189,248,0.1)', carte: 48 },
   { slug: 'diritto-ue', titolo: 'Diritto UE', icona: '🇪🇺', colore: '#4f46e5', bg: 'rgba(129,140,248,0.1)', carte: 50 },
-  { slug: 'diritto-tributario', titolo: 'Diritto Tributario', icona: '💰', colore: '#e11d48', bg: 'rgba(251,113,133,0.1)', carte: null },
-  { slug: 'diritto-processuale-civile', titolo: 'Procedura Civile', icona: '📋', colore: '#7c3aed', bg: 'rgba(167,139,250,0.1)', carte: null },
+  { slug: 'diritto-tributario', titolo: 'Diritto Tributario', icona: '💰', colore: '#e11d48', bg: 'rgba(251,113,133,0.1)', carte: 30 },
+  { slug: 'diritto-processuale-civile', titolo: 'Procedura Civile', icona: '📋', colore: '#7c3aed', bg: 'rgba(167,139,250,0.1)', carte: 48 },
 ];
 
 export default function StudioPage() {

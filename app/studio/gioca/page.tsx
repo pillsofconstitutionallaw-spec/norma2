@@ -13,6 +13,10 @@ import { carte as carteRomano, meta as metaRomano, argomenti as argomentiRomano 
 import { carte as carteLavoro, meta as metaLavoro, argomenti as argomentiLavoro } from '@/src/data/cards/diritto-del-lavoro';
 import { carte as cartePenale, meta as metaPenale, argomenti as argomentiPenale } from '@/src/data/cards/diritto-penale';
 import { carte as carteUE, meta as metaUE, argomenti as argomentiUE } from '@/src/data/cards/diritto-ue';
+import { carte as carteAmm, meta as metaAmm, argomenti as argomentiAmm } from '@/src/data/cards/diritto-amministrativo';
+import { carte as carteComm, meta as metaComm, argomenti as argomentiComm } from '@/src/data/cards/diritto-commerciale';
+import { carte as carteTrib, meta as metaTrib, argomenti as argomentiTrib } from '@/src/data/cards/diritto-tributario';
+import { carte as carteProcCiv, meta as metaProcCiv, argomenti as argomentiProcCiv } from '@/src/data/cards/diritto-processuale-civile';
 
 type Carta = { domanda: string; risposta: string; argomento?: string };
 type Materia = { id: string; titolo: string; colore: string; bg: string; icona: string; carte: Carta[]; argomenti?: string[] };
@@ -30,6 +34,10 @@ const MATERIE: Materia[] = [
   { id: 'lavoro',         titolo: metaLavoro.titolo,          colore: metaLavoro.colore,          bg: metaLavoro.bg,          icona: metaLavoro.icona,          carte: carteLavoro,         argomenti: argomentiLavoro },
   { id: 'penale',         titolo: metaPenale.titolo,          colore: metaPenale.colore,          bg: metaPenale.bg,          icona: metaPenale.icona,          carte: cartePenale,         argomenti: argomentiPenale },
   { id: 'ue',             titolo: metaUE.titolo,              colore: metaUE.colore,              bg: metaUE.bg,              icona: metaUE.icona,              carte: carteUE,             argomenti: argomentiUE },
+  { id: 'amministrativo', titolo: metaAmm.titolo,             colore: metaAmm.colore,             bg: metaAmm.bg,             icona: metaAmm.icona,             carte: carteAmm,            argomenti: argomentiAmm },
+  { id: 'commerciale',    titolo: metaComm.titolo,            colore: metaComm.colore,            bg: metaComm.bg,            icona: metaComm.icona,            carte: carteComm,           argomenti: argomentiComm },
+  { id: 'tributario',     titolo: metaTrib.titolo,            colore: metaTrib.colore,            bg: metaTrib.bg,            icona: metaTrib.icona,            carte: carteTrib,           argomenti: argomentiTrib },
+  { id: 'proc-civile',    titolo: metaProcCiv.titolo,         colore: metaProcCiv.colore,         bg: metaProcCiv.bg,         icona: metaProcCiv.icona,         carte: carteProcCiv,        argomenti: argomentiProcCiv },
 ];
 
 const GIOCHI: Record<GameId, { nome: string; logo: string; colore: string }> = {

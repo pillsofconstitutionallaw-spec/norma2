@@ -22,6 +22,7 @@ const nomiMaterie: Record<string, string> = {
   'internazionale': 'Diritto Internazionale',
   'romano': 'Istituzioni di Diritto Romano',
   'filosofia': 'Filosofia del Diritto',
+  'tributario': 'Diritto Tributario',
 };
 
 interface Domanda {

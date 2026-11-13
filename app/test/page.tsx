@@ -49,7 +49,7 @@ const materie = [
   {
     slug: 'amministrativo',
     titolo: 'Diritto Amministrativo',
-    sub: '30 domande · 1 min/domanda',
+    sub: '50 domande · 1 min/domanda',
     colore: '#16a34a',
     bg: 'rgba(34,197,94,0.1)',
     icona: (
@@ -61,7 +61,7 @@ const materie = [
   {
     slug: 'lavoro',
     titolo: 'Diritto del Lavoro',
-    sub: '30 domande · 1 min/domanda',
+    sub: '28 domande · 1 min/domanda',
     colore: '#9333ea',
     bg: 'rgba(168,85,247,0.1)',
     icona: (
@@ -76,7 +76,7 @@ const materie = [
   {
     slug: 'commerciale',
     titolo: 'Diritto Commerciale',
-    sub: '30 domande · 1 min/domanda',
+    sub: '48 domande · 1 min/domanda',
     colore: '#d97706',
     bg: 'rgba(251,191,36,0.1)',
     icona: (
@@ -102,7 +102,7 @@ const materie = [
   {
     slug: 'processuale-civile',
     titolo: 'Diritto Processuale Civile',
-    sub: '30 domande · 1 min/domanda',
+    sub: '48 domande · 1 min/domanda',
     colore: '#059669',
     bg: 'rgba(52,211,153,0.1)',
     icona: (
@@ -116,7 +116,7 @@ const materie = [
   {
     slug: 'processuale-penale',
     titolo: 'Diritto Processuale Penale',
-    sub: '30 domande · 1 min/domanda',
+    sub: '26 domande · 1 min/domanda',
     colore: '#fb923c',
     bg: 'rgba(251,146,60,0.1)',
     icona: (
@@ -129,7 +129,7 @@ const materie = [
   {
     slug: 'internazionale',
     titolo: 'Diritto Internazionale',
-    sub: '30 domande · 1 min/domanda',
+    sub: '26 domande · 1 min/domanda',
     colore: '#7c3aed',
     bg: 'rgba(167,139,250,0.1)',
     icona: (
@@ -143,7 +143,7 @@ const materie = [
   {
     slug: 'romano',
     titolo: 'Istituzioni di Diritto Romano',
-    sub: '30 domande · 1 min/domanda',
+    sub: '25 domande · 1 min/domanda',
     colore: '#c026d3',
     bg: 'rgba(232,121,249,0.1)',
     icona: (
@@ -156,13 +156,28 @@ const materie = [
   {
     slug: 'filosofia',
     titolo: 'Filosofia del Diritto',
-    sub: '30 domande · 1 min/domanda',
+    sub: '25 domande · 1 min/domanda',
     colore: '#94a3b8',
     bg: 'rgba(148,163,184,0.1)',
     icona: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="3"/>
         <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+      </svg>
+    ),
+  },
+  {
+    slug: 'tributario',
+    titolo: 'Diritto Tributario',
+    sub: '30 domande · 1 min/domanda',
+    colore: '#e11d48',
+    bg: 'rgba(225,29,72,0.1)',
+    icona: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e11d48" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6 2.5h12v19l-3-2-3 2-3-2-3 2z"/>
+        <path d="m9 15 6-6"/>
+        <circle cx="9.5" cy="9.5" r="1"/>
+        <circle cx="14.5" cy="14.5" r="1"/>
       </svg>
     ),
   },

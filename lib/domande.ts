@@ -730,6 +730,126 @@ export const domande = {
     corretta: 1,
     spiegazione: "Il Codice del processo amministrativo (d.lgs. 104/2010) ha riunito e sistematizzato le norme sul processo amministrativo, prima disperse in varie leggi. Disciplina la giurisdizione, la competenza, i soggetti, gli atti, i termini, i riti speciali (appalti, accesso, silenzio) e i mezzi di tutela cautelare, di merito e di ottemperanza."
   },
+  {
+    testo: "Chi è il responsabile del procedimento amministrativo (artt. 4-6 L. 241/1990)?",
+    opzioni: ["Il ministro competente", "Il funzionario che cura l'istruttoria e ogni adempimento del procedimento, e che è il riferimento per l'interessato", "Il giudice amministrativo", "Il cittadino che presenta l'istanza"],
+    corretta: 1,
+    spiegazione: "Ogni procedimento deve avere un responsabile, individuato secondo l'organizzazione dell'ufficio. Valuta condizioni e presupposti, cura le comunicazioni, può chiedere documenti, indire conferenze di servizi e, se competente, adotta il provvedimento finale."
+  },
+  {
+    testo: "A cosa serve la comunicazione di avvio del procedimento (art. 7 L. 241/1990)?",
+    opzioni: ["A informare i soggetti interessati perché possano partecipare al procedimento", "A chiudere il procedimento", "A notificare una sanzione", "A chiedere il parere del Consiglio di Stato"],
+    corretta: 0,
+    spiegazione: "La comunicazione di avvio informa i destinatari del provvedimento e i soggetti che per legge devono intervenirvi, consentendo loro di partecipare: prendere visione degli atti e presentare memorie e documenti che la PA ha l'obbligo di valutare (art. 10)."
+  },
+  {
+    testo: "Cos'è il 'preavviso di rigetto' (art. 10-bis L. 241/1990)?",
+    opzioni: ["Una sanzione per il richiedente", "La comunicazione, nei procedimenti a istanza di parte, dei motivi che ostano all'accoglimento, prima del provvedimento negativo", "Il ricorso contro il diniego", "La revoca di un permesso già concesso"],
+    corretta: 1,
+    spiegazione: "Prima di adottare formalmente un provvedimento negativo su istanza di parte, l'amministrazione comunica i motivi ostativi. L'istante ha 10 giorni per presentare osservazioni; se l'atto finale viene comunque adottato, deve dar conto delle ragioni del mancato accoglimento."
+  },
+  {
+    testo: "Quali sono i tre vizi di legittimità che rendono annullabile un provvedimento amministrativo (art. 21-octies L. 241/1990)?",
+    opzioni: ["Nullità, inesistenza, irregolarità", "Violazione di legge, eccesso di potere, incompetenza", "Errore, dolo, violenza", "Inopportunità, inefficienza, ritardo"],
+    corretta: 1,
+    spiegazione: "Il provvedimento è annullabile se adottato in violazione di legge, viziato da eccesso di potere o da incompetenza. Non è però annullabile per violazione di norme sul procedimento o sulla forma quando, per la natura vincolata dell'atto, è palese che il contenuto non avrebbe potuto essere diverso."
+  },
+  {
+    testo: "Cos'è la revoca del provvedimento amministrativo (art. 21-quinquies L. 241/1990)?",
+    opzioni: ["L'eliminazione di un atto illegittimo", "Il ritiro di un atto legittimo a efficacia durevole per sopravvenuti motivi di pubblico interesse, mutamento dei fatti o nuova valutazione", "La sospensione disposta dal giudice", "La conferma di un atto precedente"],
+    corretta: 1,
+    spiegazione: "La revoca colpisce provvedimenti legittimi, per ragioni di opportunità, con effetti solo per il futuro. Se dalla revoca derivano pregiudizi per i soggetti interessati, l'amministrazione deve corrispondere un indennizzo. Si distingue dall'annullamento d'ufficio, che riguarda atti illegittimi."
+  },
+  {
+    testo: "Cos'è l'accesso civico generalizzato (FOIA) previsto dal D.Lgs. 33/2013?",
+    opzioni: ["Il diritto di accesso riservato ai soli interessati nel procedimento", "Il diritto di chiunque di accedere a dati e documenti della PA, senza dover motivare, nei limiti degli interessi pubblici e privati tutelati", "L'accesso agli atti giudiziari", "Il diritto dei giornalisti di partecipare alle riunioni della PA"],
+    corretta: 1,
+    spiegazione: "Con l'accesso civico generalizzato (art. 5, comma 2, D.Lgs. 33/2013) chiunque può chiedere dati e documenti detenuti dalla PA, anche se non soggetti a pubblicazione obbligatoria, senza dimostrare un interesse. L'accesso può essere negato solo per tutelare interessi pubblici o privati indicati dalla legge (sicurezza, privacy, segreti commerciali...)."
+  },
+  {
+    testo: "Quale interesse deve dimostrare chi esercita il diritto di accesso documentale ai sensi della L. 241/1990?",
+    opzioni: ["Nessun interesse", "Un interesse diretto, concreto e attuale, corrispondente a una situazione giuridicamente tutelata e collegata al documento", "Un interesse economico superiore a 1.000 euro", "Un interesse generico al buon andamento della PA"],
+    corretta: 1,
+    spiegazione: "L'accesso documentale (art. 22 L. 241/1990) spetta a chi ha un interesse diretto, concreto e attuale collegato al documento. Non è ammesso per un controllo generalizzato sull'operato della PA, che è invece lo scopo dell'accesso civico."
+  },
+  {
+    testo: "Entro quale termine va proposto il ricorso di annullamento al TAR?",
+    opzioni: ["30 giorni", "60 giorni", "120 giorni", "1 anno"],
+    corretta: 1,
+    spiegazione: "L'azione di annullamento si propone entro 60 giorni dalla notificazione, comunicazione o piena conoscenza del provvedimento (art. 29 c.p.a.). Il ricorso straordinario al Presidente della Repubblica ha invece un termine di 120 giorni."
+  },
+  {
+    testo: "Entro quale termine si può chiedere al giudice amministrativo il risarcimento del danno da lesione di interessi legittimi?",
+    opzioni: ["60 giorni", "120 giorni", "5 anni", "10 anni"],
+    corretta: 1,
+    spiegazione: "Ai sensi dell'art. 30, comma 3, c.p.a., la domanda di risarcimento per lesione di interessi legittimi va proposta entro 120 giorni dal giorno in cui il fatto si è verificato o dalla conoscenza del provvedimento, se il danno deriva da esso. Il giudice valuta anche se il danneggiato avrebbe potuto evitarlo con l'ordinaria diligenza."
+  },
+  {
+    testo: "Quale misura cautelare può chiedere il ricorrente al TAR in attesa della sentenza?",
+    opzioni: ["L'arresto del funzionario", "La sospensione dell'esecuzione del provvedimento impugnato o altre misure idonee a tutelare il suo interesse", "Il sequestro dei beni della PA", "La nomina di un commissario politico"],
+    corretta: 1,
+    spiegazione: "Se il ricorrente rischia un pregiudizio grave e irreparabile durante il giudizio, può chiedere misure cautelari (art. 55 c.p.a.), tipicamente la sospensione dell'atto. Nei casi di estrema gravità e urgenza il presidente può provvedere con decreto monocratico (art. 56)."
+  },
+  {
+    testo: "A cosa serve il giudizio di ottemperanza (art. 112 c.p.a.)?",
+    opzioni: ["A impugnare una sentenza del TAR", "A ottenere l'esecuzione delle sentenze e dei provvedimenti del giudice quando la PA non vi si conforma", "A chiedere un parere al Consiglio di Stato", "A contestare una multa"],
+    corretta: 1,
+    spiegazione: "Con il giudizio di ottemperanza il giudice amministrativo può sostituirsi alla PA inadempiente: ordina l'esecuzione, dichiara nulli gli atti elusivi del giudicato e può nominare un commissario ad acta che adotti gli atti al posto dell'amministrazione."
+  },
+  {
+    testo: "Qual è il giudice d'appello delle sentenze dei TAR?",
+    opzioni: ["La Corte di Cassazione", "La Corte costituzionale", "Il Consiglio di Stato", "La Corte dei conti"],
+    corretta: 2,
+    spiegazione: "Le sentenze dei TAR si appellano al Consiglio di Stato. Per i TAR della Sicilia il giudice d'appello è il Consiglio di giustizia amministrativa per la Regione siciliana. Contro le sentenze del Consiglio di Stato il ricorso in Cassazione è ammesso solo per motivi inerenti alla giurisdizione."
+  },
+  {
+    testo: "Gli atti politici possono essere impugnati davanti al giudice amministrativo?",
+    opzioni: ["Sì, come ogni altro atto", "No: l'art. 7 c.p.a. esclude l'impugnabilità degli atti emanati dal Governo nell'esercizio del potere politico", "Sì, ma solo davanti al Consiglio di Stato", "Solo se lo autorizza il Presidente della Repubblica"],
+    corretta: 1,
+    spiegazione: "Gli atti politici, liberi nel fine perché espressione della funzione di indirizzo politico (es. alcune scelte di politica estera), non sono impugnabili. La giurisprudenza interpreta la categoria in modo restrittivo: gli atti di alta amministrazione restano invece sindacabili."
+  },
+  {
+    testo: "Cosa prevede l'art. 11 della L. 241/1990?",
+    opzioni: ["Il silenzio-assenso", "Gli accordi tra amministrazione e privati, integrativi o sostitutivi del provvedimento", "Il diritto di accesso", "La revoca del provvedimento"],
+    corretta: 1,
+    spiegazione: "L'art. 11 consente alla PA di concludere accordi con gli interessati per determinare il contenuto discrezionale del provvedimento (accordi integrativi) o in sostituzione di esso (accordi sostitutivi). Si applicano i principi del codice civile su obbligazioni e contratti, e le controversie sono di giurisdizione esclusiva del giudice amministrativo."
+  },
+  {
+    testo: "Qual è la differenza tra autorizzazione e concessione amministrativa?",
+    opzioni: ["Nessuna, sono sinonimi", "L'autorizzazione rimuove un limite all'esercizio di un diritto già esistente; la concessione attribuisce al privato un diritto o una facoltà nuovi", "La concessione è sempre gratuita, l'autorizzazione sempre a pagamento", "L'autorizzazione è rilasciata solo dallo Stato"],
+    corretta: 1,
+    spiegazione: "Con l'autorizzazione la PA consente l'esercizio di un diritto che il privato già possiede (es. licenza di commercio). Con la concessione gli conferisce una posizione nuova che prima non aveva (es. uso di un bene demaniale, gestione di un servizio pubblico)."
+  },
+  {
+    testo: "Quale principio della PA è sancito, insieme all'imparzialità, dall'art. 97 della Costituzione?",
+    opzioni: ["Il principio di sussidiarietà", "Il buon andamento", "Il principio di gerarchia delle fonti", "La riserva di giurisdizione"],
+    corretta: 1,
+    spiegazione: "L'art. 97 Cost. impone che i pubblici uffici siano organizzati secondo disposizioni di legge, in modo da assicurare il buon andamento e l'imparzialità dell'amministrazione. Il buon andamento si traduce nei criteri di efficacia, efficienza ed economicità."
+  },
+  {
+    testo: "Quale giudice decide, di regola, le controversie di lavoro dei dipendenti pubblici 'privatizzati'?",
+    opzioni: ["Il TAR", "Il giudice ordinario in funzione di giudice del lavoro", "La Corte dei conti", "Il Consiglio di Stato"],
+    corretta: 1,
+    spiegazione: "Con la privatizzazione del pubblico impiego (D.Lgs. 165/2001) le controversie di lavoro sono devolute al giudice ordinario. Restano al giudice amministrativo le procedure concorsuali per l'assunzione e il personale non contrattualizzato (magistrati, militari, forze di polizia, diplomatici, professori universitari)."
+  },
+  {
+    testo: "Quale legge contiene i principi generali delle sanzioni amministrative pecuniarie?",
+    opzioni: ["L. 241/1990", "L. 689/1981", "D.Lgs. 165/2001", "L. 20/1994"],
+    corretta: 1,
+    spiegazione: "La L. 689/1981 fissa i principi del sistema sanzionatorio amministrativo: legalità e irretroattività, imputabilità, elemento soggettivo (dolo o colpa), pagamento in misura ridotta entro 60 giorni e opposizione davanti al giudice ordinario."
+  },
+  {
+    testo: "Quale principio apre il Codice dei contratti pubblici (D.Lgs. 36/2023)?",
+    opzioni: ["Il principio del prezzo più basso", "Il principio del risultato", "Il principio di segretezza", "Il principio di rotazione"],
+    corretta: 1,
+    spiegazione: "L'art. 1 del D.Lgs. 36/2023 enuncia il principio del risultato: le stazioni appaltanti perseguono l'affidamento e l'esecuzione del contratto con la massima tempestività e il miglior rapporto qualità-prezzo, nel rispetto della legalità, trasparenza e concorrenza. Seguono il principio della fiducia (art. 2) e dell'accesso al mercato (art. 3)."
+  },
+  {
+    testo: "Cosa significa che l'attività amministrativa è soggetta al principio di legalità?",
+    opzioni: ["Che la PA può fare tutto ciò che la legge non vieta", "Che la PA può esercitare solo i poteri attribuiti dalla legge e nei limiti da essa fissati", "Che ogni atto della PA deve essere approvato dal Parlamento", "Che la PA non è soggetta al controllo dei giudici"],
+    corretta: 1,
+    spiegazione: "A differenza del privato, la PA può agire solo se e nei limiti in cui una norma di legge le attribuisce il potere (legalità come fondamento e come limite). Il principio deriva dagli artt. 23, 97 e 113 Cost. ed è richiamato dall'art. 1 della L. 241/1990."
+  },
  ],
 
   lavoro: [
@@ -1071,6 +1191,126 @@ export const domande = {
     opzioni: ["La vendita delle azioni della società", "La fase finale della vita della società in cui, dopo lo scioglimento, si procede alla realizzazione dell'attivo, al pagamento dei debiti e alla distribuzione dell'eventuale residuo ai soci", "La riduzione del capitale sociale", "Il fallimento della società per insolvenza"],
     corretta: 1,
     spiegazione: "La liquidazione (artt. 2484 ss. c.c.) è la fase che segue lo scioglimento della società (per scadenza del termine, conseguimento o impossibilità dell'oggetto, volontà dei soci, ecc.). I liquidatori realizzano l'attivo, pagano i debiti sociali e distribuiscono l'eventuale residuo ai soci in proporzione alle loro quote. Solo dopo la cancellazione dal registro imprese la società si estingue."
+  },
+  {
+    testo: "Chi è il piccolo imprenditore secondo l'art. 2083 c.c.?",
+    opzioni: ["Chi ha meno di 50 dipendenti", "Il coltivatore diretto, l'artigiano, il piccolo commerciante e chi esercita un'attività organizzata prevalentemente con il lavoro proprio e dei familiari", "Chi fattura meno di 100.000 euro", "Il socio di una Srl semplificata"],
+    corretta: 1,
+    spiegazione: "Il piccolo imprenditore si caratterizza per la prevalenza del lavoro proprio e dei familiari sugli altri fattori produttivi. È esonerato dalla tenuta delle scritture contabili (art. 2214, comma 3, c.c.)."
+  },
+  {
+    testo: "Chi è l'imprenditore agricolo (art. 2135 c.c.)?",
+    opzioni: ["Chi vende prodotti alimentari", "Chi esercita coltivazione del fondo, selvicoltura, allevamento di animali e attività connesse", "Chi possiede un terreno, anche senza coltivarlo", "Chi lavora come bracciante"],
+    corretta: 1,
+    spiegazione: "È imprenditore agricolo chi esercita coltivazione del fondo, selvicoltura, allevamento di animali e attività connesse (trasformazione, commercializzazione, agriturismo, ecc.). Gode di uno statuto speciale: ad esempio non è soggetto alle procedure concorsuali maggiori previste per l'imprenditore commerciale."
+  },
+  {
+    testo: "Quali scritture contabili sono sempre obbligatorie per l'imprenditore commerciale non piccolo (art. 2214 c.c.)?",
+    opzioni: ["Solo il bilancio", "Il libro giornale e il libro degli inventari", "Il libro soci e il libro delle assemblee", "Nessuna scrittura"],
+    corretta: 1,
+    spiegazione: "L'art. 2214 c.c. impone il libro giornale (registrazione cronologica delle operazioni) e il libro degli inventari, oltre alle altre scritture richieste dalla natura e dimensione dell'impresa. Vanno conservati, con la corrispondenza, per 10 anni (art. 2220 c.c.)."
+  },
+  {
+    testo: "Nella società in nome collettivo, come rispondono i soci delle obbligazioni sociali?",
+    opzioni: ["Solo nei limiti del conferimento", "Illimitatamente e solidalmente, ma i creditori sociali devono prima escutere il patrimonio della società", "Non rispondono mai", "Rispondono solo gli amministratori"],
+    corretta: 1,
+    spiegazione: "Nella snc tutti i soci rispondono solidalmente e illimitatamente (art. 2291 c.c.). Il creditore sociale però, anche se la società è in liquidazione, non può pretendere il pagamento dai singoli soci se non dopo l'escussione del patrimonio sociale (beneficio di preventiva escussione, art. 2304 c.c.)."
+  },
+  {
+    testo: "Nella società in accomandita semplice, qual è la posizione degli accomandanti?",
+    opzioni: ["Amministrano la società e rispondono illimitatamente", "Rispondono limitatamente alla quota conferita e non possono compiere atti di amministrazione", "Sono creditori della società", "Sono i dipendenti della società"],
+    corretta: 1,
+    spiegazione: "La sas ha due categorie di soci: gli accomandatari, che rispondono illimitatamente e amministrano, e gli accomandanti, che rispondono nei limiti della quota. Se l'accomandante si ingerisce nell'amministrazione (divieto di immistione, art. 2320 c.c.) perde il beneficio e risponde illimitatamente."
+  },
+  {
+    testo: "Qual è il capitale minimo di una Srl ordinaria (art. 2463 c.c.)?",
+    opzioni: ["50.000 euro", "10.000 euro, ma può essere anche di almeno 1 euro con conferimenti solo in denaro versati per intero", "Non è previsto un capitale", "120.000 euro"],
+    corretta: 1,
+    spiegazione: "Dal 2013 la Srl può essere costituita con un capitale pari almeno a 1 euro. Se il capitale è inferiore a 10.000 euro, i conferimenti devono farsi in denaro e versarsi per intero agli amministratori, e una parte degli utili va destinata a riserva legale fino a raggiungere i 10.000 euro."
+  },
+  {
+    testo: "Quali sono i sistemi di amministrazione e controllo previsti per la SpA?",
+    opzioni: ["Solo il consiglio di amministrazione", "Tradizionale, dualistico e monistico", "Solo l'amministratore unico", "Parlamentare e presidenziale"],
+    corretta: 1,
+    spiegazione: "La riforma del 2003 consente tre modelli: tradizionale (amministratori più collegio sindacale), dualistico (consiglio di gestione più consiglio di sorveglianza, di matrice tedesca) e monistico (consiglio di amministrazione con al suo interno un comitato per il controllo sulla gestione, di matrice anglosassone)."
+  },
+  {
+    testo: "Cos'è la 'business judgment rule'?",
+    opzioni: ["La regola per cui il giudice può sindacare ogni scelta degli amministratori", "Il principio per cui il giudice non può sindacare il merito delle scelte imprenditoriali degli amministratori, se ragionevoli e assunte con le dovute informazioni", "L'obbligo di approvare il bilancio entro 120 giorni", "Il divieto di concorrenza degli amministratori"],
+    corretta: 1,
+    spiegazione: "Per la giurisprudenza le scelte gestionali degli amministratori non sono sindacabili nel merito, anche se si rivelano sbagliate a posteriori: il giudice valuta solo se siano state assunte in modo diligente, informato e non irrazionale. Resta la responsabilità per violazione di obblighi di legge o di statuto."
+  },
+  {
+    testo: "Cosa impone l'art. 2086, comma 2, c.c. come modificato dal Codice della crisi d'impresa?",
+    opzioni: ["Di quotarsi in borsa", "Di istituire un assetto organizzativo, amministrativo e contabile adeguato, anche per rilevare tempestivamente la crisi", "Di nominare sempre un revisore esterno", "Di assumere almeno un dipendente"],
+    corretta: 1,
+    spiegazione: "L'imprenditore che opera in forma societaria o collettiva deve dotarsi di assetti organizzativi, amministrativi e contabili adeguati alla natura e dimensione dell'impresa, anche per rilevare tempestivamente la crisi e la perdita della continuità aziendale e attivarsi senza indugio per superarla."
+  },
+  {
+    testo: "Che differenza c'è tra 'crisi' e 'insolvenza' nel Codice della crisi d'impresa (D.Lgs. 14/2019)?",
+    opzioni: ["Nessuna differenza", "La crisi è lo stato che rende probabile l'insolvenza, con flussi di cassa prospettici inadeguati nei successivi 12 mesi; l'insolvenza è l'incapacità di adempiere regolarmente le obbligazioni", "La crisi riguarda solo le banche", "L'insolvenza è temporanea, la crisi definitiva"],
+    corretta: 1,
+    spiegazione: "L'art. 2 CCII definisce la crisi come lo stato del debitore che rende probabile l'insolvenza e che si manifesta con l'inadeguatezza dei flussi di cassa prospettici a far fronte alle obbligazioni nei 12 mesi successivi. L'insolvenza è lo stato che si manifesta con inadempimenti o altri fatti esteriori che dimostrano che il debitore non è più in grado di soddisfare regolarmente le proprie obbligazioni."
+  },
+  {
+    testo: "Cos'è la composizione negoziata della crisi?",
+    opzioni: ["Una procedura liquidatoria gestita dal tribunale", "Un percorso volontario e riservato in cui l'imprenditore, con l'aiuto di un esperto indipendente, cerca un accordo con i creditori", "Un condono fiscale per le imprese", "La vendita all'asta dell'azienda"],
+    corretta: 1,
+    spiegazione: "Introdotta nel 2021 e ora disciplinata dagli artt. 12 ss. CCII, la composizione negoziata consente all'imprenditore in squilibrio patrimoniale o economico-finanziario di chiedere la nomina di un esperto indipendente che lo aiuti a negoziare con creditori e altri interessati soluzioni per il risanamento."
+  },
+  {
+    testo: "Quale procedura ha sostituito il fallimento con il Codice della crisi d'impresa?",
+    opzioni: ["Il concordato preventivo", "La liquidazione giudiziale", "L'amministrazione straordinaria", "La composizione negoziata"],
+    corretta: 1,
+    spiegazione: "Dal 15 luglio 2022 il fallimento è stato sostituito dalla liquidazione giudiziale (artt. 121 ss. CCII). Il cambio di nome mira anche a eliminare lo stigma sociale legato alla parola 'fallito'."
+  },
+  {
+    testo: "Cos'è l'esdebitazione?",
+    opzioni: ["Il pagamento integrale dei debiti", "Il beneficio che libera il debitore persona fisica dai debiti rimasti insoddisfatti dopo la procedura", "La cessione dei crediti a una banca", "La sospensione dei pagamenti decisa dal giudice"],
+    corretta: 1,
+    spiegazione: "L'esdebitazione (artt. 278 ss. CCII) consente al debitore persona fisica, se meritevole, di essere liberato dai debiti non soddisfatti nella liquidazione, per poter ripartire (fresh start). Nella liquidazione giudiziale opera di regola decorsi tre anni dall'apertura o alla chiusura, se anteriore."
+  },
+  {
+    testo: "Nella cessione d'azienda, l'acquirente risponde dei debiti anteriori (art. 2560 c.c.)?",
+    opzioni: ["Mai", "Sì, se risultano dai libri contabili obbligatori, in solido con l'alienante, che non è liberato senza il consenso dei creditori", "Sì, di tutti i debiti anche se non risultano dai libri", "Solo dei debiti fiscali"],
+    corretta: 1,
+    spiegazione: "Nel trasferimento di un'azienda commerciale l'acquirente risponde dei debiti relativi all'azienda ceduta se risultano dai libri contabili obbligatori. L'alienante non è liberato dai debiti anteriori se non risulta che i creditori vi hanno consentito."
+  },
+  {
+    testo: "Cos'è la ditta (art. 2563 c.c.)?",
+    opzioni: ["Il marchio di un prodotto", "Il nome commerciale sotto cui l'imprenditore esercita l'impresa, che deve contenere almeno il cognome o la sigla dell'imprenditore", "L'insegna del negozio", "Il codice fiscale dell'impresa"],
+    corretta: 1,
+    spiegazione: "La ditta è il segno distintivo che identifica l'imprenditore nell'esercizio dell'impresa. Deve rispettare il principio di verità (contenere almeno il cognome o la sigla dell'imprenditore) e di novità (non deve creare confusione con ditte altrui). Si distingue dall'insegna, che identifica i locali, e dal marchio, che identifica i prodotti."
+  },
+  {
+    testo: "Quanto possono durare al massimo i patti parasociali a tempo determinato nelle SpA (art. 2341-bis c.c.)?",
+    opzioni: ["1 anno", "3 anni", "5 anni", "Senza limiti"],
+    corretta: 2,
+    spiegazione: "I patti parasociali che stabilizzano gli assetti proprietari o il governo della società non possono avere durata superiore a 5 anni e si intendono stipulati per tale durata anche se le parti ne prevedono una maggiore. Se sono a tempo indeterminato, ciascun contraente può recedere con un preavviso di 180 giorni."
+  },
+  {
+    testo: "Cosa sono le società benefit (L. 208/2015)?",
+    opzioni: ["Associazioni senza scopo di lucro", "Società che, oltre allo scopo di lucro, perseguono una o più finalità di beneficio comune in modo responsabile e trasparente", "Società partecipate dallo Stato", "Cooperative sociali"],
+    corretta: 1,
+    spiegazione: "Le società benefit sono società di qualunque tipo che, nell'esercizio dell'attività economica, perseguono oltre allo scopo di dividerne gli utili anche finalità di beneficio comune verso persone, comunità, ambiente e altri portatori di interesse. Devono indicarle nell'oggetto sociale e redigere una relazione annuale sull'impatto."
+  },
+  {
+    testo: "Quando il socio di SpA può esercitare il diritto di recesso (art. 2437 c.c.)?",
+    opzioni: ["In qualsiasi momento, senza motivo", "Nei casi previsti dalla legge o dallo statuto, ad esempio se non ha concorso alle deliberazioni che modificano l'oggetto sociale o trasformano la società", "Solo se la società è in perdita", "Mai, le azioni si possono solo vendere"],
+    corretta: 1,
+    spiegazione: "Il recesso spetta al socio che non ha concorso a determinate deliberazioni elencate dalla legge, come la modifica significativa dell'oggetto sociale, la trasformazione, il trasferimento della sede all'estero o la revoca della liquidazione. Lo statuto può prevedere ulteriori cause, e il socio riceve la liquidazione delle azioni."
+  },
+  {
+    testo: "Cos'è la revocatoria nella liquidazione giudiziale?",
+    opzioni: ["La revoca della sentenza che apre la procedura", "L'azione con cui il curatore rende inefficaci verso i creditori gli atti pregiudizievoli compiuti dal debitore nel periodo anteriore alla procedura", "La revoca degli amministratori della società", "Il recesso dai contratti pendenti"],
+    corretta: 1,
+    spiegazione: "Con la revocatoria (artt. 163 ss. CCII) il curatore recupera alla massa i beni usciti dal patrimonio del debitore con atti compiuti in un periodo sospetto prima del deposito della domanda (es. pagamenti di debiti, garanzie concesse, atti a titolo gratuito), così da ristabilire la parità di trattamento dei creditori."
+  },
+  {
+    testo: "Cos'è la Srl a socio unico e come risponde il socio delle obbligazioni sociali?",
+    opzioni: ["Non è ammessa dalla legge", "Una Srl con un solo socio, che di regola risponde solo nei limiti del conferimento, salvo il mancato rispetto degli obblighi di versamento e pubblicità", "Una ditta individuale con un altro nome", "Una società in cui il socio risponde sempre illimitatamente"],
+    corretta: 1,
+    spiegazione: "La Srl può essere costituita o diventare unipersonale. Il socio unico risponde illimitatamente solo se i conferimenti non sono stati interamente versati o finché non sia stata attuata la pubblicità prevista dall'art. 2470 c.c.; altrimenti risponde la sola società con il suo patrimonio."
   },
 ],
 
@@ -1604,6 +1844,126 @@ export const domande = {
     opzioni: ["Un procedimento giurisdizionale statale alternativo al tribunale ordinario", "Un procedimento privato in cui le parti affidano la risoluzione della controversia a uno o più arbitri, il cui lodo ha efficacia di sentenza una volta omologato", "Una procedura obbligatoria per le controversie commerciali", "Un procedimento sempre più rapido ed economico del processo ordinario"],
     corretta: 1,
     spiegazione: "L'arbitrato (artt. 806 ss. c.p.c.) è un mezzo alternativo di risoluzione delle controversie: le parti, attraverso la clausola compromissoria o il compromesso, affidano la decisione della lite a uno o più arbitri da loro scelti. Il lodo arbitrale, una volta depositato in tribunale e dichiarato esecutivo, ha gli stessi effetti della sentenza. L'arbitrato può essere rituale (lodo equiparato a sentenza) o irrituale (lodo equiparato a contratto)."
+  },
+  {
+    testo: "Dopo la riforma Cartabia, quale termine minimo deve intercorrere tra la notificazione della citazione e l'udienza di comparizione (art. 163-bis c.p.c.)?",
+    opzioni: ["30 giorni", "60 giorni", "90 giorni", "120 giorni"],
+    corretta: 3,
+    spiegazione: "Il D.Lgs. 149/2022 ha portato a 120 giorni liberi il termine a comparire (150 se la notifica avviene all'estero). Il termine più lungo serve a consentire lo scambio delle memorie integrative prima della prima udienza."
+  },
+  {
+    testo: "Entro quando deve costituirsi il convenuto nel rito ordinario riformato (art. 166 c.p.c.)?",
+    opzioni: ["Alla prima udienza", "Almeno 70 giorni prima dell'udienza indicata nella citazione", "Entro 10 giorni dalla notifica", "Entro 6 mesi"],
+    corretta: 1,
+    spiegazione: "Il convenuto deve costituirsi almeno 70 giorni prima dell'udienza di comparizione depositando la comparsa di risposta, nella quale a pena di decadenza propone domande riconvenzionali, chiamata di terzi ed eccezioni non rilevabili d'ufficio."
+  },
+  {
+    testo: "Cosa sono le memorie integrative dell'art. 171-ter c.p.c.?",
+    opzioni: ["Gli atti di appello", "Tre memorie depositate prima della prima udienza per precisare domande ed eccezioni e indicare i mezzi di prova", "Le memorie conclusionali dopo la sentenza", "Le note del consulente tecnico"],
+    corretta: 1,
+    spiegazione: "Con la riforma Cartabia la trattazione scritta si sposta prima dell'udienza: le parti depositano tre memorie, rispettivamente 40, 20 e 10 giorni prima della prima udienza, così che il giudice arrivi all'udienza con il thema decidendum e probandum già definiti."
+  },
+  {
+    testo: "Chi ha la capacità di stare in giudizio (art. 75 c.p.c.)?",
+    opzioni: ["Chiunque abbia compiuto 14 anni", "Le persone che hanno il libero esercizio dei diritti che si fanno valere", "Solo gli avvocati", "Solo i cittadini italiani"],
+    corretta: 1,
+    spiegazione: "Sono capaci di stare in giudizio le persone che hanno il libero esercizio dei diritti fatti valere. Gli incapaci stanno in giudizio tramite i loro rappresentanti (genitori, tutore, ecc.); le persone giuridiche tramite chi ne ha la rappresentanza."
+  },
+  {
+    testo: "Cos'è il litisconsorzio necessario (art. 102 c.p.c.)?",
+    opzioni: ["La facoltà di più attori di agire insieme", "Il caso in cui la decisione non può pronunciarsi se non in confronto di più parti, che devono tutte partecipare al giudizio", "La riunione di più cause davanti allo stesso giudice", "L'accordo tra le parti per chiudere la lite"],
+    corretta: 1,
+    spiegazione: "Quando il rapporto controverso è unico e inscindibile tra più soggetti (es. alcune azioni sulla comunione), la sentenza è utile solo se pronunciata nei confronti di tutti. Se il giudizio è promosso da alcuni o contro alcuni soltanto, il giudice ordina l'integrazione del contraddittorio."
+  },
+  {
+    testo: "Cos'è l'intervento volontario del terzo (art. 105 c.p.c.)?",
+    opzioni: ["La chiamata in causa decisa dal giudice", "La facoltà di un terzo di entrare in un processo già pendente per far valere un proprio diritto o sostenere una parte", "La testimonianza di un terzo", "La cessione del credito litigioso"],
+    corretta: 1,
+    spiegazione: "Chiunque può intervenire in un processo tra altre persone per far valere, contro tutte o alcune parti, un diritto relativo all'oggetto o dipendente dal titolo dedotto (intervento principale o litisconsortile), oppure per sostenere le ragioni di una parte quando vi ha un proprio interesse (intervento adesivo)."
+  },
+  {
+    testo: "Fino a quando l'atto pubblico fa piena prova della provenienza e dei fatti attestati dal pubblico ufficiale (art. 2700 c.c.)?",
+    opzioni: ["Fino a prova contraria", "Fino a querela di falso", "Fino alla sentenza di primo grado", "Per 10 anni"],
+    corretta: 1,
+    spiegazione: "L'atto pubblico fa piena prova, fino a querela di falso, della provenienza dal pubblico ufficiale, delle dichiarazioni delle parti e degli altri fatti che il pubblico ufficiale attesta avvenuti in sua presenza o da lui compiuti. Per contestarli non basta una prova contraria: serve l'apposito procedimento di querela di falso."
+  },
+  {
+    testo: "Che valore ha la confessione giudiziale (artt. 2730-2733 c.c.)?",
+    opzioni: ["È liberamente valutata dal giudice", "Forma piena prova contro chi l'ha fatta, se riguarda diritti disponibili", "Non ha alcun valore nel processo civile", "Vale solo se confermata da due testimoni"],
+    corretta: 1,
+    spiegazione: "La confessione è la dichiarazione di fatti sfavorevoli a chi la rende e favorevoli all'altra parte. Quella giudiziale è una prova legale: vincola il giudice e forma piena prova contro il confitente, purché non riguardi diritti indisponibili."
+  },
+  {
+    testo: "Cos'è il giuramento decisorio (art. 2736 c.c.)?",
+    opzioni: ["Il giuramento dei testimoni", "Il giuramento che una parte deferisce all'altra per farne dipendere la decisione totale o parziale della causa", "Il giuramento del giudice all'inizio del mandato", "La promessa del CTU di bene adempiere l'incarico"],
+    corretta: 1,
+    spiegazione: "Con il giuramento decisorio una parte rimette all'altra la decisione: se chi giura conferma il fatto, la causa è decisa in suo favore. È una prova legale e non è ammessa sui diritti indisponibili o su fatti illeciti."
+  },
+  {
+    testo: "Qual è il termine breve per proporre appello (art. 325 c.p.c.)?",
+    opzioni: ["10 giorni dalla notificazione della sentenza", "30 giorni dalla notificazione della sentenza", "60 giorni dalla pubblicazione", "1 anno dalla pubblicazione"],
+    corretta: 1,
+    spiegazione: "Se la sentenza è notificata, l'appello va proposto entro 30 giorni dalla notificazione (60 per il ricorso per cassazione). In mancanza di notifica opera il termine lungo di 6 mesi dalla pubblicazione (art. 327 c.p.c.)."
+  },
+  {
+    testo: "Se la sentenza non viene notificata, entro quale termine si può impugnare (art. 327 c.p.c.)?",
+    opzioni: ["30 giorni dalla pubblicazione", "3 mesi dalla pubblicazione", "6 mesi dalla pubblicazione", "Non si può più impugnare"],
+    corretta: 2,
+    spiegazione: "Il termine lungo è di 6 mesi dalla pubblicazione della sentenza (era di un anno prima della L. 69/2009). Decorso il termine, la sentenza passa in giudicato formale."
+  },
+  {
+    testo: "Con quale atto ha inizio l'espropriazione forzata (art. 491 c.p.c.)?",
+    opzioni: ["Con il precetto", "Con il pignoramento", "Con la vendita all'asta", "Con la sentenza di condanna"],
+    corretta: 1,
+    spiegazione: "L'espropriazione forzata inizia con il pignoramento: l'ingiunzione dell'ufficiale giudiziario al debitore di astenersi da atti che sottraggano i beni alla garanzia del credito. Il precetto lo precede, ma è solo un'intimazione ad adempiere."
+  },
+  {
+    testo: "Quale tra questi è un titolo esecutivo ai sensi dell'art. 474 c.p.c.?",
+    opzioni: ["Una lettera di diffida dell'avvocato", "Una cambiale", "Un preventivo firmato", "Una fattura non pagata"],
+    corretta: 1,
+    spiegazione: "Sono titoli esecutivi, tra gli altri, le sentenze e i provvedimenti a cui la legge attribuisce efficacia esecutiva, le scritture private autenticate per le obbligazioni di somme di denaro, le cambiali e gli altri titoli di credito, gli atti ricevuti da notaio o pubblico ufficiale."
+  },
+  {
+    testo: "Qual è la differenza tra sequestro giudiziario e sequestro conservativo?",
+    opzioni: ["Sono la stessa misura", "Il giudiziario riguarda beni di cui è controversa la proprietà o il possesso; il conservativo serve a conservare la garanzia patrimoniale del creditore", "Il conservativo si applica solo agli immobili", "Il giudiziario lo dispone il pubblico ministero"],
+    corretta: 1,
+    spiegazione: "Il sequestro giudiziario (art. 670 c.p.c.) si chiede quando è controversa la proprietà o il possesso di beni ed è opportuno provvederne alla custodia. Il sequestro conservativo (art. 671 c.p.c.) tutela il creditore che teme di perdere la garanzia del suo credito sui beni del debitore."
+  },
+  {
+    testo: "Cosa prevede il principio di corrispondenza tra chiesto e pronunciato (art. 112 c.p.c.)?",
+    opzioni: ["Il giudice può decidere anche oltre le domande delle parti", "Il giudice deve pronunciare su tutta la domanda e non oltre i limiti di essa", "Le parti devono chiedere la stessa cosa", "Il giudice deve accogliere sempre la domanda"],
+    corretta: 1,
+    spiegazione: "Il giudice deve pronunciarsi su tutta la domanda e non oltre i suoi limiti; non può rilevare d'ufficio eccezioni che la legge riserva alle parti. La violazione dà luogo a vizi di omessa pronuncia o ultrapetizione, deducibili con l'impugnazione."
+  },
+  {
+    testo: "Cosa si intende per contumacia nel processo civile?",
+    opzioni: ["L'assenza del giudice all'udienza", "La situazione della parte regolarmente citata che non si costituisce in giudizio", "Il rifiuto di testimoniare", "La sospensione del processo"],
+    corretta: 1,
+    spiegazione: "La parte che non si costituisce pur essendo stata regolarmente chiamata in giudizio è dichiarata contumace. Il processo prosegue senza di lei; la contumacia non equivale ad ammissione dei fatti, ma alcuni atti (es. sentenza) le vanno comunque notificati."
+  },
+  {
+    testo: "Cos'è la chiamata in causa di un terzo (art. 106 c.p.c.)?",
+    opzioni: ["L'iniziativa di una parte di estendere il processo a un terzo con cui ritiene comune la causa o da cui pretende di essere garantita", "L'audizione di un testimone", "La nomina del CTU", "L'intervento del pubblico ministero"],
+    corretta: 0,
+    spiegazione: "Ciascuna parte può chiamare nel processo un terzo al quale ritiene comune la causa o dal quale pretende di essere garantita (ad esempio l'assicuratore). Nel rito ordinario il convenuto deve farne dichiarazione nella comparsa di risposta, a pena di decadenza."
+  },
+  {
+    testo: "Il deposito degli atti di parte nei procedimenti civili davanti al tribunale avviene oggi:",
+    opzioni: ["Solo in cancelleria su carta", "Con modalità telematiche, come regola generale", "Via fax", "Con raccomandata a/r"],
+    corretta: 1,
+    spiegazione: "Dopo la riforma Cartabia il deposito telematico degli atti e dei documenti delle parti costituite è la regola nei procedimenti davanti a giudice di pace, tribunale, corte d'appello e Cassazione. Il deposito cartaceo è ammesso solo in casi eccezionali, ad esempio per malfunzionamento dei sistemi."
+  },
+  {
+    testo: "Che cos'è il precetto nel processo esecutivo?",
+    opzioni: ["L'atto con cui inizia l'espropriazione", "L'intimazione ad adempiere l'obbligo risultante dal titolo esecutivo entro almeno 10 giorni, con avvertimento dell'esecuzione forzata", "La sentenza che chiude l'esecuzione", "Il verbale di vendita"],
+    corretta: 1,
+    spiegazione: "Il precetto (art. 480 c.p.c.) è l'intimazione ad adempiere entro un termine non inferiore a 10 giorni. Se nei 90 giorni successivi alla notifica non si inizia l'esecuzione, il precetto perde efficacia (art. 481 c.p.c.)."
+  },
+  {
+    testo: "Cos'è l'appello incidentale?",
+    opzioni: ["L'appello proposto contro un'ordinanza istruttoria", "L'impugnazione proposta dalla parte appellata, nella comparsa di risposta, contro i capi della sentenza a lei sfavorevoli", "L'appello proposto da un terzo estraneo al giudizio", "L'appello che si limita alle spese di lite"],
+    corretta: 1,
+    spiegazione: "Quando una parte appella, l'appellato può a sua volta impugnare con appello incidentale i capi della sentenza che lo hanno visto soccombente, proponendolo nella comparsa di risposta. Tutte le impugnazioni contro la stessa sentenza devono essere riunite in un solo processo (art. 335 c.p.c.)."
   },
  ],
 
@@ -2231,4 +2591,187 @@ export const domande = {
     spiegazione: "Il problema dell'obbligo politico di obbedire al diritto è centrale nella filosofia politica e del diritto. Le posizioni principali: contrattualismo (obbligo fondato sul consenso o sull'equità della cooperazione sociale, Rawls), utilitarismo (obbligo fondato sulle conseguenze generalmente benefiche dell'obbedienza, Bentham), positivismo (obbligo giuridico non implica obbligo morale, Hart), anarchismo filosofico (Wolff: nessun obbligo generale di obbedire). Il problema è acuto in caso di leggi ingiuste."
   },
  ],
+
+  tributario: [
+    {
+      testo: "Quale articolo della Costituzione sancisce il principio di capacità contributiva?",
+      opzioni: ["Art. 23", "Art. 41", "Art. 53", "Art. 97"],
+      corretta: 2,
+      spiegazione: "L'art. 53 Cost. stabilisce che tutti sono tenuti a concorrere alle spese pubbliche in ragione della loro capacità contributiva. Il prelievo deve quindi colpire fatti che esprimono una forza economica effettiva e attuale del contribuente."
+    },
+    {
+      testo: "Secondo l'art. 53, comma 2, Cost., il sistema tributario è informato a criteri di:",
+      opzioni: ["Proporzionalità", "Progressività", "Regressività", "Uniformità"],
+      corretta: 1,
+      spiegazione: "Il secondo comma dell'art. 53 Cost. richiede che il sistema tributario nel suo complesso sia informato a criteri di progressività: chi ha di più contribuisce in misura più che proporzionale. Non ogni singola imposta deve essere progressiva (l'IVA, ad esempio, è proporzionale), ma il sistema nel suo insieme."
+    },
+    {
+      testo: "Quale principio stabilisce l'art. 23 della Costituzione?",
+      opzioni: ["Nessuna prestazione personale o patrimoniale può essere imposta se non in base alla legge", "Le imposte devono essere approvate con referendum", "Solo le Regioni possono istituire tributi", "I tributi devono essere uguali per tutti i cittadini"],
+      corretta: 0,
+      spiegazione: "L'art. 23 Cost. pone una riserva di legge relativa in materia di prestazioni imposte: la legge deve fissare almeno gli elementi essenziali del tributo (soggetti, presupposto, criteri per la base imponibile e l'aliquota), mentre il dettaglio può essere demandato a fonti secondarie."
+    },
+    {
+      testo: "Qual è la differenza principale tra imposta e tassa?",
+      opzioni: ["Non c'è differenza, sono sinonimi", "L'imposta è pagata solo dalle imprese, la tassa dalle persone fisiche", "La tassa è collegata a un servizio pubblico reso su richiesta del contribuente, l'imposta no", "L'imposta è sempre locale, la tassa sempre statale"],
+      corretta: 2,
+      spiegazione: "L'imposta è dovuta al verificarsi di un fatto che manifesta capacità contributiva, senza alcuna controprestazione specifica. La tassa invece è collegata a un'attività o servizio pubblico reso su richiesta del singolo (es. tasse universitarie, tasse sulle concessioni governative)."
+    },
+    {
+      testo: "Quale legge contiene lo Statuto dei diritti del contribuente?",
+      opzioni: ["D.P.R. 600/1973", "L. 212/2000", "D.Lgs. 546/1992", "L. 241/1990"],
+      corretta: 1,
+      spiegazione: "Lo Statuto dei diritti del contribuente è la legge 27 luglio 2000, n. 212. Fissa principi generali del rapporto tra fisco e contribuente (chiarezza delle norme, irretroattività, tutela dell'affidamento, interpello) ed è stato ampiamente riformato dal D.Lgs. 219/2023."
+    },
+    {
+      testo: "Secondo lo Statuto del contribuente, le norme tributarie possono avere effetto retroattivo?",
+      opzioni: ["Sì, sempre", "Di regola no: per i tributi periodici le modifiche si applicano dal periodo d'imposta successivo", "Solo se lo decide l'Agenzia delle Entrate", "Sì, ma solo per le imposte indirette"],
+      corretta: 1,
+      spiegazione: "L'art. 3 della L. 212/2000 stabilisce che le disposizioni tributarie non hanno effetto retroattivo e che, per i tributi periodici, le modifiche si applicano solo a partire dal periodo d'imposta successivo a quello in corso alla data di entrata in vigore. Lo Statuto è però una legge ordinaria, quindi una legge successiva potrebbe derogarvi espressamente."
+    },
+    {
+      testo: "Cos'è l'interpello del contribuente?",
+      opzioni: ["Un ricorso al giudice tributario", "Un'istanza con cui il contribuente chiede all'amministrazione come si applica una norma al suo caso concreto", "Una verifica fiscale a sorpresa", "Una sanzione per omessa dichiarazione"],
+      corretta: 1,
+      spiegazione: "Con l'interpello (art. 11 L. 212/2000) il contribuente chiede all'amministrazione finanziaria un parere preventivo sull'applicazione di una norma a un caso concreto e personale, in presenza di obiettive condizioni di incertezza. La risposta vincola l'amministrazione con riferimento a quel caso e a quel contribuente."
+    },
+    {
+      testo: "Cosa ha introdotto l'art. 6-bis dello Statuto del contribuente (D.Lgs. 219/2023)?",
+      opzioni: ["L'abolizione delle sanzioni tributarie", "Il diritto al contraddittorio preventivo prima dell'emissione degli atti impugnabili", "Il condono generalizzato", "Il ricorso diretto alla Corte di Cassazione"],
+      corretta: 1,
+      spiegazione: "L'art. 6-bis prevede che gli atti autonomamente impugnabili siano preceduti, a pena di annullabilità, da un contraddittorio informato ed effettivo: l'amministrazione comunica lo schema di atto e il contribuente ha almeno 60 giorni per controdeduzioni o accesso agli atti. Sono esclusi gli atti automatizzati e di pronta liquidazione individuati con decreto."
+    },
+    {
+      testo: "Cosa si intende per 'presupposto d'imposta'?",
+      opzioni: ["La somma da pagare", "Il fatto al verificarsi del quale sorge l'obbligazione tributaria", "Il termine entro cui pagare", "L'ufficio competente a riscuotere"],
+      corretta: 1,
+      spiegazione: "Il presupposto è il fatto, previsto dalla legge, che manifesta capacità contributiva e al cui verificarsi nasce l'obbligazione tributaria: ad esempio il possesso di redditi per l'IRPEF o la cessione di beni e prestazione di servizi da parte di un soggetto IVA."
+    },
+    {
+      testo: "Chi è il 'sostituto d'imposta'?",
+      opzioni: ["Il commercialista del contribuente", "Chi è obbligato al pagamento dell'imposta al posto di altri, per fatti a questi riferibili, con obbligo di rivalsa", "Il funzionario che sostituisce l'ufficiale della riscossione", "L'erede del contribuente defunto"],
+      corretta: 1,
+      spiegazione: "Il sostituto d'imposta (art. 64 D.P.R. 600/1973) è tenuto, in forza di legge, a pagare l'imposta in luogo di altri, per fatti o situazioni a questi riferibili, anche a titolo di acconto. L'esempio tipico è il datore di lavoro che trattiene e versa le ritenute IRPEF sullo stipendio del dipendente."
+    },
+    {
+      testo: "Come si classifica l'IRPEF?",
+      opzioni: ["Imposta indiretta e proporzionale", "Imposta diretta, personale e progressiva per scaglioni", "Imposta locale sul patrimonio", "Tassa sui servizi pubblici"],
+      corretta: 1,
+      spiegazione: "L'IRPEF è un'imposta diretta (colpisce il reddito), personale (tiene conto della situazione del contribuente con deduzioni e detrazioni) e progressiva: il reddito è diviso in scaglioni, ciascuno tassato con un'aliquota crescente. È disciplinata dal TUIR (D.P.R. 917/1986)."
+    },
+    {
+      testo: "Qual è l'aliquota ordinaria dell'IRES?",
+      opzioni: ["15%", "22%", "24%", "33%"],
+      corretta: 2,
+      spiegazione: "L'IRES, l'imposta sul reddito delle società, ha un'aliquota proporzionale ordinaria del 24%. A differenza dell'IRPEF non è progressiva: colpisce con la stessa percentuale tutto il reddito imponibile dei soggetti passivi (società di capitali, enti commerciali e altri)."
+    },
+    {
+      testo: "Perché l'IVA si dice 'neutrale' per le imprese?",
+      opzioni: ["Perché le imprese non la pagano mai", "Perché grazie al meccanismo di rivalsa e detrazione il peso dell'imposta ricade sul consumatore finale", "Perché ha la stessa aliquota per tutti i beni", "Perché è versata direttamente dal consumatore allo Stato"],
+      corretta: 1,
+      spiegazione: "L'IVA si applica in ogni passaggio della catena produttiva, ma ciascun operatore addebita l'imposta al cliente (rivalsa) e detrae quella pagata sugli acquisti (detrazione), versando solo la differenza. Così l'onere economico si trasferisce fino al consumatore finale, che non può detrarla."
+    },
+    {
+      testo: "Qual è l'aliquota IVA ordinaria in Italia?",
+      opzioni: ["10%", "20%", "22%", "25%"],
+      corretta: 2,
+      spiegazione: "L'aliquota IVA ordinaria è del 22%. Esistono poi aliquote ridotte del 10%, 5% e 4% per determinati beni e servizi (ad esempio alcuni alimenti, prima casa, farmaci), elencati nelle tabelle allegate al D.P.R. 633/1972."
+    },
+    {
+      testo: "Cosa si intende per 'abuso del diritto' in materia tributaria (art. 10-bis Statuto del contribuente)?",
+      opzioni: ["Qualsiasi errore nella dichiarazione dei redditi", "Operazioni prive di sostanza economica che, pur rispettando formalmente le norme, realizzano vantaggi fiscali indebiti", "Il mancato pagamento delle imposte", "L'uso di fatture false"],
+      corretta: 1,
+      spiegazione: "L'abuso del diritto (o elusione) consiste in operazioni prive di sostanza economica che realizzano essenzialmente vantaggi fiscali indebiti, pur senza violare formalmente alcuna norma. Tali operazioni non sono opponibili all'amministrazione, che ricalcola le imposte; resta salva la libertà di scelta tra regimi fiscali diversi e le operazioni giustificate da valide ragioni extrafiscali."
+    },
+    {
+      testo: "Qual è la differenza tra evasione ed elusione fiscale?",
+      opzioni: ["Sono la stessa cosa", "L'evasione viola apertamente le norme (es. occultamento di redditi), l'elusione aggira le norme con operazioni formalmente lecite ma abusive", "L'elusione è sempre reato, l'evasione mai", "L'evasione riguarda solo l'IVA"],
+      corretta: 1,
+      spiegazione: "L'evasione è la sottrazione all'imposta violando direttamente la legge (redditi non dichiarati, costi fittizi) e può integrare reati tributari (D.Lgs. 74/2000). L'elusione invece sfrutta in modo distorto strumenti leciti per ottenere un risparmio d'imposta indebito: non è penalmente rilevante, ma il vantaggio viene disconosciuto."
+    },
+    {
+      testo: "Cos'è il 'ravvedimento operoso'?",
+      opzioni: ["Un condono deciso dal Parlamento", "La regolarizzazione spontanea di violazioni e omessi versamenti con sanzioni ridotte", "Il ricorso in appello contro una sentenza tributaria", "Una forma di rateizzazione della cartella esattoriale"],
+      corretta: 1,
+      spiegazione: "Il ravvedimento operoso (art. 13 D.Lgs. 472/1997) consente al contribuente di correggere spontaneamente errori e omissioni, versando imposta, interessi e una sanzione ridotta, tanto più bassa quanto più è tempestiva la regolarizzazione."
+    },
+    {
+      testo: "Entro quale termine, di regola, l'amministrazione deve notificare l'avviso di accertamento per le imposte sui redditi se la dichiarazione è stata presentata?",
+      opzioni: ["Entro il 31 dicembre del terzo anno successivo", "Entro il 31 dicembre del quinto anno successivo a quello di presentazione della dichiarazione", "Entro 10 anni", "Non c'è alcun termine"],
+      corretta: 1,
+      spiegazione: "Ai sensi dell'art. 43 D.P.R. 600/1973 l'avviso di accertamento va notificato, a pena di decadenza, entro il 31 dicembre del quinto anno successivo a quello di presentazione della dichiarazione. In caso di dichiarazione omessa o nulla il termine si allunga al settimo anno."
+    },
+    {
+      testo: "Cos'è l'IMU?",
+      opzioni: ["Un'imposta statale sui redditi da lavoro", "L'imposta municipale sul possesso di immobili, da cui è esente di regola l'abitazione principale non di lusso", "Una tassa sui rifiuti", "Un'imposta sulle successioni"],
+      corretta: 1,
+      spiegazione: "L'IMU è l'imposta municipale propria dovuta da chi possiede immobili (proprietario o titolare di diritto reale). L'abitazione principale è esente, salvo che sia classificata nelle categorie di lusso A/1, A/8 e A/9."
+    },
+    {
+      testo: "Come si chiamano oggi i giudici tributari di merito dopo la riforma della L. 130/2022?",
+      opzioni: ["Commissioni tributarie provinciali e regionali", "Corti di giustizia tributaria di primo e di secondo grado", "Tribunali amministrativi regionali", "Sezioni fiscali dei tribunali ordinari"],
+      corretta: 1,
+      spiegazione: "La L. 130/2022 ha ridenominato le Commissioni tributarie provinciali e regionali in Corti di giustizia tributaria di primo e di secondo grado e ha introdotto la magistratura tributaria professionale, con giudici reclutati per concorso e dedicati a tempo pieno."
+    },
+    {
+      testo: "Entro quale termine si propone di regola il ricorso contro un atto impositivo davanti alla Corte di giustizia tributaria di primo grado?",
+      opzioni: ["30 giorni dalla notifica", "60 giorni dalla notifica", "90 giorni dalla notifica", "1 anno dalla notifica"],
+      corretta: 1,
+      spiegazione: "Il ricorso va proposto entro 60 giorni dalla notificazione dell'atto impugnato. Il termine è sospeso nel periodo feriale (1-31 agosto) e, in alcuni casi, per la durata di procedimenti come l'accertamento con adesione."
+    },
+    {
+      testo: "Nel processo tributario, dopo la L. 130/2022, su chi grava l'onere di provare le violazioni contestate con l'atto impugnato?",
+      opzioni: ["Sul contribuente", "Sul giudice", "Sull'amministrazione finanziaria", "Sul consulente tecnico d'ufficio"],
+      corretta: 2,
+      spiegazione: "L'art. 7, comma 5-bis, introdotto dalla L. 130/2022, stabilisce che l'amministrazione prova in giudizio le violazioni contestate con l'atto impugnato, e che il giudice annulla l'atto se la prova manca o è contraddittoria o insufficiente."
+    },
+    {
+      testo: "La prova testimoniale è ammessa nel processo tributario?",
+      opzioni: ["Mai", "Sì, ma solo in forma scritta e quando il giudice la ritiene necessaria", "Sì, sempre e in forma orale", "Solo nei processi penali tributari"],
+      corretta: 1,
+      spiegazione: "Tradizionalmente vietata, la prova testimoniale è stata ammessa dalla L. 130/2022: il giudice può disporla quando la ritiene necessaria ai fini della decisione, anche senza accordo delle parti, ma va assunta in forma scritta secondo l'art. 257-bis c.p.c."
+    },
+    {
+      testo: "Per quali controversie, dopo la L. 130/2022, la Corte di giustizia tributaria di primo grado decide in composizione monocratica?",
+      opzioni: ["Per tutte le controversie", "Per le controversie di valore fino a 5.000 euro", "Solo per le controversie sull'IVA", "Per le controversie oltre 1 milione di euro"],
+      corretta: 1,
+      spiegazione: "La riforma ha previsto il giudice monocratico per le controversie di modico valore, fino a 5.000 euro, con l'esclusione di quelle di valore indeterminabile. Le altre restano attribuite al collegio."
+    },
+    {
+      testo: "Cos'è l'autotutela tributaria?",
+      opzioni: ["Il diritto del contribuente di non pagare le imposte", "Il potere dell'amministrazione di annullare atti illegittimi o infondati, obbligatorio nei casi di manifesta illegittimità", "Il ricorso gerarchico al Ministro", "La difesa personale del contribuente senza avvocato"],
+      corretta: 1,
+      spiegazione: "Con il D.Lgs. 219/2023 l'autotutela è disciplinata dagli artt. 10-quater e 10-quinquies dello Statuto: è obbligatoria nei casi di manifesta illegittimità (errore di persona, di calcolo, sull'imposta, pagamenti regolarmente eseguiti, ecc.) e facoltativa negli altri casi di illegittimità o infondatezza."
+    },
+    {
+      testo: "Cosa si intende per 'cartella di pagamento'?",
+      opzioni: ["L'atto con cui il contribuente chiede un rimborso", "L'atto della riscossione con cui l'agente della riscossione intima il pagamento delle somme iscritte a ruolo", "La dichiarazione dei redditi", "Una sentenza tributaria"],
+      corretta: 1,
+      spiegazione: "La cartella di pagamento è notificata dall'agente della riscossione (Agenzia delle entrate-Riscossione) e contiene l'intimazione ad adempiere l'obbligo risultante dal ruolo entro 60 giorni, con l'avvertimento che in mancanza si procederà a esecuzione forzata. È autonomamente impugnabile per vizi propri."
+    },
+    {
+      testo: "Quando una persona fisica è considerata fiscalmente residente in Italia?",
+      opzioni: ["Solo se ha la cittadinanza italiana", "Se per la maggior parte del periodo d'imposta ha in Italia la residenza, il domicilio o la presenza fisica", "Se ha un conto corrente in una banca italiana", "Se vi trascorre almeno 30 giorni l'anno"],
+      corretta: 1,
+      spiegazione: "L'art. 2 TUIR, riformato dal D.Lgs. 209/2023, considera residenti coloro che per la maggior parte del periodo d'imposta (183 giorni, 184 negli anni bisestili) hanno in Italia la residenza civilistica, il domicilio (inteso come luogo delle principali relazioni personali e familiari) o sono fisicamente presenti; vale anche, salvo prova contraria, l'iscrizione all'anagrafe."
+    },
+    {
+      testo: "Come si evita la doppia imposizione internazionale dei redditi prodotti all'estero da un residente italiano?",
+      opzioni: ["Non si evita: il reddito è sempre tassato due volte", "Con le convenzioni contro le doppie imposizioni e il credito per le imposte pagate all'estero", "Chiedendo il rimborso al Paese estero dopo 10 anni", "Dichiarando il reddito solo all'estero"],
+      corretta: 1,
+      spiegazione: "I residenti sono tassati in Italia su tutti i redditi ovunque prodotti. Per evitare la doppia imposizione operano le convenzioni bilaterali e, a livello interno, il credito d'imposta per i redditi prodotti all'estero (art. 165 TUIR), che consente di scomputare le imposte pagate nell'altro Stato."
+    },
+    {
+      testo: "Cos'è l'accertamento sintetico del reddito (art. 38 D.P.R. 600/1973)?",
+      opzioni: ["La verifica della contabilità di un'impresa", "La determinazione del reddito complessivo in base alle spese sostenute dal contribuente", "Il controllo automatico della dichiarazione", "Un accertamento sul patrimonio immobiliare"],
+      corretta: 1,
+      spiegazione: "Con l'accertamento sintetico l'amministrazione ricostruisce il reddito complessivo partendo dalle spese sostenute nel periodo d'imposta, presumendo che siano state finanziate con redditi. Il contribuente può dimostrare che le spese sono state coperte con redditi esenti, già tassati alla fonte o non imponibili."
+    },
+    {
+      testo: "Cosa prevede il divieto di doppia imposizione interna?",
+      opzioni: ["Che uno stesso reddito non possa essere tassato da Stato e Regioni", "Che la stessa imposta non possa essere applicata più volte in dipendenza dello stesso presupposto", "Che non si possano pagare due imposte nello stesso anno", "Che l'IVA non si applichi alle imprese"],
+      corretta: 1,
+      spiegazione: "L'art. 67 D.P.R. 600/1973 e l'art. 163 TUIR stabiliscono che la stessa imposta non può essere applicata più volte in dipendenza dello stesso presupposto, neppure nei confronti di soggetti diversi."
+    }
+  ],
 };
