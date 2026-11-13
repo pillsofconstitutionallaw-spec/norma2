@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { leggiEdgeConfig, scriviEdgeConfig } from '@/lib/edge-config';
 
 // Controlla se sui due siti WordPress è uscito un articolo nuovo e, se sì,
@@ -80,6 +81,9 @@ async function esegui() {
   const esiti = await Promise.all(
     SITI.map(s => controllaSito(s).catch((e: Error) => ({ sito: s.titolo, esito: `errore: ${e.message}` }))),
   );
+  // Articolo nuovo: si svuota subito la cache dei dati della Home, così
+  // storie e feed lo mostrano alla prossima apertura dell'app.
+  if (esiti.some(e => e.esito === 'notifica inviata')) revalidatePath('/api/home-data');
   return NextResponse.json({ esiti });
 }
 
