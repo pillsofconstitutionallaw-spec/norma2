@@ -6,7 +6,7 @@ importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
 // Cambiare ad ogni deploy che deve raggiungere le PWA già installate: è la
 // differenza nel contenuto di questo file che fa scattare l'aggiornamento.
-const CACHE_NAME = 'norma-2026-11-13b';
+const CACHE_NAME = 'norma-2026-11-13-restyling';
 
 // Asset statici sempre in cache
 const STATIC_ASSETS = [
