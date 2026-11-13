@@ -6,7 +6,7 @@ importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
 
 // Cambiare ad ogni deploy che deve raggiungere le PWA già installate: è la
 // differenza nel contenuto di questo file che fa scattare l'aggiornamento.
-const CACHE_NAME = 'norma-2026-11-13';
+const CACHE_NAME = 'norma-2026-11-13b';
 
 // Asset statici sempre in cache
 const STATIC_ASSETS = [
@@ -15,7 +15,6 @@ const STATIC_ASSETS = [
   '/icon-192.png',
   '/icon-512.png',
   '/apple-touch-icon.png',
-  '/apple-icon.png',
 ];
 
 // Route principali dell'app
@@ -45,7 +44,10 @@ const APP_ROUTES = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
+      // Un asset mancante non deve far fallire l'installazione: con OneSignal
+      // dentro questo worker, un install fallito spegne anche le notifiche
+      // (era successo con /apple-icon.png, che non esisteva).
+      return Promise.allSettled(STATIC_ASSETS.map((u) => cache.add(u)));
     })
   );
   self.skipWaiting();
