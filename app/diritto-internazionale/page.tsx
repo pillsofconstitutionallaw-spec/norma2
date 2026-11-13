@@ -591,9 +591,7 @@ export default function DirittoInternazionale() {
         a { text-decoration: none; }
         ::-webkit-scrollbar { display: none; }
         html, body { overflow-x: hidden; }
-        @media (min-width: 768px) { .di-feed { padding: 32px 40px 140px; } }
-        @media (min-width: 1024px) { .di-feed { padding: 40px 80px 140px; } }
-        @media (min-width: 1280px) { .di-feed { padding: 40px 120px 140px; } }
+        @media (min-width: 768px) { .di-feed { padding: 28px 24px 140px; } }
       `}</style>
 
       <div className="di-app">

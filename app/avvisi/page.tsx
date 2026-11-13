@@ -35,8 +35,7 @@ export default function Avvisi() {
         body { background: var(--bg); }
         .av-app { font-family: var(--font-ui); background: var(--bg); width: 100%; min-height: 100vh; }
         .av-feed { padding: 20px 16px 140px; }
-        @media (min-width: 768px) { .av-feed { padding: 32px 40px 140px; } }
-        @media (min-width: 1024px) { .av-feed { padding: 40px 80px 140px; } }
+        @media (min-width: 768px) { .av-feed { padding: 28px 24px 140px; } }
         ::-webkit-scrollbar { display: none; }
         html, body { overflow-x: hidden; }
       `}</style>

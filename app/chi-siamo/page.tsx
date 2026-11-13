@@ -24,14 +24,8 @@ export default function ChiSiamo() {
         html, body { overflow-x: hidden; }
 
         @media (min-width: 768px) {
-          .cs-feed { padding: 32px 40px 140px; }
+          .cs-feed { padding: 28px 24px 140px; }
           .sezioni-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media (min-width: 1024px) {
-          .cs-feed { padding: 40px 80px 140px; }
-        }
-        @media (min-width: 1280px) {
-          .cs-feed { padding: 40px 120px 140px; }
         }
       `}</style>
 
