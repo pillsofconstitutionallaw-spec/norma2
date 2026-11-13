@@ -1,16 +1,31 @@
 name: Controlla Instagram
 
+# Controlla nuovi post Instagram e nuovi articoli sui siti WordPress e,
+# se ce ne sono, l'endpoint manda la notifica push.
+#
+# Attenzione: GitHub ritarda spesso i cron (anche di ore) e li disattiva
+# dopo 60 giorni senza commit nel repository. Per notifiche puntuali
+# conviene chiamare gli stessi endpoint anche da un cron esterno
+# (es. cron-job.org ogni 5 minuti) con l'header Authorization.
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '*/10 * * * *'
   workflow_dispatch:
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - name: Chiama endpoint controlla-instagram
+      - name: Nuovi post Instagram
         run: |
-          curl -s -X GET \
+          curl -sS --fail-with-body -X GET \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
             "https://norma2.vercel.app/api/controlla-instagram"
+
+      - name: Nuovi articoli
+        if: always()
+        run: |
+          curl -sS --fail-with-body -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "https://norma2.vercel.app/api/controlla-articoli"
