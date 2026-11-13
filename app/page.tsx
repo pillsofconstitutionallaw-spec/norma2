@@ -425,36 +425,47 @@ export default function NormaHome() {
     } catch {}
   }
 
-  /* ── Home data (stories + feed iniziale) ── */
+  /* ── Home data (storie + feed) ──
+     Si ricarica a ogni apertura, quando l'app torna in primo piano (una PWA
+     riaperta dal multitasking non ricarica la pagina) e ogni 3 minuti mentre
+     è aperta: così le storie mostrano subito gli articoli appena pubblicati.
+     Nel frattempo restano visibili i dati salvati sul telefono. */
   useEffect(() => {
-    fetch('/api/home-data')
-      .then(r => r.json())
-      .then(({ cats, articles, fascicolo: f, storyPosts: sp }) => {
-        if (sp && typeof sp === 'object') {
-          Object.entries(sp).forEach(([name, posts]) => {
-            if (Array.isArray(posts) && posts.length > 0) storyCache.current[name] = posts as any[];
-          });
-          salvaStoryCacheLS();
-          computeNewCategories();
-        }
-        if (Array.isArray(cats)) {
-          const merged = staticCategories.map(sc => {
-            const found = cats.find((d: any) => d.name === sc.name);
-            return found ? { ...sc, id: found.id } : sc;
-          });
-          setCategories(merged);
-          merged.slice(0, 6).forEach(cat => {
-            if (!storyCache.current[cat.name]) loadCatPosts(cat.name, cat.id);
-          });
-        }
-        if (Array.isArray(articles) && articles.length > 0) setFeedPosts(articles);
-        else caricaFeedDiretto();
-        if (f) setFascicolo(f);
-      })
-      .catch(() => {
-        caricaFeedDiretto();
-        staticCategories.slice(0, 6).forEach(cat => loadCatPosts(cat.name, cat.id));
-      });
+    let annullato = false;
+    function aggiorna() {
+      fetch('/api/home-data', { cache: 'no-store' })
+        .then(r => r.json())
+        .then(({ cats, articles, fascicolo: f, storyPosts: sp }) => {
+          if (annullato) return;
+          if (sp && typeof sp === 'object') {
+            Object.entries(sp).forEach(([name, posts]) => {
+              if (Array.isArray(posts) && posts.length > 0) storyCache.current[name] = posts as any[];
+            });
+            salvaStoryCacheLS();
+            computeNewCategories();
+          }
+          if (Array.isArray(cats)) {
+            setCategories(prev => prev.map(sc => {
+              const found = cats.find((d: any) => d.name === sc.name);
+              return found ? { ...sc, id: found.id } : sc;
+            }));
+          }
+          if (Array.isArray(articles) && articles.length > 0) setFeedPosts(articles);
+          else setFeedPosts(prev => { if (prev.length === 0) caricaFeedDiretto(); return prev; });
+          if (f) setFascicolo(f);
+        })
+        .catch(() => {
+          if (annullato) return;
+          caricaFeedDiretto();
+          staticCategories.forEach(cat => { if (!storyCache.current[cat.name]) loadCatPosts(cat.name, cat.id); });
+        });
+    }
+    aggiorna();
+    const alRitorno = () => { if (document.visibilityState === 'visible') aggiorna(); };
+    document.addEventListener('visibilitychange', alRitorno);
+    const timer = setInterval(() => { if (document.visibilityState === 'visible') aggiorna(); }, 3 * 60 * 1000);
+    return () => { annullato = true; document.removeEventListener('visibilitychange', alRitorno); clearInterval(timer); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /* ── Story controls (invariati) ── */

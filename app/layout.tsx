@@ -57,7 +57,9 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png" />
       </head>
       <body className="min-h-full flex flex-col">
-        {children}
+        {/* Su schermi larghi l'app resta in una colonna centrale, come un'app
+            aperta su tablet/desktop, invece di stirarsi a tutta larghezza. */}
+        <div className="app-colonna">{children}</div>
 
         {/* OneSignal SDK */}
         <Script
