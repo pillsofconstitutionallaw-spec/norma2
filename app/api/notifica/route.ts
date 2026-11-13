@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { scriviEdgeConfig } from '@/lib/edge-config';
 
 export async function POST(req: NextRequest) {
   try {
@@ -35,6 +36,16 @@ export async function POST(req: NextRequest) {
     });
 
     const data = await response.json();
+
+    // Segna l'articolo come già notificato, così /api/controlla-articoli
+    // non manda una seconda notifica per lo stesso articolo.
+    const link: string | undefined = body.post_url;
+    if (link && response.ok) {
+      const chiave = link.includes('orizzontideldiritto.') ? 'ultimo-articolo-odl'
+        : link.includes('orizzontegiuridico.com') ? 'ultimo-articolo-og' : null;
+      if (chiave) await scriviEdgeConfig([{ key: chiave, value: link }]).catch(e => console.error('notifica: stato non salvato', e));
+    }
+
     return Response.json({ ok: true, data });
 
   } catch (err) {
