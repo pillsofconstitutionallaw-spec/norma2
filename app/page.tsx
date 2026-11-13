@@ -49,38 +49,33 @@ function InstagramEmbed() {
     return () => document.removeEventListener('visibilitychange', alRitorno);
   }, []);
   return (
-    <div style={{ background: '#111526', borderRadius: 18, overflow: 'hidden', border: '0.5px solid rgba(255,255,255,0.06)', marginBottom: 10 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', borderBottom: '0.5px solid rgba(255,255,255,0.05)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ padding: 2, borderRadius: '50%', background: 'linear-gradient(135deg,#ff9966,#ff5e62,#d6249f,#285AEB)' }}>
-            <img src={profilePic} alt="" width={38} height={38} style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover', border: '2px solid #111526', display: 'block' }} />
-          </div>
-          <div>
-            <div style={{ color: '#fff', fontWeight: 800, fontSize: 12 }}>Orizzonte Giuridico</div>
-            <div style={{ color: 'rgba(255,255,255,0.38)', fontSize: 10 }}>@orizzonte.giuridico</div>
-          </div>
+    <div className="card">
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px' }}>
+        <div className="storia-anello" style={{ width: 42, height: 42, padding: 2 }}>
+          <img src={profilePic} alt="" width={38} height={38} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--surface)' }} />
         </div>
-        <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="white" strokeWidth="2"/><circle cx="12" cy="12" r="4" stroke="white" strokeWidth="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="white"/></svg>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontWeight: 600, fontSize: 15 }}>Orizzonte Giuridico</div>
+          <div style={{ color: 'var(--text-3)', fontSize: 13 }}>@orizzonte.giuridico</div>
         </div>
+        <a href="https://www.instagram.com/orizzonte.giuridico/" target="_blank" rel="noreferrer" className="tap"
+          style={{ background: 'var(--accent)', color: '#fff', fontSize: 14, fontWeight: 600, padding: '7px 14px', borderRadius: 99, textDecoration: 'none' }}>
+          Segui
+        </a>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 2, background: '#050816' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0,1fr))', gap: 2 }}>
         {(posts.length > 0 ? posts : Array.from({ length: 9 }).map(() => ({}))).map((post: any, i: number) => (
           <a key={i} href={post.permalink || 'https://www.instagram.com/orizzonte.giuridico/'} target="_blank" rel="noreferrer"
-            style={{ display: 'block', position: 'relative', aspectRatio: '1/1', overflow: 'hidden', background: '#07162b', textDecoration: 'none' }}>
+            className={post.media_url ? undefined : 'scheletro'}
+            style={{ display: 'block', position: 'relative', aspectRatio: '1/1', overflow: 'hidden' }}>
             {post.media_url && (
-              <img src={post.media_type === 'VIDEO' ? (post.thumbnail_url || post.media_url) : post.media_url} alt=""
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <img src={post.media_type === 'VIDEO' ? (post.thumbnail_url || post.media_url) : post.media_url} alt="" loading="lazy"
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
             )}
-            {post.media_type === 'VIDEO' && <div style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(0,0,0,0.6)', borderRadius: 4, padding: '2px 5px', fontSize: 9, color: '#fff' }}>▶</div>}
-            {post.media_type === 'CAROUSEL_ALBUM' && <div style={{ position: 'absolute', top: 6, right: 6, background: 'rgba(0,0,0,0.6)', borderRadius: 4, padding: '2px 5px', fontSize: 9, color: '#fff' }}>⊞</div>}
+            {post.media_type === 'VIDEO' && <span className="chip-vetro" style={{ top: 6, left: 'auto', right: 6, padding: '3px 7px', fontSize: 10 }}>▶</span>}
           </a>
         ))}
       </div>
-      <a href="https://www.instagram.com/orizzonte.giuridico/" target="_blank" rel="noreferrer"
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px 14px', color: '#8fd3ff', fontSize: 10, fontWeight: 700, letterSpacing: 1, textDecoration: 'none', borderTop: '0.5px solid rgba(255,255,255,0.05)' }}>
-        SEGUI @ORIZZONTE.GIURIDICO →
-      </a>
     </div>
   );
 }
@@ -104,20 +99,20 @@ const staticCategories = [
 ];
 
 const icons: Record<string, React.ReactNode> = {
-  Penale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 20 12 21C8.5 20 5 16 5 11V6L12 3Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
-  Civile: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#8fd3ff" strokeWidth="1.8"/><path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round"/></svg>,
-  Costituzionale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M7 3H17L21 7V21H3V3H7Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/><path d="M17 3V7H21" stroke="#8fd3ff" strokeWidth="1.8"/><path d="M7 12H17M7 16H13" stroke="#8fd3ff" strokeWidth="1.5" strokeLinecap="round"/></svg>,
-  Ambiente: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 5 15 5 9C5 5.69 8.13 3 12 3C15.87 3 19 5.69 19 9C19 15 12 21 12 21Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/><path d="M12 9V21" stroke="#8fd3ff" strokeWidth="1.5" strokeLinecap="round"/></svg>,
-  'Unione Europea': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#8fd3ff" strokeWidth="1.8"/><path d="M3 12H21M12 3C9.5 6 8 9 8 12C8 15 9.5 18 12 21C14.5 18 16 15 16 12C16 9 14.5 6 12 3Z" stroke="#8fd3ff" strokeWidth="1.5" strokeLinecap="round"/></svg>,
-  Amministrativo: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-  Internazionale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#8fd3ff" strokeWidth="1.8"/><path d="M3 12H21M12 3C9.5 6 8 9 8 12C8 15 9.5 18 12 21C14.5 18 16 15 16 12C16 9 14.5 6 12 3Z" stroke="#8fd3ff" strokeWidth="1.5" strokeLinecap="round"/><circle cx="12" cy="12" r="2" fill="#8fd3ff" opacity="0.5"/></svg>,
-  Animali: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="6" r="2" stroke="#8fd3ff" strokeWidth="1.6"/><circle cx="17" cy="6" r="2" stroke="#8fd3ff" strokeWidth="1.6"/><circle cx="4" cy="12" r="2" stroke="#8fd3ff" strokeWidth="1.6"/><circle cx="20" cy="12" r="2" stroke="#8fd3ff" strokeWidth="1.6"/><path d="M12 10C9 10 6 13 7 17C8 20 10 21 12 21C14 21 16 20 17 17C18 13 15 10 12 10Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
-  Legalità: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 3V21M12 3L5 7L12 11L19 7L12 3Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/><path d="M5 7L2 14C2 16 3.5 17 5 17C6.5 17 8 16 8 14L5 7Z" stroke="#8fd3ff" strokeWidth="1.5" strokeLinejoin="round"/><path d="M19 7L16 14C16 16 17.5 17 19 17C20.5 17 22 16 22 14L19 7Z" stroke="#8fd3ff" strokeWidth="1.5" strokeLinejoin="round"/><path d="M3 21H21" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round"/></svg>,
-  Economia: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><polyline points="3,17 8,12 13,14 21,6" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><polyline points="17,6 21,6 21,10" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-  Politica: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-  'Dir. Comparato': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M4 19V5H12V19M12 5H20V19" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M2 19H22" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round"/></svg>,
-  "L'Intervista": <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="11" rx="3" stroke="#8fd3ff" strokeWidth="1.8"/><path d="M5 10C5 14.4 8.13 18 12 18C15.87 18 19 14.4 19 10" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round"/><path d="M12 18V22M9 22H15" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round"/></svg>,
-  'Ripetiamo il Diritto': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M22 10V6L12 2L2 6V10C2 15.5 6.5 20.7 12 22C17.5 20.7 22 15.5 22 10Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/><path d="M12 8V13L15 15" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  Penale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 20 12 21C8.5 20 5 16 5 11V6L12 3Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  Civile: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8"/><path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  Costituzionale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M7 3H17L21 7V21H3V3H7Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M17 3V7H21" stroke="currentColor" strokeWidth="1.8"/><path d="M7 12H17M7 16H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>,
+  Ambiente: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 5 15 5 9C5 5.69 8.13 3 12 3C15.87 3 19 5.69 19 9C19 15 12 21 12 21Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M12 9V21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>,
+  'Unione Europea': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8"/><path d="M3 12H21M12 3C9.5 6 8 9 8 12C8 15 9.5 18 12 21C14.5 18 16 15 16 12C16 9 14.5 6 12 3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>,
+  Amministrativo: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  Internazionale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8"/><path d="M3 12H21M12 3C9.5 6 8 9 8 12C8 15 9.5 18 12 21C14.5 18 16 15 16 12C16 9 14.5 6 12 3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="12" cy="12" r="2" fill="currentColor" opacity="0.5"/></svg>,
+  Animali: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="6" r="2" stroke="currentColor" strokeWidth="1.6"/><circle cx="17" cy="6" r="2" stroke="currentColor" strokeWidth="1.6"/><circle cx="4" cy="12" r="2" stroke="currentColor" strokeWidth="1.6"/><circle cx="20" cy="12" r="2" stroke="currentColor" strokeWidth="1.6"/><path d="M12 10C9 10 6 13 7 17C8 20 10 21 12 21C14 21 16 20 17 17C18 13 15 10 12 10Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  Legalità: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 3V21M12 3L5 7L12 11L19 7L12 3Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M5 7L2 14C2 16 3.5 17 5 17C6.5 17 8 16 8 14L5 7Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M19 7L16 14C16 16 17.5 17 19 17C20.5 17 22 16 22 14L19 7Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M3 21H21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  Economia: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><polyline points="3,17 8,12 13,14 21,6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><polyline points="17,6 21,6 21,10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  Politica: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  'Dir. Comparato': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M4 19V5H12V19M12 5H20V19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M2 19H22" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  "L'Intervista": <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="11" rx="3" stroke="currentColor" strokeWidth="1.8"/><path d="M5 10C5 14.4 8.13 18 12 18C15.87 18 19 14.4 19 10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M12 18V22M9 22H15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  'Ripetiamo il Diritto': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M22 10V6L12 2L2 6V10C2 15.5 6.5 20.7 12 22C17.5 20.7 22 15.5 22 10Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M12 8V13L15 15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
 };
 
 const shortNames: Record<string, string> = {
@@ -133,7 +128,7 @@ const shortNames: Record<string, string> = {
 const slides = [
   {
     tag: 'Benvenuto',
-    title: 'Norma,<br>il diritto a portata di <em style="color:#8fd3ff;">swipe</em>.',
+    title: 'Norma,<br>il diritto a portata di <em>swipe</em>.',
     sub: 'Il diritto semplice, a spiegarlo ci pensiamo noi.',
     img: 'https://images.unsplash.com/photo-1589578228447-e1a4e481c6c8?w=800&q=80',
   },
@@ -157,6 +152,44 @@ const slides = [
   },
 ];
 
+const SFONDI_SLIDE = [
+  'linear-gradient(135deg,#4f46e5,#312e81)',
+  'linear-gradient(135deg,#7c3aed,#c026d3 60%,#f97316)',
+  'linear-gradient(135deg,#0ea5e9,#4f46e5)',
+  'linear-gradient(135deg,#f43f5e,#fb923c)',
+];
+
+const SCORCIATOIE: { nome: string; href: string; sfondo: string; ombra: string; icona: React.ReactNode }[] = [
+  { nome: 'Codici', href: '/codici', sfondo: 'linear-gradient(150deg,#6366f1,#4338ca)', ombra: 'rgba(79,70,229,.6)',
+    icona: <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></> },
+  { nome: 'Costituzione', href: '/costituzione', sfondo: 'linear-gradient(150deg,#22c55e,#15803d)', ombra: 'rgba(22,163,74,.55)',
+    icona: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6M8 13h8M8 17h5" /></> },
+  { nome: 'Sentenze', href: '/sentenze', sfondo: 'linear-gradient(150deg,#fb923c,#ea580c)', ombra: 'rgba(234,88,12,.55)',
+    icona: <><path d="M12 3v18M5 7l7-4 7 4M5 7l-3 7c0 2 1.5 3 3 3s3-1 3-3L5 7zM19 7l-3 7c0 2 1.5 3 3 3s3-1 3-3l-3-7zM8 21h8" /></> },
+  { nome: 'Glossario', href: '/glossario', sfondo: 'linear-gradient(150deg,#38bdf8,#0284c7)', ombra: 'rgba(2,132,199,.55)',
+    icona: <><path d="M4 7V4h16v3M9 20h6M12 4v16" /></> },
+  { nome: 'Studio', href: '/studio', sfondo: 'linear-gradient(150deg,#a855f7,#7e22ce)', ombra: 'rgba(126,34,206,.55)',
+    icona: <><path d="M2 9l10-5 10 5-10 5L2 9z" /><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" /></> },
+  { nome: 'Consulenza', href: '/consulenza', sfondo: 'linear-gradient(150deg,#f43f5e,#be123c)', ombra: 'rgba(225,29,72,.55)',
+    icona: <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /> },
+  { nome: 'Istituzioni', href: '/istituzioni', sfondo: 'linear-gradient(150deg,#64748b,#334155)', ombra: 'rgba(51,65,85,.5)',
+    icona: <path d="M3 21h18M6 21V10M18 21V10M12 21V10M2 10l10-7 10 7" /> },
+  { nome: 'Salvati', href: '/salvati', sfondo: 'linear-gradient(150deg,#facc15,#ca8a04)', ombra: 'rgba(202,138,4,.55)',
+    icona: <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /> },
+];
+
+function saluto() {
+  const h = new Date().getHours();
+  if (h < 5) return 'Buonanotte';
+  if (h < 13) return 'Buongiorno';
+  if (h < 18) return 'Buon pomeriggio';
+  return 'Buonasera';
+}
+
+function oggiEsteso() {
+  return new Date().toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
 const FESTE_CIVILI = [
   { mese: 1, giorno: 1, nome: 'Costituzione in vigore', emoji: '📜', colore: '#38bdf8', bordoTop: 'linear-gradient(90deg,#009246,#fff 50%,#ce2b37)', breve: '1° gennaio 1948: entra in vigore la Costituzione della Repubblica.', descrizione: "Approvata dall'Assemblea Costituente il 22 dicembre 1947 e promulgata il 27 dicembre, la Costituzione italiana entrò in vigore il 1° gennaio 1948. È composta da 139 articoli e 18 disposizioni transitorie. I primi 12 articoli — i Principi Fondamentali — non sono modificabili nella loro essenza." },
   { mese: 1, giorno: 27, nome: 'Giorno della Memoria', emoji: '🕯️', colore: '#a78bfa', bordoTop: 'linear-gradient(90deg,#a78bfa,#818cf8)', breve: 'Si ricordano le vittime della Shoah e delle leggi razziali.', descrizione: "Istituito con la legge n. 211/2000, il 27 gennaio commemora le vittime dell'Olocausto. Il 27 gennaio 1945 le truppe sovietiche liberarono Auschwitz. In Italia, le leggi razziali fasciste del 1938 privarono migliaia di cittadini dei diritti fondamentali." },
@@ -175,8 +208,7 @@ export default function NormaHome() {
   const [festaCivile, setFestaCivile] = useState<typeof FESTE_CIVILI[0] | null>(null);
   const [festaEspansa, setFestaEspansa] = useState(false);
   const [cur, setCur] = useState(0);
-  const touchStartX = useRef<number>(0);
-  const wheelTimeout = useRef<any>(null);
+  const caroselloRef = useRef<HTMLDivElement>(null);
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(staticCategories);
   const [fascicolo, setFascicolo] = useState<{ url: string; title: string } | null>(null);
 
@@ -439,238 +471,137 @@ export default function NormaHome() {
   /* ─── RENDER ─── */
   return (
     <>
-      <style jsx global>{`
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0d18; }
-        ::-webkit-scrollbar { display: none; }
-        html, body { overflow-x: hidden; }
-        .cats { display: flex; gap: 18px; overflow-x: auto; padding: 14px 16px 16px; scrollbar-width: none; align-items: flex-start; border-bottom: 0.5px solid rgba(255,255,255,0.06); }
-        .cats::-webkit-scrollbar { display: none; }
-        .cat-ring { width: 76px; height: 76px; border-radius: 50%; padding: 2.5px; background: linear-gradient(135deg,#0a3060,#8fd3ff); flex-shrink: 0; }
-        .cat-ring.seen { background: rgba(255,255,255,0.12); }
-        .cat-inn { width: 100%; height: 100%; border-radius: 50%; background: #07162b; border: 2px solid #0a0d18; display: flex; align-items: center; justify-content: center; }
-        .slbl { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; padding: 0 16px; }
-        .slbl-t { font-size: 9px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.22); font-family: 'Montserrat', sans-serif; }
-        .slbl-l { flex: 1; height: 0.5px; background: rgba(255,255,255,0.05); }
-        .hero-wrap { position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 4/5; background: linear-gradient(135deg,#07162b 0%,#0d2040 100%); margin: 0 16px; }
-        .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-        .hero-ov1 { position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,15,40,0.95) 0%, rgba(0,15,40,0.7) 45%, rgba(0,15,40,0.05) 100%); }
-        .hero-ov2 { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,15,40,0.75) 0%, transparent 50%); }
-        .hero-body { position: absolute; bottom: 0; left: 0; padding: 28px 22px 40px; max-width: 88%; display: flex; flex-direction: column; gap: 10px; }
-        .hero-tag { font-size: 8px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.65); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 5px 14px; display: inline-block; align-self: flex-start; font-family: 'Montserrat', sans-serif; }
-        .hero-title { font-size: 34px; font-weight: 900; color: #fff; line-height: 1.05; letter-spacing: -0.8px; margin: 0; font-family: 'Montserrat', sans-serif; }
-        .hero-sub { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.65; margin: 0; font-family: 'Montserrat', sans-serif; }
-        .hero-dots { position: absolute; bottom: 10px; right: 14px; display: flex; gap: 5px; }
-        .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.25); }
-        .hero-dot.on { width: 14px; border-radius: 10px; background: #fff; }
-        a { text-decoration: none; }
-      `}</style>
-
-      <div style={{ minHeight: '100vh', background: '#0a0d18', fontFamily: "'Montserrat', sans-serif" }}>
+      <div style={{ minHeight: '100dvh', background: 'var(--bg)' }}>
         <Header />
+        <main className="pagina">
+          {/* ── Saluto ── */}
+          <div className="saluto-data appare">{mounted ? oggiEsteso() : ' '}</div>
+          <h1 className="titolo-grande appare" style={{ animationDelay: '40ms' }}>{mounted ? saluto() : 'Ciao'}</h1>
 
-        <main style={{ paddingBottom: 100 }}>
-
-          {/* ── Banner festa civile ── */}
+          {/* ── Festa civile ── */}
           {festaCivile && (
-            <div style={{ margin: '12px 16px 0', borderRadius: 18, overflow: 'hidden', position: 'relative', background: '#0d1526', border: `0.5px solid ${festaCivile.colore}44` }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: festaCivile.bordoTop }} />
-              <div onClick={() => setFestaEspansa(e => !e)} style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 13, cursor: 'pointer' }}>
-                <div style={{ fontSize: 28, flexShrink: 0, lineHeight: 1 }}>{festaCivile.emoji}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase' as const, color: festaCivile.colore, marginBottom: 4, opacity: 0.8 }}>Oggi · Festa Civile</div>
-                  <div style={{ fontSize: 14, fontWeight: 900, color: '#fff', lineHeight: 1.25, marginBottom: 3 }}>{festaCivile.nome}</div>
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', lineHeight: 1.5 }}>{festaCivile.breve}</div>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0, alignSelf: 'flex-start', paddingTop: 2 }}>
-                  <button onClick={e => { e.stopPropagation(); const now = new Date(); sessionStorage.setItem(`norma_festa_chiusa_${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`, '1'); setFestaCivile(null); }} style={{ background: 'rgba(255,255,255,0.08)', border: 'none', borderRadius: '50%', width: 26, height: 26, color: 'rgba(255,255,255,0.4)', fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
-                  <div style={{ textAlign: 'center', fontSize: 13, color: `${festaCivile.colore}99`, transition: 'transform 0.2s', transform: festaEspansa ? 'rotate(180deg)' : 'none' }}>▾</div>
-                </div>
+            <div className="card festa appare" style={{ animationDelay: '80ms', borderTop: `3px solid ${festaCivile.colore}` }}
+              onClick={() => setFestaEspansa(e => !e)}>
+              <div className="festa-emoji">{festaCivile.emoji}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="festa-etichetta" style={{ color: festaCivile.colore }}>Oggi · Festa civile</div>
+                <div className="festa-nome">{festaCivile.nome}</div>
+                <div className="festa-breve">{festaEspansa ? festaCivile.descrizione : festaCivile.breve}</div>
               </div>
-              {festaEspansa && (
-                <div style={{ padding: '0 16px 16px', borderTop: `0.5px solid ${festaCivile.colore}22` }}>
-                  <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.6)', lineHeight: 1.75, margin: '12px 0 0' }}>{festaCivile.descrizione}</p>
-                </div>
-              )}
+              <button className="btn-chiudi tap" aria-label="Chiudi"
+                onClick={e => { e.stopPropagation(); const now = new Date(); sessionStorage.setItem(`norma_festa_chiusa_${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`, '1'); setFestaCivile(null); }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+              </button>
             </div>
           )}
 
-          {/* ── Stories rail (invariato) ── */}
-          <div className="cats">
-            {categories.map((cat, idx) => (
-              <button
-                key={idx}
-                onClick={() => openStory(idx)}
-                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7, flexShrink: 0, background: 'transparent', border: 'none', cursor: 'pointer', padding: 0, width: 82 }}
-              >
-                <div
-                  className={`cat-ring${newCategories.has(cat.name) ? '' : ' seen'}`}
-                  style={newCategories.has(cat.name) ? { boxShadow: '0 0 14px rgba(143,211,255,0.4)' } : undefined}
-                >
-                  <div className="cat-inn">
-                    {icons[cat.name] || <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#8fd3ff" strokeWidth="1.8"/></svg>}
+          {/* ── Storie ── */}
+          <div className="storie appare" style={{ animationDelay: '120ms' }}>
+            {categories.map((cat, idx) => {
+              const nuova = newCategories.has(cat.name);
+              return (
+                <button key={idx} onClick={() => openStory(idx)} className="storia tap">
+                  <div className="storia-anello" data-vista={!nuova}>
+                    <div className="storia-interno">
+                      <span style={{ display: 'flex', transform: 'scale(0.85)' }}>
+                        {icons[cat.name] || <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.8" /></svg>}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <span style={{ fontSize: cat.name.length > 12 ? 9 : 10, fontWeight: 700, color: newCategories.has(cat.name) ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.38)', lineHeight: 1.2, textAlign: 'center', display: 'block', maxWidth: 80 }}>
-                  {shortNames[cat.name] || cat.name}
+                  <span className="storia-nome" style={{ fontWeight: nuova ? 600 : 500, color: nuova ? 'var(--text)' : undefined }}>
+                    {shortNames[cat.name] || cat.name}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* ── Scopri Norma: carosello a scatto ── */}
+          <div className="sezione-label appare" style={{ animationDelay: '160ms' }}>Scopri Norma</div>
+          <div className="carosello appare" style={{ animationDelay: '180ms' }} ref={caroselloRef}
+            onScroll={e => {
+              const el = e.currentTarget;
+              const i = Math.round(el.scrollLeft / (el.scrollWidth / slides.length));
+              if (i !== cur) setCur(Math.max(0, Math.min(slides.length - 1, i)));
+            }}>
+            {slides.map((sl, i) => (
+              <div key={i} className="slide" style={{ background: SFONDI_SLIDE[i % SFONDI_SLIDE.length] }}>
+                {sl.img && <img src={sl.img} alt="" loading={i === 0 ? 'eager' : 'lazy'} />}
+                <span className="slide-tag">{sl.tag}</span>
+                <div className="slide-titolo" dangerouslySetInnerHTML={{ __html: sl.title }} />
+                <div className="slide-sub">{sl.sub}</div>
+              </div>
+            ))}
+          </div>
+          <div className="puntini">{slides.map((_, i) => <span key={i} data-on={i === cur} />)}</div>
+
+          {/* ── Scorciatoie ── */}
+          <div className="sezione-label appare" style={{ animationDelay: '220ms' }}>Strumenti</div>
+          <div className="scorciatoie">
+            {SCORCIATOIE.map((sc, i) => (
+              <a key={sc.href} href={sc.href} className="scorciatoia tap appare" style={{ animationDelay: `${240 + i * 35}ms` }}>
+                <span className="scorciatoia-icona" style={{ background: sc.sfondo, ['--ombra' as string]: sc.ombra }}>
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">{sc.icona}</svg>
                 </span>
-              </button>
+                <span className="scorciatoia-nome">{sc.nome}</span>
+              </a>
             ))}
           </div>
 
-          {/* ── Carosello "Cos'è Norma" ── */}
-          <div style={{ paddingTop: 20 }}>
-            <div className="slbl">
-              <span className="slbl-t">Cos'è Norma</span>
-              <div className="slbl-l" />
-            </div>
-            <div
-              className="hero-wrap"
-              onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
-              onTouchEnd={e => {
-                const diff = touchStartX.current - e.changedTouches[0].clientX;
-                if (Math.abs(diff) > 30) {
-                  if (diff > 0) setCur(p => (p + 1) % slides.length);
-                  else setCur(p => (p - 1 + slides.length) % slides.length);
-                }
-              }}
-              onWheel={e => {
-                if (Math.abs(e.deltaX) < 10) return;
-                if (wheelTimeout.current) return;
-                wheelTimeout.current = setTimeout(() => { wheelTimeout.current = null; }, 600);
-                if (e.deltaX > 0) setCur(p => (p + 1) % slides.length);
-                else setCur(p => (p - 1 + slides.length) % slides.length);
-              }}
-            >
-              {mounted && slides[cur].img ? (
-                <>
-                  <img className="hero-img" src={slides[cur].img} alt="" />
-                  <div className="hero-ov1" />
-                  <div className="hero-ov2" />
-                  <div className="hero-body">
-                    <span className="hero-tag">{slides[cur].tag}</span>
-                    <div className="hero-title" dangerouslySetInnerHTML={{ __html: slides[cur].title }} />
-                    <div className="hero-sub">{slides[cur].sub}</div>
-                  </div>
-                </>
-              ) : (
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#07162b 0%,#0d2040 100%)', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '40px 28px', gap: 20 }}>
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(to right,#8fd3ff44,#8fd3ff,#8fd3ff44)' }} />
-                  <span style={{ display: 'inline-block', fontSize: 8, fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase' as const, color: '#8fd3ff', border: '1px solid rgba(143,211,255,0.3)', borderRadius: 20, padding: '5px 14px', alignSelf: 'flex-start', fontFamily: 'Montserrat, sans-serif' }}>{slides[cur].tag}</span>
-                  <div style={{ fontSize: 32, fontWeight: 900, color: '#fff', lineHeight: 1.08, letterSpacing: -0.8, fontFamily: 'Montserrat, sans-serif' }} dangerouslySetInnerHTML={{ __html: slides[cur].title }} />
-                  <div style={{ width: 40, height: 2, borderRadius: 1, background: 'rgba(143,211,255,0.4)' }} />
-                  <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.75, maxWidth: '95%', fontFamily: 'Montserrat, sans-serif' }}>{slides[cur].sub}</div>
-                </div>
-              )}
-              <div className="hero-dots">
-                {slides.map((_, i) => <div key={i} className={`hero-dot${i === cur ? ' on' : ''}`} />)}
-              </div>
-            </div>
+          {/* ── Ultimi articoli ── */}
+          <div className="sezione-label">
+            <span>Ultimi articoli</span>
+            <a href="/articoli" className="link-azione" style={{ fontSize: 15, textDecoration: 'none' }}>Vedi tutti</a>
           </div>
-
-          {/* ── Feed IG ── */}
-          <div style={{ marginTop: 20, borderTop: '0.5px solid rgba(255,255,255,0.07)' }}>
-            <div className="slbl" style={{ paddingTop: 20 }}>
-              <span className="slbl-t">Ultimi articoli</span>
-              <div className="slbl-l" />
-            </div>
-
-            {feedPosts.length === 0
-              ? Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} style={{ marginBottom: 2, borderBottom: '0.5px solid rgba(255,255,255,0.07)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px' }}>
-                      <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#111526' }} className="shimmer" />
-                      <div style={{ flex: 1 }}>
-                        <div style={{ height: 10, borderRadius: 6, width: '55%', marginBottom: 5 }} className="shimmer" />
-                        <div style={{ height: 8, borderRadius: 6, width: '35%' }} className="shimmer" />
-                      </div>
-                    </div>
-                    <div style={{ aspectRatio: '4/5' }} className="shimmer" />
-                    <div style={{ padding: '12px 14px' }}>
-                      <div style={{ height: 12, borderRadius: 6, width: '80%', marginBottom: 8 }} className="shimmer" />
-                      <div style={{ height: 10, borderRadius: 6, width: '50%' }} className="shimmer" />
-                    </div>
+          {feedPosts.length === 0
+            ? Array.from({ length: 2 }).map((_, i) => (
+                <div key={i} className="card" style={{ marginBottom: 16 }}>
+                  <div className="scheletro" style={{ aspectRatio: '16/10' }} />
+                  <div style={{ padding: 16 }}>
+                    <div className="scheletro" style={{ height: 12, width: '40%', borderRadius: 6, marginBottom: 12 }} />
+                    <div className="scheletro" style={{ height: 18, width: '90%', borderRadius: 6, marginBottom: 8 }} />
+                    <div className="scheletro" style={{ height: 18, width: '65%', borderRadius: 6 }} />
                   </div>
-                ))
-              : feedPosts.map((post, i) => (
-                  <FeedCard key={post.id ?? `${post.slug}-${i}`} post={post} priority={i === 0} />
-                ))
-            }
+                </div>
+              ))
+            : feedPosts.map((post, i) => (
+                <FeedCard key={post.id ?? `${post.slug}-${i}`} post={post} priority={i === 0} />
+              ))}
+          {feedLoading && <div style={{ display: 'flex', justifyContent: 'center', padding: 16 }}><span className="spinner" /></div>}
+          <div ref={feedEndRef} style={{ height: 1 }} />
 
-            {/* Spinner infinite scroll */}
-            {feedLoading && (
-              <div style={{ padding: '20px 0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ width: 20, height: 20, borderRadius: '50%', border: '2px solid rgba(143,211,255,0.2)', borderTop: '2px solid #8fd3ff', animation: 'spin 0.8s linear infinite' }} />
-                <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-              </div>
-            )}
-
-            {/* Sentinel per IntersectionObserver */}
-            <div ref={feedEndRef} style={{ height: 1 }} />
-
-            {/* Vedi tutti */}
-            <div style={{ padding: '8px 16px 4px' }}>
-              <a href="/articoli" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '13px 0', borderRadius: 16, background: 'rgba(143,211,255,0.08)', border: '0.5px solid rgba(143,211,255,0.2)', color: '#8fd3ff', fontSize: 10, fontWeight: 800, letterSpacing: 1 }}>
-                VEDI TUTTI GLI ARTICOLI →
-              </a>
-            </div>
-
-            {/* Fascicolo */}
+          <div style={{ display: 'grid', gap: 10, marginTop: 4 }}>
+            <a href="/articoli" className="btn btn-primario tap">Tutti gli articoli</a>
             {fascicolo && (
-              <div style={{ padding: '4px 16px 8px' }}>
-                <a href={fascicolo.url} target="_blank" rel="noreferrer" download style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, padding: '14px 0', borderRadius: 16, background: 'rgba(168,200,240,0.08)', border: '0.5px solid rgba(168,200,240,0.25)', color: '#a8c8f0', fontSize: 10, fontWeight: 800, letterSpacing: 1 }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a8c8f0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  SCARICA L'ULTIMO FASCICOLO
-                </a>
-              </div>
+              <a href={fascicolo.url} target="_blank" rel="noreferrer" download className="btn btn-secondario tap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                Scarica l&apos;ultimo fascicolo
+              </a>
             )}
           </div>
 
           {/* ── Instagram ── */}
-          <div style={{ marginTop: 8 }}>
-            <div className="slbl">
-              <span className="slbl-t">Instagram</span>
-              <div className="slbl-l" />
-            </div>
-            <div style={{ padding: '0 16px' }}>
-              <InstagramEmbed />
-            </div>
-          </div>
+          <div className="sezione-label">Instagram</div>
+          <InstagramEmbed />
 
           {/* ── Social ── */}
-          <div style={{ marginTop: 4 }}>
-            <div className="slbl">
-              <span className="slbl-t">Seguici</span>
-              <div className="slbl-l" />
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, padding: '0 16px 8px' }}>
-              <a href="https://www.instagram.com/orizzonte.giuridico/" target="_blank" rel="noreferrer" style={{ borderRadius: 16, background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="white" strokeWidth="2"/><circle cx="12" cy="12" r="4" stroke="white" strokeWidth="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="white"/></svg>
-                <span style={{ color: '#fff', fontSize: 10, fontWeight: 800, fontFamily: 'Montserrat, sans-serif' }}>INSTAGRAM</span>
-                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9, fontFamily: 'Montserrat, sans-serif' }}>@orizzonte.giuridico</span>
-              </a>
-              <a href="https://www.tiktok.com/@orizzonte.giuridi" target="_blank" rel="noreferrer" style={{ borderRadius: 16, background: '#111526', border: '0.5px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
-                <span style={{ color: '#fff', fontSize: 10, fontWeight: 800, fontFamily: 'Montserrat, sans-serif' }}>TIKTOK</span>
-                <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 9, fontFamily: 'Montserrat, sans-serif' }}>@orizzonte.giuridi</span>
-              </a>
-              <a href="https://www.facebook.com/profile.php?id=61589319283875" target="_blank" rel="noreferrer" style={{ borderRadius: 16, background: '#1877F2', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-                <span style={{ color: '#fff', fontSize: 10, fontWeight: 800, fontFamily: 'Montserrat, sans-serif' }}>FACEBOOK</span>
-                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9, fontFamily: 'Montserrat, sans-serif' }}>Orizzonte Giuridico</span>
-              </a>
-              <a href="https://www.linkedin.com/company/orizzonte-giuridico" target="_blank" rel="noreferrer" style={{ borderRadius: 16, background: '#0A66C2', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 12px', gap: 8 }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
-                <span style={{ color: '#fff', fontSize: 10, fontWeight: 800, fontFamily: 'Montserrat, sans-serif' }}>LINKEDIN</span>
-                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 9, fontFamily: 'Montserrat, sans-serif' }}>Orizzonte Giuridico</span>
-              </a>
-            </div>
+          <div className="sezione-label">Seguici</div>
+          <div className="social">
+            <a href="https://www.instagram.com/orizzonte.giuridico/" target="_blank" rel="noreferrer" aria-label="Instagram" className="tap" style={{ background: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)' }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="white" strokeWidth="2" /><circle cx="12" cy="12" r="4" stroke="white" strokeWidth="2" /><circle cx="17.5" cy="6.5" r="1.5" fill="white" /></svg>
+            </a>
+            <a href="https://www.tiktok.com/@orizzonte.giuridi" target="_blank" rel="noreferrer" aria-label="TikTok" className="tap" style={{ background: '#111' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z" /></svg>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61589319283875" target="_blank" rel="noreferrer" aria-label="Facebook" className="tap" style={{ background: '#1877F2' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/orizzonte-giuridico" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="tap" style={{ background: '#0A66C2' }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" /><circle cx="4" cy="4" r="2" /></svg>
+            </a>
           </div>
-
         </main>
-
         <Footer />
-
         {/* ── Story modal (invariato) ── */}
         {storyOpen && (
           <div
@@ -690,9 +621,9 @@ export default function NormaHome() {
             </div>
             <div style={{ position: 'absolute', top: 22, left: 0, right: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#0a3060,#8fd3ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--grad-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   {icons[storyCatName]
-                    ? <span style={{ display: 'flex', transform: 'scale(0.72)' }}>{icons[storyCatName]}</span>
+                    ? <span style={{ display: 'flex', transform: 'scale(0.72)', color: '#fff' }}>{icons[storyCatName]}</span>
                     : <span style={{ fontSize: 16 }}>🏛️</span>}
                 </div>
                 <div>
