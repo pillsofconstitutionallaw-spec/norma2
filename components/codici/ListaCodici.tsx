@@ -93,7 +93,7 @@ export default function ListaCodici({ conteggi }: { conteggi: Record<string, num
                   background: `linear-gradient(150deg, ${c.colore} 0%, color-mix(in srgb, ${c.colore} 62%, #0b1f3a) 100%)`,
                   boxShadow: `0 10px 24px -10px color-mix(in srgb, ${c.colore} 70%, transparent)`,
                 }}>
-                <div className="card-codice-icona tessera" style={{ ['--d' as string]: `${150 + i * 90}ms` }}><IconaCodice slug={c.slug} colore="#fff" anima ritardo={150 + i * 90} /></div>
+                <div className="card-codice-icona tessera" style={{ ['--d' as string]: `${150 + i * 90}ms` }}><IconaCodice slug={c.slug} size={30} colore="#fff" anima ritardo={150 + i * 90} /></div>
                 <div>
                   <div className="card-codice-titolo">{c.breve}</div>
                   <div className="card-codice-sub">
