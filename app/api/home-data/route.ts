@@ -52,16 +52,19 @@ export async function GET() {
       ? { url: fascicoli[0].source_url, title: fascicoli[0].title?.rendered || 'Ultimo fascicolo' }
       : null;
 
-    const storyResults = await Promise.all(
-      STORY_CATS.map(({ id }) =>
-        json(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${id}&per_page=5`)
-      )
+    // Storie: una sola richiesta (gli ultimi 50 articoli, con la sola
+    // immagine di copertina) smistata per categoria, invece di una richiesta
+    // per categoria. L'hosting di WordPress ha un limite di processi
+    // contemporanei e con 14 richieste parallele rispondeva 508.
+    const recenti = await json(
+      'https://orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=50&_embed=wp:featuredmedia&_fields=id,date,slug,link,title,excerpt,categories,_links,_embedded'
     );
-
     const storyPosts: Record<string, any[]> = {};
-    STORY_CATS.forEach(({ name }, i) => {
-      storyPosts[name] = Array.isArray(storyResults[i]) ? storyResults[i] : [];
-    });
+    for (const { name, id } of STORY_CATS) {
+      storyPosts[name] = Array.isArray(recenti)
+        ? recenti.filter((p: any) => Array.isArray(p.categories) && p.categories.includes(id)).slice(0, 5)
+        : [];
+    }
 
     return NextResponse.json({ cats, articles, fascicolo, storyPosts }, { headers: INTESTAZIONI });
   } catch {

@@ -456,8 +456,9 @@ export default function NormaHome() {
         })
         .catch(() => {
           if (annullato) return;
+          // Niente raffica di richieste a WordPress da ogni telefono (l'hosting
+          // ha un limite di processi): le storie si caricano quando si aprono.
           caricaFeedDiretto();
-          staticCategories.forEach(cat => { if (!storyCache.current[cat.name]) loadCatPosts(cat.name, cat.id); });
         });
     }
     aggiorna();
