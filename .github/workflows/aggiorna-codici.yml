@@ -1,0 +1,55 @@
+name: Aggiorna codici
+
+# Ogni lunedì scarica da Normattiva il testo vigente dei codici e, se è
+# cambiato qualcosa, fa un commit su main: il deploy Vercel parte da solo.
+on:
+  schedule:
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aggiorna-codici
+  cancel-in-progress: false
+
+jobs:
+  aggiorna:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Scarica e rigenera i codici
+        id: aggiorna
+        # Un codice che fallisce viene saltato (resta la versione attuale):
+        # si committano comunque gli altri, e il job si segna come fallito
+        # alla fine così l'errore si vede nella tab Actions.
+        run: |
+          if python3 scripts/codici/aggiorna.py; then
+            echo "saltati=0" >> "$GITHUB_OUTPUT"
+          else
+            echo "saltati=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit se ci sono modifiche
+        run: |
+          # La prima riga dei file contiene la data di generazione: se cambia
+          # solo quella non c'è niente di nuovo da pubblicare.
+          git diff --quiet -I '^// Generato da' -- data/codici && { echo "Nessuna modifica ai testi"; exit 0; }
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/codici
+          git commit -m "Codici aggiornati da Normattiva ($(date +%d/%m/%Y))"
+          git push
+
+      - name: Segnala codici non aggiornati
+        if: steps.aggiorna.outputs.saltati == '1'
+        run: |
+          echo "::error::Alcuni codici non sono stati aggiornati, vedi il log del passo precedente"
+          exit 1

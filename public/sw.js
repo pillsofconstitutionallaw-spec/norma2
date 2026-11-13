@@ -1,6 +1,12 @@
+// OneSignal gestisce i push dentro QUESTO worker. Un sito può avere un solo
+// service worker per scope: prima OneSignalSDKWorker.js e sw.js venivano
+// registrati entrambi su "/" e si sostituivano a vicenda, così i push
+// arrivavano solo quando per caso era attivo quello di OneSignal.
+importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js');
+
 // Cambiare ad ogni deploy che deve raggiungere le PWA già installate: è la
 // differenza nel contenuto di questo file che fa scattare l'aggiornamento.
-const CACHE_NAME = 'norma-2026-07-27';
+const CACHE_NAME = 'norma-2026-11-13';
 
 // Asset statici sempre in cache
 const STATIC_ASSETS = [

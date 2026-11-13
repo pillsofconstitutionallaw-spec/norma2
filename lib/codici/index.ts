@@ -2,7 +2,6 @@ import { codiceCivile } from '@/data/codici/codiceCivile';
 import { codicePenale } from '@/data/codici/codicePenale';
 import { proceduraCivile } from '@/data/codici/proceduraCivile';
 import { proceduraPenale } from '@/data/codici/proceduraPenale';
-import { codiceAppalti } from '@/data/codici/codiceAppalti';
 import { codicePrivacy } from '@/data/codici/codicePrivacy';
 import { codiceTerzoSettore } from '@/data/codici/codiceTerzoSettore';
 import { codiceProcessoAmministrativo } from '@/data/codici/codiceProcessoAmministrativo';
@@ -21,7 +20,7 @@ export const codiciMap = {
   'codice-penale': { nome: 'Codice Penale', slug: 'codice-penale', articoli: codicePenale },
   'procedura-civile': { nome: 'Codice di Procedura Civile', slug: 'procedura-civile', articoli: proceduraCivile },
   'procedura-penale': { nome: 'Codice di Procedura Penale', slug: 'procedura-penale', articoli: proceduraPenale },
-  'codice-appalti': { nome: 'Codice degli Appalti', slug: 'codice-appalti', articoli: codiceAppalti },
+  'codice-appalti': { nome: 'Codice degli Appalti', slug: 'codice-appalti', articoli: codiceContratti },
   'codice-privacy': { nome: 'Codice della Privacy', slug: 'codice-privacy', articoli: codicePrivacy.map((articolo) => ({ ...articolo, titolo: articolo.rubrica, contenuto: articolo.testo })) },
   'codice-terzo-settore': { nome: 'Codice del Terzo Settore', slug: 'codice-terzo-settore', articoli: codiceTerzoSettore },
   'processo-amministrativo': { nome: 'Codice del Processo Amministrativo', slug: 'processo-amministrativo', articoli: codiceProcessoAmministrativo },

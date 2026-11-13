@@ -73,6 +73,10 @@ export default function RootLayout({
               await OneSignal.init({
                 appId: "cb2f63d9-6736-47a6-97e7-913f41abd463",
                 notifyButton: { enable: false },
+                // Un solo service worker per scope: OneSignal usa sw.js
+                // (che importa il suo SDK) invece di registrarne uno suo.
+                serviceWorkerPath: 'sw.js',
+                serviceWorkerParam: { scope: '/' },
                 allowLocalhostAsSecureOrigin: true,
               });
               if (typeof Notification !== 'undefined' && Notification.permission === 'default') {
@@ -136,9 +140,6 @@ export default function RootLayout({
           {`
             if ('serviceWorker' in navigator) {
               window.addEventListener('load', function () {
-                navigator.serviceWorker.register('/OneSignalSDKWorker.js')
-                  .then(function(reg) { console.log('OneSignal SW registrato:', reg.scope); })
-                  .catch(function(err) { console.log('OneSignal SW errore:', err); });
                 navigator.serviceWorker.register('/sw.js')
                   .then(function(reg) {
                     console.log('Norma SW registrato:', reg.scope);
