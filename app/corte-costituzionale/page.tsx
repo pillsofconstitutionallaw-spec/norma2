@@ -30,7 +30,7 @@ const sezioni: Sezione[] = [
   {
     id: 'kelsen',
     titolo: 'Hans Kelsen e la teoria pura del diritto',
-    colore: '#ffd700',
+    colore: '#ca8a04',
     bg: 'rgba(255,215,0,0.08)',
     icon: '📐',
     blocchi: [
@@ -42,7 +42,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'La Teoria Pura del Diritto',
-        colore: '#ffd700',
+        colore: '#ca8a04',
         contenuto:
           'Kelsen voleva costruire una scienza del diritto "pura": sgombra da politica, morale, sociologia. Il diritto, per lui, è un sistema autonomo di norme che si giustificano a vicenda in base alla loro posizione gerarchica — non perché siano giuste o utili, ma perché sono state prodotte nel modo corretto da chi aveva il potere di farlo. Questa idea si chiama "positivismo giuridico": conta la forma della norma, non il suo contenuto.',
       },
@@ -52,13 +52,13 @@ const sezioni: Sezione[] = [
           {
             titolo: 'La Stufenbau: l\'ordinamento a gradini',
             testo: 'Kelsen immagina l\'ordinamento giuridico come una piramide (Stufenbau = struttura a gradini). In cima c\'è la Costituzione. Sotto ci sono le leggi ordinarie. Ancora sotto i regolamenti, poi i provvedimenti amministrativi, poi i contratti e le sentenze. Ogni norma è valida solo se è stata prodotta rispettando la norma di grado superiore. Una legge che contraddice la Costituzione è invalida — punto.',
-            colore: '#ffd700',
+            colore: '#ca8a04',
             badge: 'Concetto chiave',
           },
           {
             titolo: 'Il "legislatore negativo"',
             testo: 'La Corte Costituzionale, nel modello kelseniano, non crea norme: le elimina. È un legislatore al contrario — un legislatore negativo. Il Parlamento produce le leggi (legislatore positivo); la Corte rimuove quelle incostituzionali (legislatore negativo). Questo spiega perché, nella tradizione kelseniana, la Corte non può colmare vuoti normativi sostituendosi al Parlamento: può solo togliere, non aggiungere. (Le sentenze additive italiane sono un\'evoluzione successiva che ha superato — con cautela — questo limite originario.)',
-            colore: '#ffd700',
+            colore: '#ca8a04',
             badge: 'Concetto chiave',
           },
           {
@@ -70,7 +70,7 @@ const sezioni: Sezione[] = [
           {
             titolo: 'La Grundnorm: la norma fondamentale',
             testo: 'Se ogni norma è valida perché prodotta secondo una norma superiore, da cosa dipende la validità della Costituzione stessa? Kelsen risponde con la Grundnorm (norma fondamentale): un\'ipotesi logica, non scritta, che dice "bisogna obbedire alla Costituzione". Non è una norma giuridica vera, ma il presupposto logico che tiene in piedi l\'intera piramide. È uno dei punti più discussi — e criticati — della sua teoria.',
-            colore: '#a78bfa',
+            colore: '#7c3aed',
             badge: 'Filosofia del diritto',
           },
         ],
@@ -78,13 +78,13 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'Kelsen e la Corte austriaca del 1920',
-        colore: '#ffd700',
+        colore: '#ca8a04',
         contenuto:
           'Non si tratta solo di teoria: Kelsen progettò concretamente la prima Corte costituzionale moderna, istituita in Austria nel 1919 e consolidata dalla Costituzione del 1920. Ne fu anche giudice fino al 1930, quando il regime autoritario austriaco lo rimosse. Il modello austriaco divenne il prototipo che molti paesi europei adottarono dopo la Seconda guerra mondiale — compresa l\'Italia nel 1948.',
       },
       {
         tipo: 'highlight',
-        colore: '#ffd700',
+        colore: '#ca8a04',
         testo: 'Il paradosso kelseniano: Kelsen costruisce un sistema in cui il diritto è separato dalla politica, ma la Corte Costituzionale — chiamata a far valere quella separazione — è inevitabilmente un organo con enormi ricadute politiche. Questo paradosso fu al centro del dibattito in Assemblea Costituente.',
       },
     ],
@@ -94,7 +94,7 @@ const sezioni: Sezione[] = [
   {
     id: 'costituente',
     titolo: 'Il dibattito in Assemblea Costituente',
-    colore: '#fb7185',
+    colore: '#e11d48',
     bg: 'rgba(251,113,133,0.08)',
     icon: '🏛',
     blocchi: [
@@ -106,7 +106,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'Il trauma dello Statuto Albertino',
-        colore: '#fb7185',
+        colore: '#e11d48',
         contenuto:
           'La Costituzione del 1948 nasceva dalle ceneri del fascismo. I costituenti sapevano che lo Statuto Albertino — la carta precedente — era "crollato" anche perché mancava qualsiasi controllo sulle leggi: il Parlamento poteva approvare qualsiasi cosa, comprese le leggi razziali del 1938, senza che nessuno potesse fermarla. Questa consapevolezza rese l\'idea di un organo di garanzia quasi inevitabile. Ma su come costruirlo le posizioni erano radicalmente diverse.',
       },
@@ -116,7 +116,7 @@ const sezioni: Sezione[] = [
           {
             titolo: 'La linea kelseniana: organo specializzato e forte',
             testo: 'Una parte dei costituenti — vicina all\'impostazione kelseniana — voleva una Corte autonoma, distinta dai giudici ordinari, con potere di annullare le leggi con effetti generali. La logica era chiara: solo un organo specializzato e indipendente avrebbe garantito uniformità e certezza del diritto. Lasciare il controllo ai giudici ordinari avrebbe prodotto caos interpretativo.',
-            colore: '#38bdf8',
+            colore: '#0284c7',
             badge: 'Posizione tecnico-garantista',
           },
           {
@@ -128,13 +128,13 @@ const sezioni: Sezione[] = [
           {
             titolo: 'La posizione di Togliatti',
             testo: 'Palmiro Togliatti, segretario del PCI e ministro della Giustizia nel governo provvisorio, fu tra i più critici. Temeva che una Corte forte potesse diventare uno strumento conservatore per bloccare le riforme sociali che la sinistra sperava di ottenere attraverso le elezioni. Una maggioranza parlamentare progressista che approvasse riforme redistributive avrebbe potuto vederle annullate da giudici di nomina opposta.',
-            colore: '#a78bfa',
+            colore: '#7c3aed',
             badge: 'Posizione di sinistra',
           },
           {
             titolo: 'Il no al controllo preventivo',
             testo: 'Uno dei punti su cui si trovò un accordo trasversale fu il rifiuto del controllo preventivo (quello francese): se la Corte avesse dovuto esaminare ogni legge prima della sua entrata in vigore, si sarebbe trasformata in un filtro politico permanente sull\'attività legislativa — una sorta di terza Camera non eletta. Era troppo invasivo. Si scelse quindi il controllo successivo.',
-            colore: '#22c55e',
+            colore: '#16a34a',
             badge: 'Punto di accordo',
           },
         ],
@@ -142,14 +142,14 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'Il compromesso finale',
-        colore: '#fb7185',
+        colore: '#e11d48',
         contenuto:
           'Il risultato fu una soluzione di equilibrio, tipica della Costituzione del 1948 nel suo complesso. La Corte fu creata — e questo fu un successo della linea garantista — ma con tre limitazioni fondamentali pensate per ridurne il potere politico: (1) accesso filtrato, soprattutto tramite giudizio incidentale, così la Corte non può agire di propria iniziativa; (2) composizione mista (PdR + Parlamento + magistrature), così nessuna forza politica la controlla da sola; (3) nessun controllo preventivo, così non diventa un veto permanente sul legislatore.',
       },
       {
         tipo: 'confronto',
-        coloreLeft: '#fb7185',
-        coloreRight: '#22c55e',
+        coloreLeft: '#e11d48',
+        coloreRight: '#16a34a',
         left: {
           label: 'Le preoccupazioni dei costituenti',
           items: [
@@ -173,13 +173,13 @@ const sezioni: Sezione[] = [
       },
       {
         tipo: 'highlight',
-        colore: '#fb7185',
+        colore: '#e11d48',
         testo: 'La Corte entrò in funzione solo nel 1956, otto anni dopo la Costituzione. Il ritardo fu in parte politico: le forze che temevano una Corte troppo attiva rallentarono le nomine. La prima sentenza (n. 1/1956) stabilì subito che la Corte poteva giudicare anche le leggi anteriori alla Costituzione — un\'affermazione di autorità immediata e non scontata.',
       },
       {
         tipo: 'box',
         label: 'Il paradosso risolto: la "Costituzione vivente"',
-        colore: '#ffd700',
+        colore: '#ca8a04',
         contenuto:
           'Col tempo si è visto che i timori erano in parte fondati e in parte no. La Corte ha svolto un ruolo politico inevitabile — non potrebbe essere altrimenti, dato che interpreta la Costituzione su questioni sensibili. Ma ha anche garantito diritti fondamentali contro maggioranze parlamentari che avrebbero potuto comprimerli. Il concetto di "Costituzione vivente" (la Costituzione come la Corte la interpreta nel tempo) descrive proprio questo: la Corte non applica meccanicamente un testo, ma lo fa evolvere adattandolo alla realtà sociale — nel bene e nel male, secondo le diverse sensibilità politiche.',
       },
@@ -201,8 +201,8 @@ const sezioni: Sezione[] = [
       },
       {
         tipo: 'confronto',
-        coloreLeft: '#38bdf8',
-        coloreRight: '#a78bfa',
+        coloreLeft: '#0284c7',
+        coloreRight: '#7c3aed',
         left: {
           label: 'Sindacato DIFFUSO (common law)',
           items: [
@@ -234,7 +234,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'Sindacato preventivo vs successivo',
-        colore: '#ffd700',
+        colore: '#ca8a04',
         contenuto:
           'In Francia il Conseil constitutionnel controlla le leggi PRIMA che entrino in vigore (preventivo). In Italia, invece, la Corte interviene DOPO: la legge è già in vigore quando viene impugnata (successivo). Esiste una piccola eccezione: un controllo preventivo esiste anche in Italia, ma solo per gli Statuti regionali.',
       },
@@ -245,7 +245,7 @@ const sezioni: Sezione[] = [
   {
     id: 'composizione',
     titolo: 'Composizione e indipendenza',
-    colore: '#38bdf8',
+    colore: '#0284c7',
     bg: 'rgba(56,189,248,0.08)',
     icon: '👥',
     blocchi: [
@@ -266,13 +266,13 @@ const sezioni: Sezione[] = [
           {
             titolo: '5 giudici',
             testo: 'Eletti dal Parlamento in seduta comune (primi 3 scrutini: 2/3; dal 4° scrutinio: 3/5)',
-            colore: '#38bdf8',
+            colore: '#0284c7',
             badge: 'Parlamento',
           },
           {
             titolo: '5 giudici',
             testo: 'Eletti dalle magistrature ordinarie e amministrative',
-            colore: '#a78bfa',
+            colore: '#7c3aed',
             badge: 'Magistrature',
           },
         ],
@@ -292,7 +292,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'Il Presidente della Corte',
-        colore: '#38bdf8',
+        colore: '#0284c7',
         contenuto:
           'I giudici eleggono tra loro il Presidente a scrutinio segreto (maggioranza assoluta; al terzo scrutinio basta la relativa). Dura 3 anni ed è rieleggibile. Rappresenta la Corte, presiede udienze e camere di consiglio, sceglie il giudice relatore e, in caso di parità, il suo voto è decisivo.',
       },
@@ -303,7 +303,7 @@ const sezioni: Sezione[] = [
   {
     id: 'competenze',
     titolo: 'Le competenze della Corte',
-    colore: '#a78bfa',
+    colore: '#7c3aed',
     bg: 'rgba(167,139,250,0.08)',
     icon: '📋',
     blocchi: [
@@ -319,19 +319,19 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Conflitti di attribuzione',
             testo: 'Risolve le liti tra poteri dello Stato (es. Parlamento vs. Magistratura) o tra Stato e Regioni, quando qualcuno "invade" le funzioni di un altro. Qui si può impugnare qualsiasi atto, non solo le leggi.',
-            colore: '#38bdf8',
+            colore: '#0284c7',
             badge: 'Art. 134 Cost.',
           },
           {
             titolo: 'Ammissibilità del referendum',
             testo: 'Prima del voto, verifica che il quesito referendario rispetti i limiti costituzionali (no a leggi tributarie, amnistia, trattati internazionali) e che sia chiaro e omogeneo.',
-            colore: '#a78bfa',
+            colore: '#7c3aed',
             badge: 'Art. 75 Cost.',
           },
           {
             titolo: 'Accuse al Presidente della Repubblica',
             testo: 'Giudica il PdR per alto tradimento o attentato alla Costituzione. In questo caso la Corte è integrata da 16 giudici aggregati estratti a sorte.',
-            colore: '#22c55e',
+            colore: '#16a34a',
             badge: 'Art. 90 Cost.',
           },
         ],
@@ -346,7 +346,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'La norma interposta',
-        colore: '#a78bfa',
+        colore: '#7c3aed',
         contenuto:
           'A volte il parametro di giudizio non è direttamente la Costituzione, ma una norma esterna "richiamata" da essa. Esempio: l\'art. 117 Cost. impone alla legge di rispettare gli obblighi internazionali e il diritto UE. Se una legge viola la CEDU, viola "indirettamente" anche la Costituzione tramite l\'art. 117: la CEDU diventa norma interposta.',
       },
@@ -357,7 +357,7 @@ const sezioni: Sezione[] = [
   {
     id: 'incidentale',
     titolo: 'Il giudizio incidentale',
-    colore: '#22c55e',
+    colore: '#16a34a',
     bg: 'rgba(34,197,94,0.08)',
     icon: '🔄',
     blocchi: [
@@ -368,13 +368,13 @@ const sezioni: Sezione[] = [
       },
       {
         tipo: 'highlight',
-        colore: '#22c55e',
+        colore: '#16a34a',
         testo: 'Il giudice non "sceglie" di sollevare la questione: è un passaggio obbligato se non riesce a decidere senza prima risolvere il dubbio di costituzionalità.',
       },
       {
         tipo: 'box',
         label: "L'ordinanza di rimessione",
-        colore: '#22c55e',
+        colore: '#16a34a',
         contenuto:
           "È il documento con cui il giudice trasmette la questione alla Corte. Deve essere motivata in modo rigoroso: la Corte non accetta questioni generiche o pretestuose. L'ordinanza delimita esattamente cosa deve giudicare la Corte.",
       },
@@ -396,7 +396,7 @@ const sezioni: Sezione[] = [
   {
     id: 'principale',
     titolo: 'Il giudizio in via principale',
-    colore: '#ffd700',
+    colore: '#ca8a04',
     bg: 'rgba(255,215,0,0.08)',
     icon: '🏛',
     blocchi: [
@@ -407,8 +407,8 @@ const sezioni: Sezione[] = [
       },
       {
         tipo: 'confronto',
-        coloreLeft: '#ffd700',
-        coloreRight: '#fb7185',
+        coloreLeft: '#ca8a04',
+        coloreRight: '#e11d48',
         left: {
           label: 'Lo Stato impugna una legge regionale',
           items: [
@@ -442,7 +442,7 @@ const sezioni: Sezione[] = [
   {
     id: 'sentenze',
     titolo: 'Le tipologie di sentenze',
-    colore: '#fb7185',
+    colore: '#e11d48',
     bg: 'rgba(251,113,133,0.08)',
     icon: '📄',
     blocchi: [
@@ -463,7 +463,7 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Rigetto',
             testo: 'La Corte entra nel merito e dichiara che la norma non è incostituzionale. La legge resta in vigore. Effetto inter partes: altri giudici possono sollevare di nuovo la stessa questione con argomenti diversi.',
-            colore: '#22c55e',
+            colore: '#16a34a',
             badge: 'La norma resta',
           },
           {
@@ -475,7 +475,7 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Cessazione della materia del contendere',
             testo: 'Durante il giudizio la norma impugnata viene modificata o abrogata dal legislatore: il problema non esiste più, la Corte chiude il giudizio senza decidere nel merito (salvo che residuino effetti da esaminare).',
-            colore: '#38bdf8',
+            colore: '#0284c7',
             badge: 'Il problema è scomparso',
           },
         ],
@@ -487,7 +487,7 @@ const sezioni: Sezione[] = [
   {
     id: 'manipolative',
     titolo: 'Le sentenze manipolative',
-    colore: '#e879f9',
+    colore: '#c026d3',
     bg: 'rgba(232,121,249,0.08)',
     icon: '✂',
     blocchi: [
@@ -498,7 +498,7 @@ const sezioni: Sezione[] = [
       },
       {
         tipo: 'highlight',
-        colore: '#e879f9',
+        colore: '#c026d3',
         testo: 'Principio delle "rime obbligate": la Corte non inventa norme, ma usa materiale normativo già presente nell\'ordinamento. Sostituisce le "rime sbagliate" con quelle conformi alla Costituzione.',
       },
       {
@@ -549,7 +549,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: '💡 Perché la Corte non annulla sempre subito?',
-        colore: '#e879f9',
+        colore: '#c026d3',
         contenuto:
           'A volte la materia è talmente complessa che intervenire con una sentenza creerebbe più danni che benefici. Oppure la riforma richiede scelte politiche di dettaglio che spettano al Parlamento, non alla Corte. O ancora: non esiste ancora una disciplina alternativa da cui prendere il modello. In questi casi la Corte preferisce moniti e legittimità provvisoria, lasciando al legislatore il tempo di agire.',
       },
@@ -560,7 +560,7 @@ const sezioni: Sezione[] = [
   {
     id: 'conflitti',
     titolo: 'I conflitti di attribuzione',
-    colore: '#38bdf8',
+    colore: '#0284c7',
     bg: 'rgba(56,189,248,0.08)',
     icon: '⚡',
     blocchi: [
@@ -571,7 +571,7 @@ const sezioni: Sezione[] = [
       },
       {
         tipo: 'confronto',
-        coloreLeft: '#38bdf8',
+        coloreLeft: '#0284c7',
         coloreRight: '#f97316',
         left: {
           label: 'Conflitto INTERORGANICO (tra poteri dello Stato)',
@@ -596,7 +596,7 @@ const sezioni: Sezione[] = [
       },
       {
         tipo: 'highlight',
-        colore: '#38bdf8',
+        colore: '#0284c7',
         testo: 'Differenza fondamentale: nel giudizio di legittimità si contesta la NORMA (solo leggi o atti con forza di legge). Nel conflitto di attribuzione si contesta l\'ORGANO che ha agito, e si può impugnare qualsiasi atto — anche sentenze, atti amministrativi, comportamenti.',
       },
       {
@@ -615,7 +615,7 @@ const sezioni: Sezione[] = [
   {
     id: 'referendum',
     titolo: 'Ammissibilità del referendum',
-    colore: '#a78bfa',
+    colore: '#7c3aed',
     bg: 'rgba(167,139,250,0.08)',
     icon: '🗳',
     blocchi: [
@@ -627,7 +627,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'Come funziona il procedimento?',
-        colore: '#a78bfa',
+        colore: '#7c3aed',
         contenuto:
           'L\'Ufficio centrale presso la Cassazione verifica la regolarità formale della richiesta. Poi trasmette l\'ordinanza alla Corte, che fissa la camera di consiglio entro il 20 gennaio, nomina il relatore e avvisa promotori e Governo. La sentenza deve arrivare entro il 10 febbraio.',
       },
@@ -650,7 +650,7 @@ const sezioni: Sezione[] = [
   {
     id: 'politica',
     titolo: 'Giustizia politica e Tribunale dei ministri',
-    colore: '#22c55e',
+    colore: '#16a34a',
     bg: 'rgba(34,197,94,0.08)',
     icon: '🏛',
     blocchi: [
@@ -670,7 +670,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'I reati ministeriali: il Tribunale dei ministri',
-        colore: '#22c55e',
+        colore: '#16a34a',
         contenuto:
           'Dal 1989 (riforma dell\'art. 96 Cost.) i ministri e il Presidente del Consiglio non rispondono più davanti alla Corte, ma davanti alla magistratura ordinaria, con un filtro parlamentare. Il Tribunale dei ministri è un collegio di 3 magistrati sorteggiati nel distretto: svolge l\'istruttoria preliminare e, se ritiene ci siano elementi, trasmette gli atti alla Camera competente che deve autorizzare il procedimento. Solo dopo l\'autorizzazione il processo prosegue normalmente.',
       },
@@ -687,19 +687,19 @@ export default function CorteCostituzionalePage() {
     <>
       <style jsx global>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0d18; }
+        body { background: var(--bg); }
         ::-webkit-scrollbar { display: none; }
         html, body { overflow-x: hidden; }
       `}</style>
 
-      <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh' }}>
+      <div style={{ fontFamily: 'var(--font-ui)', background: 'var(--bg)', minHeight: '100vh' }}>
         <Header />
 
         <div style={{ padding: '20px 16px 140px' }}>
 
           {/* HERO */}
           <div style={{
-            background: 'linear-gradient(135deg, #0d1829, #111a2e)',
+            background: 'linear-gradient(135deg, var(--surface), var(--surface))',
             borderRadius: 28,
             padding: '28px 24px',
             border: '0.5px solid rgba(249,115,22,0.2)',
@@ -726,11 +726,11 @@ export default function CorteCostituzionalePage() {
               Organo di garanzia costituzionale
             </div>
 
-            <div style={{ fontSize: 28, fontWeight: 900, color: '#fff', lineHeight: 1.15, letterSpacing: -0.5, marginBottom: 10 }}>
+            <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.5, marginBottom: 10 }}>
               Corte<br />Costituzionale
             </div>
 
-            <div style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.5)', lineHeight: 1.75, marginBottom: 20 }}>
+            <div style={{ fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.75, marginBottom: 20 }}>
               Istituita dalla Costituzione del 1948, operativa dal 1956. Garante della
               supremazia della Costituzione su tutte le altre fonti del diritto italiano.
               Il modello è quello kelseniano: la Corte è un "legislatore negativo" che
@@ -741,15 +741,15 @@ export default function CorteCostituzionalePage() {
             <div style={{ display: 'flex', gap: 6 }}>
               {[
                 { num: 10, label: 'sezioni', colore: '#f97316' },
-                { num: 15, label: 'giudici', colore: '#38bdf8' },
-                { num: 9, label: 'anni mandato', colore: '#a78bfa' },
+                { num: 15, label: 'giudici', colore: '#0284c7' },
+                { num: 9, label: 'anni mandato', colore: '#7c3aed' },
               ].map((s, i) => (
                 <div key={i} style={{
                   flex: 1, background: `${s.colore}11`, borderRadius: 12,
                   padding: '10px 8px', border: `0.5px solid ${s.colore}33`, textAlign: 'center',
                 }}>
                   <div style={{ fontSize: 22, fontWeight: 900, color: s.colore }}>{s.num}</div>
-                  <div style={{ fontSize: 9.5, color: 'rgba(255,255,255,0.4)', marginTop: 3 }}>{s.label}</div>
+                  <div style={{ fontSize: 9.5, color: 'var(--text-3)', marginTop: 3 }}>{s.label}</div>
                 </div>
               ))}
             </div>
@@ -757,13 +757,13 @@ export default function CorteCostituzionalePage() {
 
           {/* INDICE RAPIDO */}
           <div style={{
-            background: '#111526',
+            background: 'var(--surface)',
             borderRadius: 18,
             padding: '16px',
-            border: '0.5px solid rgba(255,255,255,0.05)',
+            border: '0.5px solid var(--line)',
             marginBottom: 20,
           }}>
-            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 700, marginBottom: 12 }}>
+            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
               Indice degli argomenti
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -784,7 +784,7 @@ export default function CorteCostituzionalePage() {
                     color: s.colore,
                     fontSize: 10, fontWeight: 700,
                     cursor: 'pointer',
-                    fontFamily: 'Montserrat, sans-serif',
+                    fontFamily: 'var(--font-ui)',
                   }}
                 >
                   {s.icon} {s.titolo}
@@ -800,9 +800,9 @@ export default function CorteCostituzionalePage() {
                 key={sezione.id}
                 id={`sezione-${sezione.id}`}
                 style={{
-                  background: '#111526',
+                  background: 'var(--surface)',
                   borderRadius: 20,
-                  border: `0.5px solid ${aperta === sezione.id ? sezione.colore + '55' : 'rgba(255,255,255,0.05)'}`,
+                  border: `0.5px solid ${aperta === sezione.id ? sezione.colore + '55' : 'var(--line)'}`,
                   overflow: 'hidden',
                   transition: 'border-color 0.2s',
                 }}
@@ -828,10 +828,10 @@ export default function CorteCostituzionalePage() {
                     {sezione.icon}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: '#fff' }}>{sezione.titolo}</div>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{sezione.titolo}</div>
                   </div>
                   <div style={{
-                    color: 'rgba(255,255,255,0.3)', fontSize: 13, flexShrink: 0,
+                    color: 'var(--text-3)', fontSize: 13, flexShrink: 0,
                     transform: aperta === sezione.id ? 'rotate(180deg)' : 'none',
                     transition: 'transform 0.2s',
                   }}>▾</div>
@@ -839,12 +839,12 @@ export default function CorteCostituzionalePage() {
 
                 {/* CONTENUTO SEZIONE */}
                 {aperta === sezione.id && (
-                  <div style={{ padding: '0 16px 20px', borderTop: '0.5px solid rgba(255,255,255,0.05)' }}>
+                  <div style={{ padding: '0 16px 20px', borderTop: '0.5px solid var(--line)' }}>
                     <div style={{ paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 14 }}>
                       {sezione.blocchi.map((blocco, bi) => {
                         // ── TESTO ──
                         if (blocco.tipo === 'testo') return (
-                          <p key={bi} style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', lineHeight: 1.85 }}>
+                          <p key={bi} style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.85 }}>
                             {blocco.contenuto}
                           </p>
                         );
@@ -858,7 +858,7 @@ export default function CorteCostituzionalePage() {
                             borderRadius: '0 10px 10px 0',
                             padding: '12px 12px 12px 16px',
                           }}>
-                            <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, fontStyle: 'italic' }}>
+                            <p style={{ fontSize: 12.5, color: 'var(--text)', lineHeight: 1.8, fontStyle: 'italic' }}>
                               {blocco.testo}
                             </p>
                           </div>
@@ -877,7 +877,7 @@ export default function CorteCostituzionalePage() {
                               <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: col, fontWeight: 700, marginBottom: 8 }}>
                                 {blocco.label}
                               </div>
-                              <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.65)', lineHeight: 1.85 }}>
+                              <p style={{ fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.85 }}>
                                 {blocco.contenuto}
                               </p>
                             </div>
@@ -895,11 +895,11 @@ export default function CorteCostituzionalePage() {
                                 }} />
                                 <div>
                                   {item.titolo && (
-                                    <span style={{ fontSize: 12.5, fontWeight: 800, color: '#fff' }}>
+                                    <span style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text)' }}>
                                       {item.titolo}:{' '}
                                     </span>
                                   )}
-                                  <span style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.6)', lineHeight: 1.75 }}>
+                                  <span style={{ fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.75 }}>
                                     {item.testo}
                                   </span>
                                 </div>
@@ -928,7 +928,7 @@ export default function CorteCostituzionalePage() {
                                 {data.items.map((p, pi) => (
                                   <div key={pi} style={{ display: 'flex', gap: 7, marginBottom: 7, alignItems: 'flex-start' }}>
                                     <div style={{ width: 3, height: 3, borderRadius: '50%', background: col, flexShrink: 0, marginTop: 5 }} />
-                                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', lineHeight: 1.55 }}>{p}</div>
+                                    <div style={{ fontSize: 11, color: 'var(--text-2)', lineHeight: 1.55 }}>{p}</div>
                                   </div>
                                 ))}
                               </div>
@@ -949,7 +949,7 @@ export default function CorteCostituzionalePage() {
                                   border: `0.5px solid ${col}22`,
                                 }}>
                                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                                    <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', flex: 1 }}>
+                                    <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', flex: 1 }}>
                                       {card.titolo}
                                     </div>
                                     {card.badge && (
@@ -964,7 +964,7 @@ export default function CorteCostituzionalePage() {
                                       </div>
                                     )}
                                   </div>
-                                  <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>
+                                  <p style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.8 }}>
                                     {card.testo}
                                   </p>
                                 </div>
@@ -988,12 +988,12 @@ export default function CorteCostituzionalePage() {
             background: 'linear-gradient(135deg, rgba(249,115,22,0.05), rgba(56,189,248,0.05))',
             borderRadius: 18,
             padding: '18px 16px',
-            border: '0.5px solid rgba(255,255,255,0.05)',
+            border: '0.5px solid var(--line)',
           }}>
-            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 700, marginBottom: 10 }}>
+            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--text-3)', fontWeight: 700, marginBottom: 10 }}>
               Operatività storica
             </div>
-            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1.8 }}>
+            <p style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.8 }}>
               La Corte fu prevista dalla Costituzione nel 1948 ma diventò operativa solo nel{' '}
               <span style={{ color: '#f97316', fontWeight: 700 }}>1956</span>. Nel periodo
               transitorio, le controversie che oggi decide la Corte venivano risolte secondo le

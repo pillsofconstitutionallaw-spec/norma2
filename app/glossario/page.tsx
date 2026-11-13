@@ -43,10 +43,10 @@ export default function GlossarioPage() {
     <div
       style={{
         minHeight: '100vh',
-        background: '#050816',
-        color: '#fff',
+        background: 'var(--bg)',
+        color: 'var(--text)',
         paddingBottom: 120,
-        fontFamily: "'Montserrat', sans-serif",
+        fontFamily: 'var(--font-ui)',
       }}
     >
       <Header />
@@ -55,22 +55,22 @@ export default function GlossarioPage() {
       <div style={{ padding: '20px 16px 0' }}>
         <div
           style={{
-            background: '#0d1829',
+            background: 'var(--surface)',
             borderRadius: 28,
             padding: '28px 24px',
-            border: '0.5px solid rgba(255,255,255,0.06)',
+            border: '0.5px solid var(--line)',
           }}
         >
           <div
             style={{
               display: 'inline-block',
-              border: '1px solid rgba(255,255,255,0.2)',
+              border: '1px solid var(--line)',
               borderRadius: 99,
               padding: '4px 14px',
               fontSize: 9,
               letterSpacing: 3,
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.7)',
+              color: 'var(--text-2)',
               fontWeight: 700,
               marginBottom: 14,
             }}
@@ -83,7 +83,7 @@ export default function GlossarioPage() {
               fontWeight: 900,
               lineHeight: 1.1,
               letterSpacing: -1,
-              color: '#fff',
+              color: 'var(--text)',
               marginBottom: 10,
             }}
           >
@@ -91,7 +91,7 @@ export default function GlossarioPage() {
             <br />
             giuridico
           </div>
-          <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
+          <div style={{ fontSize: 13, color: 'var(--text-2)' }}>
             {glossario.length} termini · definizioni chiare · ricerca immediata
           </div>
         </div>
@@ -112,20 +112,20 @@ export default function GlossarioPage() {
               width: '100%',
               height: 52,
               borderRadius: 16,
-              background: 'rgba(255,255,255,0.04)',
-              border: '0.5px solid rgba(255,255,255,0.08)',
+              background: 'var(--fill)',
+              border: '0.5px solid var(--line)',
               padding: '0 44px 0 18px',
               color: '#fff',
               fontSize: 13,
               outline: 'none',
-              fontFamily: "'Montserrat', sans-serif",
+              fontFamily: 'var(--font-ui)',
               boxSizing: 'border-box',
             }}
           />
           <svg
             style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)' }}
             width="16" height="16" viewBox="0 0 24 24" fill="none"
-            stroke="rgba(255,255,255,0.3)" strokeWidth="2"
+            stroke="currentColor" strokeWidth="2"
           >
             <circle cx="11" cy="11" r="7" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -150,13 +150,13 @@ export default function GlossarioPage() {
               style={{
                 padding: '6px 11px',
                 borderRadius: 9,
-                background: letteraAttiva === l ? 'rgba(143,211,255,0.1)' : 'rgba(255,255,255,0.04)',
-                border: `0.5px solid ${letteraAttiva === l ? 'rgba(143,211,255,0.2)' : 'rgba(255,255,255,0.08)'}`,
-                color: letteraAttiva === l ? '#8fd3ff' : 'rgba(255,255,255,0.4)',
+                background: letteraAttiva === l ? 'rgba(143,211,255,0.1)' : 'var(--fill)',
+                border: `0.5px solid ${letteraAttiva === l ? 'rgba(143,211,255,0.2)' : 'var(--line)'}`,
+                color: letteraAttiva === l ? 'var(--accent)' : 'rgba(255,255,255,0.4)',
                 fontSize: 11,
                 fontWeight: 700,
                 cursor: 'pointer',
-                fontFamily: "'Montserrat', sans-serif",
+                fontFamily: 'var(--font-ui)',
               }}
             >
               {l}
@@ -182,7 +182,7 @@ export default function GlossarioPage() {
               <div style={{ width: 24, height: 1, background: 'rgba(143,211,255,0.4)' }} />
               <span
                 style={{
-                  color: '#8fd3ff',
+                  color: 'var(--accent)',
                   fontSize: 9,
                   letterSpacing: 3,
                   textTransform: 'uppercase',
@@ -191,7 +191,7 @@ export default function GlossarioPage() {
               >
                 {lettera}
               </span>
-              <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.04)' }} />
+              <div style={{ flex: 1, height: 1, background: 'var(--fill)' }} />
             </div>
 
             {termini.map((t) => (
@@ -199,9 +199,9 @@ export default function GlossarioPage() {
                 key={t.termine}
                 style={{
                   marginBottom: 10,
-                  background: '#0d1829',
+                  background: 'var(--surface)',
                   borderRadius: 18,
-                  border: '0.5px solid rgba(255,255,255,0.06)',
+                  border: '0.5px solid var(--line)',
                   overflow: 'hidden',
                 }}
               >
@@ -222,7 +222,7 @@ export default function GlossarioPage() {
                       style={{
                         fontSize: 15,
                         fontWeight: 800,
-                        color: '#fff',
+                        color: 'var(--text)',
                         marginBottom: 3,
                       }}
                     >
@@ -234,7 +234,7 @@ export default function GlossarioPage() {
                         letterSpacing: 2,
                         textTransform: 'uppercase',
                         fontWeight: 700,
-                        color: '#8fd3ff',
+                        color: 'var(--accent)',
                       }}
                     >
                       {t.categoria}
@@ -242,7 +242,7 @@ export default function GlossarioPage() {
                   </div>
                   <div
                     style={{
-                      color: 'rgba(255,255,255,0.3)',
+                      color: 'var(--text-3)',
                       fontSize: 14,
                       flexShrink: 0,
                       transform: aperti[t.termine] ? 'rotate(180deg)' : 'none',
@@ -258,12 +258,12 @@ export default function GlossarioPage() {
                   <div
                     style={{
                       padding: '0 18px 16px',
-                      borderTop: '0.5px solid rgba(255,255,255,0.05)',
+                      borderTop: '0.5px solid var(--line)',
                     }}
                   >
                     <div
                       style={{
-                        color: 'rgba(255,255,255,0.65)',
+                        color: 'var(--text-2)',
                         fontSize: 12.5,
                         lineHeight: 1.9,
                         marginTop: 12,
@@ -282,7 +282,7 @@ export default function GlossarioPage() {
           <div
             style={{
               textAlign: 'center',
-              color: 'rgba(255,255,255,0.3)',
+              color: 'var(--text-3)',
               fontSize: 13,
               marginTop: 40,
             }}
@@ -296,8 +296,8 @@ export default function GlossarioPage() {
 
       <style>{`
         input[type="text"]::placeholder {
-          color: rgba(255,255,255,0.25);
-          font-family: 'Montserrat', sans-serif;
+          color: var(--text-3);
+          font-family: var(--font-ui);
         }
       `}</style>
     </div>

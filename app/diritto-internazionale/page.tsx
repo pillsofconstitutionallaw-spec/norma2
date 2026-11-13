@@ -13,7 +13,7 @@ const sezioni: Sezione[] = [
     id: 'fonti',
     label: 'Fonti del diritto internazionale',
     sub: 'Gerarchia · art. 38 Statuto CIG',
-    colore: '#ffd700',
+    colore: '#ca8a04',
     icon: '<path d="M12 3V21M12 3L5 7L12 11L19 7L12 3Z"/><path d="M5 7L2 14C2 16 3.5 17 5 17C6.5 17 8 16 8 14L5 7Z"/><path d="M19 7L16 14C16 16 17.5 17 19 17C20.5 17 22 16 22 14L19 7Z"/><path d="M3 21H21"/>',
     voci: [
       {
@@ -134,7 +134,7 @@ Si distinguono dai principi propri dell'ordinamento internazionale, ricavati per
     id: 'dichiarazioni',
     label: 'Le dichiarazioni',
     sub: 'Soft law · principi fondamentali',
-    colore: '#a78bfa',
+    colore: '#7c3aed',
     icon: '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/>',
     voci: [
       {
@@ -278,7 +278,7 @@ Si distinguono dai principi propri dell'ordinamento internazionale, ricavati per
     id: 'trattati',
     label: 'I trattati più importanti',
     sub: 'Convenzioni e patti fondamentali',
-    colore: '#38bdf8',
+    colore: '#0284c7',
     icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
     voci: [
       {
@@ -488,7 +488,7 @@ Si distinguono dai principi propri dell'ordinamento internazionale, ricavati per
     id: 'sentenze',
     label: 'Le sentenze',
     sub: 'CIG · CEDU · giurisprudenza italiana',
-    colore: '#22c55e',
+    colore: '#16a34a',
     icon: '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M9 13l2 2 4-4"/>',
     voci: [
       {
@@ -585,8 +585,8 @@ export default function DirittoInternazionale() {
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
       <style jsx global>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0d18; }
-        .di-app { font-family: 'Montserrat', sans-serif; background: #0a0d18; width: 100%; min-height: 100vh; }
+        body { background: var(--bg); }
+        .di-app { font-family: var(--font-ui); background: var(--bg); width: 100%; min-height: 100vh; }
         .di-feed { min-height: 100vh; padding: 20px 16px 140px; }
         a { text-decoration: none; }
         ::-webkit-scrollbar { display: none; }
@@ -602,9 +602,9 @@ export default function DirittoInternazionale() {
 
           {/* TITOLO */}
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 8 }}>Diritto Internazionale</div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: '#fff', lineHeight: 1.15, marginBottom: 10, letterSpacing: -0.5 }}>Fonti, dichiarazioni, trattati e sentenze</div>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', lineHeight: 1.7 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>Diritto Internazionale</div>
+            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, marginBottom: 10, letterSpacing: -0.5 }}>Fonti, dichiarazioni, trattati e sentenze</div>
+            <div style={{ fontSize: 13, color: 'var(--text-3)', lineHeight: 1.7 }}>
               Tocca una sezione per scoprire le voci, le definizioni e i riferimenti. Materiale basato sul manuale Conforti-Iovane.
             </div>
           </div>
@@ -621,19 +621,19 @@ export default function DirittoInternazionale() {
                   style={{ width: '100%', display: 'flex', alignItems: 'stretch', borderRadius: 12, overflow: 'hidden', border: 'none', cursor: 'pointer', padding: 0, background: 'transparent' }}
                 >
                   <div style={{ width: 4, background: f.colore, flexShrink: 0 }} />
-                  <div style={{ background: '#111526', width: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <div style={{ background: 'var(--surface)', width: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={f.colore} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
                       dangerouslySetInnerHTML={{ __html: f.icon }} />
                   </div>
-                  <div style={{ background: '#111526', padding: '12px 14px 12px 0', flex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', minWidth: 0 }}>
+                  <div style={{ background: 'var(--surface)', padding: '12px 14px 12px 0', flex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', minWidth: 0 }}>
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'left' }}>{f.label}</div>
-                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 2, textAlign: 'left' }}>{f.sub}</div>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'left' }}>{f.label}</div>
+                      <div style={{ fontSize: 10, color: 'var(--text-3)', marginTop: 2, textAlign: 'left' }}>{f.sub}</div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginRight: 14, flexShrink: 0 }}>
-                      <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)' }}>{f.voci.length}</span>
+                      <span style={{ fontSize: 10, color: 'var(--text-3)' }}>{f.voci.length}</span>
                       <div style={{ transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
                       </div>
                     </div>
                   </div>
@@ -646,15 +646,15 @@ export default function DirittoInternazionale() {
                       const subKey = `${f.id}-${si}`;
                       const isSubOpen = apertaVoce === subKey;
                       return (
-                        <div key={si} style={{ background: '#0d1830', borderRadius: 10, marginBottom: 6, overflow: 'hidden', border: `0.5px solid ${isSubOpen ? f.colore + '66' : 'rgba(255,255,255,0.06)'}`, transition: 'border-color 0.15s' }}>
+                        <div key={si} style={{ background: '#0d1830', borderRadius: 10, marginBottom: 6, overflow: 'hidden', border: `0.5px solid ${isSubOpen ? f.colore + '66' : 'var(--line)'}`, transition: 'border-color 0.15s' }}>
 
                           <button
                             onClick={() => toggleVoce(subKey)}
                             style={{ width: '100%', padding: '12px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', gap: 8 }}
                           >
-                            <div style={{ fontSize: 12, fontWeight: 700, color: '#fff', flex: 1, textAlign: 'left' }}>{sub.nome}</div>
+                            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', flex: 1, textAlign: 'left' }}>{sub.nome}</div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-                              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)' }}>{sub.rif.length}</span>
+                              <span style={{ fontSize: 10, color: 'var(--text-3)' }}>{sub.rif.length}</span>
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={f.colore} strokeWidth="2"
                                 style={{ transform: isSubOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
                                 <path d="M6 9l6 6 6-6"/>
@@ -664,12 +664,12 @@ export default function DirittoInternazionale() {
 
                           {isSubOpen && (
                             <div style={{ padding: '0 14px 14px' }}>
-                              <div style={{ height: 0.5, background: 'rgba(255,255,255,0.06)', marginBottom: 10 }} />
+                              <div style={{ height: 0.5, background: 'var(--fill)', marginBottom: 10 }} />
 
                               {/* Definizione */}
                               {sub.def.split('\n').map((r, i) => (
                                 r.trim()
-                                  ? <p key={i} style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', lineHeight: 1.75, marginBottom: 6 }}
+                                  ? <p key={i} style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.75, marginBottom: 6 }}
                                       dangerouslySetInnerHTML={{ __html: r.replace(/•/g, `<span style="color:${f.colore}">•</span>`) }} />
                                   : <br key={i} />
                               ))}
@@ -681,7 +681,7 @@ export default function DirittoInternazionale() {
                                   {sub.esempi.map((e, ei) => (
                                     <div key={ei} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 5 }}>
                                       <div style={{ width: 4, height: 4, borderRadius: '50%', background: f.colore, flexShrink: 0, marginTop: 6 }} />
-                                      <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', lineHeight: 1.5 }}>{e}</span>
+                                      <span style={{ fontSize: 11, color: 'var(--text-2)', lineHeight: 1.5 }}>{e}</span>
                                     </div>
                                   ))}
                                 </>
@@ -693,14 +693,14 @@ export default function DirittoInternazionale() {
                                 const rifKey = `${subKey}-${senti}`;
                                 const isRifOpen = apertoRif === rifKey;
                                 return (
-                                  <div key={senti} style={{ border: `0.5px solid ${isRifOpen ? f.colore + '66' : 'rgba(255,255,255,0.07)'}`, borderRadius: 8, marginBottom: 6, overflow: 'hidden', transition: 'border-color 0.15s' }}>
+                                  <div key={senti} style={{ border: `0.5px solid ${isRifOpen ? f.colore + '66' : 'var(--line)'}`, borderRadius: 8, marginBottom: 6, overflow: 'hidden', transition: 'border-color 0.15s' }}>
                                     <button
                                       onClick={() => toggleRif(rifKey)}
                                       style={{ width: '100%', padding: '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', background: 'transparent', border: 'none', cursor: 'pointer', gap: 8 }}
                                     >
                                       <div style={{ flex: 1, textAlign: 'left' }}>
                                         <div style={{ fontSize: 10, fontWeight: 800, color: f.colore, marginBottom: 2 }}>{s.n}</div>
-                                        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)' }}>{s.caso}</div>
+                                        <div style={{ fontSize: 10, color: 'var(--text-3)' }}>{s.caso}</div>
                                       </div>
                                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={f.colore} strokeWidth="2"
                                         style={{ transform: isRifOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0, marginTop: 2 }}>
@@ -709,8 +709,8 @@ export default function DirittoInternazionale() {
                                     </button>
                                     {isRifOpen && (
                                       <div style={{ padding: '0 12px 12px' }}>
-                                        <div style={{ height: 0.5, background: 'rgba(255,255,255,0.06)', marginBottom: 8 }} />
-                                        <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.55)', lineHeight: 1.75, fontStyle: 'italic', marginBottom: 8 }}>«{s.testo}»</p>
+                                        <div style={{ height: 0.5, background: 'var(--fill)', marginBottom: 8 }} />
+                                        <p style={{ fontSize: 11, color: 'var(--text-2)', lineHeight: 1.75, fontStyle: 'italic', marginBottom: 8 }}>«{s.testo}»</p>
                                         <a href={s.link} target="_blank" rel="noreferrer"
                                           style={{ fontSize: 9, fontWeight: 800, color: f.colore, letterSpacing: 1, textTransform: 'uppercase' }}>
                                           Approfondisci →

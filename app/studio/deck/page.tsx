@@ -123,24 +123,24 @@ function DeckContent() {
     setFase('studio');
   }
 
-  const colore = materia?.colore ?? '#38bdf8';
+  const colore = materia?.colore ?? '#0284c7';
   const progresso = carte.length > 0 ? (indice / carte.length) * 100 : 0;
 
   return (
     <>
       <style jsx global>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0d18; }
+        body { background: var(--bg); }
         ::-webkit-scrollbar { display: none; }
-        @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes toastIn { from { opacity:0; transform:translateX(-50%) translateY(10px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
       `}</style>
 
-      <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh' }}>
+      <div style={{ fontFamily: 'var(--font-ui)', background: 'var(--bg)', minHeight: '100vh' }}>
         <Header />
 
         {toastVisible && (
-          <div style={{ position:'fixed', bottom:100, left:'50%', transform:'translateX(-50%)', background:'#1e293b', border:'0.5px solid rgba(56,189,248,0.5)', borderRadius:14, padding:'11px 20px', fontSize:12, fontWeight:800, color:'#38bdf8', zIndex:9999, whiteSpace:'nowrap', animation:'toastIn 0.25s ease' }}>
+          <div style={{ position:'fixed', bottom:100, left:'50%', transform:'translateX(-50%)', background: '#1e293b', border: '0.5px solid rgba(56,189,248,0.5)', borderRadius:14, padding:'11px 20px', fontSize:12, fontWeight:800, color: '#0284c7', zIndex:9999, whiteSpace:'nowrap', animation:'toastIn 0.25s ease' }}>
             🔖 Segnalibro salvato!
           </div>
         )}
@@ -149,16 +149,16 @@ function DeckContent() {
 
           {/* Banner riprendi sessione */}
           {sessioneSalvata && materia && (
-            <div style={{ background:'#111526', border:`0.5px solid ${colore}55`, borderRadius:16, padding:'14px 16px', marginBottom:20, animation:'fadeUp 0.3s ease' }}>
-              <div style={{ fontSize:11, fontWeight:800, color:'#fff', marginBottom:4 }}>🔖 Sessione salvata</div>
-              <div style={{ fontSize:10, color:'rgba(255,255,255,0.4)', marginBottom:12 }}>
+            <div style={{ background: 'var(--surface)', border: `0.5px solid ${colore}55`, borderRadius:16, padding:'14px 16px', marginBottom:20, animation:'fadeUp 0.3s ease' }}>
+              <div style={{ fontSize:11, fontWeight:800, color: 'var(--text)', marginBottom:4 }}>🔖 Sessione salvata</div>
+              <div style={{ fontSize:10, color: 'var(--text-3)', marginBottom:12 }}>
                 {materia.icona} {materia.titolo} · carta {sessioneSalvata.indice + 1} di {materia.carte.length}
               </div>
               <div style={{ display:'flex', gap:8 }}>
-                <button onClick={riprendiSessione} style={{ flex:1, padding:'10px', borderRadius:12, border:'none', background:`linear-gradient(135deg,${colore},#818cf8)`, color:'#fff', fontWeight:800, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>
+                <button onClick={riprendiSessione} style={{ flex:1, padding:'10px', borderRadius:12, border: 'none', background: `linear-gradient(135deg,${colore},#4f46e5)`, color: '#fff', fontWeight:800, fontSize:12, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>
                   ▶ Riprendi
                 </button>
-                <button onClick={() => { cancellaSessione(); avvia(materia!); }} style={{ padding:'10px 14px', borderRadius:12, border:'0.5px solid rgba(255,255,255,0.1)', background:'transparent', color:'rgba(255,255,255,0.4)', fontWeight:700, fontSize:12, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>
+                <button onClick={() => { cancellaSessione(); avvia(materia!); }} style={{ padding:'10px 14px', borderRadius:12, border: '0.5px solid var(--line)', background: 'transparent', color: 'var(--text-3)', fontWeight:700, fontSize:12, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>
                   Ricomincia
                 </button>
               </div>
@@ -169,29 +169,29 @@ function DeckContent() {
           {fase === 'studio' && materia && carte.length > 0 && !sessioneSalvata && (
             <div>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
-                <button onClick={() => router.back()} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.4)', fontSize:13, cursor:'pointer', padding:0, fontFamily:'Montserrat, sans-serif' }}>← Indietro</button>
-                <span style={{ fontSize:12, fontWeight:700, color:'rgba(255,255,255,0.5)' }}>{indice + 1} / {carte.length}</span>
-                <button onClick={salvaManualmente} style={{ background:'none', border:'none', cursor:'pointer', padding:4, fontSize:22, lineHeight:1, opacity:toastVisible?1:0.45, transition:'opacity 0.2s' }}>🔖</button>
+                <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: 'var(--text-3)', fontSize:13, cursor:'pointer', padding:0, fontFamily: 'var(--font-ui)'}}>← Indietro</button>
+                <span style={{ fontSize:12, fontWeight:700, color: 'var(--text-2)' }}>{indice + 1} / {carte.length}</span>
+                <button onClick={salvaManualmente} style={{ background: 'none', border: 'none', cursor:'pointer', padding:4, fontSize:22, lineHeight:1, opacity:toastVisible?1:0.45, transition:'opacity 0.2s' }}>🔖</button>
               </div>
-              <div style={{ background:'rgba(255,255,255,0.07)', borderRadius:4, height:4, marginBottom:20 }}>
-                <div style={{ background:colore, height:4, borderRadius:4, width:`${progresso}%`, transition:'width 0.3s' }} />
+              <div style={{ background: 'var(--fill)', borderRadius:4, height:4, marginBottom:20 }}>
+                <div style={{ background: colore, height:4, borderRadius:4, width:`${progresso}%`, transition:'width 0.3s' }} />
               </div>
               <div
                 onClick={() => setGirata(g => !g)}
-                style={{ background:girata?'#0d1f35':'#111526', border:girata?`1px solid ${colore}55`:'1px solid rgba(255,255,255,0.08)', borderRadius:24, padding:'32px 22px', height:260, maxHeight:260, overflowY:'auto', cursor:'pointer', marginBottom:20, transition:'background 0.3s,border 0.3s', display:'flex', flexDirection:'column', justifyContent:'flex-start' }}
+                style={{ background: girata?'#0d1f35':'var(--surface)', border: girata?`1px solid ${colore}55`:'1px solid var(--line)', borderRadius:24, padding:'32px 22px', height:260, maxHeight:260, overflowY:'auto', cursor:'pointer', marginBottom:20, transition:'background 0.3s,border 0.3s', display:'flex', flexDirection:'column', justifyContent:'flex-start' }}
               >
-                <div style={{ fontSize:9, fontWeight:700, letterSpacing:2, textTransform:'uppercase', color:girata?colore:'rgba(255,255,255,0.25)', marginBottom:16, flexShrink:0 }}>
+                <div style={{ fontSize:9, fontWeight:700, letterSpacing:2, textTransform:'uppercase', color: girata?colore:'#8e8e99', marginBottom:16, flexShrink:0 }}>
                   {girata ? 'RISPOSTA' : 'DOMANDA'}
                 </div>
-                <div style={{ fontSize:girata?14:16, fontWeight:girata?400:700, color:'#fff', lineHeight:1.85 }}>
+                <div style={{ fontSize:girata?14:16, fontWeight:girata?400:700, color: 'var(--text)', lineHeight:1.85 }}>
                   {girata ? carte[indice].risposta : carte[indice].domanda}
                 </div>
-                {!girata && <div style={{ fontSize:10, color:'rgba(255,255,255,0.2)', marginTop:20, flexShrink:0 }}>Tocca per vedere la risposta</div>}
+                {!girata && <div style={{ fontSize:10, color: 'var(--text-3)', marginTop:20, flexShrink:0 }}>Tocca per vedere la risposta</div>}
               </div>
               {girata && (
                 <div style={{ display:'flex', gap:10 }}>
-                  <button onClick={() => rispondi(false)} style={{ flex:1, height:56, borderRadius:16, border:'none', background:'#ef4444', color:'#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>✗ Non sapevo</button>
-                  <button onClick={() => rispondi(true)} style={{ flex:1, height:56, borderRadius:16, border:'none', background:'#22c55e', color:'#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>✓ Sapevo</button>
+                  <button onClick={() => rispondi(false)} style={{ flex:1, height:56, borderRadius:16, border: 'none', background: '#ef4444', color: '#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>✗ Non sapevo</button>
+                  <button onClick={() => rispondi(true)} style={{ flex:1, height:56, borderRadius:16, border: 'none', background: '#16a34a', color: '#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>✓ Sapevo</button>
                 </div>
               )}
             </div>
@@ -201,32 +201,32 @@ function DeckContent() {
           {fase === 'risultati' && materia && (
             <div style={{ textAlign:'center', paddingTop:20, animation:'fadeUp 0.4s ease' }}>
               <div style={{ fontSize:52, marginBottom:16 }}>{sapute >= nonSapute ? '🎉' : '💪'}</div>
-              <div style={{ fontSize:22, fontWeight:900, color:'#fff', marginBottom:6 }}>Sessione completata!</div>
-              <div style={{ fontSize:13, color:'rgba(255,255,255,0.45)', marginBottom:28 }}>
+              <div style={{ fontSize:22, fontWeight:900, color: 'var(--text)', marginBottom:6 }}>Sessione completata!</div>
+              <div style={{ fontSize:13, color: 'var(--text-2)', marginBottom:28 }}>
                 Hai risposto correttamente al {Math.round((sapute / Math.max(sapute + nonSapute, 1)) * 100)}% delle carte
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:28 }}>
-                <div style={{ background:'#111526', borderRadius:16, padding:'20px 10px', border:'0.5px solid rgba(34,197,94,0.3)' }}>
-                  <div style={{ fontSize:36, fontWeight:900, color:'#22c55e' }}>{sapute}</div>
-                  <div style={{ fontSize:11, color:'rgba(255,255,255,0.4)', marginTop:4 }}>Sapevo</div>
+                <div style={{ background: 'var(--surface)', borderRadius:16, padding:'20px 10px', border: '0.5px solid rgba(34,197,94,0.3)' }}>
+                  <div style={{ fontSize:36, fontWeight:900, color: '#16a34a' }}>{sapute}</div>
+                  <div style={{ fontSize:11, color: 'var(--text-3)', marginTop:4 }}>Sapevo</div>
                 </div>
-                <div style={{ background:'#111526', borderRadius:16, padding:'20px 10px', border:'0.5px solid rgba(239,68,68,0.3)' }}>
-                  <div style={{ fontSize:36, fontWeight:900, color:'#ef4444' }}>{nonSapute}</div>
-                  <div style={{ fontSize:11, color:'rgba(255,255,255,0.4)', marginTop:4 }}>Non sapevo</div>
+                <div style={{ background: 'var(--surface)', borderRadius:16, padding:'20px 10px', border: '0.5px solid rgba(239,68,68,0.3)' }}>
+                  <div style={{ fontSize:36, fontWeight:900, color: '#ef4444' }}>{nonSapute}</div>
+                  <div style={{ fontSize:11, color: 'var(--text-3)', marginTop:4 }}>Non sapevo</div>
                 </div>
               </div>
               {daRipetere.length > 0 && (
-                <button onClick={riprova} style={{ width:'100%', padding:'15px', borderRadius:16, border:'none', background:`linear-gradient(135deg,${colore},#818cf8)`, color:'#fff', fontWeight:800, fontSize:14, cursor:'pointer', fontFamily:'Montserrat, sans-serif', marginBottom:10 }}>
+                <button onClick={riprova} style={{ width:'100%', padding:'15px', borderRadius:16, border: 'none', background: `linear-gradient(135deg,${colore},#4f46e5)`, color: '#fff', fontWeight:800, fontSize:14, cursor:'pointer', fontFamily: 'var(--font-ui)', marginBottom:10 }}>
                   🔄 Ripassa quelle sbagliate ({daRipetere.length})
                 </button>
               )}
-              <button onClick={() => avvia(materia!)} style={{ width:'100%', padding:'15px', borderRadius:16, border:'none', background:`linear-gradient(135deg,${colore},#818cf8)`, color:'#fff', fontWeight:800, fontSize:14, cursor:'pointer', fontFamily:'Montserrat, sans-serif', marginBottom:10 }}>
+              <button onClick={() => avvia(materia!)} style={{ width:'100%', padding:'15px', borderRadius:16, border: 'none', background: `linear-gradient(135deg,${colore},#4f46e5)`, color: '#fff', fontWeight:800, fontSize:14, cursor:'pointer', fontFamily: 'var(--font-ui)', marginBottom:10 }}>
                 🔁 Ricomincia
               </button>
-              <button onClick={() => router.push('/studio/gioca')} style={{ width:'100%', padding:'15px', borderRadius:16, border:'0.5px solid rgba(52,211,153,0.3)', background:'rgba(52,211,153,0.06)', color:'#34d399', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily:'Montserrat, sans-serif', marginBottom:10 }}>
+              <button onClick={() => router.push('/studio/gioca')} style={{ width:'100%', padding:'15px', borderRadius:16, border: '0.5px solid rgba(52,211,153,0.3)', background: 'rgba(52,211,153,0.06)', color: '#059669', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily: 'var(--font-ui)', marginBottom:10 }}>
                 🎮 Impara Giocando
               </button>
-              <button onClick={() => router.back()} style={{ width:'100%', padding:'15px', borderRadius:16, border:'0.5px solid rgba(255,255,255,0.08)', background:'#111526', color:'rgba(255,255,255,0.4)', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily:'Montserrat, sans-serif' }}>
+              <button onClick={() => router.back()} style={{ width:'100%', padding:'15px', borderRadius:16, border: '0.5px solid var(--line)', background: 'var(--surface)', color: 'var(--text-3)', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>
                 ← Torna alle materie
               </button>
             </div>
@@ -242,8 +242,8 @@ function DeckContent() {
 export default function DeckPage() {
   return (
     <Suspense fallback={
-      <div style={{ background:'#0a0d18', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center' }}>
-        <div style={{ color:'rgba(255,255,255,0.4)', fontSize:14, fontFamily:'Montserrat, sans-serif' }}>Caricamento...</div>
+      <div style={{ background: 'var(--bg)', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center' }}>
+        <div style={{ color: 'var(--text-3)', fontSize:14, fontFamily: 'var(--font-ui)'}}>Caricamento...</div>
       </div>
     }>
       <DeckContent />

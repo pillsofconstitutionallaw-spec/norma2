@@ -15,22 +15,22 @@ type NewsItem = {
 
 const COLORE_FONTE: Record<string, string> = {
   'Altalex': '#f97316',
-  'Gazzetta Ufficiale': '#ffd700',
-  'Diritto.it': '#fb7185',
-  'Corte Costituzionale': '#38bdf8',
+  'Gazzetta Ufficiale': '#ca8a04',
+  'Diritto.it': '#e11d48',
+  'Corte Costituzionale': '#0284c7',
 };
 
 const COLORE_CATEGORIA: Record<string, string> = {
   'Penale': '#f97316',
-  'Civile': '#38bdf8',
-  'Costituzionale': '#38bdf8',
-  'UE': '#a78bfa',
-  'Lavoro': '#22c55e',
-  'GU': '#ffd700',
-  'Tributario': '#ffd700',
-  'Amministrativo': '#fb7185',
+  'Civile': '#0284c7',
+  'Costituzionale': '#0284c7',
+  'UE': '#7c3aed',
+  'Lavoro': '#16a34a',
+  'GU': '#ca8a04',
+  'Tributario': '#ca8a04',
+  'Amministrativo': '#e11d48',
   'Normativa': '#f97316',
-  'Giurisprudenza': '#fb7185',
+  'Giurisprudenza': '#e11d48',
 };
 
 function decodeHtml(str: string): string {
@@ -89,7 +89,7 @@ function NewsCard({ item }: { item: NewsItem }) {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const colFonte = COLORE_FONTE[item.fonte] ?? '#8fd3ff';
+  const colFonte = COLORE_FONTE[item.fonte] ?? 'var(--accent)';
 
   function share(e: React.MouseEvent) {
     e.preventDefault();
@@ -103,26 +103,26 @@ function NewsCard({ item }: { item: NewsItem }) {
   }
 
   return (
-    <article style={{ background: '#0a0d18', borderBottom: '0.5px solid rgba(255,255,255,0.07)', paddingBottom: 2 }}>
+    <article style={{ background: 'var(--bg)', borderBottom: '0.5px solid var(--line)', paddingBottom: 2 }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px' }}>
         <div style={{ width: 36, height: 36, borderRadius: '50%', flexShrink: 0, background: colFonte + '22', border: `1.5px solid ${colFonte}44`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontSize: 14, fontWeight: 900, color: colFonte, fontFamily: 'Montserrat, sans-serif' }}>{item.fonte[0]}</span>
+          <span style={{ fontSize: 14, fontWeight: 900, color: colFonte, fontFamily: 'var(--font-ui)'}}>{item.fonte[0]}</span>
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 12.5, fontWeight: 800, color: '#fff', fontFamily: 'Montserrat, sans-serif', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.fonte}</div>
-          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.38)', fontFamily: 'Montserrat, sans-serif' }}>{item.categoria}</div>
+          <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text)', fontFamily: 'var(--font-ui)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.fonte}</div>
+          <div style={{ fontSize: 10, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>{item.categoria}</div>
         </div>
-        <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 6px', color: 'rgba(255,255,255,0.55)', fontSize: 18, lineHeight: 1, letterSpacing: 1 }}>···</button>
+        <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 6px', color: 'var(--text-2)', fontSize: 18, lineHeight: 1, letterSpacing: 1 }}>···</button>
       </div>
 
       {/* Media 4:5 */}
       <a href={item.link} target="_blank" rel="noreferrer noopener" aria-label={item.titolo}
-        style={{ display: 'block', position: 'relative', aspectRatio: '4/5', background: '#07162b', overflow: 'hidden', textDecoration: 'none' }}>
-        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${colFonte}12 0%, #07162b 60%)` }} />
+        style={{ display: 'block', position: 'relative', aspectRatio: '4/5', background: 'var(--surface-2)', overflow: 'hidden', textDecoration: 'none' }}>
+        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${colFonte}12 0%, var(--surface-2) 60%)` }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 100%)' }} />
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 14px 20px' }}>
-          <div style={{ fontSize: 20, fontWeight: 900, color: '#fff', lineHeight: 1.15, letterSpacing: -0.3, fontFamily: 'Montserrat, sans-serif' }}>{item.titolo}</div>
+          <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.3, fontFamily: 'var(--font-ui)'}}>{item.titolo}</div>
         </div>
       </a>
 
@@ -136,19 +136,19 @@ function NewsCard({ item }: { item: NewsItem }) {
           </svg>
         </button>
         <a href={item.link} target="_blank" rel="noreferrer noopener" aria-label="Leggi e commenta" style={{ display: 'flex', alignItems: 'center' }}>
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
           </svg>
         </a>
         <button aria-label="Condividi" onClick={share} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}>
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"/>
-            <polygon points="22 2 15 22 11 13 2 9 22 2" fill="rgba(255,255,255,0.85)" stroke="none"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2" fill="currentColor" stroke="none"/>
           </svg>
         </button>
         <button aria-label={saved ? 'Rimuovi dai salvati' : 'Salva'} onClick={toggleSave}
           style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
-          <svg width="26" height="26" viewBox="0 0 24 24" fill={saved ? '#8fd3ff' : 'none'} stroke={saved ? '#8fd3ff' : 'rgba(255,255,255,0.85)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'fill 0.15s, stroke 0.15s' }}>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill={saved ? '#4f46e5' : 'none'} stroke={saved ? '#4f46e5' : 'rgba(255,255,255,0.85)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'fill 0.15s, stroke 0.15s' }}>
             <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
           </svg>
         </button>
@@ -157,17 +157,17 @@ function NewsCard({ item }: { item: NewsItem }) {
       {/* Caption */}
       <div style={{ padding: '2px 14px 12px' }}>
         {item.anteprima && (
-          <div style={{ fontSize: 13, lineHeight: 1.55, fontFamily: 'Montserrat, sans-serif', color: 'rgba(255,255,255,0.85)', marginBottom: 7 }}>
-            <span style={{ fontWeight: 800, color: '#fff', marginRight: 6 }}>{item.fonte}</span>
-            <span style={{ color: 'rgba(255,255,255,0.7)', fontWeight: 400 }}>{item.anteprima}</span>
+          <div style={{ fontSize: 13, lineHeight: 1.55, fontFamily: 'var(--font-ui)', color: 'var(--text)', marginBottom: 7 }}>
+            <span style={{ fontWeight: 800, color: 'var(--text)', marginRight: 6 }}>{item.fonte}</span>
+            <span style={{ color: 'var(--text-2)', fontWeight: 400 }}>{item.anteprima}</span>
           </div>
         )}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <a href={item.link} target="_blank" rel="noreferrer noopener"
-            style={{ fontSize: 11.5, fontWeight: 700, color: colFonte, textDecoration: 'none', fontFamily: 'Montserrat, sans-serif' }}>
+            style={{ fontSize: 11.5, fontWeight: 700, color: colFonte, textDecoration: 'none', fontFamily: 'var(--font-ui)'}}>
             Leggi la notizia →
           </a>
-          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', fontFamily: 'Montserrat, sans-serif' }}>{dataRelativa(item.data)}</span>
+          <span style={{ fontSize: 10, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>{dataRelativa(item.data)}</span>
         </div>
       </div>
     </article>
@@ -211,25 +211,25 @@ export default function NewsClient({
     <>
       <style jsx global>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0d18; }
+        body { background: var(--bg); }
         ::-webkit-scrollbar { display: none; }
         html, body { overflow-x: hidden; }
         .news-card-link { text-decoration: none; display: block; }
-        .news-card-link:active { opacity: 0.75; }
+        .news-card-link: active { opacity: 0.75; }
       `}</style>
 
-      <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh' }}>
+      <div style={{ fontFamily: 'var(--font-ui)', background: 'var(--bg)', minHeight: '100vh' }}>
         <Header />
 
         {/* HERO */}
         <div style={{ padding: '28px 16px 0' }}>
-          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 10 }}>
+          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 10 }}>
             Orizzonte Giuridico
           </div>
-          <div style={{ fontSize: 28, fontWeight: 900, color: '#fff', lineHeight: 1.1, letterSpacing: -0.5, marginBottom: 8 }}>
+          <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--text)', lineHeight: 1.1, letterSpacing: -0.5, marginBottom: 8 }}>
             Ultime<br />News
           </div>
-          <div style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.4)', lineHeight: 1.65, marginBottom: 16 }}>
+          <div style={{ fontSize: 12.5, color: 'var(--text-3)', lineHeight: 1.65, marginBottom: 16 }}>
             Le notizie giuridiche più recenti da fonti ufficiali, aggiornate ogni ora.
           </div>
 
@@ -239,11 +239,11 @@ export default function NewsClient({
             border: '0.5px solid rgba(34,197,94,0.2)',
             borderRadius: 10, padding: '8px 12px', marginBottom: 16,
           }}>
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', flexShrink: 0 }} />
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#16a34a', flexShrink: 0 }} />
             <span style={{ fontSize: 10, color: 'rgba(34,197,94,0.85)', fontWeight: 700 }}>
               Aggiornato alle {aggiornato}
             </span>
-            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginLeft: 2 }}>
+            <span style={{ fontSize: 10, color: 'var(--text-3)', marginLeft: 2 }}>
               · {filtrate.length} notizie
             </span>
           </div>
@@ -253,18 +253,18 @@ export default function NewsClient({
         <div style={{ padding: '0 16px 14px', display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {categorie.map((cat) => {
             const attivo = filtro === cat;
-            const col = cat === 'Tutte' ? '#8fd3ff' : (COLORE_CATEGORIA[cat] ?? '#8fd3ff');
+            const col = cat === 'Tutte' ? 'var(--accent)' : (COLORE_CATEGORIA[cat] ?? 'var(--accent)');
             return (
               <button
                 key={cat}
                 onClick={() => setFiltro(cat)}
                 style={{
                   padding: '5px 11px', borderRadius: 8,
-                  background: attivo ? `${col}18` : 'rgba(255,255,255,0.04)',
-                  border: `0.5px solid ${attivo ? col + '55' : 'rgba(255,255,255,0.08)'}`,
+                  background: attivo ? `${col}18` : 'var(--fill)',
+                  border: `0.5px solid ${attivo ? col + '55' : 'var(--line)'}`,
                   color: attivo ? col : 'rgba(255,255,255,0.35)',
                   fontSize: 10, fontWeight: 700, cursor: 'pointer',
-                  fontFamily: 'Montserrat, sans-serif',
+                  fontFamily: 'var(--font-ui)',
                 }}
               >
                 {cat}
@@ -276,7 +276,7 @@ export default function NewsClient({
         {/* NEWS */}
         <div style={{ paddingBottom: 140 }}>
           {filtrate.length === 0 ? (
-            <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.25)', fontSize: 13, marginTop: 48 }}>
+            <div style={{ textAlign: 'center', color: 'var(--text-3)', fontSize: 13, marginTop: 48 }}>
               Nessuna notizia disponibile al momento
             </div>
           ) : (
@@ -284,13 +284,13 @@ export default function NewsClient({
               <div key={gi}>
                 <div style={{
                   fontSize: 9, fontWeight: 700, letterSpacing: 3,
-                  textTransform: 'uppercase', color: 'rgba(255,255,255,0.28)',
+                  textTransform: 'uppercase', color: 'var(--text-3)',
                   margin: gi === 0 ? '0 16px 12px' : '4px 16px 12px',
                   display: 'flex', alignItems: 'center', gap: 8,
                 }}>
-                  <div style={{ width: 20, height: 1, background: 'rgba(255,255,255,0.08)' }} />
+                  <div style={{ width: 20, height: 1, background: 'var(--fill)' }} />
                   {gruppo.label}
-                  <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.04)' }} />
+                  <div style={{ flex: 1, height: 1, background: 'var(--fill)' }} />
                 </div>
                 {gruppo.items.map((item, ii) => (
                   <NewsCard key={ii} item={{ ...item, titolo: decodeHtml(item.titolo), anteprima: decodeHtml(item.anteprima) }} />
@@ -305,7 +305,7 @@ export default function NewsClient({
             </svg>
             <div>
               <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(143,211,255,0.65)', marginBottom: 2 }}>Fonti ufficiali</div>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', lineHeight: 1.5 }}>Altalex · Gazzetta Ufficiale · Diritto.it · Corte Costituzionale</div>
+              <div style={{ fontSize: 10, color: 'var(--text-3)', lineHeight: 1.5 }}>Altalex · Gazzetta Ufficiale · Diritto.it · Corte Costituzionale</div>
             </div>
           </div>
         </div>

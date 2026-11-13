@@ -22,19 +22,19 @@ const FONTI = [
     nome: 'Gazzetta Ufficiale',
     url: 'https://www.gazzettaufficiale.it/dynamicindex/rss/GU_rss.jsp',
     categoria: 'GU',
-    colore: '#ffd700',
+    colore: '#ca8a04',
   },
   {
     nome: 'Diritto.it',
     url: 'https://www.diritto.it/feed/',
     categoria: 'Giurisprudenza',
-    colore: '#fb7185',
+    colore: '#e11d48',
   },
   {
     nome: 'Corte Costituzionale',
     url: 'https://www.cortecostituzionale.it/rss/rss.xml',
     categoria: 'Costituzionale',
-    colore: '#38bdf8',
+    colore: '#0284c7',
   },
 ];
 

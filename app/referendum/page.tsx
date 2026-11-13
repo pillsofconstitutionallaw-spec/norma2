@@ -106,9 +106,9 @@ const REFERENDUM: Referendum[] = [
 ];
 
 const COLORI_TIPO: Record<string, string> = {
-  abrogativo: '#38bdf8',
+  abrogativo: '#0284c7',
   costituzionale: '#f97316',
-  istituzionale: '#ffd700',
+  istituzionale: '#ca8a04',
 };
 
 const LABEL_TIPO: Record<string, string> = {
@@ -155,22 +155,22 @@ export default function ReferendumPage() {
     <>
       <style jsx global>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0d18; }
+        body { background: var(--bg); }
         ::-webkit-scrollbar { display: none; }
         html, body { overflow-x: hidden; }
-        input::placeholder { color: rgba(255,255,255,0.2); font-family: Montserrat, sans-serif; }
+        input: :placeholder { color: var(--text-3); font-family: var(--font-ui); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .ref-card:active { opacity: 0.8; }
+        .ref-card: active { opacity: 0.8; }
       `}</style>
 
-      <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh' }}>
+      <div style={{ fontFamily: 'var(--font-ui)', background: 'var(--bg)', minHeight: '100vh' }}>
         <Header />
 
         <div style={{ padding: '20px 16px 140px' }}>
 
           {/* HERO */}
           <div style={{
-            background: 'linear-gradient(135deg,#0d1829,#111a2e)',
+            background: 'linear-gradient(135deg,var(--surface),var(--surface))',
             borderRadius: 24, padding: '24px 20px',
             border: '0.5px solid rgba(255,215,0,0.2)',
             marginBottom: 20, position: 'relative', overflow: 'hidden',
@@ -185,17 +185,17 @@ export default function ReferendumPage() {
               display: 'inline-block',
               border: '1px solid rgba(255,215,0,0.3)', borderRadius: 99,
               padding: '4px 14px', fontSize: 9, letterSpacing: 3,
-              textTransform: 'uppercase' as const, color: '#ffd700', fontWeight: 700, marginBottom: 14,
+              textTransform: 'uppercase' as const, color: '#ca8a04', fontWeight: 700, marginBottom: 14,
             }}>
               Democrazia diretta · Dal 1946
             </div>
-            <div style={{ fontSize: 24, fontWeight: 900, color: '#fff', lineHeight: 1.15, letterSpacing: -0.5, marginBottom: 14 }}>
+            <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.5, marginBottom: 14 }}>
               Referendum<br />in Italia
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' as const }}>
               {[
-                { n: totali.approvati, l: 'approvati', c: '#22c55e' },
-                { n: totali.respinti, l: 'respinti', c: '#fb7185' },
+                { n: totali.approvati, l: 'approvati', c: '#16a34a' },
+                { n: totali.respinti, l: 'respinti', c: '#e11d48' },
                 { n: totali.non_validi, l: 'quorum non raggiunto', c: 'rgba(255,255,255,0.4)' },
               ].map((s, i) => (
                 <div key={i} style={{
@@ -204,7 +204,7 @@ export default function ReferendumPage() {
                   display: 'flex', alignItems: 'center', gap: 6,
                 }}>
                   <span style={{ fontSize: 13, fontWeight: 900, color: s.c }}>{s.n}</span>
-                  <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>{s.l}</span>
+                  <span style={{ fontSize: 10, color: 'var(--text-3)' }}>{s.l}</span>
                 </div>
               ))}
             </div>
@@ -219,16 +219,16 @@ export default function ReferendumPage() {
               onChange={e => setSearch(e.target.value)}
               style={{
                 width: '100%', height: 48,
-                background: '#111526',
-                border: '0.5px solid rgba(255,255,255,0.08)',
+                background: 'var(--surface)',
+                border: '0.5px solid var(--line)',
                 borderRadius: 14, padding: '0 44px 0 16px',
-                color: '#fff', fontSize: 13,
-                fontFamily: 'Montserrat, sans-serif',
+                color: 'var(--text)', fontSize: 13,
+                fontFamily: 'var(--font-ui)',
               }}
             />
             <svg style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)' }}
               width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="rgba(255,255,255,0.25)" strokeWidth="2" strokeLinecap="round">
+              stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
           </div>
@@ -243,10 +243,10 @@ export default function ReferendumPage() {
             ].map(f => (
               <button key={f.id} onClick={() => setFiltroTipo(f.id)} style={{
                 padding: '5px 11px', borderRadius: 8, cursor: 'pointer',
-                background: filtroTipo === f.id ? 'rgba(255,215,0,0.12)' : 'rgba(255,255,255,0.04)',
-                border: `0.5px solid ${filtroTipo === f.id ? 'rgba(255,215,0,0.35)' : 'rgba(255,255,255,0.08)'}`,
-                color: filtroTipo === f.id ? '#ffd700' : 'rgba(255,255,255,0.35)',
-                fontSize: 10, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
+                background: filtroTipo === f.id ? 'rgba(255,215,0,0.12)' : 'var(--fill)',
+                border: `0.5px solid ${filtroTipo === f.id ? 'rgba(255,215,0,0.35)' : 'var(--line)'}`,
+                color: filtroTipo === f.id ? '#ca8a04' : 'rgba(255,255,255,0.35)',
+                fontSize: 10, fontWeight: 700, fontFamily: 'var(--font-ui)',
               }}>{f.label}</button>
             ))}
           </div>
@@ -255,22 +255,22 @@ export default function ReferendumPage() {
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' as const, marginBottom: 16 }}>
             {[
               { id: 'tutti', label: 'Tutti gli esiti', c: 'rgba(255,255,255,0.4)' },
-              { id: 'approvato', label: '● Approvati', c: '#22c55e' },
-              { id: 'respinto', label: '● Respinti', c: '#fb7185' },
+              { id: 'approvato', label: '● Approvati', c: '#16a34a' },
+              { id: 'respinto', label: '● Respinti', c: '#e11d48' },
               { id: 'non_valido', label: '● Quorum non raggiunto', c: 'rgba(255,255,255,0.4)' },
             ].map(f => (
               <button key={f.id} onClick={() => setFiltroEsito(f.id)} style={{
                 padding: '5px 11px', borderRadius: 8, cursor: 'pointer',
-                background: filtroEsito === f.id ? `${f.c}14` : 'rgba(255,255,255,0.04)',
-                border: `0.5px solid ${filtroEsito === f.id ? f.c + '40' : 'rgba(255,255,255,0.08)'}`,
+                background: filtroEsito === f.id ? `${f.c}14` : 'var(--fill)',
+                border: `0.5px solid ${filtroEsito === f.id ? f.c + '40' : 'var(--line)'}`,
                 color: filtroEsito === f.id ? f.c : 'rgba(255,255,255,0.35)',
-                fontSize: 10, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
+                fontSize: 10, fontWeight: 700, fontFamily: 'var(--font-ui)',
               }}>{f.label}</button>
             ))}
           </div>
 
           {/* CONTATORE */}
-          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginBottom: 16 }}>
+          <div style={{ fontSize: 10, color: 'var(--text-3)', marginBottom: 16 }}>
             {filtrati.length} referendum trovati
           </div>
 
@@ -281,9 +281,9 @@ export default function ReferendumPage() {
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10,
               }}>
-                <div style={{ fontSize: 22, fontWeight: 900, color: '#ffd700', letterSpacing: -0.5 }}>{anno}</div>
+                <div style={{ fontSize: 22, fontWeight: 900, color: '#ca8a04', letterSpacing: -0.5 }}>{anno}</div>
                 <div style={{ flex: 1, height: 0.5, background: 'rgba(255,215,0,0.15)' }} />
-                <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)', fontWeight: 700 }}>
+                <div style={{ fontSize: 9, color: 'var(--text-3)', fontWeight: 700 }}>
                   {items.length} {items.length === 1 ? 'referendum' : 'referendum'}
                 </div>
               </div>
@@ -291,7 +291,7 @@ export default function ReferendumPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {items.map(r => {
                   const isAperto = aperto === r.id;
-                  const coloreEsito = r.esito === 'approvato' ? '#22c55e' : r.esito === 'respinto' ? '#fb7185' : 'rgba(255,255,255,0.35)';
+                  const coloreEsito = r.esito === 'approvato' ? '#16a34a' : r.esito === 'respinto' ? '#e11d48' : 'rgba(255,255,255,0.35)';
                   const colTipo = COLORI_TIPO[r.tipo];
 
                   return (
@@ -300,9 +300,9 @@ export default function ReferendumPage() {
                       className="ref-card"
                       onClick={() => setAperto(isAperto ? null : r.id)}
                       style={{
-                        background: '#111526',
+                        background: 'var(--surface)',
                         borderRadius: 16,
-                        border: `0.5px solid ${isAperto ? coloreEsito + '44' : 'rgba(255,255,255,0.05)'}`,
+                        border: `0.5px solid ${isAperto ? coloreEsito + '44' : 'var(--line)'}`,
                         overflow: 'hidden',
                         cursor: 'pointer',
                         transition: 'border-color 0.2s',
@@ -330,12 +330,12 @@ export default function ReferendumPage() {
                           </div>
 
                           {/* Titolo */}
-                          <div style={{ fontSize: 13.5, fontWeight: 800, color: '#fff', lineHeight: 1.3, marginBottom: 4 }}>
+                          <div style={{ fontSize: 13.5, fontWeight: 800, color: 'var(--text)', lineHeight: 1.3, marginBottom: 4 }}>
                             {r.titolo}
                           </div>
 
                           {/* Data + partecipazione */}
-                          <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>
+                          <div style={{ fontSize: 10, color: 'var(--text-3)' }}>
                             {r.data}
                             {r.partecipazione && ` · Partecipazione ${r.partecipazione}%`}
                           </div>
@@ -344,13 +344,13 @@ export default function ReferendumPage() {
                         {/* Freccia */}
                         <div style={{
                           width: 24, height: 24, borderRadius: '50%', flexShrink: 0,
-                          border: '0.5px solid rgba(255,255,255,0.08)',
+                          border: '0.5px solid var(--line)',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
                           transform: isAperto ? 'rotate(90deg)' : 'none',
                           transition: 'transform 0.2s',
                         }}>
                           <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                            stroke="rgba(255,255,255,0.35)" strokeWidth="2.5" strokeLinecap="round">
+                            stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                             <path d="M9 18l6-6-6-6" />
                           </svg>
                         </div>
@@ -359,12 +359,12 @@ export default function ReferendumPage() {
                       {/* CONTENUTO APERTO */}
                       {isAperto && (
                         <div style={{ padding: '0 14px 16px', animation: 'fadeIn 0.2s ease' }}>
-                          <div style={{ borderTop: '0.5px solid rgba(255,255,255,0.05)', paddingTop: 14 }}>
+                          <div style={{ borderTop: '0.5px solid var(--line)', paddingTop: 14 }}>
 
                             {/* Descrizione */}
                             <div style={{
-                              background: 'rgba(255,255,255,0.03)',
-                              border: '0.5px solid rgba(255,255,255,0.06)',
+                              background: 'var(--fill)',
+                              border: '0.5px solid var(--line)',
                               borderRadius: 12, padding: '14px',
                               fontSize: 13, color: 'rgba(255,255,255,0.75)',
                               lineHeight: 1.85, marginBottom: 12,
@@ -386,22 +386,22 @@ export default function ReferendumPage() {
                                 {r.si !== undefined && (
                                   <div style={{ marginBottom: 8 }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                                      <span style={{ fontSize: 11, color: '#22c55e', fontWeight: 700 }}>SÌ</span>
-                                      <span style={{ fontSize: 11, color: '#22c55e', fontWeight: 700 }}>{r.si}%</span>
+                                      <span style={{ fontSize: 11, color: '#16a34a', fontWeight: 700 }}>SÌ</span>
+                                      <span style={{ fontSize: 11, color: '#16a34a', fontWeight: 700 }}>{r.si}%</span>
                                     </div>
-                                    <div style={{ height: 4, borderRadius: 99, background: 'rgba(255,255,255,0.06)' }}>
-                                      <div style={{ height: '100%', borderRadius: 99, background: '#22c55e', width: `${r.si}%` }} />
+                                    <div style={{ height: 4, borderRadius: 99, background: 'var(--fill)' }}>
+                                      <div style={{ height: '100%', borderRadius: 99, background: '#16a34a', width: `${r.si}%` }} />
                                     </div>
                                   </div>
                                 )}
                                 {r.no !== undefined && (
                                   <div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                                      <span style={{ fontSize: 11, color: '#fb7185', fontWeight: 700 }}>NO</span>
-                                      <span style={{ fontSize: 11, color: '#fb7185', fontWeight: 700 }}>{r.no}%</span>
+                                      <span style={{ fontSize: 11, color: '#e11d48', fontWeight: 700 }}>NO</span>
+                                      <span style={{ fontSize: 11, color: '#e11d48', fontWeight: 700 }}>{r.no}%</span>
                                     </div>
-                                    <div style={{ height: 4, borderRadius: 99, background: 'rgba(255,255,255,0.06)' }}>
-                                      <div style={{ height: '100%', borderRadius: 99, background: '#fb7185', width: `${r.no}%` }} />
+                                    <div style={{ height: 4, borderRadius: 99, background: 'var(--fill)' }}>
+                                      <div style={{ height: '100%', borderRadius: 99, background: '#e11d48', width: `${r.no}%` }} />
                                     </div>
                                   </div>
                                 )}
@@ -410,13 +410,13 @@ export default function ReferendumPage() {
 
                             {r.esito === 'non_valido' && (
                               <div style={{
-                                background: 'rgba(255,255,255,0.04)',
-                                border: '0.5px solid rgba(255,255,255,0.08)',
+                                background: 'var(--fill)',
+                                border: '0.5px solid var(--line)',
                                 borderRadius: 12, padding: '10px 14px',
                                 fontSize: 12, color: 'rgba(255,255,255,0.4)',
                                 display: 'flex', alignItems: 'center', gap: 8,
                               }}>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                                   <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
                                 </svg>
                                 Quorum non raggiunto — il referendum non è valido
@@ -433,7 +433,7 @@ export default function ReferendumPage() {
           ))}
 
           {filtrati.length === 0 && (
-            <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.2)', fontSize: 13, marginTop: 48 }}>
+            <div style={{ textAlign: 'center', color: 'var(--text-3)', fontSize: 13, marginTop: 48 }}>
               Nessun referendum trovato
             </div>
           )}

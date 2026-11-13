@@ -33,20 +33,20 @@ const shortNames: Record<string, string> = {
 };
 
 const catIcons: Record<string, React.ReactNode> = {
-  Penale: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 20 12 21C8.5 20 5 16 5 11V6L12 3Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
-  Civile: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#8fd3ff" strokeWidth="1.8"/><path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round"/></svg>,
-  Costituzionale: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3H17L21 7V21H3V3H7Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/><path d="M17 3V7H21" stroke="#8fd3ff" strokeWidth="1.8"/><path d="M7 12H17M7 16H13" stroke="#8fd3ff" strokeWidth="1.5" strokeLinecap="round"/></svg>,
-  Ambiente: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 5 15 5 9C5 5.69 8.13 3 12 3C15.87 3 19 5.69 19 9C19 15 12 21 12 21Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
-  'Unione Europea': <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#8fd3ff" strokeWidth="1.8"/><path d="M3 12H21M12 3C9.5 6 8 9 8 12C8 15 9.5 18 12 21C14.5 18 16 15 16 12C16 9 14.5 6 12 3Z" stroke="#8fd3ff" strokeWidth="1.5" strokeLinecap="round"/></svg>,
-  Amministrativo: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-  Internazionale: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#8fd3ff" strokeWidth="1.8"/><circle cx="12" cy="12" r="2" fill="#8fd3ff" opacity="0.5"/></svg>,
-  Animali: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="6" r="2" stroke="#8fd3ff" strokeWidth="1.6"/><circle cx="17" cy="6" r="2" stroke="#8fd3ff" strokeWidth="1.6"/><circle cx="4" cy="12" r="2" stroke="#8fd3ff" strokeWidth="1.6"/><circle cx="20" cy="12" r="2" stroke="#8fd3ff" strokeWidth="1.6"/><path d="M12 10C9 10 6 13 7 17C8 20 10 21 12 21C14 21 16 20 17 17C18 13 15 10 12 10Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
-  Legalità: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3V21M12 3L5 7L12 11L19 7L12 3Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/><path d="M5 7L2 14C2 16 3.5 17 5 17C6.5 17 8 16 8 14L5 7Z" stroke="#8fd3ff" strokeWidth="1.5" strokeLinejoin="round"/><path d="M19 7L16 14C16 16 17.5 17 19 17C20.5 17 22 16 22 14L19 7Z" stroke="#8fd3ff" strokeWidth="1.5" strokeLinejoin="round"/><path d="M3 21H21" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round"/></svg>,
-  Economia: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><polyline points="3,17 8,12 13,14 21,6" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><polyline points="17,6 21,6 21,10" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-  Politica: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-  'Dir. Comparato': <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 19V5H12V19M12 5H20V19" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M2 19H22" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round"/></svg>,
-  "L'Intervista": <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="11" rx="3" stroke="#8fd3ff" strokeWidth="1.8"/><path d="M5 10C5 14.4 8.13 18 12 18C15.87 18 19 14.4 19 10" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round"/><path d="M12 18V22M9 22H15" stroke="#8fd3ff" strokeWidth="1.8" strokeLinecap="round"/></svg>,
-  'Ripetiamo il Diritto': <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M22 10V6L12 2L2 6V10C2 15.5 6.5 20.7 12 22C17.5 20.7 22 15.5 22 10Z" stroke="#8fd3ff" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  Penale: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 20 12 21C8.5 20 5 16 5 11V6L12 3Z" stroke="#4f46e5" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  Civile: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#4f46e5" strokeWidth="1.8"/><path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" stroke="#4f46e5" strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  Costituzionale: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3H17L21 7V21H3V3H7Z" stroke="#4f46e5" strokeWidth="1.8" strokeLinejoin="round"/><path d="M17 3V7H21" stroke="#4f46e5" strokeWidth="1.8"/><path d="M7 12H17M7 16H13" stroke="#4f46e5" strokeWidth="1.5" strokeLinecap="round"/></svg>,
+  Ambiente: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 5 15 5 9C5 5.69 8.13 3 12 3C15.87 3 19 5.69 19 9C19 15 12 21 12 21Z" stroke="#4f46e5" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  'Unione Europea': <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#4f46e5" strokeWidth="1.8"/><path d="M3 12H21M12 3C9.5 6 8 9 8 12C8 15 9.5 18 12 21C14.5 18 16 15 16 12C16 9 14.5 6 12 3Z" stroke="#4f46e5" strokeWidth="1.5" strokeLinecap="round"/></svg>,
+  Amministrativo: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10" stroke="#4f46e5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  Internazionale: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#4f46e5" strokeWidth="1.8"/><circle cx="12" cy="12" r="2" fill="#4f46e5" opacity="0.5"/></svg>,
+  Animali: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="6" r="2" stroke="#4f46e5" strokeWidth="1.6"/><circle cx="17" cy="6" r="2" stroke="#4f46e5" strokeWidth="1.6"/><circle cx="4" cy="12" r="2" stroke="#4f46e5" strokeWidth="1.6"/><circle cx="20" cy="12" r="2" stroke="#4f46e5" strokeWidth="1.6"/><path d="M12 10C9 10 6 13 7 17C8 20 10 21 12 21C14 21 16 20 17 17C18 13 15 10 12 10Z" stroke="#4f46e5" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  Legalità: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3V21M12 3L5 7L12 11L19 7L12 3Z" stroke="#4f46e5" strokeWidth="1.8" strokeLinejoin="round"/><path d="M5 7L2 14C2 16 3.5 17 5 17C6.5 17 8 16 8 14L5 7Z" stroke="#4f46e5" strokeWidth="1.5" strokeLinejoin="round"/><path d="M19 7L16 14C16 16 17.5 17 19 17C20.5 17 22 16 22 14L19 7Z" stroke="#4f46e5" strokeWidth="1.5" strokeLinejoin="round"/><path d="M3 21H21" stroke="#4f46e5" strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  Economia: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><polyline points="3,17 8,12 13,14 21,6" stroke="#4f46e5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><polyline points="17,6 21,6 21,10" stroke="#4f46e5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  Politica: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10" stroke="#4f46e5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  'Dir. Comparato': <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 19V5H12V19M12 5H20V19" stroke="#4f46e5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M2 19H22" stroke="#4f46e5" strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  "L'Intervista": <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="11" rx="3" stroke="#4f46e5" strokeWidth="1.8"/><path d="M5 10C5 14.4 8.13 18 12 18C15.87 18 19 14.4 19 10" stroke="#4f46e5" strokeWidth="1.8" strokeLinecap="round"/><path d="M12 18V22M9 22H15" stroke="#4f46e5" strokeWidth="1.8" strokeLinecap="round"/></svg>,
+  'Ripetiamo il Diritto': <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M22 10V6L12 2L2 6V10C2 15.5 6.5 20.7 12 22C17.5 20.7 22 15.5 22 10Z" stroke="#4f46e5" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
 };
 
 
@@ -247,19 +247,19 @@ export default function ArticoliPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#050816', color: '#fff', fontFamily: "'Montserrat', sans-serif", paddingBottom: 100 }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', fontFamily: 'var(--font-ui)', paddingBottom: 100 }}>
       <Header />
 
       {/* Header pagina */}
       <div style={{ padding: '20px 16px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ fontSize: 22, fontWeight: 900, letterSpacing: -0.5 }}>Articoli</div>
-        <div style={{ width: 34, height: 34, borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: '0.5px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <div style={{ width: 34, height: 34, borderRadius: 10, background: 'var(--fill)', border: '0.5px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </div>
       </div>
 
       {/* Stories categorie */}
-      <div style={{ padding: '0 16px 16px', borderBottom: '0.5px solid rgba(255,255,255,0.05)' }}>
+      <div style={{ padding: '0 16px 16px', borderBottom: '0.5px solid var(--line)' }}>
         <div style={{ display: 'flex', gap: 14, overflowX: 'auto', scrollbarWidth: 'none' as any }}>
           {categories.map((cat, i) => (
             <button
@@ -270,14 +270,14 @@ export default function ArticoliPage() {
               <div style={{
                 width: 56, height: 56, borderRadius: '50%', padding: 2.5,
                 background: activeCat === cat.name
-                  ? 'linear-gradient(135deg,#8fd3ff,#4fa8e8)'
-                  : 'linear-gradient(135deg,#0a3060,#8fd3ff)',
+                  ? 'linear-gradient(135deg,var(--accent),#4fa8e8)'
+                  : 'linear-gradient(135deg,var(--accent-strong),var(--accent))',
               }}>
-                <div style={{ width: '100%', height: '100%', borderRadius: '50%', background: '#07162b', border: '2px solid #050816', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  {catIcons[cat.name] || <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#8fd3ff" strokeWidth="1.8"/></svg>}
+                <div style={{ width: '100%', height: '100%', borderRadius: '50%', background: 'var(--surface-2)', border: '2px solid var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {catIcons[cat.name] || <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#4f46e5" strokeWidth="1.8"/></svg>}
                 </div>
               </div>
-              <span style={{ fontSize: cat.name.length > 10 ? 8 : 9, fontWeight: 700, color: activeCat === cat.name ? '#8fd3ff' : 'rgba(255,255,255,0.4)' }}>
+              <span style={{ fontSize: cat.name.length > 10 ? 8 : 9, fontWeight: 700, color: activeCat === cat.name ? 'var(--accent)' : 'var(--text-3)' }}>
                 {shortNames[cat.name] || cat.name}
               </span>
             </button>
@@ -290,7 +290,7 @@ export default function ArticoliPage() {
         {loading ? (
           <div style={{ padding: '14px 12px', display: 'flex', flexDirection: 'column', gap: 12 }}>
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} style={{ aspectRatio: '4/5', borderRadius: 20, background: '#0d1829', border: '0.5px solid rgba(255,255,255,0.06)' }} />
+              <div key={i} style={{ aspectRatio: '4/5', borderRadius: 20, background: 'var(--surface)', border: '0.5px solid var(--line)' }} />
             ))}
           </div>
         ) : (
@@ -305,7 +305,7 @@ export default function ArticoliPage() {
             <button
               onClick={loadMore}
               disabled={loadingMore}
-              style={{ width: '100%', padding: 14, borderRadius: 16, background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 800, letterSpacing: 1, cursor: 'pointer' }}
+              style={{ width: '100%', padding: 14, borderRadius: 16, background: 'var(--fill)', border: '0.5px solid var(--line)', color: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 800, letterSpacing: 1, cursor: 'pointer' }}
             >
               {loadingMore ? '...' : 'CARICA ALTRI'}
             </button>
@@ -343,24 +343,24 @@ export default function ArticoliPage() {
           {/* Header */}
           <div style={{ position: 'absolute', top: 22, left: 0, right: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#0a3060,#8fd3ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🏛️</div>
+              <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,var(--accent-strong),var(--accent))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🏛️</div>
               <div>
-                <div style={{ color: '#fff', fontWeight: 800, fontSize: 13 }}>{storyCatName}</div>
+                <div style={{ color: 'var(--text)', fontWeight: 800, fontSize: 13 }}>{storyCatName}</div>
                 {!storyLoading && storyPosts[storyIndex] && (
-                  <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10 }}>
+                  <div style={{ color: 'var(--text-2)', fontSize: 10 }}>
                     {new Date(storyPosts[storyIndex].date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </div>
                 )}
               </div>
             </div>
-            <button onClick={(e) => { e.stopPropagation(); setStoryOpen(false); }} style={{ background: 'rgba(255,255,255,0.12)', border: 'none', borderRadius: '50%', width: 32, height: 32, color: '#fff', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+            <button onClick={(e) => { e.stopPropagation(); setStoryOpen(false); }} style={{ background: 'var(--fill)', border: 'none', borderRadius: '50%', width: 32, height: 32, color: '#fff', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
           </div>
 
           {/* Content */}
           {storyLoading ? (
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>Caricamento...</div>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-3)', fontSize: 13 }}>Caricamento...</div>
           ) : storyPosts.length === 0 ? (
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>Nessun articolo trovato</div>
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-3)', fontSize: 13 }}>Nessun articolo trovato</div>
           ) : (() => {
             const post = storyPosts[storyIndex];
             const img = post?._embedded?.['wp:featuredmedia']?.[0]?.source_url;
@@ -369,15 +369,15 @@ export default function ArticoliPage() {
             return (
               <>
                 {img && <img src={img} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />}
-                <div style={{ position: 'absolute', inset: 0, background: img ? 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.5) 100%)' : '#07162b' }} />
+                <div style={{ position: 'absolute', inset: 0, background: img ? 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.5) 100%)' : 'var(--surface-2)' }} />
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '0 20px 48px' }} onClick={(e) => e.stopPropagation()}>
-                  <div style={{ display: 'inline-block', fontSize: 9, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(255,255,255,0.2)', borderRadius: 20, padding: '3px 10px', marginBottom: 12 }}>
+                  <div style={{ display: 'inline-block', fontSize: 9, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'var(--text-2)', border: '0.5px solid var(--line)', borderRadius: 20, padding: '3px 10px', marginBottom: 12 }}>
                     ORIZZONTE GIURIDICO · {storyCatName.toUpperCase()}
                   </div>
-                  <div style={{ fontSize: 22, fontWeight: 900, color: '#fff', lineHeight: 1.15, marginBottom: 14 }} dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }} />
-                  <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, marginBottom: 24 }}>{excerpt}</div>
+                  <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, marginBottom: 14 }} dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }} />
+                  <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 24 }}>{excerpt}</div>
                   {slug && (
-                    <a href={`/articoli/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', color: '#0a0d18', fontWeight: 800, fontSize: 12, letterSpacing: 1, padding: '13px 24px', borderRadius: 999, textDecoration: 'none' }}>
+                    <a href={`/articoli/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', color: 'var(--bg)', fontWeight: 800, fontSize: 12, letterSpacing: 1, padding: '13px 24px', borderRadius: 999, textDecoration: 'none' }}>
                       LEGGI L'ARTICOLO →
                     </a>
                   )}

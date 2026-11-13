@@ -26,7 +26,7 @@ const sezioni: Sezione[] = [
   {
     id: 'trattati',
     titolo: 'I trattati fondativi',
-    colore: '#FFD700',
+    colore: '#ca8a04',
     bg: 'rgba(255,215,0,0.08)',
     icon: '📜',
     blocchi: [
@@ -47,13 +47,13 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Trattati di Roma (1957)',
             testo: 'Istituiscono la CEE (Comunità Economica Europea) e l\'Euratom. La CEE crea il mercato comune: libera circolazione di merci, persone, servizi e capitali (le "quattro libertà"). È il nucleo da cui tutto si sviluppa.',
-            colore: '#FFD700',
+            colore: '#ca8a04',
             badge: 'Mercato comune',
           },
           {
             titolo: 'Atto Unico Europeo (1986)',
             testo: 'Prima grande riforma dei trattati. Completa il mercato interno, rafforza il Parlamento Europeo, introduce il voto a maggioranza qualificata per molte decisioni. Fissa l\'obiettivo del mercato unico per il 31 dicembre 1992.',
-            colore: '#22c55e',
+            colore: '#16a34a',
             badge: 'Mercato unico',
           },
           {
@@ -65,19 +65,19 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Trattato di Amsterdam (1997)',
             testo: 'Incorpora Schengen nel diritto UE, rafforza la PESC, introduce l\'area di libertà, sicurezza e giustizia, consolida i diritti fondamentali. Prepara l\'allargamento verso est.',
-            colore: '#a78bfa',
+            colore: '#7c3aed',
             badge: 'Schengen + diritti',
           },
           {
             titolo: 'Trattato di Nizza (2001)',
             testo: 'Riforma istituzionale in vista dell\'allargamento a 10 nuovi Stati (2004). Ridistribuisce seggi al PE e pesi al Consiglio, estende il voto a maggioranza qualificata. Considerato insufficiente: apre il percorso verso la Costituzione europea.',
-            colore: '#38bdf8',
+            colore: '#0284c7',
             badge: 'Allargamento',
           },
           {
             titolo: 'Trattato di Lisbona (2007) — in vigore dal 2009',
             testo: 'Dopo il fallimento della Costituzione europea (bocciata da Francia e Olanda nel 2005), Lisbona incorpora gran parte delle riforme senza chiamarle "Costituzione". Fonde i pilastri, crea il Presidente del Consiglio Europeo e l\'Alto Rappresentante, rende la Carta dei diritti vincolante, introduce l\'art. 50 (recesso). È il diritto primario vigente.',
-            colore: '#FFD700',
+            colore: '#ca8a04',
             badge: 'Diritto vigente',
           },
         ],
@@ -85,13 +85,13 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'TUE e TFUE — i due trattati vigenti',
-        colore: '#FFD700',
+        colore: '#ca8a04',
         contenuto:
           'Il TUE (Trattato sull\'Unione Europea) stabilisce i valori, gli obiettivi e la struttura istituzionale. Il TFUE (Trattato sul Funzionamento dell\'UE) disciplina nel dettaglio le politiche, le competenze e le procedure. Hanno lo stesso rango giuridico. La Carta dei diritti fondamentali dell\'UE (proclamata nel 2000, vincolante dal 2009) completa il quadro.',
       },
       {
         tipo: 'highlight',
-        colore: '#FFD700',
+        colore: '#ca8a04',
         testo: 'L\'art. 50 TUE — introdotto da Lisbona — disciplina il recesso volontario di uno Stato membro. È la norma che ha governato la Brexit (2016–2020): primo utilizzo storico di un meccanismo che nessuno si aspettava venisse mai attivato.',
       },
     ],
@@ -135,13 +135,13 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Esecuzione del bilancio',
             testo: 'La Commissione gestisce il bilancio UE sotto il controllo della Corte dei Conti europea. Presenta ogni anno il rendiconto al Parlamento, che vota la procedura di discarico. Il PE può rifiutare il discarico — il che è di fatto una censura politica alla Commissione.',
-            colore: '#22c55e',
+            colore: '#16a34a',
             badge: 'Bilancio',
           },
           {
             titolo: 'Concorrenza e aiuti di Stato',
             testo: 'La Commissione ha poteri esclusivi in materia di concorrenza: può vietare cartelli, sanzionare abusi di posizione dominante, bloccare fusioni e dichiarare illegali gli aiuti di Stato incompatibili con il mercato interno. Le maxi-sanzioni a Google, Apple e Meta sono esempi di questo potere.',
-            colore: '#a78bfa',
+            colore: '#7c3aed',
             badge: 'Antitrust',
           },
         ],
@@ -160,7 +160,7 @@ const sezioni: Sezione[] = [
   {
     id: 'parlamento',
     titolo: 'Il Parlamento Europeo',
-    colore: '#22c55e',
+    colore: '#16a34a',
     bg: 'rgba(34,197,94,0.08)',
     icon: '🗳',
     blocchi: [
@@ -172,7 +172,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'Composizione e proporzionalità degressiva',
-        colore: '#22c55e',
+        colore: '#16a34a',
         contenuto:
           'Il PE ha 720 seggi (dal 2024). I seggi sono distribuiti tra gli Stati con il criterio della proporzionalità degressiva: gli Stati più piccoli hanno più seggi di quanti ne avrebbero in proporzione alla popolazione, ma meno degli Stati grandi. Ogni Stato ha almeno 6 seggi (minimo) e al massimo 96 (Germania). I parlamentari siedono per gruppo politico, non per delegazione nazionale.',
       },
@@ -182,13 +182,13 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Funzione legislativa (codecisione)',
             testo: 'La procedura legislativa ordinaria (ex codecisione) richiede l\'accordo di Parlamento e Consiglio su un testo identico. Il PE può emendare, bloccare o negoziare in trilogue con la Commissione e il Consiglio. Il Parlamento ha così un potere legislativo reale, non consultivo.',
-            colore: '#22c55e',
+            colore: '#16a34a',
             badge: 'Codecisione',
           },
           {
             titolo: 'Funzione di bilancio',
             testo: 'Il PE approva il bilancio annuale dell\'UE in codecisione con il Consiglio. Può respingerlo e proporre emendamenti. Ha l\'ultima parola sulle spese non obbligatorie. Vota anche il Quadro Finanziario Pluriennale (QFP), il bilancio a lungo termine dell\'UE.',
-            colore: '#FFD700',
+            colore: '#ca8a04',
             badge: 'Potere di borsa',
           },
           {
@@ -200,14 +200,14 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Sede e sessioni',
             testo: 'Strasburgo è la sede ufficiale per le sessioni plenarie mensili. Bruxelles ospita le commissioni parlamentari e le sessioni aggiuntive. Il Segretariato generale ha sede a Lussemburgo. Questa divisione su tre città è stabilita dai trattati e costa all\'UE circa 130 milioni di euro l\'anno.',
-            colore: '#a78bfa',
+            colore: '#7c3aed',
             badge: 'Tre sedi',
           },
         ],
       },
       {
         tipo: 'highlight',
-        colore: '#22c55e',
+        colore: '#16a34a',
         testo: 'Il PE ha progressivamente ampliato i suoi poteri dai trattati del 1986 in poi. Nato come assemblea consultiva nel 1957, è diventato colegislatore alla pari del Consiglio. Le elezioni europee però restano segnate da un basso tasso di partecipazione: nel 2024 circa il 51% in media (ma in forte disomogeneità tra Stati).',
       },
     ],
@@ -229,7 +229,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'confronto',
         coloreLeft: '#f97316',
-        coloreRight: '#38bdf8',
+        coloreRight: '#0284c7',
         left: {
           label: 'Consiglio Europeo',
           items: [
@@ -275,7 +275,7 @@ const sezioni: Sezione[] = [
   {
     id: 'consiglio-ue',
     titolo: "Il Consiglio dell'UE",
-    colore: '#38bdf8',
+    colore: '#0284c7',
     bg: 'rgba(56,189,248,0.08)',
     icon: '🤝',
     blocchi: [
@@ -287,7 +287,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'Composizione variabile',
-        colore: '#38bdf8',
+        colore: '#0284c7',
         contenuto:
           'Il Consiglio non ha una composizione fissa: si riunisce in 10 formazioni diverse a seconda della materia (Affari generali, ECOFIN, Agricoltura, Ambiente, ecc.). Partecipa il ministro nazionale competente per quella materia. Il Consiglio Affari generali coordina i lavori e prepara il Consiglio Europeo.',
       },
@@ -297,7 +297,7 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Maggioranza qualificata (MQ)',
             testo: 'Dal Trattato di Lisbona la regola generale è la doppia maggioranza: almeno il 55% degli Stati membri (15 su 27) che rappresentino almeno il 65% della popolazione UE. Per bloccare una decisione serve una minoranza di blocco di almeno 4 Stati che rappresentino il 35% della popolazione.',
-            colore: '#38bdf8',
+            colore: '#0284c7',
             badge: '55% + 65%',
           },
           {
@@ -309,13 +309,13 @@ const sezioni: Sezione[] = [
           {
             titolo: 'COREPER',
             testo: 'Il Comitato dei Rappresentanti Permanenti (ambasciatori degli Stati a Bruxelles) prepara i lavori del Consiglio. In pratica la maggior parte delle decisioni è già raggiunta a livello di COREPER I (vicerappresentanti) o COREPER II (ambasciatori) prima che i ministri si riuniscano. I punti su cui c\'è già accordo diventano "punti A" (approvati senza discussione); quelli controversi sono "punti B".',
-            colore: '#a78bfa',
+            colore: '#7c3aed',
             badge: 'Preparazione',
           },
           {
             titolo: 'Presidenza a rotazione',
             testo: 'La presidenza del Consiglio (non del Consiglio Europeo) ruota ogni 6 mesi tra gli Stati membri in un ordine prestabilito. Il Paese che presiede fissa le priorità politiche del semestre e gestisce i negoziati. L\'Italia ha presieduto nel secondo semestre 2024.',
-            colore: '#22c55e',
+            colore: '#16a34a',
             badge: '6 mesi',
           },
         ],
@@ -327,7 +327,7 @@ const sezioni: Sezione[] = [
   {
     id: 'cgue',
     titolo: 'La Corte di Giustizia dell\'UE',
-    colore: '#a78bfa',
+    colore: '#7c3aed',
     bg: 'rgba(167,139,250,0.08)',
     icon: '⚖',
     blocchi: [
@@ -339,7 +339,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'Composizione',
-        colore: '#a78bfa',
+        colore: '#7c3aed',
         contenuto:
           'La Corte di Giustizia è composta da un giudice per Stato membro (27) più 11 Avvocati generali. I giudici sono nominati di comune accordo dai governi per 6 anni rinnovabili, previo parere di un comitato consultivo. Il Tribunale ha almeno 2 giudici per Stato (54 totali). Gli Avvocati generali presentano conclusioni indipendenti in molte cause, che la Corte non è obbligata a seguire ma nella pratica spesso segue.',
       },
@@ -349,7 +349,7 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Rinvio pregiudiziale (art. 267 TFUE)',
             testo: 'Qualsiasi giudice nazionale può — e quello di ultima istanza deve — sospendere il processo e chiedere alla CGUE di interpretare una norma UE o di verificarne la validità. La risposta vincola il giudice nazionale e tutti i giudici degli altri Stati con la stessa questione. È il meccanismo che assicura l\'uniformità del diritto europeo. Rappresenta oltre il 60% del carico di lavoro della Corte.',
-            colore: '#a78bfa',
+            colore: '#7c3aed',
             badge: 'Strumento chiave',
           },
           {
@@ -361,20 +361,20 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Ricorso di annullamento (art. 263)',
             testo: 'Permette di contestare la legittimità degli atti delle istituzioni UE. Possono ricorrere gli Stati, le istituzioni, e — in modo molto limitato — i privati (devono dimostrare di essere interessati direttamente e individualmente dall\'atto). Il Tribunale è competente in primo grado.',
-            colore: '#38bdf8',
+            colore: '#0284c7',
             badge: 'Annullamento',
           },
           {
             titolo: 'I principi elaborati dalla CGUE',
             testo: 'La Corte ha elaborato i principi fondamentali dell\'ordinamento UE: primato del diritto UE (Costa/ENEL, 1964), effetto diretto (Van Gend en Loos, 1963), responsabilità dello Stato per violazione del diritto UE (Francovich, 1991). Questi principi non erano scritti nei trattati originali: sono stati costruiti caso per caso in via giurisprudenziale.',
-            colore: '#22c55e',
+            colore: '#16a34a',
             badge: 'Giurisprudenza',
           },
         ],
       },
       {
         tipo: 'highlight',
-        colore: '#a78bfa',
+        colore: '#7c3aed',
         testo: 'Costa c. ENEL (1964): la Corte afferma che il diritto comunitario prevale sulle leggi nazionali anche successive. Van Gend en Loos (1963): il diritto comunitario crea diritti che i singoli possono far valere davanti ai giudici nazionali. Queste due sentenze sono la pietra angolare dell\'ordinamento giuridico europeo.',
       },
     ],
@@ -384,7 +384,7 @@ const sezioni: Sezione[] = [
   {
     id: 'bilancio',
     titolo: 'Il bilancio europeo',
-    colore: '#22c55e',
+    colore: '#16a34a',
     bg: 'rgba(34,197,94,0.08)',
     icon: '💶',
     blocchi: [
@@ -399,13 +399,13 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Quadro Finanziario Pluriennale (QFP)',
             testo: 'Il bilancio è programmato su periodi di 7 anni attraverso il QFP (o "Multiannual Financial Framework"). Il QFP fissa i massimali di spesa per ciascuna categoria. Va approvato all\'unanimità dal Consiglio e con il consenso del Parlamento. Il QFP 2021–2027 vale circa 1.216 miliardi di euro.',
-            colore: '#22c55e',
+            colore: '#16a34a',
             badge: '7 anni',
           },
           {
             titolo: 'Entrate: le risorse proprie',
             testo: 'Il bilancio è finanziato da: dazi doganali sulle importazioni da Paesi terzi (~15%); contributo basato sull\'IVA degli Stati (~10%); contributo basato sul Reddito Nazionale Lordo degli Stati (~70%); nuova risorsa sui rifiuti di plastica (dal 2021). Gli Stati più ricchi sono contribuenti netti.',
-            colore: '#FFD700',
+            colore: '#ca8a04',
             badge: 'Entrate',
           },
           {
@@ -425,7 +425,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'La procedura di bilancio',
-        colore: '#22c55e',
+        colore: '#16a34a',
         contenuto:
           'La Commissione propone il progetto di bilancio entro il 1° settembre. Consiglio e Parlamento esaminano la proposta e possono emendarla. Se non trovano accordo, si apre una conciliazione di 21 giorni. Se non si raggiunge l\'intesa, il PE può rigettare il bilancio (è avvenuto nel 1979 e nel 1984). In assenza di bilancio, l\'UE va avanti per dodicesimi provvisori.',
       },
@@ -436,7 +436,7 @@ const sezioni: Sezione[] = [
   {
     id: 'coe-cedu',
     titolo: "Consiglio d'Europa e CEDU",
-    colore: '#fb7185',
+    colore: '#e11d48',
     bg: 'rgba(251,113,133,0.08)',
     icon: '🛡',
     blocchi: [
@@ -458,25 +458,25 @@ const sezioni: Sezione[] = [
           {
             titolo: 'La CEDU — Convenzione Europea dei Diritti dell\'Uomo',
             testo: 'Catalogo di diritti fondamentali: vita, divieto di tortura, libertà personale, processo equo, rispetto della vita privata, libertà di pensiero, espressione, associazione, diritto di proprietà, divieto di discriminazione. Il sistema è dinamico: la Corte interpreta la Convenzione come "strumento vivente", adattandola all\'evoluzione sociale.',
-            colore: '#fb7185',
+            colore: '#e11d48',
             badge: 'Diritti fondamentali',
           },
           {
             titolo: 'La Corte EDU — Corte Europea dei Diritti dell\'Uomo',
             testo: 'Ha sede a Strasburgo e giudica i ricorsi dei singoli che lamentano violazioni della CEDU da parte di uno Stato membro. Prima di ricorrere è necessario aver esaurito i rimedi interni. Le sentenze sono vincolanti: lo Stato condannato deve pagare un\'equa soddisfazione e adottare misure generali per rimuovere la violazione. Il Comitato dei Ministri del Consiglio d\'Europa ne controlla l\'esecuzione.',
-            colore: '#a78bfa',
+            colore: '#7c3aed',
             badge: 'Ricorsi individuali',
           },
           {
             titolo: 'Protocolo 16 — pareri consultivi',
             testo: 'Dal 2018 le corti di ultima istanza degli Stati ratificanti possono chiedere alla Corte EDU un parere consultivo su questioni di interpretazione della Convenzione. Non è vincolante ma ha grande autorevolezza. L\'Italia non ha ancora ratificato il Protocollo 16.',
-            colore: '#38bdf8',
+            colore: '#0284c7',
             badge: 'Dialogo tra corti',
           },
           {
             titolo: 'CEDU e UE: il rapporto',
             testo: 'La Carta dei diritti fondamentali dell\'UE (vincolante dal 2009) si ispira largamente alla CEDU e garantisce diritti equivalenti. Il Trattato di Lisbona prevede l\'adesione dell\'UE alla CEDU, ma la CGUE ha bloccato l\'accordo di adesione nel Parere 2/13 del 2014, ritenendo che compromettesse l\'autonomia del diritto UE. Il negoziato sull\'adesione è ripartito ma ancora aperto.',
-            colore: '#FFD700',
+            colore: '#ca8a04',
             badge: 'UE e CEDU',
           },
         ],
@@ -496,7 +496,7 @@ const sezioni: Sezione[] = [
   {
     id: 'altre',
     titolo: 'Altre istituzioni e organi chiave',
-    colore: '#e879f9',
+    colore: '#c026d3',
     bg: 'rgba(232,121,249,0.08)',
     icon: '🔧',
     blocchi: [
@@ -518,13 +518,13 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Comitato Economico e Sociale (CESE)',
             testo: 'Organo consultivo che rappresenta le parti sociali: datori di lavoro, sindacati e organizzazioni della società civile. Deve essere consultato obbligatoriamente su determinate materie (politiche economiche, sociali, occupazione) ma i suoi pareri non sono vincolanti.',
-            colore: '#22c55e',
+            colore: '#16a34a',
             badge: 'Consultivo',
           },
           {
             titolo: 'Comitato delle Regioni (CdR)',
             testo: 'Organo consultivo che rappresenta le autorità locali e regionali. Consultato su questioni che riguardano regioni e comuni (coesione, trasporti, ambiente, istruzione). Può ricorrere alla CGUE se ritiene che un atto violi il principio di sussidiarietà.',
-            colore: '#38bdf8',
+            colore: '#0284c7',
             badge: 'Regioni',
           },
         ],
@@ -532,14 +532,14 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'I principi strutturali dell\'UE',
-        colore: '#e879f9',
+        colore: '#c026d3',
         contenuto:
           'Attribuzione: l\'UE agisce solo nei limiti delle competenze attribuitele dai trattati. Sussidiarietà: l\'UE interviene solo se e nella misura in cui gli obiettivi non possono essere raggiunti dagli Stati. Proporzionalità: il contenuto e la forma dell\'azione UE non devono andare al di là di quanto necessario. Questi tre principi — art. 5 TUE — definiscono i confini tra azione UE e sovranità degli Stati.',
       },
       {
         tipo: 'confronto',
-        coloreLeft: '#e879f9',
-        coloreRight: '#FFD700',
+        coloreLeft: '#c026d3',
+        coloreRight: '#ca8a04',
         left: {
           label: 'Competenze esclusive UE',
           items: [
@@ -618,7 +618,7 @@ const sezioni: Sezione[] = [
   {
     id: 'procedura-legislativa',
     titolo: 'La procedura legislativa ordinaria',
-    colore: '#a78bfa',
+    colore: '#7c3aed',
     bg: 'rgba(167,139,250,0.08)',
     icon: '📋',
     blocchi: [
@@ -630,7 +630,7 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'Gli atti legislativi: regolamento, direttiva, decisione',
-        colore: '#a78bfa',
+        colore: '#7c3aed',
         contenuto:
           'Il regolamento è direttamente applicabile in tutti gli Stati senza necessità di recepimento. La direttiva vincola gli Stati quanto all\'obiettivo ma lascia loro libertà sui mezzi: va recepita entro il termine indicato con una legge nazionale. La decisione è vincolante solo per i destinatari indicati (uno Stato, un\'impresa, una persona). Le raccomandazioni e i pareri non sono vincolanti.',
       },
@@ -673,8 +673,8 @@ const sezioni: Sezione[] = [
       },
       {
         tipo: 'confronto',
-        coloreLeft: '#a78bfa',
-        coloreRight: '#FFD700',
+        coloreLeft: '#7c3aed',
+        coloreRight: '#ca8a04',
         left: {
           label: 'Procedura ordinaria (PLO)',
           items: [
@@ -703,7 +703,7 @@ const sezioni: Sezione[] = [
   {
     id: 'bce',
     titolo: 'La Banca Centrale Europea (BCE)',
-    colore: '#FFD700',
+    colore: '#ca8a04',
     bg: 'rgba(255,215,0,0.08)',
     icon: '💶',
     blocchi: [
@@ -718,7 +718,7 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Consiglio Direttivo — il cuore decisionale',
             testo: 'Organo di governo principale della BCE. Composto dal Comitato Esecutivo (6 membri: Presidente, Vicepresidente e 4 consiglieri) più i governatori delle banche centrali nazionali dei 20 Paesi dell\'Eurozona (totale 26 componenti). Si riunisce ogni 6 settimane per le decisioni di politica monetaria. I governatori delle banche centrali dei Paesi più grandi votano a rotazione (sistema di rotation dal 2015). Le decisioni si prendono a maggioranza semplice; in caso di parità decide il Presidente.',
-            colore: '#FFD700',
+            colore: '#ca8a04',
             badge: 'Governance',
           },
           {
@@ -730,7 +730,7 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Strumenti di politica monetaria — tassi di interesse',
             testo: 'La BCE fissa tre tassi chiave: il tasso sulle operazioni di rifinanziamento principale (MRO rate — il "tasso BCE" citato nei media); il tasso sulla deposit facility (tasso che le banche ricevono per depositare riserve overnight presso la BCE — strumento usato nella politica dei tassi negativi 2014–2022); il tasso sul marginal lending facility (tasso per i prestiti overnight alle banche). Alzare i tassi raffredda l\'economia e riduce l\'inflazione; abbassarli la stimola.',
-            colore: '#22c55e',
+            colore: '#16a34a',
             badge: 'Tassi',
           },
           {
@@ -742,7 +742,7 @@ const sezioni: Sezione[] = [
           {
             titolo: 'TLTRO — Operazioni mirate di rifinanziamento',
             testo: 'Le Targeted Longer-Term Refinancing Operations offrono alle banche commerciali prestiti a lungo termine (2–3 anni) a tassi agevolati, a condizione che le banche usino la liquidità per erogare credito all\'economia reale (no prestiti ai governi). Strumento usato intensivamente dal 2016 al 2022 per stimolare il credito a imprese e famiglie.',
-            colore: '#a78bfa',
+            colore: '#7c3aed',
             badge: 'TLTRO',
           },
           {
@@ -754,7 +754,7 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Supervisione bancaria — SSM',
             testo: 'Dal novembre 2014 la BCE supervisiona direttamente le circa 110 banche più grandi dell\'Eurozona nell\'ambito del Meccanismo di Vigilanza Unico (SSM). Per le banche minori la supervisione spetta alle autorità nazionali, in coordinamento con la BCE. È il pilastro della Banking Union europea. La BCE può revocare le licenze bancarie e imporre requisiti patrimoniali aggiuntivi.',
-            colore: '#38bdf8',
+            colore: '#0284c7',
             badge: 'Banking Union',
           },
         ],
@@ -762,13 +762,13 @@ const sezioni: Sezione[] = [
       {
         tipo: 'box',
         label: 'Indipendenza e mandato — il dibattito politico',
-        colore: '#FFD700',
+        colore: '#ca8a04',
         contenuto:
           'L\'indipendenza della BCE è sancita dall\'art. 130 TFUE: nessuna istituzione UE o governo nazionale può impartirle istruzioni. Il mandato primario è la stabilità dei prezzi. Solo dopo, "senza pregiudicare" tale obiettivo, la BCE può supportare le politiche economiche generali dell\'UE (crescita, occupazione). Questo disegno istituzionale — mutuato dalla Bundesbank tedesca — è contestato da chi vorrebbe una banca centrale con doppio mandato (come la Fed americana: piena occupazione + stabilità prezzi). Durante la pandemia e la guerra in Ucraina il perimetro del mandato è stato oggetto di acceso dibattito politico.',
       },
       {
         tipo: 'highlight',
-        colore: '#FFD700',
+        colore: '#ca8a04',
         testo: '"Whatever it takes to preserve the euro. And believe me, it will be enough." — Mario Draghi, 26 luglio 2012. Queste parole — pronunciate prima che l\'OMT fosse formalmente adottato — bastarono da sole a fermare la crisi speculativa sui titoli di Stato italiani e spagnoli. Il caso più famoso di forward guidance (comunicazione come strumento di politica monetaria).',
       },
     ],
@@ -782,12 +782,12 @@ export default function UnioneEuropeaPage() {
     <>
       <style jsx global>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0d18; }
+        body { background: var(--bg); }
         ::-webkit-scrollbar { display: none; }
         html, body { overflow-x: hidden; }
       `}</style>
 
-      <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh' }}>
+      <div style={{ fontFamily: 'var(--font-ui)', background: 'var(--bg)', minHeight: '100vh' }}>
         <Header />
 
         <div style={{ padding: '20px 16px 140px' }}>
@@ -816,16 +816,16 @@ export default function UnioneEuropeaPage() {
               padding: '4px 14px',
               fontSize: 9, letterSpacing: 3,
               textTransform: 'uppercase',
-              color: '#FFD700', fontWeight: 700, marginBottom: 14,
+              color: '#ca8a04', fontWeight: 700, marginBottom: 14,
             }}>
               Organizzazione sovranazionale
             </div>
 
-            <div style={{ fontSize: 28, fontWeight: 900, color: '#fff', lineHeight: 1.15, letterSpacing: -0.5, marginBottom: 10 }}>
+            <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.5, marginBottom: 10 }}>
               Unione<br />Europea
             </div>
 
-            <div style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.5)', lineHeight: 1.75, marginBottom: 20 }}>
+            <div style={{ fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.75, marginBottom: 20 }}>
               Fondata sui Trattati di Roma del 1957, riformata da Maastricht (1992) e
               Lisbona (2009). 27 Stati membri, 450 milioni di cittadini. Mercato unico,
               moneta comune per 20 Paesi, e il più avanzato sistema di integrazione
@@ -835,15 +835,15 @@ export default function UnioneEuropeaPage() {
             <div style={{ display: 'flex', gap: 6 }}>
               {[
                 { num: 27, label: 'Stati membri', colore: '#003FA3' },
-                { num: 12, label: 'sezioni', colore: '#FFD700' },
-                { num: 20, label: 'Paesi €', colore: '#22c55e' },
+                { num: 12, label: 'sezioni', colore: '#ca8a04' },
+                { num: 20, label: 'Paesi €', colore: '#16a34a' },
               ].map((s, i) => (
                 <div key={i} style={{
                   flex: 1, background: `${s.colore}11`, borderRadius: 12,
                   padding: '10px 8px', border: `0.5px solid ${s.colore}33`, textAlign: 'center',
                 }}>
                   <div style={{ fontSize: 22, fontWeight: 900, color: s.colore }}>{s.num}</div>
-                  <div style={{ fontSize: 9.5, color: 'rgba(255,255,255,0.4)', marginTop: 3 }}>{s.label}</div>
+                  <div style={{ fontSize: 9.5, color: 'var(--text-3)', marginTop: 3 }}>{s.label}</div>
                 </div>
               ))}
             </div>
@@ -851,10 +851,10 @@ export default function UnioneEuropeaPage() {
 
           {/* INDICE */}
           <div style={{
-            background: '#111526', borderRadius: 18, padding: '16px',
-            border: '0.5px solid rgba(255,255,255,0.05)', marginBottom: 20,
+            background: 'var(--surface)', borderRadius: 18, padding: '16px',
+            border: '0.5px solid var(--line)', marginBottom: 20,
           }}>
-            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 700, marginBottom: 12 }}>
+            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
               Indice degli argomenti
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -868,7 +868,7 @@ export default function UnioneEuropeaPage() {
                     padding: '5px 10px', borderRadius: 8,
                     background: `${s.colore}11`, border: `0.5px solid ${s.colore}33`,
                     color: s.colore, fontSize: 10, fontWeight: 700,
-                    cursor: 'pointer', fontFamily: 'Montserrat, sans-serif',
+                    cursor: 'pointer', fontFamily: 'var(--font-ui)',
                   }}>
                   {s.icon} {s.titolo}
                 </button>
@@ -880,8 +880,8 @@ export default function UnioneEuropeaPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {sezioni.map((sezione) => (
               <div key={sezione.id} id={`sezione-${sezione.id}`} style={{
-                background: '#111526', borderRadius: 20,
-                border: `0.5px solid ${aperta === sezione.id ? sezione.colore + '55' : 'rgba(255,255,255,0.05)'}`,
+                background: 'var(--surface)', borderRadius: 20,
+                border: `0.5px solid ${aperta === sezione.id ? sezione.colore + '55' : 'var(--line)'}`,
                 overflow: 'hidden', transition: 'border-color 0.2s',
               }}>
                 <div onClick={() => setAperta(aperta === sezione.id ? null : sezione.id)} style={{
@@ -895,21 +895,21 @@ export default function UnioneEuropeaPage() {
                     fontSize: 20, flexShrink: 0,
                   }}>{sezione.icon}</div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: '#fff' }}>{sezione.titolo}</div>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{sezione.titolo}</div>
                   </div>
                   <div style={{
-                    color: 'rgba(255,255,255,0.3)', fontSize: 13, flexShrink: 0,
+                    color: 'var(--text-3)', fontSize: 13, flexShrink: 0,
                     transform: aperta === sezione.id ? 'rotate(180deg)' : 'none',
                     transition: 'transform 0.2s',
                   }}>▾</div>
                 </div>
 
                 {aperta === sezione.id && (
-                  <div style={{ padding: '0 16px 20px', borderTop: '0.5px solid rgba(255,255,255,0.05)' }}>
+                  <div style={{ padding: '0 16px 20px', borderTop: '0.5px solid var(--line)' }}>
                     <div style={{ paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 14 }}>
                       {sezione.blocchi.map((blocco, bi) => {
                         if (blocco.tipo === 'testo') return (
-                          <p key={bi} style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', lineHeight: 1.85 }}>{blocco.contenuto}</p>
+                          <p key={bi} style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.85 }}>{blocco.contenuto}</p>
                         );
                         if (blocco.tipo === 'highlight') return (
                           <div key={bi} style={{
@@ -917,7 +917,7 @@ export default function UnioneEuropeaPage() {
                             background: `${blocco.colore}08`, borderRadius: '0 10px 10px 0',
                             padding: '12px 12px 12px 16px',
                           }}>
-                            <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, fontStyle: 'italic' }}>{blocco.testo}</p>
+                            <p style={{ fontSize: 12.5, color: 'var(--text)', lineHeight: 1.8, fontStyle: 'italic' }}>{blocco.testo}</p>
                           </div>
                         );
                         if (blocco.tipo === 'box') {
@@ -925,7 +925,7 @@ export default function UnioneEuropeaPage() {
                           return (
                             <div key={bi} style={{ background: `${col}08`, borderRadius: 14, padding: '14px', border: `0.5px solid ${col}22` }}>
                               <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: col, fontWeight: 700, marginBottom: 8 }}>{blocco.label}</div>
-                              <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.65)', lineHeight: 1.85 }}>{blocco.contenuto}</p>
+                              <p style={{ fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.85 }}>{blocco.contenuto}</p>
                             </div>
                           );
                         }
@@ -935,8 +935,8 @@ export default function UnioneEuropeaPage() {
                               <div key={ii} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                                 <div style={{ width: 5, height: 5, borderRadius: '50%', background: sezione.colore, flexShrink: 0, marginTop: 6 }} />
                                 <div>
-                                  {item.titolo && <span style={{ fontSize: 12.5, fontWeight: 800, color: '#fff' }}>{item.titolo}: </span>}
-                                  <span style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.6)', lineHeight: 1.75 }}>{item.testo}</span>
+                                  {item.titolo && <span style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text)' }}>{item.titolo}: </span>}
+                                  <span style={{ fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.75 }}>{item.testo}</span>
                                 </div>
                               </div>
                             ))}
@@ -950,7 +950,7 @@ export default function UnioneEuropeaPage() {
                                 {data.items.map((p, pi) => (
                                   <div key={pi} style={{ display: 'flex', gap: 7, marginBottom: 7, alignItems: 'flex-start' }}>
                                     <div style={{ width: 3, height: 3, borderRadius: '50%', background: col, flexShrink: 0, marginTop: 5 }} />
-                                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.6)', lineHeight: 1.55 }}>{p}</div>
+                                    <div style={{ fontSize: 11, color: 'var(--text-2)', lineHeight: 1.55 }}>{p}</div>
                                   </div>
                                 ))}
                               </div>
@@ -964,14 +964,14 @@ export default function UnioneEuropeaPage() {
                               return (
                                 <div key={ci} style={{ background: `${col}08`, borderRadius: 14, padding: '14px', border: `0.5px solid ${col}22` }}>
                                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                                    <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', flex: 1 }}>{card.titolo}</div>
+                                    <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', flex: 1 }}>{card.titolo}</div>
                                     {card.badge && (
                                       <div style={{ background: `${col}18`, borderRadius: 6, padding: '2px 8px', fontSize: 9, fontWeight: 700, color: col, letterSpacing: 0.5, flexShrink: 0 }}>
                                         {card.badge}
                                       </div>
                                     )}
                                   </div>
-                                  <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>{card.testo}</p>
+                                  <p style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.8 }}>{card.testo}</p>
                                 </div>
                               );
                             })}
@@ -990,14 +990,14 @@ export default function UnioneEuropeaPage() {
             marginTop: 16,
             background: 'linear-gradient(135deg, rgba(0,63,163,0.05), rgba(255,215,0,0.05))',
             borderRadius: 18, padding: '18px 16px',
-            border: '0.5px solid rgba(255,255,255,0.05)',
+            border: '0.5px solid var(--line)',
           }}>
-            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', fontWeight: 700, marginBottom: 10 }}>
+            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--text-3)', fontWeight: 700, marginBottom: 10 }}>
               Nota
             </div>
-            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1.8 }}>
+            <p style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.8 }}>
               Il Consiglio d'Europa e la CEDU{' '}
-              <span style={{ color: '#fb7185', fontWeight: 700 }}>non fanno parte dell'UE</span>.
+              <span style={{ color: '#e11d48', fontWeight: 700 }}>non fanno parte dell'UE</span>.
               Sono istituzioni separate con 47 Stati membri. La Corte EDU di Strasburgo e la
               Corte di Giustizia UE di Lussemburgo sono due organi giurisdizionali distinti
               con competenze diverse.

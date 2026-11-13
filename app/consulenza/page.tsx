@@ -16,9 +16,9 @@ type Risultato = {
 };
 
 const URGENZA_COLORE = {
-  alta: '#fb7185',
-  media: '#ffd700',
-  bassa: '#22c55e',
+  alta: '#e11d48',
+  media: '#ca8a04',
+  bassa: '#16a34a',
 };
 
 const URGENZA_LABEL = {
@@ -99,16 +99,16 @@ export default function ConsulenzaPage() {
     <>
       <style jsx global>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0d18; }
+        body { background: var(--bg); }
         ::-webkit-scrollbar { display: none; }
         html, body { overflow-x: hidden; }
         textarea, input {
           outline: none;
-          font-family: Montserrat, sans-serif;
+          font-family: var(--font-ui);
         }
-        textarea::placeholder, input::placeholder {
-          color: rgba(255,255,255,0.2);
-          font-family: Montserrat, sans-serif;
+        textarea: :placeholder, input::placeholder {
+          color: var(--text-3);
+          font-family: var(--font-ui);
         }
         @keyframes pulse {
           0%, 100% { opacity: 1; }
@@ -120,14 +120,14 @@ export default function ConsulenzaPage() {
         }
       `}</style>
 
-      <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh' }}>
+      <div style={{ fontFamily: 'var(--font-ui)', background: 'var(--bg)', minHeight: '100vh' }}>
         <Header />
 
         <div style={{ padding: '28px 16px 140px' }}>
 
           {/* HERO */}
           <div style={{
-            background: 'linear-gradient(135deg, #0d1829, #111a2e)',
+            background: 'linear-gradient(135deg, var(--surface), var(--surface))',
             borderRadius: 24, padding: '24px 20px',
             border: '0.5px solid rgba(143,211,255,0.15)',
             marginBottom: 24, position: 'relative', overflow: 'hidden',
@@ -143,14 +143,14 @@ export default function ConsulenzaPage() {
               border: '1px solid rgba(143,211,255,0.25)',
               borderRadius: 99, padding: '4px 14px',
               fontSize: 9, letterSpacing: 3, textTransform: 'uppercase' as const,
-              color: '#8fd3ff', fontWeight: 700, marginBottom: 14,
+              color: 'var(--accent)', fontWeight: 700, marginBottom: 14,
             }}>
               Powered by AI
             </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: '#fff', lineHeight: 1.12, letterSpacing: -0.5, marginBottom: 8 }}>
+            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.12, letterSpacing: -0.5, marginBottom: 8 }}>
               Consulenza<br />Legale
             </div>
-            <div style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.45)', lineHeight: 1.7 }}>
+            <div style={{ fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.7 }}>
               Descrivi il tuo problema. L'AI identifica la materia, ti genera il testo della mail
               da mandare all'avvocato e trova i professionisti giusti nella tua città.
             </div>
@@ -163,7 +163,7 @@ export default function ConsulenzaPage() {
               {/* Città + CAP */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 10 }}>
                 <div>
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
+                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: 'var(--text-3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
                     Città
                   </div>
                   <input
@@ -173,15 +173,15 @@ export default function ConsulenzaPage() {
                     placeholder="Es. Milano"
                     style={{
                       width: '100%', height: 48,
-                      background: '#111526',
-                      border: '0.5px solid rgba(255,255,255,0.08)',
+                      background: 'var(--surface)',
+                      border: '0.5px solid var(--line)',
                       borderRadius: 14, padding: '0 14px',
-                      color: '#fff', fontSize: 14, fontWeight: 600,
+                      color: 'var(--text)', fontSize: 14, fontWeight: 600,
                     }}
                   />
                 </div>
                 <div>
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
+                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: 'var(--text-3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
                     CAP
                   </div>
                   <input
@@ -192,10 +192,10 @@ export default function ConsulenzaPage() {
                     maxLength={5}
                     style={{
                       width: 80, height: 48,
-                      background: '#111526',
-                      border: '0.5px solid rgba(255,255,255,0.08)',
+                      background: 'var(--surface)',
+                      border: '0.5px solid var(--line)',
                       borderRadius: 14, padding: '0 12px',
-                      color: '#fff', fontSize: 13, fontWeight: 600,
+                      color: 'var(--text)', fontSize: 13, fontWeight: 600,
                     }}
                   />
                 </div>
@@ -203,7 +203,7 @@ export default function ConsulenzaPage() {
 
               {/* Problema */}
               <div>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: 'var(--text-3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
                   Descrivi il tuo problema
                 </div>
                 <textarea
@@ -213,14 +213,14 @@ export default function ConsulenzaPage() {
                   rows={7}
                   style={{
                     width: '100%',
-                    background: '#111526',
-                    border: '0.5px solid rgba(255,255,255,0.08)',
+                    background: 'var(--surface)',
+                    border: '0.5px solid var(--line)',
                     borderRadius: 16, padding: '14px',
-                    color: '#fff', fontSize: 13, lineHeight: 1.7,
+                    color: 'var(--text)', fontSize: 13, lineHeight: 1.7,
                     resize: 'none',
                   }}
                 />
-                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.2)', marginTop: 6, textAlign: 'right' }}>
+                <div style={{ fontSize: 10, color: 'var(--text-3)', marginTop: 6, textAlign: 'right' }}>
                   {problema.length} caratteri {problema.length < 20 && problema.length > 0 && '(minimo 20)'}
                 </div>
               </div>
@@ -231,7 +231,7 @@ export default function ConsulenzaPage() {
                   background: 'rgba(251,113,133,0.08)',
                   border: '0.5px solid rgba(251,113,133,0.25)',
                   borderRadius: 12, padding: '12px 14px',
-                  fontSize: 12.5, color: '#fb7185', lineHeight: 1.6,
+                  fontSize: 12.5, color: '#e11d48', lineHeight: 1.6,
                 }}>
                   {errore}
                 </div>
@@ -245,11 +245,11 @@ export default function ConsulenzaPage() {
                 display: 'flex', gap: 10, alignItems: 'flex-start',
               }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="#ffd700" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 1 }}>
+                  stroke="#ca8a04" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 1 }}>
                   <circle cx="12" cy="12" r="10" />
                   <path d="M12 8v4M12 16h.01" />
                 </svg>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', lineHeight: 1.6 }}>
+                <div style={{ fontSize: 11, color: 'var(--text-3)', lineHeight: 1.6 }}>
                   Questo strumento non sostituisce una consulenza legale professionale.
                   Non inserire dati sensibili come nomi, indirizzi o dettagli identificativi.
                 </div>
@@ -264,10 +264,10 @@ export default function ConsulenzaPage() {
                   borderRadius: 16,
                   background: loading ? 'rgba(143,211,255,0.08)' : 'rgba(143,211,255,0.12)',
                   border: `0.5px solid rgba(143,211,255,${loading ? '0.15' : '0.3'})`,
-                  color: loading ? 'rgba(143,211,255,0.4)' : '#8fd3ff',
+                  color: loading ? 'rgba(143,211,255,0.4)' : 'var(--accent)',
                   fontSize: 13, fontWeight: 800,
                   cursor: loading ? 'not-allowed' : 'pointer',
-                  fontFamily: 'Montserrat, sans-serif',
+                  fontFamily: 'var(--font-ui)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                   animation: loading ? 'pulse 1.5s ease-in-out infinite' : 'none',
                 }}
@@ -283,7 +283,7 @@ export default function ConsulenzaPage() {
                 ) : (
                   <>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                      stroke="#8fd3ff" strokeWidth="2" strokeLinecap="round">
+                      stroke="#4f46e5" strokeWidth="2" strokeLinecap="round">
                       <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                     </svg>
                     Analizza il problema
@@ -298,7 +298,7 @@ export default function ConsulenzaPage() {
 
               {/* Materia + urgenza */}
               <div style={{
-                background: '#111526',
+                background: 'var(--surface)',
                 borderRadius: 20, padding: '18px 16px',
                 border: '0.5px solid rgba(143,211,255,0.2)',
               }}>
@@ -307,10 +307,10 @@ export default function ConsulenzaPage() {
                     <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'rgba(143,211,255,0.6)', fontWeight: 700, marginBottom: 6 }}>
                       Materia individuata
                     </div>
-                    <div style={{ fontSize: 18, fontWeight: 900, color: '#fff', lineHeight: 1.2 }}>
+                    <div style={{ fontSize: 18, fontWeight: 900, color: 'var(--text)', lineHeight: 1.2 }}>
                       {risultato.materia}
                     </div>
-                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>
+                    <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 4 }}>
                       Cerca un {risultato.specializzazione}
                     </div>
                   </div>
@@ -337,10 +337,10 @@ export default function ConsulenzaPage() {
 
               {/* Consigli */}
               <div style={{
-                background: '#111526', borderRadius: 18,
-                border: '0.5px solid rgba(255,255,255,0.06)', padding: '16px',
+                background: 'var(--surface)', borderRadius: 18,
+                border: '0.5px solid var(--line)', padding: '16px',
               }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.28)', fontWeight: 700, marginBottom: 12 }}>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
                   Cosa fare subito
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -351,11 +351,11 @@ export default function ConsulenzaPage() {
                         background: 'rgba(143,211,255,0.1)',
                         border: '0.5px solid rgba(143,211,255,0.2)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 9, fontWeight: 900, color: '#8fd3ff',
+                        fontSize: 9, fontWeight: 900, color: 'var(--accent)',
                       }}>
                         {i + 1}
                       </div>
-                      <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7 }}>
+                      <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.7 }}>
                         {c}
                       </div>
                     </div>
@@ -365,22 +365,22 @@ export default function ConsulenzaPage() {
 
               {/* Testo mail */}
               <div style={{
-                background: '#111526', borderRadius: 18,
-                border: '0.5px solid rgba(255,255,255,0.06)', padding: '16px',
+                background: 'var(--surface)', borderRadius: 18,
+                border: '0.5px solid var(--line)', padding: '16px',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                  <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.28)', fontWeight: 700 }}>
+                  <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700 }}>
                     Testo da inviare all'avvocato
                   </div>
                   <button
                     onClick={copiaMail}
                     style={{
-                      background: copiato ? 'rgba(34,197,94,0.12)' : 'rgba(255,255,255,0.06)',
-                      border: `0.5px solid ${copiato ? 'rgba(34,197,94,0.3)' : 'rgba(255,255,255,0.1)'}`,
+                      background: copiato ? 'rgba(34,197,94,0.12)' : 'var(--fill)',
+                      border: `0.5px solid ${copiato ? 'rgba(34,197,94,0.3)' : 'var(--line)'}`,
                       borderRadius: 8, padding: '5px 10px',
-                      color: copiato ? '#22c55e' : 'rgba(255,255,255,0.45)',
+                      color: copiato ? '#16a34a' : 'rgba(255,255,255,0.45)',
                       fontSize: 10, fontWeight: 700, cursor: 'pointer',
-                      fontFamily: 'Montserrat, sans-serif',
+                      fontFamily: 'var(--font-ui)',
                       display: 'flex', alignItems: 'center', gap: 5,
                     }}
                   >
@@ -395,8 +395,8 @@ export default function ConsulenzaPage() {
                   </button>
                 </div>
                 <div style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '0.5px solid rgba(255,255,255,0.06)',
+                  background: 'var(--fill)',
+                  border: '0.5px solid var(--line)',
                   borderRadius: 12, padding: '14px',
                   fontSize: 12.5, color: 'rgba(255,255,255,0.6)',
                   lineHeight: 1.85, whiteSpace: 'pre-wrap' as const,
@@ -408,10 +408,10 @@ export default function ConsulenzaPage() {
 
               {/* Trova avvocati */}
               <div style={{
-                background: '#111526', borderRadius: 18,
-                border: '0.5px solid rgba(255,255,255,0.06)', padding: '16px',
+                background: 'var(--surface)', borderRadius: 18,
+                border: '0.5px solid var(--line)', padding: '16px',
               }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.28)', fontWeight: 700, marginBottom: 12 }}>
+                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
                   Trova avvocati a {citta}
                 </div>
 
@@ -422,7 +422,7 @@ export default function ConsulenzaPage() {
                     background: 'rgba(249,115,22,0.08)',
                     border: '0.5px solid rgba(249,115,22,0.25)',
                     color: '#f97316', fontSize: 13, fontWeight: 800,
-                    cursor: 'pointer', fontFamily: 'Montserrat, sans-serif',
+                    cursor: 'pointer', fontFamily: 'var(--font-ui)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                     marginBottom: 8,
                   }}
@@ -445,13 +445,13 @@ export default function ConsulenzaPage() {
                     width: '100%', height: 48, borderRadius: 14,
                     background: 'rgba(143,211,255,0.07)',
                     border: '0.5px solid rgba(143,211,255,0.2)',
-                    color: '#8fd3ff', fontSize: 13, fontWeight: 800,
-                    cursor: 'pointer', fontFamily: 'Montserrat, sans-serif',
+                    color: 'var(--accent)', fontSize: 13, fontWeight: 800,
+                    cursor: 'pointer', fontFamily: 'var(--font-ui)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                   }}
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="#8fd3ff" strokeWidth="2" strokeLinecap="round">
+                    stroke="#4f46e5" strokeWidth="2" strokeLinecap="round">
                     <path d="M3 21H21M6 21V10M18 21V10M12 21V10M2 10L12 3L22 10" />
                   </svg>
                   Albo CNF ufficiale
@@ -461,9 +461,9 @@ export default function ConsulenzaPage() {
                   </svg>
                 </button>
 
-                <div style={{ marginTop: 10, fontSize: 10.5, color: 'rgba(255,255,255,0.25)', lineHeight: 1.6 }}>
+                <div style={{ marginTop: 10, fontSize: 10.5, color: 'var(--text-3)', lineHeight: 1.6 }}>
                   Query ottimizzata per il tuo caso:{' '}
-                  <span style={{ color: 'rgba(255,255,255,0.4)', fontStyle: 'italic' }}>
+                  <span style={{ color: 'var(--text-3)', fontStyle: 'italic' }}>
                     "{risultato.query_google} {citta}"
                   </span>
                 </div>
@@ -474,11 +474,11 @@ export default function ConsulenzaPage() {
                 onClick={reset}
                 style={{
                   width: '100%', height: 46, borderRadius: 14,
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '0.5px solid rgba(255,255,255,0.08)',
+                  background: 'var(--fill)',
+                  border: '0.5px solid var(--line)',
                   color: 'rgba(255,255,255,0.35)',
                   fontSize: 12, fontWeight: 700, cursor: 'pointer',
-                  fontFamily: 'Montserrat, sans-serif',
+                  fontFamily: 'var(--font-ui)',
                 }}
               >
                 ← Nuova analisi

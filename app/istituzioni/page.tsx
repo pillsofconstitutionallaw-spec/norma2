@@ -151,7 +151,7 @@ export default function IstituzioniPage() {
         }
 
         body {
-          background: #0a0d18;
+          background: var(--bg);
         }
 
         ::-webkit-scrollbar {
@@ -169,10 +169,10 @@ export default function IstituzioniPage() {
       <div
         style={{
           minHeight: '100vh',
-          background: '#0a0d18',
+          background: 'var(--bg)',
           padding: '20px 16px 140px',
-          fontFamily: 'Montserrat, sans-serif',
-          color: '#fff',
+          fontFamily: 'var(--font-ui)',
+          color: 'var(--text)',
         }}
       >
         {/* HEADER */}
@@ -182,7 +182,7 @@ export default function IstituzioniPage() {
               fontSize: 9,
               fontWeight: 700,
               letterSpacing: 3,
-              color: 'rgba(255,255,255,0.3)',
+              color: 'var(--text-3)',
               textTransform: 'uppercase',
               marginBottom: 8,
             }}
@@ -206,7 +206,7 @@ export default function IstituzioniPage() {
             style={{
               fontSize: 14,
               lineHeight: 1.6,
-              color: 'rgba(255,255,255,0.5)',
+              color: 'var(--text-2)',
               maxWidth: 700,
             }}
           >
@@ -242,13 +242,11 @@ export default function IstituzioniPage() {
                 gap: 6,
                 padding: '18px',
                 borderRadius: 18,
-                background:
-                  categoriaAttiva === livello.titolo
+                background: categoriaAttiva === livello.titolo
                     ? 'rgba(143,211,255,0.08)'
-                    : '#111526',
+                    : 'var(--surface)',
 
-                border:
-                  categoriaAttiva === livello.titolo
+                border: categoriaAttiva === livello.titolo
                     ? '1px solid rgba(143,211,255,0.25)'
                     : '1px solid rgba(255,255,255,0.05)',
 
@@ -261,7 +259,7 @@ export default function IstituzioniPage() {
                 style={{
                   fontSize: 16,
                   fontWeight: 800,
-                  color: '#fff',
+                  color: 'var(--text)',
                 }}
               >
                 {livello.titolo}
@@ -271,7 +269,7 @@ export default function IstituzioniPage() {
                 style={{
                   fontSize: 13,
                   lineHeight: 1.5,
-                  color: 'rgba(255,255,255,0.45)',
+                  color: 'var(--text-2)',
                 }}
               >
                 {livello.descrizione}
@@ -295,7 +293,7 @@ export default function IstituzioniPage() {
                 fontSize: 10,
                 letterSpacing: 3,
                 textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.3)',
+                color: 'var(--text-3)',
                 marginBottom: 8,
                 fontWeight: 700,
               }}
@@ -319,14 +317,12 @@ export default function IstituzioniPage() {
                     padding: '18px',
                     borderRadius: 18,
 
-                    background:
-                      istituzioneAttiva ===
+                    background: istituzioneAttiva ===
                       istituzione
                         ? 'rgba(143,211,255,0.08)'
-                        : '#111526',
+                        : 'var(--surface)',
 
-                    border:
-                      istituzioneAttiva ===
+                    border: istituzioneAttiva ===
                       istituzione
                         ? '1px solid rgba(143,211,255,0.25)'
                         : '1px solid rgba(255,255,255,0.05)',
@@ -340,7 +336,7 @@ export default function IstituzioniPage() {
                     style={{
                       fontSize: 15,
                       fontWeight: 700,
-                      color: '#fff',
+                      color: 'var(--text)',
                     }}
                   >
                     {istituzione}
@@ -348,8 +344,7 @@ export default function IstituzioniPage() {
 
                   <div
                     style={{
-                      color:
-                        'rgba(255,255,255,0.2)',
+                      color: 'var(--text-3)',
                     }}
                   >
                     →
@@ -366,9 +361,8 @@ export default function IstituzioniPage() {
             ref={rispostaRef}
             style={{
               borderRadius: 22,
-              background: '#111526',
-              border:
-                '1px solid rgba(255,255,255,0.05)',
+              background: 'var(--surface)',
+              border: '1px solid var(--line)',
               padding: 24,
             }}
           >
@@ -377,7 +371,7 @@ export default function IstituzioniPage() {
                 fontSize: 10,
                 letterSpacing: 3,
                 textTransform: 'uppercase',
-                color: '#8fd3ff',
+                color: 'var(--accent)',
                 marginBottom: 12,
                 fontWeight: 700,
               }}
@@ -401,7 +395,7 @@ export default function IstituzioniPage() {
             {loadingAI ? (
               <div
                 style={{
-                  color: '#8fd3ff',
+                  color: 'var(--accent)',
                   fontWeight: 700,
                   fontSize: 15,
                 }}
@@ -411,8 +405,7 @@ export default function IstituzioniPage() {
             ) : (
               <div
                 style={{
-                  color:
-                    'rgba(255,255,255,0.82)',
+                  color: 'var(--text)',
                   lineHeight: 1.9,
                   fontSize: 15,
                   whiteSpace: 'pre-wrap',

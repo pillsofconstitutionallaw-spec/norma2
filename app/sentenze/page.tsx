@@ -305,19 +305,19 @@ const sentenze = [
 
 const coloreTag: Record<string, string> = {
   'Fonti del diritto': '#f97316',
-  'Unione Europea': '#38bdf8',
-  'Diritto internazionale': '#a78bfa',
-  'Parlamento': '#ffd700',
-  'Governo': '#fb7185',
-  'Presidente della Repubblica': '#e879f9',
-  'Principi fondamentali': '#22c55e',
+  'Unione Europea': '#0284c7',
+  'Diritto internazionale': '#7c3aed',
+  'Parlamento': '#ca8a04',
+  'Governo': '#e11d48',
+  'Presidente della Repubblica': '#c026d3',
+  'Principi fondamentali': '#16a34a',
   'Diritto penale': '#f97316',
-  'Diritti fondamentali': '#22c55e',
-  'Legge elettorale': '#38bdf8',
-  'Democrazia diretta': '#a78bfa',
-  'Tributi': '#ffd700',
-  'Regioni': '#fb7185',
-  'Ambiente': '#22c55e',
+  'Diritti fondamentali': '#16a34a',
+  'Legge elettorale': '#0284c7',
+  'Democrazia diretta': '#7c3aed',
+  'Tributi': '#ca8a04',
+  'Regioni': '#e11d48',
+  'Ambiente': '#16a34a',
 };
 
 export default function SentenzePage() {
@@ -331,7 +331,7 @@ export default function SentenzePage() {
     <>
       <style jsx global>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0d18; }
+        body { background: var(--bg); }
         ::-webkit-scrollbar { display: none; }
         html, body { overflow-x: hidden; }
         @keyframes fadeIn {
@@ -340,18 +340,18 @@ export default function SentenzePage() {
         }
       `}</style>
 
-      <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh' }}>
+      <div style={{ fontFamily: 'var(--font-ui)', background: 'var(--bg)', minHeight: '100vh' }}>
         <Header />
 
         {/* HERO */}
         <div style={{ padding: '32px 16px 20px' }}>
-          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 10 }}>
+          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 10 }}>
             Corte Costituzionale
           </div>
-          <div style={{ fontSize: 30, fontWeight: 900, color: '#fff', lineHeight: 1.1, letterSpacing: -1, marginBottom: 10 }}>
+          <div style={{ fontSize: 30, fontWeight: 900, color: 'var(--text)', lineHeight: 1.1, letterSpacing: -1, marginBottom: 10 }}>
             Sentenze<br />fondamentali
           </div>
-          <div style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.4)', lineHeight: 1.65, marginBottom: 20 }}>
+          <div style={{ fontSize: 12.5, color: 'var(--text-3)', lineHeight: 1.65, marginBottom: 20 }}>
             Le decisioni che hanno scritto la storia della Repubblica e definito i confini del potere.
           </div>
 
@@ -368,8 +368,8 @@ export default function SentenzePage() {
                 borderRadius: 10, padding: '6px 12px',
                 display: 'flex', alignItems: 'center', gap: 6,
               }}>
-                <span style={{ fontSize: 13, fontWeight: 900, color: '#8fd3ff' }}>{s.num}</span>
-                <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)' }}>{s.label}</span>
+                <span style={{ fontSize: 13, fontWeight: 900, color: 'var(--accent)' }}>{s.num}</span>
+                <span style={{ fontSize: 10, color: 'var(--text-3)' }}>{s.label}</span>
               </div>
             ))}
           </div>
@@ -381,17 +381,17 @@ export default function SentenzePage() {
             onClick={() => { setFiltroTag(null); setAttiva(null); }}
             style={{
               padding: '5px 12px', borderRadius: 8,
-              background: !filtroTag ? 'rgba(143,211,255,0.12)' : 'rgba(255,255,255,0.04)',
-              border: `0.5px solid ${!filtroTag ? 'rgba(143,211,255,0.3)' : 'rgba(255,255,255,0.08)'}`,
-              color: !filtroTag ? '#8fd3ff' : 'rgba(255,255,255,0.35)',
+              background: !filtroTag ? 'rgba(143,211,255,0.12)' : 'var(--fill)',
+              border: `0.5px solid ${!filtroTag ? 'rgba(143,211,255,0.3)' : 'var(--line)'}`,
+              color: !filtroTag ? 'var(--accent)' : 'rgba(255,255,255,0.35)',
               fontSize: 10, fontWeight: 700, cursor: 'pointer',
-              fontFamily: 'Montserrat, sans-serif',
+              fontFamily: 'var(--font-ui)',
             }}
           >
             Tutte
           </button>
           {tags.map((tag) => {
-            const col = coloreTag[tag] ?? '#8fd3ff';
+            const col = coloreTag[tag] ?? '#4f46e5';
             const attivo = filtroTag === tag;
             return (
               <button
@@ -399,11 +399,11 @@ export default function SentenzePage() {
                 onClick={() => { setFiltroTag(attivo ? null : tag); setAttiva(null); }}
                 style={{
                   padding: '5px 12px', borderRadius: 8,
-                  background: attivo ? `${col}18` : 'rgba(255,255,255,0.04)',
-                  border: `0.5px solid ${attivo ? col + '55' : 'rgba(255,255,255,0.08)'}`,
+                  background: attivo ? `${col}18` : 'var(--fill)',
+                  border: `0.5px solid ${attivo ? col + '55' : 'var(--line)'}`,
                   color: attivo ? col : 'rgba(255,255,255,0.35)',
                   fontSize: 10, fontWeight: 700, cursor: 'pointer',
-                  fontFamily: 'Montserrat, sans-serif',
+                  fontFamily: 'var(--font-ui)',
                 }}
               >
                 {tag}
@@ -417,7 +417,7 @@ export default function SentenzePage() {
           {filtrate.map((s, i) => {
             const idx = sentenze.indexOf(s);
             const aperta = attiva === idx;
-            const col = coloreTag[s.tag] ?? '#8fd3ff';
+            const col = coloreTag[s.tag] ?? '#4f46e5';
 
             return (
               <div
@@ -425,7 +425,7 @@ export default function SentenzePage() {
                 onClick={() => setAttiva(aperta ? null : idx)}
                 style={{
                   background: aperta ? '#111a30' : '#0f1424',
-                  border: `0.5px solid ${aperta ? col + '44' : 'rgba(255,255,255,0.06)'}`,
+                  border: `0.5px solid ${aperta ? col + '44' : 'var(--line)'}`,
                   borderRadius: 20,
                   overflow: 'hidden',
                   cursor: 'pointer',
@@ -438,13 +438,13 @@ export default function SentenzePage() {
                   <div style={{
                     flexShrink: 0, width: 52, height: 52,
                     borderRadius: 14,
-                    background: aperta ? `${col}18` : 'rgba(255,255,255,0.04)',
-                    border: `0.5px solid ${aperta ? col + '44' : 'rgba(255,255,255,0.08)'}`,
+                    background: aperta ? `${col}18` : 'var(--fill)',
+                    border: `0.5px solid ${aperta ? col + '44' : 'var(--line)'}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     flexDirection: 'column', gap: 1,
                   }}>
-                    <div style={{ fontSize: 7, fontWeight: 700, color: aperta ? col : 'rgba(255,255,255,0.3)', letterSpacing: 0.5 }}>SENT.</div>
-                    <div style={{ fontSize: 11, fontWeight: 900, color: aperta ? col : 'rgba(255,255,255,0.5)', lineHeight: 1 }}>{s.anno}</div>
+                    <div style={{ fontSize: 7, fontWeight: 700, color: aperta ? col : '#8e8e99', letterSpacing: 0.5 }}>SENT.</div>
+                    <div style={{ fontSize: 11, fontWeight: 900, color: aperta ? col : '#5b5b66', lineHeight: 1 }}>{s.anno}</div>
                   </div>
 
                   {/* Testi */}
@@ -460,10 +460,10 @@ export default function SentenzePage() {
                     }}>
                       {s.tag}
                     </div>
-                    <div style={{ fontSize: 13.5, fontWeight: 800, color: '#fff', lineHeight: 1.25 }}>
+                    <div style={{ fontSize: 13.5, fontWeight: 800, color: 'var(--text)', lineHeight: 1.25 }}>
                       {s.titolo}
                     </div>
-                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', marginTop: 2 }}>
+                    <div style={{ fontSize: 10, color: 'var(--text-3)', marginTop: 2 }}>
                       n. {s.numero}
                     </div>
                   </div>
@@ -471,13 +471,13 @@ export default function SentenzePage() {
                   {/* Freccia */}
                   <div style={{
                     flexShrink: 0, width: 28, height: 28, borderRadius: '50%',
-                    border: '0.5px solid rgba(255,255,255,0.1)',
+                    border: '0.5px solid var(--line)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     transform: aperta ? 'rotate(90deg)' : 'none',
                     transition: 'transform 0.2s',
                   }}>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                      stroke="rgba(255,255,255,0.4)" strokeWidth="2.5" strokeLinecap="round">
+                      stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                       <path d="M9 18l6-6-6-6" />
                     </svg>
                   </div>
@@ -487,7 +487,7 @@ export default function SentenzePage() {
                 {aperta && (
                   <div style={{ padding: '0 16px 20px', animation: 'fadeIn 0.2s ease' }}>
                     <div style={{
-                      borderTop: '0.5px solid rgba(255,255,255,0.06)',
+                      borderTop: '0.5px solid var(--line)',
                       paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 12,
                     }}>
                       {/* Il caso */}
@@ -498,7 +498,7 @@ export default function SentenzePage() {
                         }}>
                           Il caso
                         </div>
-                        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.75 }}>
+                        <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.75 }}>
                           {s.caso}
                         </div>
                       </div>
@@ -515,7 +515,7 @@ export default function SentenzePage() {
                         }}>
                           Il principio
                         </div>
-                        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', lineHeight: 1.75 }}>
+                        <div style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.75 }}>
                           {s.principio}
                         </div>
                       </div>

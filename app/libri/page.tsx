@@ -33,7 +33,7 @@ const materie: Materia[] = [
   },
   {
     nome: 'Diritto Privato / Civile',
-    colore: '#38bdf8',
+    colore: '#0284c7',
     bg: 'rgba(56,189,248,0.1)',
     libri: [
       { titolo: 'Manuale di Diritto Privato', autore: 'Paolo Torrente, Piero Schlesinger', editore: 'Giuffrè', perche: 'Il manuale di riferimento assoluto per il diritto privato italiano. Trattazione sistematica e completa, da decenni testo fondamentale in tutte le facoltà di giurisprudenza italiane.', cerca: 'Manuale Diritto Privato Torrente Schlesinger Giuffrè', tipo: 'manuale' },
@@ -43,7 +43,7 @@ const materie: Materia[] = [
   },
   {
     nome: 'Diritto Penale',
-    colore: '#f87171',
+    colore: '#dc2626',
     bg: 'rgba(239,68,68,0.1)',
     libri: [
       { titolo: 'Diritto Penale — Parte Generale', autore: 'Giovanni Fiandaca, Enzo Musco', editore: 'Zanichelli', perche: 'Il manuale più utilizzato nelle università italiane per il diritto penale. Eccellente per chiarezza espositiva, completezza e continuo aggiornamento giurisprudenziale. Indispensabile per l\'esame e i concorsi.', cerca: 'Diritto Penale Parte Generale Fiandaca Musco Zanichelli', tipo: 'manuale' },
@@ -53,7 +53,7 @@ const materie: Materia[] = [
   },
   {
     nome: 'Diritto Amministrativo',
-    colore: '#4ade80',
+    colore: '#16a34a',
     bg: 'rgba(34,197,94,0.1)',
     libri: [
       { titolo: 'Istituzioni di Diritto Amministrativo', autore: 'Sabino Cassese', editore: 'Giuffrè', perche: 'Il manuale del più autorevole giurista italiano del diritto pubblico. Trattazione essenziale ma profonda, ideale per acquisire le basi solide dell\'ordinamento amministrativo italiano.', cerca: 'Istituzioni Diritto Amministrativo Cassese Giuffrè', tipo: 'manuale' },
@@ -62,7 +62,7 @@ const materie: Materia[] = [
   },
   {
     nome: 'Diritto Commerciale',
-    colore: '#fbbf24',
+    colore: '#d97706',
     bg: 'rgba(251,191,36,0.1)',
     libri: [
       { titolo: 'Manuale di Diritto Commerciale', autore: 'Gian Franco Campobasso', editore: 'UTET', perche: 'Il manuale di riferimento assoluto per il diritto commerciale italiano. Trattazione completa e sistematica delle società, dei titoli di credito e del fallimento. Adottato dalla quasi totalità degli atenei italiani.', cerca: 'Manuale Diritto Commerciale Campobasso UTET', tipo: 'manuale' },
@@ -71,7 +71,7 @@ const materie: Materia[] = [
   },
   {
     nome: "Diritto dell'Unione Europea",
-    colore: '#60a5fa',
+    colore: '#2563eb',
     bg: 'rgba(96,165,250,0.1)',
     libri: [
       { titolo: "Diritto dell'Unione Europea", autore: 'Gianluca Strozzi, Roberto Mastroianni', editore: 'Giappichelli', perche: 'Manuale completo e aggiornato sul diritto europeo, con particolare attenzione alle fonti, alle istituzioni e alla giurisprudenza della Corte di Giustizia. Tra i più adottati nelle università italiane.', cerca: 'Diritto Unione Europea Strozzi Mastroianni Giappichelli', tipo: 'manuale' },
@@ -80,7 +80,7 @@ const materie: Materia[] = [
   },
   {
     nome: 'Diritto del Lavoro',
-    colore: '#c084fc',
+    colore: '#9333ea',
     bg: 'rgba(168,85,247,0.1)',
     libri: [
       { titolo: 'Diritto del Lavoro', autore: 'Franco Carinci, Raffaele De Luca Tamajo, Paolo Tosi, Tiziano Treu', editore: 'UTET', perche: 'Il manuale più completo e autorevole del diritto del lavoro italiano. Opera in due volumi che copre sistematicamente tutto il diritto sindacale e il rapporto di lavoro. Fondamentale per i concorsi pubblici.', cerca: 'Diritto Lavoro Carinci De Luca Tamajo Tosi Treu UTET', tipo: 'manuale' },
@@ -89,7 +89,7 @@ const materie: Materia[] = [
   },
   {
     nome: 'Codici Commentati',
-    colore: '#8fd3ff',
+    colore: '#4f46e5',
     bg: 'rgba(143,211,255,0.1)',
     libri: [
       { titolo: 'Codice Civile e Leggi Collegate — Commentato', autore: 'a cura di Giorgio De Nova', editore: 'Zanichelli', perche: 'Il codice civile commentato più autorevole e utilizzato nella pratica professionale. Ogni articolo è corredato di commento dottrinale e massime giurisprudenziali aggiornate. Indispensabile per avvocati e notai.', cerca: 'Codice Civile Commentato De Nova Zanichelli', tipo: 'codice' },
@@ -115,50 +115,50 @@ export default function LibriPage() {
     <>
       <style jsx global>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0d18; }
+        body { background: var(--bg); }
         ::-webkit-scrollbar { display: none; }
         html, body { overflow-x: hidden; }
       `}</style>
-      <div style={{ fontFamily: 'Montserrat, sans-serif', background: '#0a0d18', minHeight: '100vh' }}>
+      <div style={{ fontFamily: 'var(--font-ui)', background: 'var(--bg)', minHeight: '100vh' }}>
         <Header />
         <div style={{ padding: '20px 16px 140px' }}>
           <div style={{ marginBottom: 28 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 8 }}>Per gli studenti</div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: '#fff', lineHeight: 1.15, letterSpacing: -0.5 }}>Libri consigliati</div>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', marginTop: 6, lineHeight: 1.5 }}>I migliori manuali per ogni materia, selezionati tra i più usati dagli studenti di giurisprudenza.</div>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>Per gli studenti</div>
+            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.5 }}>Libri consigliati</div>
+            <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 6, lineHeight: 1.5 }}>I migliori manuali per ogni materia, selezionati tra i più usati dagli studenti di giurisprudenza.</div>
           </div>
           {materie.map((m, mi) => (
             <div key={mi} style={{ marginBottom: 28 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: m.colore, flexShrink: 0 }} />
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2.5, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>{m.nome}</div>
-                <div style={{ flex: 1, height: '0.5px', background: 'rgba(255,255,255,0.06)' }} />
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2.5, color: 'var(--text-3)', textTransform: 'uppercase' }}>{m.nome}</div>
+                <div style={{ flex: 1, height: '0.5px', background: 'var(--fill)' }} />
               </div>
               {m.libri.map((l, li) => {
                 const key = `${mi}-${li}`;
                 const isOpen = aperto === key;
                 return (
                   <div key={li} style={{ marginBottom: 6 }}>
-                    <button onClick={() => toggleLibro(key)} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderRadius: isOpen ? '14px 14px 0 0' : 14, background: '#111526', border: `0.5px solid ${isOpen ? m.colore + '44' : 'rgba(255,255,255,0.05)'}`, cursor: 'pointer', textAlign: 'left' }}>
+                    <button onClick={() => toggleLibro(key)} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderRadius: isOpen ? '14px 14px 0 0' : 14, background: 'var(--surface)', border: `0.5px solid ${isOpen ? m.colore + '44' : 'var(--line)'}`, cursor: 'pointer', textAlign: 'left' }}>
                       <div style={{ width: 40, height: 40, borderRadius: 11, background: m.bg, border: `0.5px solid ${m.colore}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={m.colore} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                           {l.tipo === 'codice' ? <><path d="M4 19V5H12V19M12 5H20V19"/><path d="M2 19H22"/></> : <><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></>}
                         </svg>
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', marginBottom: 3, lineHeight: 1.3 }}>{l.titolo}</div>
-                        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', lineHeight: 1.3 }}>{l.autore}</div>
+                        <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 3, lineHeight: 1.3 }}>{l.titolo}</div>
+                        <div style={{ fontSize: 11, color: 'var(--text-3)', lineHeight: 1.3 }}>{l.autore}</div>
                         <div style={{ fontSize: 10, color: m.colore, fontWeight: 700, marginTop: 2, opacity: 0.7 }}>{l.editore}</div>
                       </div>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, transform: isOpen ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s' }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, transform: isOpen ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s' }}>
                         <path d="M9 18l6-6-6-6"/>
                       </svg>
                     </button>
                     {isOpen && (
                       <div style={{ background: '#0c1420', borderRadius: '0 0 14px 14px', border: `0.5px solid ${m.colore}44`, borderTop: 'none', padding: '14px 16px' }}>
-                        <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', lineHeight: 1.8, marginBottom: 16 }}>{l.perche}</div>
-                        <button onClick={() => trovaprezzi(l.cerca)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, width: '100%', padding: '13px', borderRadius: 12, background: m.colore, color: '#041428', fontWeight: 800, fontSize: 12, border: 'none', cursor: 'pointer', letterSpacing: 0.5 }}>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#041428" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <div style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.8, marginBottom: 16 }}>{l.perche}</div>
+                        <button onClick={() => trovaprezzi(l.cerca)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, width: '100%', padding: '13px', borderRadius: 12, background: m.colore, color: 'var(--accent-strong)', fontWeight: 800, fontSize: 12, border: 'none', cursor: 'pointer', letterSpacing: 0.5 }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#312e81" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
                           </svg>
                           Trova l’offerta migliore →

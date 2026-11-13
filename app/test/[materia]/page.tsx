@@ -175,15 +175,15 @@ export default function TestMateriaPage() {
 
   const timerColore =
     timer <= 10
-      ? '#f87171'
+      ? '#dc2626'
       : timer <= 20
-      ? '#fbbf24'
-      : '#8fd3ff';
+      ? '#d97706'
+      : 'var(--accent)';
 
   if (loading) {
 
     return (
-      <div style={{ minHeight: '100vh', background: '#050816', color: '#fff', fontFamily: 'Montserrat, sans-serif' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', fontFamily: 'var(--font-ui)'}}>
         <Header />
 
         <div style={{
@@ -194,7 +194,7 @@ export default function TestMateriaPage() {
           padding: '0 32px',
           textAlign: 'center'
         }}>
-          <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>
+          <div style={{ fontSize: 14, color: 'var(--text-2)' }}>
             Caricamento domande su {nomeMateria}...
           </div>
         </div>
@@ -207,7 +207,7 @@ export default function TestMateriaPage() {
   if (errore) {
 
     return (
-      <div style={{ minHeight: '100vh', background: '#050816', color: '#fff', fontFamily: 'Montserrat, sans-serif' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', fontFamily: 'var(--font-ui)'}}>
         <Header />
 
         <div style={{
@@ -218,7 +218,7 @@ export default function TestMateriaPage() {
           padding: '0 32px',
           textAlign: 'center'
         }}>
-          <div style={{ fontSize: 14, color: '#f87171' }}>
+          <div style={{ fontSize: 14, color: '#dc2626' }}>
             Nessuna domanda trovata per questa materia.
           </div>
         </div>
@@ -231,7 +231,7 @@ export default function TestMateriaPage() {
   if (fine) {
 
     return (
-      <div style={{ minHeight: '100vh', background: '#050816', color: '#fff', fontFamily: 'Montserrat, sans-serif' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', fontFamily: 'var(--font-ui)'}}>
         <Header />
 
         <div style={{ maxWidth: 700, margin: '0 auto', padding: '24px 16px 140px' }}>
@@ -241,7 +241,7 @@ export default function TestMateriaPage() {
             <div style={{
               fontSize: 56,
               fontWeight: 900,
-              color: percentuale >= 60 ? '#4ade80' : '#f87171',
+              color: percentuale >= 60 ? '#16a34a' : '#dc2626',
               marginBottom: 10
             }}>
               {percentuale}%
@@ -250,7 +250,7 @@ export default function TestMateriaPage() {
             <div style={{
               fontSize: 18,
               fontWeight: 800,
-              color: '#fff',
+              color: 'var(--text)',
               marginBottom: 8
             }}>
               {punteggio} su {domandeTest.length} corrette
@@ -258,7 +258,7 @@ export default function TestMateriaPage() {
 
             <div style={{
               fontSize: 13,
-              color: 'rgba(255,255,255,0.45)'
+              color: 'var(--text-2)'
             }}>
               {nomeMateria}
             </div>
@@ -271,8 +271,8 @@ export default function TestMateriaPage() {
               width: '100%',
               padding: '14px',
               borderRadius: 14,
-              background: '#8fd3ff',
-              color: '#041428',
+              background: 'var(--accent)',
+              color: 'var(--accent-strong)',
               fontWeight: 800,
               fontSize: 13,
               border: 'none',
@@ -290,7 +290,7 @@ export default function TestMateriaPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#050816', color: '#fff', fontFamily: 'Montserrat, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', fontFamily: 'var(--font-ui)'}}>
 
       <Header />
 
@@ -309,8 +309,8 @@ export default function TestMateriaPage() {
               display: 'flex',
               alignItems: 'center',
               gap: 6,
-              background: 'rgba(255,255,255,0.05)',
-              border: '0.5px solid rgba(255,255,255,0.08)',
+              background: 'var(--fill)',
+              border: '0.5px solid var(--line)',
               borderRadius: 10,
               padding: '6px 12px',
               color: 'rgba(255,255,255,0.5)',
@@ -325,7 +325,7 @@ export default function TestMateriaPage() {
           <div style={{
             fontSize: 10,
             fontWeight: 700,
-            color: 'rgba(255,255,255,0.35)',
+            color: 'var(--text-3)',
             letterSpacing: 2,
             textTransform: 'uppercase'
           }}>
@@ -350,7 +350,7 @@ export default function TestMateriaPage() {
         </div>
 
         <div style={{
-          background: 'rgba(255,255,255,0.06)',
+          background: 'var(--fill)',
           borderRadius: 99,
           height: 3,
           marginBottom: 20,
@@ -358,7 +358,7 @@ export default function TestMateriaPage() {
         }}>
           <div style={{
             height: '100%',
-            background: '#8fd3ff',
+            background: 'var(--accent)',
             width: `${((indice + 1) / domandeTest.length) * 100}%`
           }} />
         </div>
@@ -372,7 +372,7 @@ export default function TestMateriaPage() {
           <span style={{
             fontSize: 10,
             fontWeight: 700,
-            color: 'rgba(255,255,255,0.35)',
+            color: 'var(--text-3)',
             textTransform: 'uppercase'
           }}>
             Domanda {indice + 1} di {domandeTest.length}
@@ -380,7 +380,7 @@ export default function TestMateriaPage() {
 
           <span style={{
             fontSize: 10,
-            color: 'rgba(255,255,255,0.25)'
+            color: 'var(--text-3)'
           }}>
             Quiz Orizzonte Giuridico
           </span>
@@ -401,7 +401,7 @@ export default function TestMateriaPage() {
           const selezionata = risposta === i;
           const corretta = domanda.corretta === i;
 
-          let bg = '#111526';
+          let bg = 'var(--surface)';
           let border = '0.5px solid rgba(255,255,255,0.06)';
           let colore = 'rgba(255,255,255,0.7)';
 
@@ -411,13 +411,13 @@ export default function TestMateriaPage() {
 
               bg = 'rgba(74,222,128,0.08)';
               border = '0.5px solid rgba(74,222,128,0.3)';
-              colore = '#4ade80';
+              colore = '#16a34a';
 
             } else if (selezionata) {
 
               bg = 'rgba(248,113,113,0.08)';
               border = '0.5px solid rgba(248,113,113,0.3)';
-              colore = '#f87171';
+              colore = '#dc2626';
 
             }
           }
@@ -464,14 +464,14 @@ export default function TestMateriaPage() {
             marginBottom: 18,
             borderLeft: `3px solid ${
               risposta === domanda.corretta
-                ? '#4ade80'
-                : '#f87171'
+                ? '#16a34a'
+                : '#dc2626'
             }`
           }}>
 
             <div style={{
               fontSize: 12,
-              color: 'rgba(255,255,255,0.6)',
+              color: 'var(--text-2)',
               lineHeight: 1.8
             }}>
               {domanda.spiegazione}
@@ -493,9 +493,9 @@ export default function TestMateriaPage() {
                   flex: 1,
                   padding: '13px',
                   borderRadius: 12,
-                  background: '#111526',
-                  border: '0.5px solid rgba(255,255,255,0.08)',
-                  color: 'rgba(255,255,255,0.5)',
+                  background: 'var(--surface)',
+                  border: '0.5px solid var(--line)',
+                  color: 'var(--text-2)',
                   fontWeight: 700,
                   fontSize: 13,
                   cursor: 'pointer'
@@ -512,8 +512,8 @@ export default function TestMateriaPage() {
                 flex: 2,
                 padding: '13px',
                 borderRadius: 12,
-                background: '#8fd3ff',
-                color: '#041428',
+                background: 'var(--accent)',
+                color: 'var(--accent-strong)',
                 fontWeight: 800,
                 fontSize: 13,
                 border: 'none',

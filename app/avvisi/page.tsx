@@ -32,8 +32,8 @@ export default function Avvisi() {
       <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
       <style jsx global>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0d18; }
-        .av-app { font-family: 'Montserrat', sans-serif; background: #0a0d18; width: 100%; min-height: 100vh; }
+        body { background: var(--bg); }
+        .av-app { font-family: var(--font-ui); background: var(--bg); width: 100%; min-height: 100vh; }
         .av-feed { padding: 20px 16px 140px; }
         @media (min-width: 768px) { .av-feed { padding: 32px 40px 140px; } }
         @media (min-width: 1024px) { .av-feed { padding: 40px 80px 140px; } }
@@ -47,10 +47,10 @@ export default function Avvisi() {
 
           {/* TITOLO */}
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', marginBottom: 8, fontFamily: 'Montserrat, sans-serif' }}>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8, fontFamily: 'var(--font-ui)'}}>
               Aggiornamenti
             </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: '#fff', lineHeight: 1.15, letterSpacing: -0.5, fontFamily: 'Montserrat, sans-serif' }}>
+            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.5, fontFamily: 'var(--font-ui)'}}>
               Avvisi
             </div>
           </div>
@@ -58,7 +58,7 @@ export default function Avvisi() {
           {/* LISTA */}
           {loading ? (
             [0,1,2,3,4,5].map(i => (
-              <div key={i} style={{ borderRadius: 14, background: '#111526', marginBottom: 8, height: 70, border: '0.5px solid rgba(255,255,255,0.05)' }} />
+              <div key={i} style={{ borderRadius: 14, background: 'var(--surface)', marginBottom: 8, height: 70, border: '0.5px solid var(--line)' }} />
             ))
           ) : posts.map((post, i) => {
             const isOdl = post._src === 'odl';
@@ -69,13 +69,13 @@ export default function Avvisi() {
 
             return (
               <a key={i} href={href} target={isOdl ? '_blank' : '_self'} rel="noreferrer"
-                style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', marginBottom: 6, borderRadius: 14, background: '#111526', border: '0.5px solid rgba(255,255,255,0.05)', textDecoration: 'none', transition: 'opacity .15s' }}>
+                style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', marginBottom: 6, borderRadius: 14, background: 'var(--surface)', border: '0.5px solid var(--line)', textDecoration: 'none', transition: 'opacity .15s' }}>
 
                 {/* Immagine o dot */}
                 {img
                   ? <img src={img} alt="" style={{ width: 48, height: 48, borderRadius: 10, objectFit: 'cover', flexShrink: 0 }} />
-                  : <div style={{ width: 48, height: 48, borderRadius: 10, background: '#07162b', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isOdl ? '#a8c8f0' : '#8fd3ff'} strokeWidth="1.8" strokeLinecap="round">
+                  : <div style={{ width: 48, height: 48, borderRadius: 10, background: 'var(--surface-2)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isOdl ? '#4f46e5' : '#4f46e5'} strokeWidth="1.8" strokeLinecap="round">
                         <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
                         <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
                       </svg>
@@ -84,16 +84,16 @@ export default function Avvisi() {
 
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                    <span style={{ fontSize: 8, fontWeight: 700, color: isOdl ? '#a8c8f0' : '#8fd3ff', letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(143,211,255,0.3)'}`, borderRadius: 20, padding: '2px 7px' }}>
+                    <span style={{ fontSize: 8, fontWeight: 700, color: isOdl ? 'var(--accent)' : 'var(--accent)', letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: 'var(--font-ui)', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(143,211,255,0.3)'}`, borderRadius: 20, padding: '2px 7px' }}>
                       {isOdl ? 'OdD' : cat || 'OG'}
                     </span>
-                    <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', fontFamily: 'Montserrat, sans-serif' }}>{data}</span>
+                    <span style={{ fontSize: 10, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>{data}</span>
                   </div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'Montserrat, sans-serif', lineHeight: 1.3 }}
+                  <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'var(--font-ui)', lineHeight: 1.3 }}
                     dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }} />
                 </div>
 
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" style={{ flexShrink: 0 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0 }}>
                   <path d="M9 18l6-6-6-6"/>
                 </svg>
 
