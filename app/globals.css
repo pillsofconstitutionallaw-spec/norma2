@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
+/* Tailwind non deve scansionare i dati: 11 MB di codici e 22 MB di XML
+   rallentano compilazione e build senza contenere classi. */
+@source not "../data";
+@source not "../normativa";
+@source not "../ocr-worker";
+@source not "../old.html";
 
 @theme {
   --font-family-sans: 'Montserrat', sans-serif;
@@ -69,4 +75,81 @@ img {
   background: linear-gradient(90deg, #111526 25%, #182040 50%, #111526 75%);
   background-size: 200% 100%;
   animation: shimmer 1.6s infinite linear;
+}
+/* ───────────────────────── Design system Norma ─────────────────────────
+   Token comuni per dare all'app un aspetto coerente e "nativo".
+   Le pagine nuove o ridisegnate usano queste variabili invece dei colori
+   scritti a mano. */
+:root {
+  --bg: #0a0d18;
+  --surface: #111526;
+  --surface-2: #171c30;
+  --line: rgba(255, 255, 255, 0.07);
+  --text: #ffffff;
+  --text-2: rgba(255, 255, 255, 0.62);
+  --text-3: rgba(255, 255, 255, 0.38);
+  --accent: #8fd3ff;
+  --accent-soft: rgba(143, 211, 255, 0.12);
+  --radius-card: 20px;
+  --radius-sm: 12px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --tabbar-h: 58px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Comportamenti da app, non da sito */
+html { -webkit-tap-highlight-color: transparent; }
+body { overscroll-behavior-y: none; -webkit-font-smoothing: antialiased; }
+button, nav, .tap { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+
+/* Feedback al tocco: leggero rimpicciolimento, come i controlli iOS */
+.tap { transition: transform 0.18s var(--ease-out), opacity 0.18s; }
+.tap:active { transform: scale(0.94); opacity: 0.85; }
+
+/* ── Tab bar ── */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  padding-bottom: var(--safe-bottom);
+  background: rgba(10, 13, 24, 0.82);
+  backdrop-filter: saturate(180%) blur(22px);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  border-top: 0.5px solid var(--line);
+}
+.tabbar-inner {
+  position: relative; display: flex;
+  max-width: 560px; height: var(--tabbar-h); margin: 0 auto;
+}
+.tabbar-indicatore {
+  position: absolute; top: 0; left: 0; height: 2px;
+  display: flex; justify-content: center;
+  transition: transform 0.45s var(--ease-spring);
+}
+.tabbar-indicatore::before {
+  content: ''; width: 28px; height: 2px; border-radius: 0 0 2px 2px;
+  background: var(--accent); box-shadow: 0 0 10px var(--accent);
+}
+.tabbar-tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  background: none; border: none; cursor: pointer; padding: 0;
+  color: var(--text-3); font-family: 'Montserrat', sans-serif;
+}
+.tabbar-tab[data-attivo='true'] { color: var(--text); }
+.tabbar-tab[data-attivo='true'] svg { animation: tab-pop 0.35s var(--ease-spring); }
+.tabbar-label { font-size: 10px; font-weight: 600; letter-spacing: 0.2px; }
+.tab-n {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid currentColor;
+  font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; line-height: 1;
+}
+.tab-n[data-attivo='true'] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+@keyframes tab-pop { 0% { transform: scale(0.8); } 100% { transform: scale(1); } }
+
+/* Comparsa morbida dei contenuti */
+@keyframes appare { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.appare { animation: appare 0.5s var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
