@@ -271,3 +271,25 @@ export default function FeedCard({ post, priority = false }: { post: Post; prior
     </article>
   );
 }
+
+/* Articolo in formato compatto: miniatura a sinistra, titolo a destra.
+   Usato nella Home sotto l'articolo in evidenza. */
+export function ArticoloCompatto({ post }: { post: Post }) {
+  const isOdl = post._source === 'odl';
+  const m = post._embedded?.['wp:featuredmedia']?.[0];
+  const img = m?.media_details?.sizes?.thumbnail?.source_url || m?.media_details?.sizes?.medium?.source_url || m?.source_url;
+  const cat = post._embedded?.['wp:term']?.[0]?.[0]?.name || '';
+  const href = isOdl ? post.link : `/articoli/${post.slug}`;
+  return (
+    <a href={href} target={isOdl ? '_blank' : '_self'} rel={isOdl ? 'noreferrer noopener' : undefined} className="riga articolo-compatto">
+      <div className="riga-testo">
+        {cat && <div className="compatto-cat">{cat}</div>}
+        <div className="compatto-titolo" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+        <div className="riga-sub">{isOdl ? 'Orizzonti del Diritto' : 'Orizzonte Giuridico'} · {dataRelativa(post.date)}</div>
+      </div>
+      {img
+        ? <img src={img} alt="" loading="lazy" className="compatto-img" />
+        : <div className="compatto-img feed-media-vuota" />}
+    </a>
+  );
+}

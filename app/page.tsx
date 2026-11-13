@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import FeedCard from '@/components/home/FeedCard';
+import FeedCard, { ArticoloCompatto } from '@/components/home/FeedCard';
 
 /* ─── StoryTimer (invariato) ─── */
 function StoryTimer({ onTick, onEnd }: { onTick: (p: number) => void; onEnd: () => void }) {
@@ -564,14 +564,22 @@ export default function NormaHome() {
                   </div>
                 </div>
               ))
-            : feedPosts.map((post, i) => (
-                <FeedCard key={post.id ?? `${post.slug}-${i}`} post={post} priority={i === 0} />
-              ))}
-          {feedLoading && <div style={{ display: 'flex', justifyContent: 'center', padding: 16 }}><span className="spinner" /></div>}
-          <div ref={feedEndRef} style={{ height: 1 }} />
+            : (
+                <>
+                  {/* 1 articolo in evidenza + 4 compatti: la Home è un riassunto, il feed completo è in /articoli */}
+                  <FeedCard post={feedPosts[0]} priority />
+                  {feedPosts.length > 1 && (
+                    <div className="lista appare">
+                      {feedPosts.slice(1, 5).map((post, i) => (
+                        <ArticoloCompatto key={post.id ?? `${post.slug}-${i}`} post={post} />
+                      ))}
+                    </div>
+                  )}
+                </>
+              )}
 
-          <div style={{ display: 'grid', gap: 10, marginTop: 4 }}>
-            <a href="/articoli" className="btn btn-primario tap">Tutti gli articoli</a>
+          <div style={{ display: 'grid', gap: 10, marginTop: 14 }}>
+            <a href="/articoli" className="btn btn-primario tap">Vedi tutti gli articoli</a>
             {fascicolo && (
               <a href={fascicolo.url} target="_blank" rel="noreferrer" download className="btn btn-secondario tap">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
