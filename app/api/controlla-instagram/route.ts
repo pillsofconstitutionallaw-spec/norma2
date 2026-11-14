@@ -51,7 +51,7 @@ async function esegui(): Promise<NextResponse> {
   }
 
   const res = await fetch(
-    `https://graph.instagram.com/v25.0/${IG_USER_ID}/media?fields=id,caption,permalink,timestamp&limit=1&access_token=${token}`,
+    `https://graph.instagram.com/v25.0/${IG_USER_ID}/media?fields=id,caption,permalink,timestamp,media_type,media_url,thumbnail_url&limit=1&access_token=${token}`,
     { next: { revalidate: 0 } }
   );
   const data = await res.json();
@@ -90,6 +90,9 @@ async function esegui(): Promise<NextResponse> {
     ? ultimoPost.caption.split('\n')[0].slice(0, 80)
     : 'Nuovo post su Instagram';
 
+  // Immagine del post (per i video la copertina). Visibile su Android/desktop.
+  const immaginePost: string | undefined = ultimoPost.media_type === 'VIDEO' ? ultimoPost.thumbnail_url : ultimoPost.media_url;
+
   const notifRes = await fetch('https://onesignal.com/api/v1/notifications', {
     method: 'POST',
     headers: {
@@ -102,6 +105,8 @@ async function esegui(): Promise<NextResponse> {
       headings: { it: 'Orizzonte Giuridico', en: 'Orizzonte Giuridico' },
       contents: { it: `📱 ${caption}`, en: `📱 ${caption}` },
       url: ultimoPost.permalink || 'https://www.instagram.com/orizzonte.giuridico/',
+      chrome_web_icon: 'https://norma2.vercel.app/icon-192.png?v=3',
+      ...(immaginePost ? { chrome_web_image: immaginePost } : {}),
     }),
   });
 

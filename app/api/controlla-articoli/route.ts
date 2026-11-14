@@ -16,19 +16,22 @@ const ONESIGNAL_APP_ID = 'cb2f63d9-6736-47a6-97e7-913f41abd463';
 const SITI = [
   {
     chiave: 'ultimo-articolo-og',
-    api: 'https://orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=1&_fields=id,link,slug,title',
+    api: 'https://orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=1&_embed=wp:featuredmedia&_fields=id,link,slug,title,_links,_embedded',
     titolo: 'Orizzonte Giuridico',
     urlApp: (p: Articolo) => `https://norma2.vercel.app/articoli/${p.slug}`,
   },
   {
     chiave: 'ultimo-articolo-odl',
-    api: 'https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=1&_fields=id,link,slug,title',
+    api: 'https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=1&_embed=wp:featuredmedia&_fields=id,link,slug,title,_links,_embedded',
     titolo: 'Orizzonti del Diritto',
     urlApp: (p: Articolo) => p.link,
   },
 ];
 
-type Articolo = { id: number; link: string; slug: string; title: { rendered: string } };
+type Articolo = {
+  id: number; link: string; slug: string; title: { rendered: string };
+  _embedded?: { 'wp:featuredmedia'?: { source_url?: string; media_details?: { sizes?: Record<string, { source_url: string }> } }[] };
+};
 
 function verificaAuth(req: NextRequest): boolean {
   return req.headers.get('Authorization') === `Bearer ${process.env.CRON_SECRET}`;
@@ -62,6 +65,10 @@ async function controllaSito(sito: (typeof SITI)[number]) {
   await scriviEdgeConfig([{ key: sito.chiave, value: ultimo.link }]);
 
   const titolo = testoPulito(ultimo.title.rendered);
+  // Immagine grande nella notifica: si vede su Android/desktop; su iPhone
+  // le notifiche delle web app non mostrano immagini (limite di Apple).
+  const media = ultimo._embedded?.['wp:featuredmedia']?.[0];
+  const immagine = media?.media_details?.sizes?.medium_large?.source_url || media?.media_details?.sizes?.large?.source_url || media?.source_url;
   const r = await fetch('https://onesignal.com/api/v1/notifications', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Basic ${process.env.ONESIGNAL_REST_API_KEY}` },
@@ -71,6 +78,8 @@ async function controllaSito(sito: (typeof SITI)[number]) {
       headings: { it: sito.titolo, en: sito.titolo },
       contents: { it: `📰 ${titolo}`, en: `📰 ${titolo}` },
       url: sito.urlApp(ultimo),
+      chrome_web_icon: 'https://norma2.vercel.app/icon-192.png?v=3',
+      ...(immagine ? { chrome_web_image: immagine } : {}),
     }),
   });
   return { sito: sito.titolo, esito: 'notifica inviata', articolo: titolo, onesignal: await r.json() };

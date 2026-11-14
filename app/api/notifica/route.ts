@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
         headings: { it: 'Orizzonte Giuridico', en: 'Orizzonte Giuridico' },
         contents: { it: messaggio, en: messaggio },
         url: body.post_url || 'https://norma2.vercel.app',
+        chrome_web_icon: 'https://norma2.vercel.app/icon-192.png?v=3',
       }),
     });
 

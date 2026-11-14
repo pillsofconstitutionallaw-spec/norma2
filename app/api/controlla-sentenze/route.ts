@@ -75,6 +75,7 @@ async function esegui(): Promise<NextResponse> {
       headings: { it: 'Corte Costituzionale', en: 'Corte Costituzionale' },
       contents: { it: `📜 ${depositoAttuale}`, en: `📜 ${depositoAttuale}` },
       url: 'https://www.cortecostituzionale.it/actionCommuniqueStampa.do',
+      chrome_web_icon: 'https://norma2.vercel.app/icon-192.png?v=3',
     }),
   });
 

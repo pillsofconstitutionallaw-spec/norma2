@@ -20,13 +20,13 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+      { url: "/icon-192.png?v=3", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png?v=3", sizes: "512x512", type: "image/png" },
     ],
     apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-      { url: "/apple-icon-152x152.png", sizes: "152x152", type: "image/png" },
-      { url: "/apple-icon-120x120.png", sizes: "120x120", type: "image/png" },
+      { url: "/apple-touch-icon.png?v=3", sizes: "180x180", type: "image/png" },
+      { url: "/apple-icon-152x152.png?v=3", sizes: "152x152", type: "image/png" },
+      { url: "/apple-icon-120x120.png?v=3", sizes: "120x120", type: "image/png" },
     ],
   },
 };
@@ -51,10 +51,10 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Norma" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png" />
-        <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png?v=3" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png?v=3" />
       </head>
       <body className="min-h-full flex flex-col">
         {/* Su schermi larghi l'app resta in una colonna centrale, come un'app
@@ -108,7 +108,7 @@ export default function RootLayout({
                     font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
                   \`;
                   banner.innerHTML = \`
-                    <img src="/apple-touch-icon.png" style="width:40px;height:40px;border-radius:10px;flex-shrink:0;" />
+                    <img src="/apple-touch-icon.png?v=3" style="width:40px;height:40px;border-radius:10px;flex-shrink:0;" />
                     <div style="flex:1;min-width:0;">
                       <div style="font-size:13px;font-weight:800;color:#0b0b0f;margin-bottom:2px;">Norma</div>
                       <div style="font-size:11px;color:rgba(60,60,67,0.6);">Tocca per attivare le notifiche push</div>
