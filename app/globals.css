@@ -565,3 +565,27 @@ button, nav, .tap { -webkit-user-select: none; user-select: none; -webkit-touch-
   .app-colonna { background: var(--bg); min-height: 100dvh; box-shadow: 0 0 0 0.5px var(--line), 0 20px 60px rgba(16, 24, 40, 0.08); }
   .tabbar { left: 50%; right: auto; width: 760px; transform: translateX(-50%); }
 }
+
+/* ───────── Transizioni tra le pagine ─────────
+   1) Il contenuto di ogni pagina entra salendo e in dissolvenza, mentre
+      barra superiore e tab bar restano ferme (come nelle app native).
+      Solo sul contenuto: una transform su un contenitore più esterno
+      sposterebbe anche gli elementi position: fixed.
+   2) Tra pagine caricate con link normali il browser fa una dissolvenza
+      invece del lampo bianco (dove supportato; altrove nessun effetto). */
+main, .feed, .cs-feed, .av-feed, .di-feed, .fonti-feed {
+  animation: entra-pagina 0.45s var(--ease-out) both;
+}
+@keyframes entra-pagina {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 0.18s ease-out both vt-esce; }
+::view-transition-new(root) { animation: 0.32s var(--ease-out) both vt-entra; }
+@keyframes vt-esce { to { opacity: 0; } }
+@keyframes vt-entra { from { opacity: 0; transform: translateY(12px); } }
+/* Header e tab bar non partecipano alla dissolvenza: restano ferme */
+.navbar { view-transition-name: barra-alta; }
+.tabbar { view-transition-name: barra-tab; }
+::view-transition-group(barra-alta), ::view-transition-group(barra-tab) { animation: none; }
