@@ -249,6 +249,9 @@ export default function NormaHome() {
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(staticCategories);
   // Categorie con almeno un articolo nelle ultime 24 ore: solo queste compaiono
   const [storieAttive, setStorieAttive] = useState<Set<string>>(new Set());
+  // Categorie dove si pubblica più spesso: restano sempre visibili, grigie se
+  // non hanno articoli nelle ultime 24 ore
+  const [frequenti, setFrequenti] = useState<Set<string>>(new Set());
   const [fascicolo, setFascicolo] = useState<{ url: string; title: string } | null>(null);
 
   /* ── Feed state ── */
@@ -314,12 +317,14 @@ export default function NormaHome() {
     try { localStorage.setItem(STORY_LS_KEY, JSON.stringify({ ts: Date.now(), data: storyCache.current })); } catch {}
   }
 
-  /* Contenuto di una storia, come su Instagram: solo gli articoli delle
-     ultime 24 ore, dal più vecchio al più nuovo (l'ultimo è alla fine). */
+  /* Contenuto di una storia, come su Instagram: gli articoli delle ultime
+     24 ore dal più vecchio al più nuovo (l'ultimo è alla fine). Per le
+     categorie frequenti rimaste grigie si vedono gli ultimi articoli. */
   function perStoria(posts: any[]): any[] {
     if (!Array.isArray(posts)) return [];
     const recenti = posts.filter(p => p?.date && Date.now() - new Date(p.date).getTime() <= ORE_24);
-    return [...recenti].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+    const lista = recenti.length > 0 ? recenti : posts.slice(0, 5);
+    return [...lista].sort((a, b) => String(a.date).localeCompare(String(b.date)));
   }
 
   function computeNewCategories() {
@@ -451,9 +456,18 @@ export default function NormaHome() {
     function aggiorna() {
       fetch('/api/home-data', { cache: 'no-store' })
         .then(r => r.json())
-        .then(({ cats, articles, fascicolo: f, storyPosts: sp }) => {
+        .then(({ cats, articles, fascicolo: f, storyPosts: sp, frequenza }) => {
           if (annullato) return;
+          if (frequenza && typeof frequenza === 'object') {
+            const top = Object.entries(frequenza as Record<string, number>)
+              .filter(([, n]) => n >= 2)
+              .sort((a, b) => b[1] - a[1])
+              .slice(0, 5)
+              .map(([nome]) => nome);
+            setFrequenti(new Set(top));
+          }
           if (sp && typeof sp === 'object') {
+
             Object.entries(sp).forEach(([name, posts]) => {
               if (Array.isArray(posts) && posts.length > 0) storyCache.current[name] = posts as any[];
             });
@@ -486,7 +500,9 @@ export default function NormaHome() {
   }, []);
 
   /* ── Story controls (invariati) ── */
-  const storie = categories.filter(c => storieAttive.has(c.name));
+  // In barra: le categorie con articoli nelle ultime 24 ore (colorate, per
+  // prime) e quelle dove si pubblica più spesso (grigie se senza novità)
+  const storie = categories.filter(c => storieAttive.has(c.name) || (frequenti.has(c.name) && (storyCache.current[c.name]?.length ?? 0) > 0));
 
   async function openStory(catIdx: number) {
     const cat = storie[catIdx];

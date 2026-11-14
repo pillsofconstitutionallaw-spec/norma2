@@ -59,14 +59,18 @@ export async function GET() {
     const recenti = await json(
       'https://orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=50&_embed=wp:featuredmedia&_fields=id,date,slug,link,title,excerpt,categories,_links,_embedded'
     );
+    // Quanti articoli ha ogni categoria tra gli ultimi 50: le più frequenti
+    // restano sempre nella barra delle storie (grigie se non c'è niente di nuovo)
+    const frequenza: Record<string, number> = {};
     const storyPosts: Record<string, any[]> = {};
     for (const { name, id } of STORY_CATS) {
+      frequenza[name] = Array.isArray(recenti) ? recenti.filter((p: any) => Array.isArray(p.categories) && p.categories.includes(id)).length : 0;
       storyPosts[name] = Array.isArray(recenti)
         ? recenti.filter((p: any) => Array.isArray(p.categories) && p.categories.includes(id)).slice(0, 5)
         : [];
     }
 
-    return NextResponse.json({ cats, articles, fascicolo, storyPosts }, { headers: INTESTAZIONI });
+    return NextResponse.json({ cats, articles, fascicolo, storyPosts, frequenza }, { headers: INTESTAZIONI });
   } catch {
     return NextResponse.json({ cats: [], articles: [], fascicolo: null, storyPosts: {} });
   }
