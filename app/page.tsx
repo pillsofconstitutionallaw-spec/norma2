@@ -82,8 +82,6 @@ function InstagramEmbed() {
 
 /* ─── Dati statici ─── */
 const staticCategories = [
-  // Storia fissa con gli ultimi articoli pubblicati, di qualsiasi categoria e sito
-  { id: 0,   name: 'Novità' },
   { id: 48,  name: 'Penale' },
   { id: 682, name: 'Civile' },
   { id: 39,  name: 'Costituzionale' },
@@ -101,7 +99,6 @@ const staticCategories = [
 ];
 
 const icons: Record<string, React.ReactNode> = {
-  'Novità': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
   Penale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 20 12 21C8.5 20 5 16 5 11V6L12 3Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
   Civile: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8"/><path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
   Costituzionale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M7 3H17L21 7V21H3V3H7Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M17 3V7H21" stroke="currentColor" strokeWidth="1.8"/><path d="M7 12H17M7 16H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>,
@@ -250,6 +247,8 @@ export default function NormaHome() {
   const caroselloRef = useRef<HTMLDivElement>(null);
   const [sezioniAperte, setSezioniAperte] = useState(false);
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(staticCategories);
+  // Categorie con almeno un articolo nelle ultime 24 ore: solo queste compaiono
+  const [storieAttive, setStorieAttive] = useState<Set<string>>(new Set());
   const [fascicolo, setFascicolo] = useState<{ url: string; title: string } | null>(null);
 
   /* ── Feed state ── */
@@ -270,6 +269,7 @@ export default function NormaHome() {
   const storyCache = useRef<Record<string, any[]>>({});
   const STORY_LS_KEY = 'norma_story_cache_v2';
   const STORY_LS_TTL = 60 * 60 * 1000;
+  const ORE_24 = 24 * 60 * 60 * 1000;
   const SEEN_KEY = 'norma_story_seen_v1';
   const [newCategories, setNewCategories] = useState<Set<string>>(new Set());
   const seenRef = useRef<Record<string, string>>({});
@@ -314,15 +314,28 @@ export default function NormaHome() {
     try { localStorage.setItem(STORY_LS_KEY, JSON.stringify({ ts: Date.now(), data: storyCache.current })); } catch {}
   }
 
+  /* Contenuto di una storia, come su Instagram: solo gli articoli delle
+     ultime 24 ore, dal più vecchio al più nuovo (l'ultimo è alla fine). */
+  function perStoria(posts: any[]): any[] {
+    if (!Array.isArray(posts)) return [];
+    const recenti = posts.filter(p => p?.date && Date.now() - new Date(p.date).getTime() <= ORE_24);
+    return [...recenti].sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  }
+
   function computeNewCategories() {
     const news = new Set<string>();
+    const attive = new Set<string>();
     Object.entries(storyCache.current).forEach(([name, posts]) => {
       if (!Array.isArray(posts) || posts.length === 0) return;
-      const latestDate = posts[0]?.date as string;
+      const latestDate = posts.map((p: any) => p?.date as string).sort().pop() as string;
+      // Come su Instagram la storia scade dopo 24 ore e sparisce dalla barra
+      if (!latestDate || Date.now() - new Date(latestDate).getTime() > ORE_24) return;
+      attive.add(name);
       const seenDate = seenRef.current[name];
       if (!seenDate || latestDate > seenDate) news.add(name);
     });
     setNewCategories(news);
+    setStorieAttive(attive);
   }
 
   function markSeen(name: string) {
@@ -336,7 +349,6 @@ export default function NormaHome() {
 
   async function loadCatPosts(name: string, catId: number): Promise<any[]> {
     if (storyCache.current[name]) return storyCache.current[name];
-    if (catId === 0) return [];
     try {
       const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${catId}&per_page=5`);
       const data = await postsRes.json();
@@ -366,8 +378,6 @@ export default function NormaHome() {
   function ordinaPerRecency(cats: { id: number; name: string }[]) {
     const dates = categoryLatestDates();
     return [...cats].sort((a, b) => {
-      if (a.id === 0) return -1;
-      if (b.id === 0) return 1;
       const da = dates[a.name];
       const db = dates[b.name];
       if (da && db) return db.localeCompare(da);
@@ -376,14 +386,6 @@ export default function NormaHome() {
       return 0; // categorie senza data: mantengono l'ordine statico
     });
   }
-
-  // La storia "Novità" contiene sempre gli ultimi articoli arrivati dal feed
-  useEffect(() => {
-    if (feedPosts.length === 0) return;
-    storyCache.current['Novità'] = feedPosts.slice(0, 6);
-    computeNewCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [feedPosts]);
 
   // Riordina la rail storie quando arrivano nuovi articoli (mai mentre una storia è aperta)
   useEffect(() => {
@@ -484,8 +486,10 @@ export default function NormaHome() {
   }, []);
 
   /* ── Story controls (invariati) ── */
+  const storie = categories.filter(c => storieAttive.has(c.name));
+
   async function openStory(catIdx: number) {
-    const cat = categories[catIdx];
+    const cat = storie[catIdx];
     markSeen(cat.name);
     navigator.vibrate?.(8);
     setStoryCatIndex(catIdx);
@@ -494,15 +498,15 @@ export default function NormaHome() {
     setStoryProgress(0);
     setStoryOpen(true);
     if (storyCache.current[cat.name]) {
-      setStoryPosts(storyCache.current[cat.name]);
+      setStoryPosts(perStoria(storyCache.current[cat.name]));
       setStoryLoading(false);
     } else {
       setStoryLoading(true);
       const posts = await loadCatPosts(cat.name, cat.id);
-      setStoryPosts(posts);
+      setStoryPosts(perStoria(posts));
       setStoryLoading(false);
     }
-    if (catIdx + 1 < categories.length) loadCatPosts(categories[catIdx + 1].name, categories[catIdx + 1].id);
+    if (catIdx + 1 < storie.length) loadCatPosts(storie[catIdx + 1].name, storie[catIdx + 1].id);
   }
 
   async function nextStory() {
@@ -511,22 +515,22 @@ export default function NormaHome() {
       setStoryProgress(0);
     } else {
       const nextCatIdx = storyCatIndex + 1;
-      if (nextCatIdx < categories.length) {
-        const name = categories[nextCatIdx].name;
+      if (nextCatIdx < storie.length) {
+        const name = storie[nextCatIdx].name;
         setStoryCatIndex(nextCatIdx);
         setStoryCatName(name);
         setStoryIndex(0);
         setStoryProgress(0);
         if (storyCache.current[name]) {
-          setStoryPosts(storyCache.current[name]);
+          setStoryPosts(perStoria(storyCache.current[name]));
           setStoryLoading(false);
         } else {
           setStoryLoading(true);
-          const posts = await loadCatPosts(name, categories[nextCatIdx].id);
-          setStoryPosts(posts);
+          const posts = await loadCatPosts(name, storie[nextCatIdx].id);
+          setStoryPosts(perStoria(posts));
           setStoryLoading(false);
         }
-        if (nextCatIdx + 1 < categories.length) loadCatPosts(categories[nextCatIdx + 1].name, categories[nextCatIdx + 1].id);
+        if (nextCatIdx + 1 < storie.length) loadCatPosts(storie[nextCatIdx + 1].name, storie[nextCatIdx + 1].id);
       } else {
         setStoryOpen(false);
       }
@@ -565,8 +569,8 @@ export default function NormaHome() {
           )}
 
           {/* ── Storie ── */}
-          <div className="storie appare" style={{ animationDelay: '120ms' }}>
-            {categories.map((cat, idx) => {
+          {storie.length > 0 && <div className="storie appare" style={{ animationDelay: '120ms' }}>
+            {storie.map((cat, idx) => {
               const nuova = newCategories.has(cat.name);
               return (
                 <button key={idx} onClick={() => openStory(idx)} className="storia tap">
@@ -583,7 +587,7 @@ export default function NormaHome() {
                 </button>
               );
             })}
-          </div>
+          </div>}
 
           {/* ── Scopri Norma: carosello a scatto ── */}
           <div className="sezione-label appare" style={{ animationDelay: '160ms' }}>Scopri Norma</div>
