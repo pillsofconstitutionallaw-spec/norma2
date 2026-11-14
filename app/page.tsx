@@ -82,6 +82,8 @@ function InstagramEmbed() {
 
 /* ─── Dati statici ─── */
 const staticCategories = [
+  // Storia fissa con gli ultimi articoli pubblicati, di qualsiasi categoria e sito
+  { id: 0,   name: 'Novità' },
   { id: 48,  name: 'Penale' },
   { id: 682, name: 'Civile' },
   { id: 39,  name: 'Costituzionale' },
@@ -99,6 +101,7 @@ const staticCategories = [
 ];
 
 const icons: Record<string, React.ReactNode> = {
+  'Novità': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 3l1.9 5.8L20 10l-6.1 1.2L12 17l-1.9-5.8L4 10l6.1-1.2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>,
   Penale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 20 12 21C8.5 20 5 16 5 11V6L12 3Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
   Civile: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8"/><path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
   Costituzionale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M7 3H17L21 7V21H3V3H7Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M17 3V7H21" stroke="currentColor" strokeWidth="1.8"/><path d="M7 12H17M7 16H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>,
@@ -333,6 +336,7 @@ export default function NormaHome() {
 
   async function loadCatPosts(name: string, catId: number): Promise<any[]> {
     if (storyCache.current[name]) return storyCache.current[name];
+    if (catId === 0) return [];
     try {
       const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${catId}&per_page=5`);
       const data = await postsRes.json();
@@ -362,6 +366,8 @@ export default function NormaHome() {
   function ordinaPerRecency(cats: { id: number; name: string }[]) {
     const dates = categoryLatestDates();
     return [...cats].sort((a, b) => {
+      if (a.id === 0) return -1;
+      if (b.id === 0) return 1;
       const da = dates[a.name];
       const db = dates[b.name];
       if (da && db) return db.localeCompare(da);
@@ -370,6 +376,14 @@ export default function NormaHome() {
       return 0; // categorie senza data: mantengono l'ordine statico
     });
   }
+
+  // La storia "Novità" contiene sempre gli ultimi articoli arrivati dal feed
+  useEffect(() => {
+    if (feedPosts.length === 0) return;
+    storyCache.current['Novità'] = feedPosts.slice(0, 6);
+    computeNewCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feedPosts]);
 
   // Riordina la rail storie quando arrivano nuovi articoli (mai mentre una storia è aperta)
   useEffect(() => {
@@ -762,7 +776,7 @@ export default function NormaHome() {
                     <div style={{ fontSize: 22, fontWeight: 900, color: '#fff', lineHeight: 1.15, marginBottom: 14 }} dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }} />
                     <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, marginBottom: 24 }}>{excerpt}</div>
                     {link && (
-                      <a href={post?.slug ? `/articoli/${post.slug}` : link} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', color: '#0a0d18', fontWeight: 800, fontSize: 12, letterSpacing: 1, padding: '13px 24px', borderRadius: 999, textDecoration: 'none' }}>
+                      <a href={post?._source === 'odl' ? link : post?.slug ? `/articoli/${post.slug}` : link} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', color: '#0a0d18', fontWeight: 800, fontSize: 12, letterSpacing: 1, padding: '13px 24px', borderRadius: 999, textDecoration: 'none' }}>
                         LEGGI L'ARTICOLO →
                       </a>
                     )}

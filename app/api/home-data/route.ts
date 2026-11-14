@@ -9,8 +9,8 @@ import { NextResponse } from 'next/server';
 // lento falliva. Le chiamate restano in cache 60 s (data cache) e la
 // risposta 60 s sulla CDN; ogni chiamata ha un tempo massimo di 8 s.
 export const dynamic = 'force-dynamic';
-const CACHE = () => ({ next: { revalidate: 60 }, signal: AbortSignal.timeout(8000) });
-const INTESTAZIONI = { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' };
+const CACHE = () => ({ next: { revalidate: 30 }, signal: AbortSignal.timeout(8000) });
+const INTESTAZIONI = { 'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=30' };
 
 // Tutte le categorie della barra delle storie in Home (prima solo 6: le
 // altre restavano nella cache del telefono fino a un'ora).
