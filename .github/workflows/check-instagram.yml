@@ -3,13 +3,13 @@ name: Controlla Instagram
 # Controlla nuovi post Instagram e nuovi articoli sui siti WordPress e,
 # se ce ne sono, l'endpoint manda la notifica push.
 #
-# Attenzione: GitHub ritarda spesso i cron (anche di ore) e li disattiva
-# dopo 60 giorni senza commit nel repository. Per notifiche puntuali
-# conviene chiamare gli stessi endpoint anche da un cron esterno
-# (es. cron-job.org ogni 5 minuti) con l'header Authorization.
+# Il controllo principale è su cron-job.org (ogni 5 minuti, puntuale).
+# Questo resta di riserva: GitHub ritarda spesso i cron e li disattiva dopo
+# 60 giorni senza commit. Gira ai minuti 7 e 37 per non coincidere mai con
+# cron-job.org (due controlli simultanei potrebbero notificare due volte).
 on:
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '7,37 * * * *'
   workflow_dispatch:
 
 jobs:
