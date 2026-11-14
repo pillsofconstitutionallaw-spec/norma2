@@ -304,8 +304,8 @@ export default function FontiDelDiritto() {
 
           {/* TITOLO */}
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>Diritto Pubblico</div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, marginBottom: 10, letterSpacing: -0.5 }}>Le Fonti del Diritto</div>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>Diritto Pubblico</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text)', lineHeight: 1.15, marginBottom: 10, letterSpacing: -0.8 }}>Le Fonti del Diritto</div>
             <div style={{ fontSize: 13, color: 'var(--text-3)', lineHeight: 1.7 }}>
               Tocca un livello per scoprire le singole fonti, le definizioni e le sentenze reali della Corte Costituzionale.
             </div>
@@ -330,7 +330,7 @@ export default function FontiDelDiritto() {
                   <div style={{ background: 'var(--surface)', padding: '12px 14px 12px 0', flex: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', minWidth: 0 }}>
                     <div style={{ minWidth: 0 }}>
                       <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'left' }}>{f.label}</div>
-                      <div style={{ fontSize: 10, color: 'var(--text-3)', marginTop: 2, textAlign: 'left' }}>{f.sub}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 2, textAlign: 'left' }}>{f.sub}</div>
                     </div>
                     <div style={{ marginRight: 14, transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0 }}>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
@@ -351,9 +351,9 @@ export default function FontiDelDiritto() {
                             onClick={() => toggleSub(subKey)}
                             style={{ width: '100%', padding: '12px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'transparent', border: 'none', cursor: 'pointer', gap: 8 }}
                           >
-                            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', flex: 1, textAlign: 'left' }}>{sub.nome}</div>
+                            <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)', flex: 1, textAlign: 'left' }}>{sub.nome}</div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-                              <span style={{ fontSize: 10, color: 'var(--text-3)' }}>{sub.sentenze.length} sent.</span>
+                              <span style={{ fontSize: 12, color: 'var(--text-3)' }}>{sub.sentenze.length} sent.</span>
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={f.colore} strokeWidth="2"
                                 style={{ transform: isSubOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
                                 <path d="M6 9l6 6 6-6"/>
@@ -368,7 +368,7 @@ export default function FontiDelDiritto() {
                               {/* Definizione */}
                               {sub.def.split('\n').map((r, i) => (
                                 r.trim()
-                                  ? <p key={i} style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.75, marginBottom: 6 }}
+                                  ? <p key={i} style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.75, marginBottom: 6 }}
                                       dangerouslySetInnerHTML={{ __html: r.replace(/•/g, `<span style="color:${f.colore}">•</span>`) }} />
                                   : <br key={i} />
                               ))}
@@ -376,18 +376,18 @@ export default function FontiDelDiritto() {
                               {/* Esempi */}
                               {sub.esempi && sub.esempi.length > 0 && (
                                 <>
-                                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: f.colore, textTransform: 'uppercase', margin: '12px 0 8px' }}>Esempi</div>
+                                  <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: f.colore, textTransform: 'uppercase', margin: '12px 0 8px' }}>Esempi</div>
                                   {sub.esempi.map((e, ei) => (
                                     <div key={ei} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginBottom: 5 }}>
                                       <div style={{ width: 4, height: 4, borderRadius: '50%', background: f.colore, flexShrink: 0, marginTop: 6 }} />
-                                      <span style={{ fontSize: 11, color: 'var(--text-2)', lineHeight: 1.5 }}>{e}</span>
+                                      <span style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.5 }}>{e}</span>
                                     </div>
                                   ))}
                                 </>
                               )}
 
                               {/* Sentenze */}
-                              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: f.colore, textTransform: 'uppercase', margin: '14px 0 8px' }}>Sentenze</div>
+                              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: f.colore, textTransform: 'uppercase', margin: '14px 0 8px' }}>Sentenze</div>
                               {sub.sentenze.map((s, senti) => {
                                 const sentKey = `${subKey}-${senti}`;
                                 const isSentOpen = apertaSent === sentKey;
@@ -398,8 +398,8 @@ export default function FontiDelDiritto() {
                                       style={{ width: '100%', padding: '10px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', background: 'transparent', border: 'none', cursor: 'pointer', gap: 8 }}
                                     >
                                       <div style={{ flex: 1, textAlign: 'left' }}>
-                                        <div style={{ fontSize: 10, fontWeight: 800, color: f.colore, marginBottom: 2 }}>{s.n}</div>
-                                        <div style={{ fontSize: 10, color: 'var(--text-3)' }}>{s.caso}</div>
+                                        <div style={{ fontSize: 12, fontWeight: 800, color: f.colore, marginBottom: 2 }}>{s.n}</div>
+                                        <div style={{ fontSize: 12, color: 'var(--text-3)' }}>{s.caso}</div>
                                       </div>
                                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={f.colore} strokeWidth="2"
                                         style={{ transform: isSentOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s', flexShrink: 0, marginTop: 2 }}>
@@ -409,9 +409,9 @@ export default function FontiDelDiritto() {
                                     {isSentOpen && (
                                       <div style={{ padding: '0 12px 12px' }}>
                                         <div style={{ height: 0.5, background: 'var(--fill)', marginBottom: 8 }} />
-                                        <p style={{ fontSize: 11, color: 'var(--text-2)', lineHeight: 1.75, fontStyle: 'italic', marginBottom: 8 }}>«{s.testo}»</p>
+                                        <p style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.75, fontStyle: 'italic', marginBottom: 8 }}>«{s.testo}»</p>
                                         <a href={s.link} target="_blank" rel="noreferrer"
-                                          style={{ fontSize: 9, fontWeight: 800, color: f.colore, letterSpacing: 1, textTransform: 'uppercase' }}>
+                                          style={{ fontSize: 11, fontWeight: 800, color: f.colore, letterSpacing: 1, textTransform: 'uppercase' }}>
                                           Leggi la sentenza →
                                         </a>
                                       </div>
@@ -432,8 +432,8 @@ export default function FontiDelDiritto() {
 
           {/* BOX DPCM */}
           <div style={{ marginTop: 16, padding: '14px 16px', borderRadius: 14, background: 'rgba(251,146,60,0.07)', border: '0.5px solid rgba(251,146,60,0.25)' }}>
-            <div style={{ fontSize: 10, fontWeight: 700, color: '#fb923c', letterSpacing: 1, marginBottom: 5 }}>⚠️ IL CASO DPCM</div>
-            <p style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.65 }}>La pandemia COVID-19 ha messo in crisi il sistema delle fonti. Tocca «Fonti Secondarie / DPCM» per approfondire con la sentenza Corte Cost. 198/2021.</p>
+            <div style={{ fontSize: 12, fontWeight: 700, color: '#fb923c', letterSpacing: 1, marginBottom: 5 }}>⚠️ IL CASO DPCM</div>
+            <p style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.65 }}>La pandemia COVID-19 ha messo in crisi il sistema delle fonti. Tocca «Fonti Secondarie / DPCM» per approfondire con la sentenza Corte Cost. 198/2021.</p>
           </div>
 
         </div>

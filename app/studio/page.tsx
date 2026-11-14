@@ -29,8 +29,8 @@ export default function StudioPage() {
 
         {/* Header */}
         <div style={{ marginBottom: 28 }}>
-          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>Studio</div>
-          <h1 style={{ fontSize: 24, fontWeight: 900, color: 'var(--text)', margin: '0 0 8px' }}>Flash Card</h1>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>Studio</div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--text)', margin: '0 0 8px' }}>Flash Card</h1>
           <p style={{ fontSize: 13, color: 'var(--text-3)', margin: 0 }}>Scegli una materia e inizia a studiare</p>
         </div>
 
@@ -42,7 +42,7 @@ export default function StudioPage() {
           <div style={{ fontSize: 36 }}>🎮</div>
           <div>
             <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>Impara Giocando</div>
-            <div style={{ fontSize: 12, color: 'var(--text-3)', lineHeight: 1.5 }}>Chi vuole essere laureato · Trivia Track · Abbina</div>
+            <div style={{ fontSize: 14, color: 'var(--text-3)', lineHeight: 1.5 }}>Chi vuole essere laureato · Trivia Track · Abbina</div>
           </div>
           <div style={{ marginLeft: 'auto', color: 'var(--text-3)', fontSize: 18 }}>→</div>
         </div>
@@ -55,13 +55,13 @@ export default function StudioPage() {
           <div style={{ fontSize: 36 }}>⚡</div>
           <div>
             <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>Genera con AI</div>
-            <div style={{ fontSize: 12, color: 'var(--text-3)', lineHeight: 1.5 }}>Carica un PDF e l'AI crea flash card personalizzate</div>
+            <div style={{ fontSize: 14, color: 'var(--text-3)', lineHeight: 1.5 }}>Carica un PDF e l'AI crea flash card personalizzate</div>
           </div>
           <div style={{ marginLeft: 'auto', color: 'var(--text-3)', fontSize: 18 }}>→</div>
         </div>
 
         {/* Materie disponibili */}
-        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 14 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 14 }}>
           Materie disponibili
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
@@ -76,7 +76,7 @@ export default function StudioPage() {
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', marginBottom: 3 }}>{m.titolo}</div>
-                <div style={{ fontSize: 11, color: 'var(--text-3)' }}>{m.carte} flash card</div>
+                <div style={{ fontSize: 13, color: 'var(--text-3)' }}>{m.carte} flash card</div>
               </div>
               <div style={{ color: 'var(--text-3)', fontSize: 16 }}>→</div>
             </div>
@@ -84,7 +84,7 @@ export default function StudioPage() {
         </div>
 
         {/* Materie in arrivo */}
-        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 14 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 14 }}>
           In arrivo
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -94,8 +94,8 @@ export default function StudioPage() {
               style={{ background: '#0d1120', borderRadius: 14, border: '1px solid var(--line)', padding: '14px', opacity: 0.5 }}
             >
               <div style={{ fontSize: 20, marginBottom: 6 }}>{m.icona}</div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-2)' }}>{m.titolo}</div>
-              <div style={{ fontSize: 10, color: 'var(--text-3)', marginTop: 3 }}>Presto disponibile</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-2)' }}>{m.titolo}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 3 }}>Presto disponibile</div>
             </div>
           ))}
         </div>

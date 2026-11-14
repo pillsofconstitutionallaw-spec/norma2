@@ -290,14 +290,14 @@ export default function CulturaPage() {
               display: 'inline-block',
               border: '1px solid rgba(79,70,229,0.25)',
               borderRadius: 99, padding: '4px 14px',
-              fontSize: 9, letterSpacing: 3,
+              fontSize: 12, letterSpacing: 0.4,
               textTransform: 'uppercase' as const,
               color: 'var(--accent)', fontWeight: 700, marginBottom: 14,
             }}>
               Cultura giuridica
             </div>
 
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.12, letterSpacing: -0.5, marginBottom: 8 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text)', lineHeight: 1.12, letterSpacing: -0.8, marginBottom: 8 }}>
               Film, Libri<br />e Podcast
             </div>
 
@@ -326,11 +326,11 @@ export default function CulturaPage() {
                 }}
               >
                 <span style={{ fontSize: 20 }}>{t.emoji}</span>
-                <span style={{ fontSize: 11, fontWeight: 800, color: attivo ? 'var(--accent)' : 'var(--text-3)' }}>
+                <span style={{ fontSize: 13, fontWeight: 800, color: attivo ? 'var(--accent)' : 'var(--text-3)' }}>
                   {t.label}
                 </span>
                 <span style={{
-                  fontSize: 9, fontWeight: 700,
+                  fontSize: 11, fontWeight: 700,
                   color: attivo ? 'rgba(79,70,229,0.6)' : 'var(--text-3)',
                 }}>
                   {t.num} titoli
@@ -372,7 +372,7 @@ export default function CulturaPage() {
                       display: 'inline-block',
                       background: `${f.colore}14`, border: `0.5px solid ${f.colore}30`,
                       borderRadius: 5, padding: '2px 7px',
-                      fontSize: 8, fontWeight: 700, color: f.colore,
+                      fontSize: 10, fontWeight: 700, color: f.colore,
                       letterSpacing: 1, textTransform: 'uppercase' as const, marginBottom: 5,
                     }}>
                       {f.tag}
@@ -380,7 +380,7 @@ export default function CulturaPage() {
                     <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', lineHeight: 1.2, marginBottom: 2 }}>
                       {f.titolo}
                     </div>
-                    <div style={{ fontSize: 10, color: 'var(--text-3)' }}>
+                    <div style={{ fontSize: 12, color: 'var(--text-3)' }}>
                       {f.anno} · Regia: {f.regia}
                     </div>
                   </div>
@@ -402,7 +402,7 @@ export default function CulturaPage() {
                   <div style={{ padding: '0 16px 18px', animation: 'fadeIn 0.2s ease' }}>
                     <div style={{ borderTop: '0.5px solid var(--line)', paddingTop: 14, display: 'flex', flexDirection: 'column', gap: 12 }}>
                       <div>
-                        <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: 2, color: `${f.colore}99`, textTransform: 'uppercase' as const, marginBottom: 7 }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: `${f.colore}99`, textTransform: 'uppercase' as const, marginBottom: 7 }}>
                           La trama
                         </div>
                         <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.8 }}>
@@ -414,7 +414,7 @@ export default function CulturaPage() {
                         border: `0.5px solid ${f.colore}22`,
                         borderRadius: 12, padding: '12px 14px',
                       }}>
-                        <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: 2, color: f.colore, textTransform: 'uppercase' as const, marginBottom: 6 }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: f.colore, textTransform: 'uppercase' as const, marginBottom: 6 }}>
                           Perché vederlo
                         </div>
                         <div style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.8 }}>
@@ -457,7 +457,7 @@ export default function CulturaPage() {
                       display: 'inline-block',
                       background: `${l.colore}14`, border: `0.5px solid ${l.colore}30`,
                       borderRadius: 5, padding: '2px 7px',
-                      fontSize: 8, fontWeight: 700, color: l.colore,
+                      fontSize: 10, fontWeight: 700, color: l.colore,
                       letterSpacing: 1, textTransform: 'uppercase' as const, marginBottom: 5,
                     }}>
                       {l.tag}
@@ -465,7 +465,7 @@ export default function CulturaPage() {
                     <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', lineHeight: 1.2, marginBottom: 2 }}>
                       {l.titolo}
                     </div>
-                    <div style={{ fontSize: 10, color: 'var(--text-3)' }}>
+                    <div style={{ fontSize: 12, color: 'var(--text-3)' }}>
                       {l.autore} · {l.anno}
                     </div>
                   </div>
@@ -487,7 +487,7 @@ export default function CulturaPage() {
                   <div style={{ padding: '0 16px 18px', animation: 'fadeIn 0.2s ease' }}>
                     <div style={{ borderTop: '0.5px solid var(--line)', paddingTop: 14, display: 'flex', flexDirection: 'column', gap: 12 }}>
                       <div>
-                        <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: 2, color: `${l.colore}99`, textTransform: 'uppercase' as const, marginBottom: 7 }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: `${l.colore}99`, textTransform: 'uppercase' as const, marginBottom: 7 }}>
                           Di cosa parla
                         </div>
                         <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.8 }}>
@@ -499,7 +499,7 @@ export default function CulturaPage() {
                         border: `0.5px solid ${l.colore}22`,
                         borderRadius: 12, padding: '12px 14px',
                       }}>
-                        <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: 2, color: l.colore, textTransform: 'uppercase' as const, marginBottom: 6 }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: l.colore, textTransform: 'uppercase' as const, marginBottom: 6 }}>
                           Perché leggerlo
                         </div>
                         <div style={{ fontSize: 13, color: 'var(--text)', lineHeight: 1.8 }}>
@@ -542,7 +542,7 @@ export default function CulturaPage() {
                       display: 'inline-block',
                       background: `${p.colore}14`, border: `0.5px solid ${p.colore}30`,
                       borderRadius: 5, padding: '2px 7px',
-                      fontSize: 8, fontWeight: 700, color: p.colore,
+                      fontSize: 10, fontWeight: 700, color: p.colore,
                       letterSpacing: 1, textTransform: 'uppercase' as const, marginBottom: 5,
                     }}>
                       {p.tag}
@@ -550,7 +550,7 @@ export default function CulturaPage() {
                     <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', lineHeight: 1.2, marginBottom: 2 }}>
                       {p.titolo}
                     </div>
-                    <div style={{ fontSize: 10, color: 'var(--text-3)' }}>
+                    <div style={{ fontSize: 12, color: 'var(--text-3)' }}>
                       {p.chi}
                     </div>
                   </div>
@@ -582,10 +582,10 @@ export default function CulturaPage() {
                       }}>
                         <span style={{ fontSize: 14 }}>🎧</span>
                         <div>
-                          <div style={{ fontSize: 8, fontWeight: 700, color: p.colore, letterSpacing: 1.5, textTransform: 'uppercase' as const, marginBottom: 2 }}>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: p.colore, letterSpacing: 0.4, textTransform: 'uppercase' as const, marginBottom: 2 }}>
                             Dove ascoltarlo
                           </div>
-                          <div style={{ fontSize: 12, color: 'var(--text-2)' }}>
+                          <div style={{ fontSize: 14, color: 'var(--text-2)' }}>
                             {p.dove}
                           </div>
                         </div>

@@ -142,12 +142,12 @@ export default function ConsulenzaPage() {
               display: 'inline-block',
               border: '1px solid rgba(79,70,229,0.25)',
               borderRadius: 99, padding: '4px 14px',
-              fontSize: 9, letterSpacing: 3, textTransform: 'uppercase' as const,
+              fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase' as const,
               color: 'var(--accent)', fontWeight: 700, marginBottom: 14,
             }}>
               Powered by AI
             </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.12, letterSpacing: -0.5, marginBottom: 8 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text)', lineHeight: 1.12, letterSpacing: -0.8, marginBottom: 8 }}>
               Consulenza<br />Legale
             </div>
             <div style={{ fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.7 }}>
@@ -163,7 +163,7 @@ export default function ConsulenzaPage() {
               {/* Città + CAP */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 10 }}>
                 <div>
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: 'var(--text-3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
                     Città
                   </div>
                   <input
@@ -181,7 +181,7 @@ export default function ConsulenzaPage() {
                   />
                 </div>
                 <div>
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: 'var(--text-3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
                     CAP
                   </div>
                   <input
@@ -203,7 +203,7 @@ export default function ConsulenzaPage() {
 
               {/* Problema */}
               <div>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: 'var(--text-3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase' as const, marginBottom: 8 }}>
                   Descrivi il tuo problema
                 </div>
                 <textarea
@@ -220,7 +220,7 @@ export default function ConsulenzaPage() {
                     resize: 'none',
                   }}
                 />
-                <div style={{ fontSize: 10, color: 'var(--text-3)', marginTop: 6, textAlign: 'right' }}>
+                <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 6, textAlign: 'right' }}>
                   {problema.length} caratteri {problema.length < 20 && problema.length > 0 && '(minimo 20)'}
                 </div>
               </div>
@@ -249,7 +249,7 @@ export default function ConsulenzaPage() {
                   <circle cx="12" cy="12" r="10" />
                   <path d="M12 8v4M12 16h.01" />
                 </svg>
-                <div style={{ fontSize: 11, color: 'var(--text-3)', lineHeight: 1.6 }}>
+                <div style={{ fontSize: 13, color: 'var(--text-3)', lineHeight: 1.6 }}>
                   Questo strumento non sostituisce una consulenza legale professionale.
                   Non inserire dati sensibili come nomi, indirizzi o dettagli identificativi.
                 </div>
@@ -304,13 +304,13 @@ export default function ConsulenzaPage() {
               }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10, marginBottom: 12 }}>
                   <div>
-                    <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'rgba(79,70,229,0.6)', fontWeight: 700, marginBottom: 6 }}>
+                    <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase' as const, color: 'rgba(79,70,229,0.6)', fontWeight: 700, marginBottom: 6 }}>
                       Materia individuata
                     </div>
-                    <div style={{ fontSize: 18, fontWeight: 900, color: 'var(--text)', lineHeight: 1.2 }}>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 800, color: 'var(--text)', lineHeight: 1.2 }}>
                       {risultato.materia}
                     </div>
-                    <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 4 }}>
+                    <div style={{ fontSize: 14, color: 'var(--text-3)', marginTop: 4 }}>
                       Cerca un {risultato.specializzazione}
                     </div>
                   </div>
@@ -318,7 +318,7 @@ export default function ConsulenzaPage() {
                     background: `${URGENZA_COLORE[risultato.urgenza]}14`,
                     border: `0.5px solid ${URGENZA_COLORE[risultato.urgenza]}40`,
                     borderRadius: 10, padding: '6px 10px',
-                    fontSize: 9, fontWeight: 800,
+                    fontSize: 11, fontWeight: 800,
                     color: URGENZA_COLORE[risultato.urgenza],
                     textTransform: 'uppercase' as const,
                     letterSpacing: 1, flexShrink: 0, textAlign: 'center' as const,
@@ -340,7 +340,7 @@ export default function ConsulenzaPage() {
                 background: 'var(--surface)', borderRadius: 18,
                 border: '0.5px solid var(--line)', padding: '16px',
               }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
+                <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
                   Cosa fare subito
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -351,7 +351,7 @@ export default function ConsulenzaPage() {
                         background: 'rgba(79,70,229,0.1)',
                         border: '0.5px solid rgba(79,70,229,0.2)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 9, fontWeight: 900, color: 'var(--accent)',
+                        fontSize: 11, fontWeight: 800, color: 'var(--accent)',
                       }}>
                         {i + 1}
                       </div>
@@ -369,7 +369,7 @@ export default function ConsulenzaPage() {
                 border: '0.5px solid var(--line)', padding: '16px',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                  <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700 }}>
+                  <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700 }}>
                     Testo da inviare all'avvocato
                   </div>
                   <button
@@ -379,7 +379,7 @@ export default function ConsulenzaPage() {
                       border: `0.5px solid ${copiato ? 'rgba(34,197,94,0.3)' : 'var(--line)'}`,
                       borderRadius: 8, padding: '5px 10px',
                       color: copiato ? '#16a34a' : 'var(--text-2)',
-                      fontSize: 10, fontWeight: 700, cursor: 'pointer',
+                      fontSize: 12, fontWeight: 700, cursor: 'pointer',
                       fontFamily: 'var(--font-ui)',
                       display: 'flex', alignItems: 'center', gap: 5,
                     }}
@@ -411,7 +411,7 @@ export default function ConsulenzaPage() {
                 background: 'var(--surface)', borderRadius: 18,
                 border: '0.5px solid var(--line)', padding: '16px',
               }}>
-                <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
+                <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
                   Trova avvocati a {citta}
                 </div>
 
@@ -477,7 +477,7 @@ export default function ConsulenzaPage() {
                   background: 'var(--fill)',
                   border: '0.5px solid var(--line)',
                   color: 'rgba(255,255,255,0.35)',
-                  fontSize: 12, fontWeight: 700, cursor: 'pointer',
+                  fontSize: 14, fontWeight: 700, cursor: 'pointer',
                   fontFamily: 'var(--font-ui)',
                 }}
               >
@@ -489,7 +489,7 @@ export default function ConsulenzaPage() {
                 background: 'rgba(255,215,0,0.04)',
                 border: '0.5px solid rgba(255,215,0,0.12)',
                 borderRadius: 12, padding: '12px 14px',
-                fontSize: 11, color: 'rgba(255,255,255,0.3)', lineHeight: 1.65,
+                fontSize: 13, color: 'rgba(255,255,255,0.3)', lineHeight: 1.65,
               }}>
                 Questo strumento fornisce indicazioni orientative e non costituisce consulenza legale.
                 Rivolgiti sempre a un avvocato iscritto all'albo per assistenza professionale.

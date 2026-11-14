@@ -150,7 +150,7 @@ function DeckContent() {
         <Header />
 
         {toastVisible && (
-          <div style={{ position:'fixed', bottom:100, left:'50%', transform:'translateX(-50%)', background: '#1e293b', border: '0.5px solid rgba(56,189,248,0.5)', borderRadius:14, padding:'11px 20px', fontSize:12, fontWeight:800, color: '#0284c7', zIndex:9999, whiteSpace:'nowrap', animation:'toastIn 0.25s ease' }}>
+          <div style={{ position:'fixed', bottom:100, left:'50%', transform:'translateX(-50%)', background: '#1e293b', border: '0.5px solid rgba(56,189,248,0.5)', borderRadius:14, padding:'11px 20px', fontSize:14, fontWeight:800, color: '#0284c7', zIndex:9999, whiteSpace:'nowrap', animation:'toastIn 0.25s ease' }}>
             🔖 Segnalibro salvato!
           </div>
         )}
@@ -160,15 +160,15 @@ function DeckContent() {
           {/* Banner riprendi sessione */}
           {sessioneSalvata && materia && (
             <div style={{ background: 'var(--surface)', border: `0.5px solid ${colore}55`, borderRadius:16, padding:'14px 16px', marginBottom:20, animation:'fadeUp 0.3s ease' }}>
-              <div style={{ fontSize:11, fontWeight:800, color: 'var(--text)', marginBottom:4 }}>🔖 Sessione salvata</div>
-              <div style={{ fontSize:10, color: 'var(--text-3)', marginBottom:12 }}>
+              <div style={{ fontSize:13, fontWeight:800, color: 'var(--text)', marginBottom:4 }}>🔖 Sessione salvata</div>
+              <div style={{ fontSize:12, color: 'var(--text-3)', marginBottom:12 }}>
                 {materia.icona} {materia.titolo} · carta {sessioneSalvata.indice + 1} di {materia.carte.length}
               </div>
               <div style={{ display:'flex', gap:8 }}>
-                <button onClick={riprendiSessione} style={{ flex:1, padding:'10px', borderRadius:12, border: 'none', background: `linear-gradient(135deg,${colore},#4f46e5)`, color: '#fff', fontWeight:800, fontSize:12, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>
+                <button onClick={riprendiSessione} style={{ flex:1, padding:'10px', borderRadius:12, border: 'none', background: `linear-gradient(135deg,${colore},#4f46e5)`, color: '#fff', fontWeight:800, fontSize:14, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>
                   ▶ Riprendi
                 </button>
-                <button onClick={() => { cancellaSessione(); avvia(materia!); }} style={{ padding:'10px 14px', borderRadius:12, border: '0.5px solid var(--line)', background: 'transparent', color: 'var(--text-3)', fontWeight:700, fontSize:12, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>
+                <button onClick={() => { cancellaSessione(); avvia(materia!); }} style={{ padding:'10px 14px', borderRadius:12, border: '0.5px solid var(--line)', background: 'transparent', color: 'var(--text-3)', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>
                   Ricomincia
                 </button>
               </div>
@@ -180,7 +180,7 @@ function DeckContent() {
             <div>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
                 <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: 'var(--text-3)', fontSize:13, cursor:'pointer', padding:0, fontFamily: 'var(--font-ui)'}}>← Indietro</button>
-                <span style={{ fontSize:12, fontWeight:700, color: 'var(--text-2)' }}>{indice + 1} / {carte.length}</span>
+                <span style={{ fontSize:14, fontWeight:700, color: 'var(--text-2)' }}>{indice + 1} / {carte.length}</span>
                 <button onClick={salvaManualmente} style={{ background: 'none', border: 'none', cursor:'pointer', padding:4, fontSize:22, lineHeight:1, opacity:toastVisible?1:0.45, transition:'opacity 0.2s' }}>🔖</button>
               </div>
               <div style={{ background: 'var(--fill)', borderRadius:4, height:4, marginBottom:20 }}>
@@ -190,18 +190,18 @@ function DeckContent() {
                 onClick={() => setGirata(g => !g)}
                 style={{ background: girata?'#0d1f35':'var(--surface)', border: girata?`1px solid ${colore}55`:'1px solid var(--line)', borderRadius:24, padding:'32px 22px', height:260, maxHeight:260, overflowY:'auto', cursor:'pointer', marginBottom:20, transition:'background 0.3s,border 0.3s', display:'flex', flexDirection:'column', justifyContent:'flex-start' }}
               >
-                <div style={{ fontSize:9, fontWeight:700, letterSpacing:2, textTransform:'uppercase', color: girata?colore:'#8e8e99', marginBottom:16, flexShrink:0 }}>
+                <div style={{ fontSize: 12, fontWeight:700, letterSpacing: 0.4, textTransform:'uppercase', color: girata?colore:'#8e8e99', marginBottom:16, flexShrink:0 }}>
                   {girata ? 'RISPOSTA' : 'DOMANDA'}
                 </div>
                 <div style={{ fontSize:girata?14:16, fontWeight:girata?400:700, color: 'var(--text)', lineHeight:1.85 }}>
                   {girata ? carte[indice].risposta : carte[indice].domanda}
                 </div>
-                {!girata && <div style={{ fontSize:10, color: 'var(--text-3)', marginTop:20, flexShrink:0 }}>Tocca per vedere la risposta</div>}
+                {!girata && <div style={{ fontSize:12, color: 'var(--text-3)', marginTop:20, flexShrink:0 }}>Tocca per vedere la risposta</div>}
               </div>
               {girata && (
                 <div style={{ display:'flex', gap:10 }}>
-                  <button onClick={() => rispondi(false)} style={{ flex:1, height:56, borderRadius:16, border: 'none', background: '#ef4444', color: '#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>✗ Non sapevo</button>
-                  <button onClick={() => rispondi(true)} style={{ flex:1, height:56, borderRadius:16, border: 'none', background: '#16a34a', color: '#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>✓ Sapevo</button>
+                  <button onClick={() => rispondi(false)} style={{ flex:1, height:56, borderRadius:16, border: 'none', background: '#ef4444', color: '#fff', fontWeight: 800, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>✗ Non sapevo</button>
+                  <button onClick={() => rispondi(true)} style={{ flex:1, height:56, borderRadius:16, border: 'none', background: '#16a34a', color: '#fff', fontWeight: 800, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>✓ Sapevo</button>
                 </div>
               )}
             </div>
@@ -211,18 +211,18 @@ function DeckContent() {
           {fase === 'risultati' && materia && (
             <div style={{ textAlign:'center', paddingTop:20, animation:'fadeUp 0.4s ease' }}>
               <div style={{ fontSize:52, marginBottom:16 }}>{sapute >= nonSapute ? '🎉' : '💪'}</div>
-              <div style={{ fontSize:22, fontWeight:900, color: 'var(--text)', marginBottom:6 }}>Sessione completata!</div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize:22, fontWeight: 800, color: 'var(--text)', marginBottom:6 }}>Sessione completata!</div>
               <div style={{ fontSize:13, color: 'var(--text-2)', marginBottom:28 }}>
                 Hai risposto correttamente al {Math.round((sapute / Math.max(sapute + nonSapute, 1)) * 100)}% delle carte
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:28 }}>
                 <div style={{ background: 'var(--surface)', borderRadius:16, padding:'20px 10px', border: '0.5px solid rgba(34,197,94,0.3)' }}>
-                  <div style={{ fontSize:36, fontWeight:900, color: '#16a34a' }}>{sapute}</div>
-                  <div style={{ fontSize:11, color: 'var(--text-3)', marginTop:4 }}>Sapevo</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize:36, fontWeight: 800, color: '#16a34a' }}>{sapute}</div>
+                  <div style={{ fontSize:13, color: 'var(--text-3)', marginTop:4 }}>Sapevo</div>
                 </div>
                 <div style={{ background: 'var(--surface)', borderRadius:16, padding:'20px 10px', border: '0.5px solid rgba(239,68,68,0.3)' }}>
-                  <div style={{ fontSize:36, fontWeight:900, color: '#ef4444' }}>{nonSapute}</div>
-                  <div style={{ fontSize:11, color: 'var(--text-3)', marginTop:4 }}>Non sapevo</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize:36, fontWeight: 800, color: '#ef4444' }}>{nonSapute}</div>
+                  <div style={{ fontSize:13, color: 'var(--text-3)', marginTop:4 }}>Non sapevo</div>
                 </div>
               </div>
               {daRipetere.length > 0 && (

@@ -345,10 +345,10 @@ export default function SentenzePage() {
 
         {/* HERO */}
         <div style={{ padding: '32px 16px 20px' }}>
-          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 10 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 10 }}>
             Corte Costituzionale
           </div>
-          <div style={{ fontSize: 30, fontWeight: 900, color: 'var(--text)', lineHeight: 1.1, letterSpacing: -1, marginBottom: 10 }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 30, fontWeight: 800, color: 'var(--text)', lineHeight: 1.1, letterSpacing: -0.8, marginBottom: 10 }}>
             Sentenze<br />fondamentali
           </div>
           <div style={{ fontSize: 12.5, color: 'var(--text-3)', lineHeight: 1.65, marginBottom: 20 }}>
@@ -368,8 +368,8 @@ export default function SentenzePage() {
                 borderRadius: 10, padding: '6px 12px',
                 display: 'flex', alignItems: 'center', gap: 6,
               }}>
-                <span style={{ fontSize: 13, fontWeight: 900, color: 'var(--accent)' }}>{s.num}</span>
-                <span style={{ fontSize: 10, color: 'var(--text-3)' }}>{s.label}</span>
+                <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent)' }}>{s.num}</span>
+                <span style={{ fontSize: 12, color: 'var(--text-3)' }}>{s.label}</span>
               </div>
             ))}
           </div>
@@ -384,7 +384,7 @@ export default function SentenzePage() {
               background: !filtroTag ? 'rgba(79,70,229,0.12)' : 'var(--fill)',
               border: `0.5px solid ${!filtroTag ? 'rgba(79,70,229,0.3)' : 'var(--line)'}`,
               color: !filtroTag ? 'var(--accent)' : 'var(--text-3)',
-              fontSize: 10, fontWeight: 700, cursor: 'pointer',
+              fontSize: 12, fontWeight: 700, cursor: 'pointer',
               fontFamily: 'var(--font-ui)',
             }}
           >
@@ -402,7 +402,7 @@ export default function SentenzePage() {
                   background: attivo ? `${col}18` : 'var(--fill)',
                   border: `0.5px solid ${attivo ? col + '55' : 'var(--line)'}`,
                   color: attivo ? col : 'var(--text-3)',
-                  fontSize: 10, fontWeight: 700, cursor: 'pointer',
+                  fontSize: 12, fontWeight: 700, cursor: 'pointer',
                   fontFamily: 'var(--font-ui)',
                 }}
               >
@@ -444,7 +444,7 @@ export default function SentenzePage() {
                     flexDirection: 'column', gap: 1,
                   }}>
                     <div style={{ fontSize: 7, fontWeight: 700, color: aperta ? col : '#8e8e99', letterSpacing: 0.5 }}>SENT.</div>
-                    <div style={{ fontSize: 11, fontWeight: 900, color: aperta ? col : '#5b5b66', lineHeight: 1 }}>{s.anno}</div>
+                    <div style={{ fontSize: 13, fontWeight: 800, color: aperta ? col : '#5b5b66', lineHeight: 1 }}>{s.anno}</div>
                   </div>
 
                   {/* Testi */}
@@ -454,7 +454,7 @@ export default function SentenzePage() {
                       background: `${col}14`,
                       border: `0.5px solid ${col}30`,
                       borderRadius: 5, padding: '2px 7px',
-                      fontSize: 8, fontWeight: 700, color: col,
+                      fontSize: 10, fontWeight: 700, color: col,
                       letterSpacing: 1, textTransform: 'uppercase',
                       marginBottom: 5,
                     }}>
@@ -463,7 +463,7 @@ export default function SentenzePage() {
                     <div style={{ fontSize: 13.5, fontWeight: 800, color: 'var(--text)', lineHeight: 1.25 }}>
                       {s.titolo}
                     </div>
-                    <div style={{ fontSize: 10, color: 'var(--text-3)', marginTop: 2 }}>
+                    <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 2 }}>
                       n. {s.numero}
                     </div>
                   </div>
@@ -493,7 +493,7 @@ export default function SentenzePage() {
                       {/* Il caso */}
                       <div>
                         <div style={{
-                          fontSize: 8, fontWeight: 700, letterSpacing: 2,
+                          fontSize: 12, fontWeight: 700, letterSpacing: 0.4,
                           color: `${col}99`, textTransform: 'uppercase', marginBottom: 7,
                         }}>
                           Il caso
@@ -510,7 +510,7 @@ export default function SentenzePage() {
                         borderRadius: 12, padding: '14px',
                       }}>
                         <div style={{
-                          fontSize: 8, fontWeight: 700, letterSpacing: 2,
+                          fontSize: 12, fontWeight: 700, letterSpacing: 0.4,
                           color: col, textTransform: 'uppercase', marginBottom: 7,
                         }}>
                           Il principio

@@ -202,10 +202,10 @@ export default function TestPage() {
 
           {/* TITOLO */}
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>
               Allenati
             </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.5 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.8 }}>
               Test di Diritto
             </div>
             <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 6, lineHeight: 1.5 }}>
@@ -214,7 +214,7 @@ export default function TestPage() {
           </div>
 
           {/* LISTA MATERIE */}
-          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 12 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 12 }}>
             Scegli una materia
           </div>
 
@@ -230,7 +230,7 @@ export default function TestPage() {
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 3 }}>{m.titolo}</div>
-                  <div style={{ fontSize: 11, color: 'var(--text-3)' }}>{m.sub}</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-3)' }}>{m.sub}</div>
                 </div>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}>
                   <path d="M9 18l6-6-6-6"/>

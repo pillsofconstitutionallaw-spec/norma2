@@ -383,14 +383,14 @@ export default function CostituzionNapoletanaPage() {
               display: 'inline-block',
               border: '1px solid rgba(255,215,0,0.35)',
               borderRadius: 99, padding: '4px 14px',
-              fontSize: 9, letterSpacing: 3,
+              fontSize: 12, letterSpacing: 0.4,
               textTransform: 'uppercase' as const,
               color: '#ca8a04', fontWeight: 700, marginBottom: 14,
             }}>
               Napoli · 1799
             </div>
 
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.12, letterSpacing: -0.5, marginBottom: 10 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text)', lineHeight: 1.12, letterSpacing: -0.8, marginBottom: 10 }}>
               La Costituzione<br />della Repubblica<br />Napoletana
             </div>
 
@@ -412,8 +412,8 @@ export default function CostituzionNapoletanaPage() {
                   border: `0.5px solid ${s.col}22`,
                   borderRadius: 14, padding: '12px',
                 }}>
-                  <div style={{ fontSize: 22, fontWeight: 900, color: s.col }}>{s.num}</div>
-                  <div style={{ fontSize: 10, color: 'var(--text-3)', marginTop: 3, lineHeight: 1.4, whiteSpace: 'pre-line' }}>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: s.col }}>{s.num}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 3, lineHeight: 1.4, whiteSpace: 'pre-line' }}>
                     {s.label}
                   </div>
                 </div>
@@ -423,7 +423,7 @@ export default function CostituzionNapoletanaPage() {
 
           {/* ── SEZIONI ───────────────────────────────────────────────────── */}
           <div style={{ marginBottom: 8 }}>
-            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
+            <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
               Argomenti
             </div>
           </div>
@@ -458,7 +458,7 @@ export default function CostituzionNapoletanaPage() {
                     <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)', marginBottom: 3 }}>
                       {sezione.titolo}
                     </div>
-                    <div style={{ fontSize: 11, color: 'var(--text-3)', lineHeight: 1.4 }}>
+                    <div style={{ fontSize: 13, color: 'var(--text-3)', lineHeight: 1.4 }}>
                       {sezione.sub}
                     </div>
                   </div>
@@ -503,7 +503,7 @@ export default function CostituzionNapoletanaPage() {
                               borderRadius: 14, padding: '14px',
                               border: `0.5px solid ${col}22`,
                             }}>
-                              <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase' as const, color: col, fontWeight: 700, marginBottom: 8 }}>
+                              <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase' as const, color: col, fontWeight: 700, marginBottom: 8 }}>
                                 {blocco.label}
                               </div>
                               <p style={{ fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.85 }}>
@@ -524,8 +524,8 @@ export default function CostituzionNapoletanaPage() {
                               background: 'rgba(34,197,94,0.15)',
                               border: '0.5px solid rgba(34,197,94,0.3)',
                               borderRadius: 8, padding: '3px 10px',
-                              fontSize: 9, fontWeight: 800, color: '#16a34a',
-                              letterSpacing: 2, textTransform: 'uppercase' as const,
+                              fontSize: 12, fontWeight: 800, color: '#16a34a',
+                              letterSpacing: 0.4, textTransform: 'uppercase' as const,
                               marginBottom: 12,
                             }}>
                               {blocco.numero}
@@ -576,13 +576,13 @@ export default function CostituzionNapoletanaPage() {
                                 borderRadius: 14, padding: '12px 10px',
                                 border: `0.5px solid ${col}28`,
                               }}>
-                                <div style={{ fontSize: 9, fontWeight: 800, color: col, marginBottom: 10, letterSpacing: 0.5, lineHeight: 1.4 }}>
+                                <div style={{ fontSize: 11, fontWeight: 800, color: col, marginBottom: 10, letterSpacing: 0.5, lineHeight: 1.4 }}>
                                   {data.label.toUpperCase()}
                                 </div>
                                 {data.items.map((p, pi) => (
                                   <div key={pi} style={{ display: 'flex', gap: 7, marginBottom: 7, alignItems: 'flex-start' }}>
                                     <div style={{ width: 3, height: 3, borderRadius: '50%', background: col, flexShrink: 0, marginTop: 5 }} />
-                                    <div style={{ fontSize: 11, color: 'var(--text-2)', lineHeight: 1.55 }}>{p}</div>
+                                    <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.55 }}>{p}</div>
                                   </div>
                                 ))}
                               </div>
@@ -600,7 +600,7 @@ export default function CostituzionNapoletanaPage() {
           </div>
 
           {/* ── TIMELINE ──────────────────────────────────────────────────── */}
-          <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700, marginBottom: 14 }}>
+          <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase' as const, color: 'var(--text-3)', fontWeight: 700, marginBottom: 14 }}>
             Cronologia
           </div>
 
@@ -624,13 +624,13 @@ export default function CostituzionNapoletanaPage() {
                   width: 8, height: 8, borderRadius: '50%',
                   background: ev.colore,
                 }} />
-                <div style={{ fontSize: 9, fontWeight: 800, color: ev.colore, letterSpacing: 2, marginBottom: 3 }}>
+                <div style={{ fontSize: 11, fontWeight: 800, color: ev.colore, letterSpacing: 2, marginBottom: 3 }}>
                   {ev.anno}
                 </div>
                 <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 3 }}>
                   {ev.titolo}
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.6 }}>
+                <div style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.6 }}>
                   {ev.testo}
                 </div>
               </div>
@@ -671,7 +671,7 @@ export default function CostituzionNapoletanaPage() {
                 background: `${tag.col}12`,
                 border: `0.5px solid ${tag.col}28`,
                 borderRadius: 7, padding: '3px 10px',
-                fontSize: 10, fontWeight: 700, color: tag.col,
+                fontSize: 12, fontWeight: 700, color: tag.col,
               }}>
                 {tag.testo}
               </div>

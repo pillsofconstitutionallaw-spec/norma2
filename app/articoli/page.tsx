@@ -252,7 +252,7 @@ export default function ArticoliPage() {
 
       {/* Header pagina */}
       <div style={{ padding: '20px 16px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ fontSize: 22, fontWeight: 900, letterSpacing: -0.5 }}>Articoli</div>
+        <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, letterSpacing: -0.8 }}>Articoli</div>
         <div style={{ width: 34, height: 34, borderRadius: 10, background: 'var(--fill)', border: '0.5px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </div>
@@ -305,7 +305,7 @@ export default function ArticoliPage() {
             <button
               onClick={loadMore}
               disabled={loadingMore}
-              style={{ width: '100%', padding: 14, borderRadius: 16, background: 'var(--fill)', border: '0.5px solid var(--line)', color: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 800, letterSpacing: 1, cursor: 'pointer' }}
+              style={{ width: '100%', padding: 14, borderRadius: 16, background: 'var(--fill)', border: '0.5px solid var(--line)', color: 'rgba(255,255,255,0.5)', fontSize: 12, fontWeight: 800, letterSpacing: 1, cursor: 'pointer' }}
             >
               {loadingMore ? '...' : 'CARICA ALTRI'}
             </button>
@@ -347,7 +347,7 @@ export default function ArticoliPage() {
               <div>
                 <div style={{ color: 'var(--text)', fontWeight: 800, fontSize: 13 }}>{storyCatName}</div>
                 {!storyLoading && storyPosts[storyIndex] && (
-                  <div style={{ color: 'var(--text-2)', fontSize: 10 }}>
+                  <div style={{ color: 'var(--text-2)', fontSize: 12 }}>
                     {new Date(storyPosts[storyIndex].date).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </div>
                 )}
@@ -371,13 +371,13 @@ export default function ArticoliPage() {
                 {img && <img src={img} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />}
                 <div style={{ position: 'absolute', inset: 0, background: img ? 'linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.5) 100%)' : 'var(--surface-2)' }} />
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '0 20px 48px' }} onClick={(e) => e.stopPropagation()}>
-                  <div style={{ display: 'inline-block', fontSize: 9, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'var(--text-2)', border: '0.5px solid var(--line)', borderRadius: 20, padding: '3px 10px', marginBottom: 12 }}>
+                  <div style={{ display: 'inline-block', fontSize: 12, fontWeight: 700, letterSpacing: 0.4, textTransform: 'uppercase' as const, color: 'var(--text-2)', border: '0.5px solid var(--line)', borderRadius: 20, padding: '3px 10px', marginBottom: 12 }}>
                     ORIZZONTE GIURIDICO · {storyCatName.toUpperCase()}
                   </div>
-                  <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, marginBottom: 14 }} dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }} />
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text)', lineHeight: 1.15, marginBottom: 14 }} dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }} />
                   <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 24 }}>{excerpt}</div>
                   {slug && (
-                    <a href={`/articoli/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', color: 'var(--bg)', fontWeight: 800, fontSize: 12, letterSpacing: 1, padding: '13px 24px', borderRadius: 999, textDecoration: 'none' }}>
+                    <a href={`/articoli/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', color: 'var(--bg)', fontWeight: 800, fontSize: 14, letterSpacing: 1, padding: '13px 24px', borderRadius: 999, textDecoration: 'none' }}>
                       LEGGI L'ARTICOLO →
                     </a>
                   )}

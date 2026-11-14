@@ -294,7 +294,7 @@ function toggleSalva() {
     gap: 6,
     cursor: 'pointer',
     color: salvato ? 'var(--accent)' : 'var(--text)',
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: 700
   }}
 >
@@ -302,23 +302,23 @@ function toggleSalva() {
 </button>
 
             <button onClick={() => router.back()} style={{ width: 34, height: 34, borderRadius: 10, background: 'var(--fill)', border: '0.5px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#fff', fontSize: 14 }}>←</button>
-            {categoria && <span style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 800 }}>{categoria}</span>}
+            {categoria && <span style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 800 }}>{categoria}</span>}
           </div>
 
           {/* Titolo */}
-          <h1 style={{ fontSize: 'clamp(24px, 7vw, 36px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: -0.8, marginBottom: 16, color: 'var(--text)', wordBreak: 'break-word' }}
+          <h1 style={{ fontSize: 'clamp(24px, 7vw, 36px)', fontWeight: 800, lineHeight: 1.1, letterSpacing: -0.8, marginBottom: 16, color: 'var(--text)', wordBreak: 'break-word' }}
             dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
 
           {/* Meta */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 20, paddingBottom: 20, borderBottom: '0.5px solid var(--line)' }}>
-            <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'linear-gradient(135deg,var(--accent-strong),var(--accent))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, flexShrink: 0 }}>
+            <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'linear-gradient(135deg,var(--accent-strong),var(--accent))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 800, flexShrink: 0 }}>
               {autore.charAt(0).toUpperCase()}
             </div>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>{autore}</div>
-              <div style={{ fontSize: 10, color: 'var(--text-3)' }}>{dataPost} · {tempoLettura} min</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>{autore}</div>
+              <div style={{ fontSize: 12, color: 'var(--text-3)' }}>{dataPost} · {tempoLettura} min</div>
             </div>
-            <div style={{ marginLeft: 'auto', fontSize: 10, color: 'rgba(255,255,255,0.4)', background: 'var(--fill)', padding: '4px 10px', borderRadius: 99, border: '0.5px solid var(--line)', flexShrink: 0 }}>
+            <div style={{ marginLeft: 'auto', fontSize: 12, color: 'rgba(255,255,255,0.4)', background: 'var(--fill)', padding: '4px 10px', borderRadius: 99, border: '0.5px solid var(--line)', flexShrink: 0 }}>
               {readProgress}% letto
             </div>
           </div>
@@ -341,10 +341,10 @@ function toggleSalva() {
 
             {/* Header AI */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px', borderBottom: '0.5px solid var(--line)' }}>
-              <div style={{ width: 30, height: 30, borderRadius: 9, background: 'linear-gradient(135deg,var(--accent-strong),var(--accent))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 900 }}>✦</div>
+              <div style={{ width: 30, height: 30, borderRadius: 9, background: 'linear-gradient(135deg,var(--accent-strong),var(--accent))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800 }}>✦</div>
               <div>
-                <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--text)' }}>Norma AI</div>
-                <div style={{ fontSize: 9, color: 'var(--text-3)', letterSpacing: 1.5, textTransform: 'uppercase' }}>Strumenti di lettura</div>
+                <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>Norma AI</div>
+                <div style={{ fontSize: 12, color: 'var(--text-3)', letterSpacing: 0.4, textTransform: 'uppercase' }}>Strumenti di lettura</div>
               </div>
             </div>
 
@@ -361,8 +361,8 @@ function toggleSalva() {
                   </svg>
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>{vocaleAttiva ? 'Stop' : 'Lettura vocale'}</div>
-                  <div style={{ fontSize: 10, color: 'var(--text-3)', lineHeight: 1.4 }}>{vocaleAttiva ? 'In riproduzione...' : "Ascolta l'articolo"}</div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>{vocaleAttiva ? 'Stop' : 'Lettura vocale'}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-3)', lineHeight: 1.4 }}>{vocaleAttiva ? 'In riproduzione...' : "Ascolta l'articolo"}</div>
                 </div>
               </button>
 
@@ -374,8 +374,8 @@ function toggleSalva() {
                   </svg>
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>Sintesi</div>
-                  <div style={{ fontSize: 10, color: 'var(--text-3)', lineHeight: 1.4 }}>Riassunto AI</div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>Sintesi</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-3)', lineHeight: 1.4 }}>Riassunto AI</div>
                 </div>
               </button>
 
@@ -387,8 +387,8 @@ function toggleSalva() {
                   </svg>
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>Parole chiave</div>
-                  <div style={{ fontSize: 10, color: 'var(--text-3)', lineHeight: 1.4 }}>Concetti principali</div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>Parole chiave</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-3)', lineHeight: 1.4 }}>Concetti principali</div>
                 </div>
               </button>
 
@@ -400,8 +400,8 @@ function toggleSalva() {
                   </svg>
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>Test</div>
-                  <div style={{ fontSize: 10, color: 'var(--text-3)', lineHeight: 1.4 }}>Metti alla prova</div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 2 }}>Test</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-3)', lineHeight: 1.4 }}>Metti alla prova</div>
                 </div>
               </button>
             </div>
@@ -412,18 +412,18 @@ function toggleSalva() {
 
                 {sezione === 'sintesi' && (
                   <div>
-                    <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 800, marginBottom: 10 }}>Sintesi</div>
+                    <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 800, marginBottom: 10 }}>Sintesi</div>
                     {loadingSintesi ? <LoadingDots /> : <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.8 }}>{sintesi}</div>}
                   </div>
                 )}
 
                 {sezione === 'parole' && (
                   <div>
-                    <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 800, marginBottom: 12 }}>Parole chiave</div>
+                    <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 800, marginBottom: 12 }}>Parole chiave</div>
                     {loadingParole ? <LoadingDots /> : (
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                         {paroleChiave.map((p, i) => (
-                          <div key={i} style={{ padding: '6px 14px', borderRadius: 99, background: 'rgba(79,70,229,0.08)', border: '0.5px solid rgba(79,70,229,0.2)', color: 'var(--accent)', fontSize: 11, fontWeight: 700 }}>{p}</div>
+                          <div key={i} style={{ padding: '6px 14px', borderRadius: 99, background: 'rgba(79,70,229,0.08)', border: '0.5px solid rgba(79,70,229,0.2)', color: 'var(--accent)', fontSize: 13, fontWeight: 700 }}>{p}</div>
                         ))}
                       </div>
                     )}
@@ -432,7 +432,7 @@ function toggleSalva() {
 
                 {sezione === 'test' && (
                   <div>
-                    <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 800, marginBottom: 14 }}>Test di comprensione</div>
+                    <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 800, marginBottom: 14 }}>Test di comprensione</div>
                     {loadingTest ? <LoadingDots /> : (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                         {testDomande.map((d: any, i: number) => (
@@ -451,7 +451,7 @@ function toggleSalva() {
                                 else if (risposto && selezionata && !corretta) { bg = 'rgba(239,68,68,0.15)'; border = '0.5px solid rgba(239,68,68,0.3)'; color = '#dc2626'; }
                                 return (
                                   <button key={j} onClick={() => !risposto && setTestRisposte(prev => ({ ...prev, [i]: j }))}
-                                    style={{ background: bg, border, borderRadius: 12, padding: '10px 14px', color, fontSize: 12, fontWeight: 600, textAlign: 'left', cursor: risposto ? 'default' : 'pointer' }}>
+                                    style={{ background: bg, border, borderRadius: 12, padding: '10px 14px', color, fontSize: 14, fontWeight: 600, textAlign: 'left', cursor: risposto ? 'default' : 'pointer' }}>
                                     {op}
                                   </button>
                                 );

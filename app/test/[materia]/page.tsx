@@ -239,9 +239,9 @@ export default function TestMateriaPage() {
 
           <div style={{ textAlign: 'center', marginBottom: 32 }}>
 
-            <div style={{
+            <div style={{ fontFamily: 'var(--font-display)',
               fontSize: 56,
-              fontWeight: 900,
+              fontWeight: 800,
               color: percentuale >= 60 ? '#16a34a' : '#dc2626',
               marginBottom: 10
             }}>
@@ -315,7 +315,7 @@ export default function TestMateriaPage() {
               borderRadius: 10,
               padding: '6px 12px',
               color: 'rgba(255,255,255,0.5)',
-              fontSize: 11,
+              fontSize: 13,
               fontWeight: 700,
               cursor: 'pointer'
             }}
@@ -324,10 +324,10 @@ export default function TestMateriaPage() {
           </button>
 
           <div style={{
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: 700,
             color: 'var(--text-3)',
-            letterSpacing: 2,
+            letterSpacing: 0.4,
             textTransform: 'uppercase'
           }}>
             {nomeMateria}
@@ -371,7 +371,7 @@ export default function TestMateriaPage() {
         }}>
 
           <span style={{
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: 700,
             color: 'var(--text-3)',
             textTransform: 'uppercase'
@@ -380,7 +380,7 @@ export default function TestMateriaPage() {
           </span>
 
           <span style={{
-            fontSize: 10,
+            fontSize: 12,
             color: 'var(--text-3)'
           }}>
             Quiz Orizzonte Giuridico
@@ -471,7 +471,7 @@ export default function TestMateriaPage() {
           }}>
 
             <div style={{
-              fontSize: 12,
+              fontSize: 14,
               color: 'var(--text-2)',
               lineHeight: 1.8
             }}>

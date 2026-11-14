@@ -320,10 +320,10 @@ export default function PdfStudioPage() {
               </button>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
                 <div>
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>Studio · PDF</div>
-                  <div style={{ fontSize: 24, fontWeight: 900, color: 'var(--text)' }}>Carica il tuo PDF</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>Studio · PDF</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--text)' }}>Carica il tuo PDF</div>
                 </div>
-                <button onClick={() => setFase('salvati')} style={{ background: 'rgba(56,189,248,0.1)', border: '0.5px solid rgba(56,189,248,0.25)', borderRadius: 12, padding: '8px 14px', color: '#0284c7', fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'var(--font-ui)', marginTop: 4 }}>
+                <button onClick={() => setFase('salvati')} style={{ background: 'rgba(56,189,248,0.1)', border: '0.5px solid rgba(56,189,248,0.25)', borderRadius: 12, padding: '8px 14px', color: '#0284c7', fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: 'var(--font-ui)', marginTop: 4 }}>
                   🔖 Salvati
                 </button>
               </div>
@@ -332,17 +332,17 @@ export default function PdfStudioPage() {
               <div onClick={() => inputRef.current?.click()} style={{ background: 'var(--surface)', border: '1.5px dashed var(--line)', borderRadius: 20, padding: '44px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 12 }}>
                 <div style={{ fontSize: 44, marginBottom: 14 }}>📄</div>
                 <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', marginBottom: 6 }}>Tocca per caricare il PDF</div>
-                <div style={{ fontSize: 12, color: 'var(--text-3)', marginBottom: 6 }}>Solo PDF con testo selezionabile</div>
-                <div style={{ fontSize: 11, color: '#f59e0b', fontWeight: 600 }}>⚠️ Max {MAX_PAGINE} pagine alla volta</div>
+                <div style={{ fontSize: 14, color: 'var(--text-3)', marginBottom: 6 }}>Solo PDF con testo selezionabile</div>
+                <div style={{ fontSize: 13, color: '#f59e0b', fontWeight: 600 }}>⚠️ Max {MAX_PAGINE} pagine alla volta</div>
               </div>
               <div onClick={() => fotoRef.current?.click()} style={{ background: 'var(--surface)', border: '1.5px dashed rgba(56,189,248,0.25)', borderRadius: 20, padding: '28px 20px', textAlign: 'center', cursor: 'pointer', marginBottom: 16 }}>
                 <div style={{ fontSize: 36, marginBottom: 10 }}>📷</div>
                 <div style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', marginBottom: 6 }}>Scatta o carica foto</div>
-                <div style={{ fontSize: 12, color: 'var(--text-3)', marginBottom: 4 }}>Appunti, libri, lavagna — Groq legge l'immagine</div>
-                <div style={{ fontSize: 11, color: '#0284c7', fontWeight: 600 }}>Max 8 foto alla volta</div>
+                <div style={{ fontSize: 14, color: 'var(--text-3)', marginBottom: 4 }}>Appunti, libri, lavagna — Groq legge l'immagine</div>
+                <div style={{ fontSize: 13, color: '#0284c7', fontWeight: 600 }}>Max 8 foto alla volta</div>
               </div>
               {errore && (
-                <div style={{ background: 'rgba(239,68,68,0.1)', border: '0.5px solid rgba(239,68,68,0.3)', borderRadius: 12, padding: '12px 16px', color: '#ef4444', fontSize: 12, textAlign: 'center' }}>
+                <div style={{ background: 'rgba(239,68,68,0.1)', border: '0.5px solid rgba(239,68,68,0.3)', borderRadius: 12, padding: '12px 16px', color: '#ef4444', fontSize: 14, textAlign: 'center' }}>
                   {errore}
                 </div>
               )}
@@ -360,19 +360,19 @@ export default function PdfStudioPage() {
                 <div style={{ fontSize: 26 }}>📄</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{nomeFile}</div>
-                  <div style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 3 }}>{totalePagine} pagine totali</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 3 }}>{totalePagine} pagine totali</div>
                 </div>
               </div>
 
-              <div style={{ fontSize: 18, fontWeight: 900, color: 'var(--text)', marginBottom: 6 }}>Quali pagine vuoi studiare?</div>
-              <div style={{ fontSize: 12, color: 'var(--text-3)', lineHeight: 1.6, marginBottom: 28 }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 800, color: 'var(--text)', marginBottom: 6 }}>Quali pagine vuoi studiare?</div>
+              <div style={{ fontSize: 14, color: 'var(--text-3)', lineHeight: 1.6, marginBottom: 28 }}>
                 Scegli da 1 a {MAX_PAGINE} pagine. Puoi tornare dopo per il blocco successivo.
               </div>
 
               {/* Input numerici */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, marginBottom: 32 }}>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 10 }}>Da pagina</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 10 }}>Da pagina</div>
                   <input
                     type="number" min={1} max={totalePagine} value={paginaDa}
                     onChange={e => {
@@ -386,7 +386,7 @@ export default function PdfStudioPage() {
                 </div>
                 <div style={{ fontSize: 22, color: 'var(--text-3)', paddingTop: 24 }}>→</div>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 10 }}>A pagina</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 10 }}>A pagina</div>
                   <input
                     type="number" min={paginaDa} max={Math.min(totalePagine, paginaDa + MAX_PAGINE - 1)} value={paginaA}
                     onChange={e => {
@@ -400,7 +400,7 @@ export default function PdfStudioPage() {
 
               {/* Slider pagina iniziale */}
               <div style={{ marginBottom: 24 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-3)', marginBottom: 10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-3)', marginBottom: 10 }}>
                   <span>Pagina iniziale</span><span>{paginaDa}</span>
                 </div>
                 <input type="range" min={1} max={totalePagine} value={paginaDa}
@@ -415,7 +415,7 @@ export default function PdfStudioPage() {
 
               {/* Slider pagina finale */}
               <div style={{ marginBottom: 28 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-3)', marginBottom: 10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text-3)', marginBottom: 10 }}>
                   <span>Pagina finale</span><span>{paginaA}</span>
                 </div>
                 <input type="range" min={paginaDa} max={Math.min(totalePagine, paginaDa + MAX_PAGINE - 1)} value={paginaA}
@@ -426,20 +426,20 @@ export default function PdfStudioPage() {
               {/* Riepilogo */}
               <div style={{ background: rangeValido ? 'rgba(56,189,248,0.07)' : 'rgba(239,68,68,0.07)', border: `0.5px solid ${rangeValido ? 'rgba(56,189,248,0.25)' : 'rgba(239,68,68,0.3)'}`, borderRadius: 14, padding: '14px 16px', marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <div style={{ fontSize: 11, color: 'var(--text-3)', marginBottom: 3 }}>Selezione</div>
-                  <div style={{ fontSize: 22, fontWeight: 900, color: rangeValido ? '#0284c7' : '#ef4444' }}>{numPagine} {numPagine === 1 ? 'pagina' : 'pagine'}</div>
-                  <div style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 2 }}>pag. {paginaDa} → {paginaA}</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-3)', marginBottom: 3 }}>Selezione</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: rangeValido ? '#0284c7' : '#ef4444' }}>{numPagine} {numPagine === 1 ? 'pagina' : 'pagine'}</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 2 }}>pag. {paginaDa} → {paginaA}</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ fontSize: 22 }}>{rangeValido ? '✅' : '⚠️'}</div>
-                  <div style={{ fontSize: 10, color: rangeValido ? 'var(--text-3)' : '#ef4444', marginTop: 4 }}>
+                  <div style={{ fontSize: 12, color: rangeValido ? 'var(--text-3)' : '#ef4444', marginTop: 4 }}>
                     {rangeValido ? `max ${MAX_PAGINE} pagine` : `supera il limite di ${MAX_PAGINE}`}
                   </div>
                 </div>
               </div>
 
               {errore && (
-                <div style={{ background: 'rgba(239,68,68,0.1)', border: '0.5px solid rgba(239,68,68,0.3)', borderRadius: 12, padding: '12px 16px', color: '#ef4444', fontSize: 12, textAlign: 'center', marginBottom: 16 }}>
+                <div style={{ background: 'rgba(239,68,68,0.1)', border: '0.5px solid rgba(239,68,68,0.3)', borderRadius: 12, padding: '12px 16px', color: '#ef4444', fontSize: 14, textAlign: 'center', marginBottom: 16 }}>
                   {errore}
                 </div>
               )}
@@ -456,8 +456,8 @@ export default function PdfStudioPage() {
               <button onClick={() => { setFase('upload'); setFotoBase64([]); setFotoPreviews([]); }} style={{ background: 'none', border: 'none', color: 'var(--text-3)', fontSize: 13, cursor: 'pointer', marginBottom: 24, fontFamily: 'var(--font-ui)'}}>
                 ← Indietro
               </button>
-              <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--text)', marginBottom: 4 }}>{fotoPreviews.length} foto selezionate</div>
-              <div style={{ fontSize: 12, color: 'var(--text-3)', marginBottom: 20 }}>Groq leggerà il testo da ogni immagine</div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>{fotoPreviews.length} foto selezionate</div>
+              <div style={{ fontSize: 14, color: 'var(--text-3)', marginBottom: 20 }}>Groq leggerà il testo da ogni immagine</div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 20 }}>
                 {fotoPreviews.map((src, i) => (
                   <div key={i} style={{ aspectRatio: '1/1', borderRadius: 12, overflow: 'hidden', border: '0.5px solid rgba(56,189,248,0.2)' }}>
@@ -469,7 +469,7 @@ export default function PdfStudioPage() {
                 )}
               </div>
               {errore && (
-                <div style={{ background: 'rgba(239,68,68,0.1)', border: '0.5px solid rgba(239,68,68,0.3)', borderRadius: 12, padding: '12px 16px', color: '#ef4444', fontSize: 12, textAlign: 'center', marginBottom: 16 }}>
+                <div style={{ background: 'rgba(239,68,68,0.1)', border: '0.5px solid rgba(239,68,68,0.3)', borderRadius: 12, padding: '12px 16px', color: '#ef4444', fontSize: 14, textAlign: 'center', marginBottom: 16 }}>
                   {errore}
                 </div>
               )}
@@ -484,8 +484,8 @@ export default function PdfStudioPage() {
             <div style={{ textAlign: 'center', paddingTop: 80 }}>
               <div style={{ fontSize: 44, marginBottom: 20 }}>⚡</div>
               <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--text)', marginBottom: 10 }}>Analisi documento...</div>
-              <div style={{ fontSize: 12, color: 'var(--text-3)', marginBottom: 4 }}>{nomeFile}</div>
-              <div style={{ fontSize: 11, color: 'var(--text-3)' }}>Pagine {paginaDa} – {paginaA}</div>
+              <div style={{ fontSize: 14, color: 'var(--text-3)', marginBottom: 4 }}>{nomeFile}</div>
+              <div style={{ fontSize: 13, color: 'var(--text-3)' }}>Pagine {paginaDa} – {paginaA}</div>
               <div style={{ display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
                 {[0, 1, 2].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: '#0284c7', animation: `pulse 1.2s ease-in-out ${i * 200}ms infinite` }} />)}
               </div>
@@ -496,9 +496,9 @@ export default function PdfStudioPage() {
           {fase === 'flashcard-intro' && (
             <div style={{ textAlign: 'center', paddingTop: 40 }}>
               <div style={{ fontSize: 48, marginBottom: 16 }}>🃏</div>
-              <h1 style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', marginBottom: 6 }}>{carte.length} flashcard pronte</h1>
-              <p style={{ fontSize: 12, color: 'var(--text-3)', marginBottom: 4 }}>{nomeFile}</p>
-              <p style={{ fontSize: 11, color: 'var(--text-3)', marginBottom: 32 }}>Pagine {paginaDa}–{paginaA}</p>
+              <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text)', marginBottom: 6 }}>{carte.length} flashcard pronte</h1>
+              <p style={{ fontSize: 14, color: 'var(--text-3)', marginBottom: 4 }}>{nomeFile}</p>
+              <p style={{ fontSize: 13, color: 'var(--text-3)', marginBottom: 32 }}>Pagine {paginaDa}–{paginaA}</p>
               <button onClick={() => { setIndice(0); setGirata(false); setSapute(0); setNonSapute(0); setDaRipetere([]); setFase('flashcard-studio'); }} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: 'linear-gradient(135deg, #0284c7, #4f46e5)', color: '#fff', fontWeight: 800, fontSize: 15, cursor: 'pointer', marginBottom: 12, fontFamily: 'var(--font-ui)'}}>
                 ⚡ Inizia studio
               </button>
@@ -513,19 +513,19 @@ export default function PdfStudioPage() {
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                 <button onClick={() => setFase('flashcard-intro')} style={{ background: 'none', border: 'none', color: 'var(--text-3)', fontSize: 13, cursor: 'pointer', padding: 0, fontFamily: 'var(--font-ui)'}}>← Esci</button>
-                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-3)' }}>{indice + 1} / {carte.length}</span>
+                <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-3)' }}>{indice + 1} / {carte.length}</span>
               </div>
               <div style={{ height: 4, background: 'var(--fill)', borderRadius: 999, marginBottom: 20 }}>
                 <div style={{ width: `${progresso}%`, height: 4, background: '#0284c7', borderRadius: 999, transition: '0.3s' }} />
               </div>
               <div onClick={() => setGirata(g => !g)} style={{ background: girata ? '#172033' : 'var(--surface)', borderRadius: 24, padding: '28px 24px', minHeight: 260, cursor: 'pointer', border: girata ? '1px solid rgba(56,189,248,0.3)' : '1px solid var(--line)', marginBottom: 20, transition: 'background 0.3s' }}>
-                <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 2, color: girata ? '#0284c7' : 'var(--text-3)', marginBottom: 18 }}>
+                <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: 2, color: girata ? '#0284c7' : 'var(--text-3)', marginBottom: 18 }}>
                   {girata ? 'RISPOSTA' : 'DOMANDA'}
                 </div>
                 <p style={{ color: 'var(--text)', fontSize: girata ? 15 : 18, lineHeight: 1.8, fontWeight: girata ? 400 : 700, margin: 0 }}>
                   {girata ? carte[indice].risposta : carte[indice].domanda}
                 </p>
-                {!girata && <div style={{ fontSize: 11, color: 'var(--text-3)', fontWeight: 600, marginTop: 20 }}>Tocca per girare</div>}
+                {!girata && <div style={{ fontSize: 13, color: 'var(--text-3)', fontWeight: 600, marginTop: 20 }}>Tocca per girare</div>}
               </div>
               {girata && (
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
@@ -540,15 +540,15 @@ export default function PdfStudioPage() {
           {fase === 'flashcard-risultati' && (
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 64, marginBottom: 18 }}>🏁</div>
-              <h1 style={{ color: 'var(--text)', marginBottom: 12, fontWeight: 900 }}>Sessione completata</h1>
+              <h1 style={{ color: 'var(--text)', marginBottom: 12, fontWeight: 800 }}>Sessione completata</h1>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 24 }}>
                 <div style={{ background: 'var(--surface)', borderRadius: 16, padding: '18px' }}>
-                  <div style={{ color: '#16a34a', fontSize: 28, fontWeight: 900 }}>{sapute}</div>
-                  <div style={{ color: 'var(--text-3)', fontSize: 11 }}>SAPUTE</div>
+                  <div style={{ fontFamily: 'var(--font-display)', color: '#16a34a', fontSize: 28, fontWeight: 800 }}>{sapute}</div>
+                  <div style={{ color: 'var(--text-3)', fontSize: 13 }}>SAPUTE</div>
                 </div>
                 <div style={{ background: 'var(--surface)', borderRadius: 16, padding: '18px' }}>
-                  <div style={{ color: '#ef4444', fontSize: 28, fontWeight: 900 }}>{nonSapute}</div>
-                  <div style={{ color: 'var(--text-3)', fontSize: 11 }}>ERRORI</div>
+                  <div style={{ fontFamily: 'var(--font-display)', color: '#ef4444', fontSize: 28, fontWeight: 800 }}>{nonSapute}</div>
+                  <div style={{ color: 'var(--text-3)', fontSize: 13 }}>ERRORI</div>
                 </div>
               </div>
               {daRipetere.length > 0 && (
@@ -586,8 +586,8 @@ export default function PdfStudioPage() {
           {fase === 'test-studio' && domande[indiceDomanda] && (
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                <span style={{ fontSize: 12, color: 'var(--text-3)', fontWeight: 700 }}>Domanda {indiceDomanda + 1} / {domande.length}</span>
-                <span style={{ fontSize: 12, color: '#a855f7', fontWeight: 700 }}>{punteggio} punti</span>
+                <span style={{ fontSize: 14, color: 'var(--text-3)', fontWeight: 700 }}>Domanda {indiceDomanda + 1} / {domande.length}</span>
+                <span style={{ fontSize: 14, color: '#a855f7', fontWeight: 700 }}>{punteggio} punti</span>
               </div>
               <div style={{ height: 4, background: 'var(--fill)', borderRadius: 999, marginBottom: 24 }}>
                 <div style={{ width: `${((indiceDomanda + 1) / domande.length) * 100}%`, height: 4, background: '#a855f7', borderRadius: 999, transition: '0.3s' }} />
@@ -631,10 +631,10 @@ export default function PdfStudioPage() {
                 {punteggio} risposte corrette su {domande.length}
               </p>
               <div style={{ background: 'var(--surface)', borderRadius: 20, padding: '28px', marginBottom: 24 }}>
-                <div style={{ fontSize: 48, fontWeight: 900, color: punteggio / domande.length >= 0.6 ? '#16a34a' : '#ef4444' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 48, fontWeight: 800, color: punteggio / domande.length >= 0.6 ? '#16a34a' : '#ef4444' }}>
                   {Math.round((punteggio / domande.length) * 100)}%
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 4 }}>
+                <div style={{ fontSize: 14, color: 'var(--text-3)', marginTop: 4 }}>
                   {punteggio / domande.length >= 0.6 ? 'Ottimo risultato!' : 'Continua a studiare'}
                 </div>
               </div>
@@ -659,8 +659,8 @@ export default function PdfStudioPage() {
                 <button onClick={() => setFase('upload')} style={{ background: 'none', border: 'none', color: 'var(--text-3)', fontSize: 13, cursor: 'pointer', marginBottom: 24, fontFamily: 'var(--font-ui)'}}>
                   ← Indietro
                 </button>
-                <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--text)', marginBottom: 4 }}>Deck salvati</div>
-                <div style={{ fontSize: 12, color: 'var(--text-3)', marginBottom: 24 }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 4 }}>Deck salvati</div>
+                <div style={{ fontSize: 14, color: 'var(--text-3)', marginBottom: 24 }}>
                   {decks.length === 0 ? 'Nessun deck salvato ancora' : `${decks.length} deck · tocca per ripassare`}
                 </div>
                 {decks.length === 0 && (
@@ -683,11 +683,11 @@ export default function PdfStudioPage() {
                         <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: 4 }}>
                           📄 {deck.titolo}
                         </div>
-                        <div style={{ fontSize: 11, color: 'var(--text-3)' }}>{deck.pagine} · {deck.data}</div>
+                        <div style={{ fontSize: 13, color: 'var(--text-3)' }}>{deck.pagine} · {deck.data}</div>
                       </div>
                       <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: 12 }}>
-                        <div style={{ fontSize: 20, fontWeight: 900, color: '#0284c7' }}>{deck.carte.length}</div>
-                        <div style={{ fontSize: 10, color: 'var(--text-3)' }}>carte</div>
+                        <div style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 800, color: '#0284c7' }}>{deck.carte.length}</div>
+                        <div style={{ fontSize: 12, color: 'var(--text-3)' }}>carte</div>
                       </div>
                     </div>
                   ))}

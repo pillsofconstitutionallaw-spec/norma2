@@ -67,8 +67,8 @@ export default function GlossarioPage() {
               border: '1px solid var(--line)',
               borderRadius: 99,
               padding: '4px 14px',
-              fontSize: 9,
-              letterSpacing: 3,
+              fontSize: 12,
+              letterSpacing: 0.4,
               textTransform: 'uppercase',
               color: 'var(--text-2)',
               fontWeight: 700,
@@ -78,11 +78,11 @@ export default function GlossarioPage() {
             Diritto italiano
           </div>
           <div
-            style={{
+            style={{ fontFamily: 'var(--font-display)',
               fontSize: 32,
-              fontWeight: 900,
+              fontWeight: 800,
               lineHeight: 1.1,
-              letterSpacing: -1,
+              letterSpacing: -0.8,
               color: 'var(--text)',
               marginBottom: 10,
             }}
@@ -153,7 +153,7 @@ export default function GlossarioPage() {
                 background: letteraAttiva === l ? 'rgba(79,70,229,0.1)' : 'var(--fill)',
                 border: `0.5px solid ${letteraAttiva === l ? 'rgba(79,70,229,0.2)' : 'var(--line)'}`,
                 color: letteraAttiva === l ? 'var(--accent)' : 'var(--text-3)',
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: 700,
                 cursor: 'pointer',
                 fontFamily: 'var(--font-ui)',
@@ -183,8 +183,8 @@ export default function GlossarioPage() {
               <span
                 style={{
                   color: 'var(--accent)',
-                  fontSize: 9,
-                  letterSpacing: 3,
+                  fontSize: 12,
+                  letterSpacing: 0.4,
                   textTransform: 'uppercase',
                   fontWeight: 800,
                 }}
@@ -230,8 +230,8 @@ export default function GlossarioPage() {
                     </div>
                     <div
                       style={{
-                        fontSize: 9,
-                        letterSpacing: 2,
+                        fontSize: 12,
+                        letterSpacing: 0.4,
                         textTransform: 'uppercase',
                         fontWeight: 700,
                         color: 'var(--accent)',

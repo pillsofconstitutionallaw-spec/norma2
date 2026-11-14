@@ -128,10 +128,10 @@ export default function CostituzionePage() {
       {/* HERO */}
       <div style={{ padding: '20px 16px 0' }}>
         <div style={{ borderRadius: 28, padding: '32px 24px', background: 'var(--surface)', border: '0.5px solid var(--line)' }}>
-          <div style={{ display: 'inline-block', border: '1px solid var(--line)', borderRadius: 99, padding: '4px 14px', fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--text-2)', fontWeight: 700, marginBottom: 14 }}>
+          <div style={{ display: 'inline-block', border: '1px solid var(--line)', borderRadius: 99, padding: '4px 14px', fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', color: 'var(--text-2)', fontWeight: 700, marginBottom: 14 }}>
             Repubblica Italiana · 1948
           </div>
-          <div style={{ fontSize: 32, fontWeight: 900, lineHeight: 1.1, letterSpacing: -1, color: 'var(--text)', marginBottom: 10 }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 800, lineHeight: 1.1, letterSpacing: -0.8, color: 'var(--text)', marginBottom: 10 }}>
             La Costituzione<br />spiegata facile
           </div>
           <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.7 }}>
@@ -145,7 +145,7 @@ export default function CostituzionePage() {
         <div style={{ padding: '20px 16px 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <div style={{ width: 24, height: 1, background: 'rgba(79,70,229,0.4)' }} />
-            <span style={{ color: 'var(--accent)', fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', fontWeight: 800 }}>Sommario</span>
+            <span style={{ color: 'var(--accent)', fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', fontWeight: 800 }}>Sommario</span>
             <div style={{ flex: 1, height: 1, background: 'var(--fill)' }} />
           </div>
           <div style={{ background: 'var(--surface)', borderRadius: 20, overflow: 'hidden', border: '0.5px solid var(--line)' }}>
@@ -157,7 +157,7 @@ export default function CostituzionePage() {
               >
                 <div>
                   <div style={{ color: 'var(--text)', fontSize: 13, fontWeight: 700, marginBottom: 2 }}>{s.label}</div>
-                  <div style={{ color: 'var(--text-3)', fontSize: 10 }}>
+                  <div style={{ color: 'var(--text-3)', fontSize: 12 }}>
                     {typeof s.range[0] === 'number' ? `Art. ${s.range[0]}–${s.range[1]}` : 'Disp. I – XVII'}
                   </div>
                 </div>
@@ -191,7 +191,7 @@ export default function CostituzionePage() {
           <div key={sezione}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14, marginTop: 8 }}>
               <div style={{ width: 24, height: 1, background: 'rgba(79,70,229,0.4)' }} />
-              <span style={{ color: 'var(--accent)', fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', fontWeight: 800 }}>{sezione}</span>
+              <span style={{ color: 'var(--accent)', fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', fontWeight: 800 }}>{sezione}</span>
               <div style={{ flex: 1, height: 1, background: 'var(--fill)' }} />
             </div>
 
@@ -201,13 +201,13 @@ export default function CostituzionePage() {
 
                   {/* CARD BODY */}
                   <div style={{ padding: '20px 20px 0', position: 'relative', overflow: 'hidden' }}>
-                    <div style={{ position: 'absolute', right: -4, top: -14, fontSize: 110, fontWeight: 900, color: 'rgba(79,70,229,0.07)', lineHeight: 1, userSelect: 'none', letterSpacing: -4, fontFamily: 'var(--font-ui)'}}>
+                    <div style={{ position: 'absolute', right: -4, top: -14, fontSize: 110, fontWeight: 800, color: 'rgba(79,70,229,0.07)', lineHeight: 1, userSelect: 'none', letterSpacing: -0.8, fontFamily: 'var(--font-display)'}}>
                       {articolo.n}
                     </div>
-                    <div style={{ color: 'var(--accent)', fontSize: 9, letterSpacing: 2.5, textTransform: 'uppercase', fontWeight: 800, marginBottom: 5, position: 'relative', zIndex: 1 }}>
+                    <div style={{ color: 'var(--accent)', fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', fontWeight: 800, marginBottom: 5, position: 'relative', zIndex: 1 }}>
                       {articolo.titolo}
                     </div>
-                    <div style={{ fontSize: 23, fontWeight: 900, letterSpacing: -0.5, color: 'var(--text)', position: 'relative', zIndex: 1 }}>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 23, fontWeight: 800, letterSpacing: -0.8, color: 'var(--text)', position: 'relative', zIndex: 1 }}>
                       {getTitoloArticolo(articolo)}
                     </div>
                     <div style={{ color: 'var(--text-2)', fontSize: 12.5, lineHeight: 1.9, marginTop: 13, whiteSpace: 'pre-line', position: 'relative', zIndex: 1 }}>
@@ -220,8 +220,8 @@ export default function CostituzionePage() {
                         <svg width="11" height="11" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3" /></svg>
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ color: 'var(--accent)', fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', fontWeight: 800, marginBottom: 2 }}>Ascolta</div>
-                        <div style={{ color: 'var(--text-3)', fontSize: 10 }}>Lettura in italiano · velocità naturale</div>
+                        <div style={{ color: 'var(--accent)', fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', fontWeight: 800, marginBottom: 2 }}>Ascolta</div>
+                        <div style={{ color: 'var(--text-3)', fontSize: 12 }}>Lettura in italiano · velocità naturale</div>
                       </div>
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(79,70,229,0.4)" strokeWidth="2">
                         <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
@@ -239,7 +239,7 @@ export default function CostituzionePage() {
                     <button
                       onClick={() => spiegaArticolo(articolo)}
                       disabled={loadingAI[articolo.n]}
-                      style={{ flex: 1, padding: '10px 0', borderRadius: 12, background: '#123055', border: 'none', color: '#fff', fontSize: 10, fontWeight: 800, letterSpacing: 0.5, cursor: loadingAI[articolo.n] ? 'default' : 'pointer', opacity: loadingAI[articolo.n] ? 0.6 : 1, fontFamily: 'var(--font-ui)'}}
+                      style={{ flex: 1, padding: '10px 0', borderRadius: 12, background: '#123055', border: 'none', color: '#fff', fontSize: 12, fontWeight: 800, letterSpacing: 0.5, cursor: loadingAI[articolo.n] ? 'default' : 'pointer', opacity: loadingAI[articolo.n] ? 0.6 : 1, fontFamily: 'var(--font-ui)'}}
                     >
                       {loadingAI[articolo.n] ? '...' : '✦ Spiegami'}
                     </button>
@@ -257,7 +257,7 @@ export default function CostituzionePage() {
                   {/* SPIEGAZIONE AI */}
                   {(loadingAI[articolo.n] || spiegazioni[articolo.n]) && (
                     <div style={{ padding: '14px 20px', background: 'var(--bg)', borderTop: '0.5px solid var(--line)' }}>
-                      <div style={{ color: 'var(--accent)', fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', fontWeight: 800, marginBottom: 8 }}>Norma AI</div>
+                      <div style={{ color: 'var(--accent)', fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', fontWeight: 800, marginBottom: 8 }}>Norma AI</div>
                       {loadingAI[articolo.n] ? (
                         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
                           {[0, 1, 2].map((i) => (
@@ -265,7 +265,7 @@ export default function CostituzionePage() {
                           ))}
                         </div>
                       ) : (
-                        <div style={{ color: 'var(--text-2)', fontSize: 12, lineHeight: 1.85 }}>
+                        <div style={{ color: 'var(--text-2)', fontSize: 14, lineHeight: 1.85 }}>
                           {spiegazioni[articolo.n]}
                         </div>
                       )}

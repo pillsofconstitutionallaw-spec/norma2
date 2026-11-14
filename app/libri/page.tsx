@@ -123,15 +123,15 @@ export default function LibriPage() {
         <Header />
         <div style={{ padding: '20px 16px 140px' }}>
           <div style={{ marginBottom: 28 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>Per gli studenti</div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.5 }}>Libri consigliati</div>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>Per gli studenti</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.8 }}>Libri consigliati</div>
             <div style={{ fontSize: 13, color: 'var(--text-3)', marginTop: 6, lineHeight: 1.5 }}>I migliori manuali per ogni materia, selezionati tra i più usati dagli studenti di giurisprudenza.</div>
           </div>
           {materie.map((m, mi) => (
             <div key={mi} style={{ marginBottom: 28 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: m.colore, flexShrink: 0 }} />
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2.5, color: 'var(--text-3)', textTransform: 'uppercase' }}>{m.nome}</div>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase' }}>{m.nome}</div>
                 <div style={{ flex: 1, height: '0.5px', background: 'var(--fill)' }} />
               </div>
               {m.libri.map((l, li) => {
@@ -147,8 +147,8 @@ export default function LibriPage() {
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 3, lineHeight: 1.3 }}>{l.titolo}</div>
-                        <div style={{ fontSize: 11, color: 'var(--text-3)', lineHeight: 1.3 }}>{l.autore}</div>
-                        <div style={{ fontSize: 10, color: m.colore, fontWeight: 700, marginTop: 2, opacity: 0.7 }}>{l.editore}</div>
+                        <div style={{ fontSize: 13, color: 'var(--text-3)', lineHeight: 1.3 }}>{l.autore}</div>
+                        <div style={{ fontSize: 12, color: m.colore, fontWeight: 700, marginTop: 2, opacity: 0.7 }}>{l.editore}</div>
                       </div>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, transform: isOpen ? 'rotate(90deg)' : 'none', transition: 'transform 0.2s' }}>
                         <path d="M9 18l6-6-6-6"/>
@@ -156,8 +156,8 @@ export default function LibriPage() {
                     </button>
                     {isOpen && (
                       <div style={{ background: 'var(--surface)', borderRadius: '0 0 14px 14px', border: `0.5px solid ${m.colore}44`, borderTop: 'none', padding: '14px 16px' }}>
-                        <div style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.8, marginBottom: 16 }}>{l.perche}</div>
-                        <button onClick={() => trovaprezzi(l.cerca)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, width: '100%', padding: '13px', borderRadius: 12, background: m.colore, color: 'var(--accent-strong)', fontWeight: 800, fontSize: 12, border: 'none', cursor: 'pointer', letterSpacing: 0.5 }}>
+                        <div style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.8, marginBottom: 16 }}>{l.perche}</div>
+                        <button onClick={() => trovaprezzi(l.cerca)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, width: '100%', padding: '13px', borderRadius: 12, background: m.colore, color: 'var(--accent-strong)', fontWeight: 800, fontSize: 14, border: 'none', cursor: 'pointer', letterSpacing: 0.5 }}>
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#312e81" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
                           </svg>

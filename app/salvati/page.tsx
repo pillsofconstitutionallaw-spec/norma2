@@ -114,13 +114,13 @@ export default function Salvati() {
 
           {/* HERO */}
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8 }}>
               La tua libreria
             </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.5, marginBottom: 8 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.8, marginBottom: 8 }}>
               Salvati
             </div>
-            <div style={{ fontSize: 12, color: 'var(--text-3)' }}>
+            <div style={{ fontSize: 14, color: 'var(--text-3)' }}>
               {totaleTutto} {totaleTutto === 1 ? 'elemento salvato' : 'elementi salvati'}
             </div>
           </div>
@@ -142,7 +142,7 @@ export default function Salvati() {
                     background: tab === t.id ? 'rgba(79,70,229,0.12)' : 'var(--fill)',
                     border: `0.5px solid ${tab === t.id ? 'rgba(79,70,229,0.3)' : 'var(--line)'}`,
                     color: tab === t.id ? 'var(--accent)' : 'var(--text-3)',
-                    fontSize: 10, fontWeight: 700, fontFamily: 'var(--font-ui)',
+                    fontSize: 12, fontWeight: 700, fontFamily: 'var(--font-ui)',
                   }}
                 >
                   {t.label}
@@ -168,7 +168,7 @@ export default function Salvati() {
           {(tab === 'tutti' || tab === 'flashcard') && decks.length > 0 && (
             <div style={{ marginBottom: 20 }}>
               {tab === 'tutti' && (
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 12 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 12 }}>
                   Flash Card AI
                 </div>
               )}
@@ -181,7 +181,7 @@ export default function Salvati() {
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{deck.titolo}</div>
-                        <div style={{ fontSize: 10, color: 'var(--text-3)' }}>{deck.carte.length} carte · {deck.data}</div>
+                        <div style={{ fontSize: 12, color: 'var(--text-3)' }}>{deck.carte.length} carte · {deck.data}</div>
                       </div>
                     </div>
                     <div style={{ display: 'flex', gap: 8 }}>
@@ -190,13 +190,13 @@ export default function Salvati() {
                           localStorage.setItem('deck_corrente', JSON.stringify(deck));
                           router.push('/studio/deck');
                         }}
-                        style={{ flex: 1, padding: '10px', borderRadius: 12, border: 'none', background: 'linear-gradient(135deg, #0284c7, #4f46e5)', color: '#fff', fontWeight: 800, fontSize: 12, cursor: 'pointer', fontFamily: 'var(--font-ui)'}}
+                        style={{ flex: 1, padding: '10px', borderRadius: 12, border: 'none', background: 'linear-gradient(135deg, #0284c7, #4f46e5)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer', fontFamily: 'var(--font-ui)'}}
                       >
                         ▶ Studia
                       </button>
                       <button
                         onClick={() => rimuoviDeck(deck.id)}
-                        style={{ padding: '10px 14px', borderRadius: 12, border: '0.5px solid var(--line)', background: 'var(--fill)', color: 'rgba(255,255,255,0.35)', fontWeight: 700, fontSize: 11, cursor: 'pointer', fontFamily: 'var(--font-ui)'}}
+                        style={{ padding: '10px 14px', borderRadius: 12, border: '0.5px solid var(--line)', background: 'var(--fill)', color: 'rgba(255,255,255,0.35)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-ui)'}}
                       >
                         Rimuovi
                       </button>
@@ -211,7 +211,7 @@ export default function Salvati() {
           {(tab === 'tutti' || tab === 'codici') && codici.length > 0 && (
             <div style={{ marginBottom: 20 }}>
               {tab === 'tutti' && (
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 12 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 12 }}>
                   Articoli dei codici
                 </div>
               )}
@@ -220,15 +220,15 @@ export default function Salvati() {
                   <div key={i} style={{ background: 'var(--surface)', borderRadius: 16, border: `0.5px solid ${a.colore}22`, padding: '14px', display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{ width: 46, height: 46, borderRadius: 12, flexShrink: 0, background: `${a.colore}12`, border: `0.5px solid ${a.colore}33`, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                       <div style={{ fontSize: 7, fontWeight: 700, color: a.colore, letterSpacing: 0.5 }}>ART.</div>
-                      <div style={{ fontSize: String(a.numero).length > 4 ? 9 : 12, fontWeight: 900, color: a.colore, lineHeight: 1 }}>{a.numero}</div>
+                      <div style={{ fontSize: String(a.numero).length > 4 ? 9 : 12, fontWeight: 800, color: a.colore, lineHeight: 1 }}>{a.numero}</div>
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 3 }}>Art. {a.numero}</div>
-                      <div style={{ display: 'inline-block', background: `${a.colore}12`, border: `0.5px solid ${a.colore}28`, borderRadius: 5, padding: '2px 7px', fontSize: 9, fontWeight: 700, color: a.colore }}>{a.codiceNome}</div>
+                      <div style={{ display: 'inline-block', background: `${a.colore}12`, border: `0.5px solid ${a.colore}28`, borderRadius: 5, padding: '2px 7px', fontSize: 11, fontWeight: 700, color: a.colore }}>{a.codiceNome}</div>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'flex-end' }}>
-                      <Link href={a.href} style={{ fontSize: 9, fontWeight: 800, color: a.colore, textDecoration: 'none', letterSpacing: 1, textTransform: 'uppercase' }}>Vai →</Link>
-                      <button onClick={() => rimuoviCodice(a.storageKey, a.numero)} style={{ background: 'var(--fill)', border: '0.5px solid var(--line)', borderRadius: 7, padding: '3px 8px', cursor: 'pointer', fontSize: 9, color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)'}}>Rimuovi</button>
+                      <Link href={a.href} style={{ fontSize: 11, fontWeight: 800, color: a.colore, textDecoration: 'none', letterSpacing: 1, textTransform: 'uppercase' }}>Vai →</Link>
+                      <button onClick={() => rimuoviCodice(a.storageKey, a.numero)} style={{ background: 'var(--fill)', border: '0.5px solid var(--line)', borderRadius: 7, padding: '3px 8px', cursor: 'pointer', fontSize: 11, color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)'}}>Rimuovi</button>
                     </div>
                   </div>
                 ))}
@@ -240,7 +240,7 @@ export default function Salvati() {
           {(tab === 'tutti' || tab === 'articoli') && blog.length > 0 && (
             <div>
               {tab === 'tutti' && (
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 12 }}>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 12 }}>
                   Articoli
                 </div>
               )}
@@ -253,13 +253,13 @@ export default function Salvati() {
                       {post.img && <img src={post.img} alt="" style={{ width: '100%', height: 130, objectFit: 'cover', display: 'block' }} />}
                       <div style={{ padding: '12px 14px 14px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-                          <span style={{ fontSize: 8, fontWeight: 700, letterSpacing: 1.5, color: isOdl ? 'var(--accent)' : 'var(--accent)', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(79,70,229,0.3)'}`, borderRadius: 20, padding: '3px 8px', textTransform: 'uppercase' }}>
+                          <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: isOdl ? 'var(--accent)' : 'var(--accent)', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(79,70,229,0.3)'}`, borderRadius: 20, padding: '3px 8px', textTransform: 'uppercase' }}>
                             {isOdl ? 'Orizzonti del Diritto' : 'Orizzonte Giuridico'}
                           </span>
-                          <button onClick={() => rimuoviBlog(post.slug)} style={{ background: 'var(--fill)', border: 'none', borderRadius: 8, padding: '5px 8px', cursor: 'pointer', fontSize: 9, color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-ui)'}}>Rimuovi</button>
+                          <button onClick={() => rimuoviBlog(post.slug)} style={{ background: 'var(--fill)', border: 'none', borderRadius: 8, padding: '5px 8px', cursor: 'pointer', fontSize: 11, color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-ui)'}}>Rimuovi</button>
                         </div>
                         <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', lineHeight: 1.25, marginBottom: 10 }} dangerouslySetInnerHTML={{ __html: post.title || '' }} />
-                        <a href={href} target={isOdl ? '_blank' : '_self'} rel="noreferrer" style={{ fontSize: 9, fontWeight: 800, color: 'var(--accent)', letterSpacing: 1, textTransform: 'uppercase', textDecoration: 'none' }}>
+                        <a href={href} target={isOdl ? '_blank' : '_self'} rel="noreferrer" style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', letterSpacing: 1, textTransform: 'uppercase', textDecoration: 'none' }}>
                           Leggi l'articolo →
                         </a>
                       </div>

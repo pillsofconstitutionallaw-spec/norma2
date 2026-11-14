@@ -814,14 +814,14 @@ export default function UnioneEuropeaPage() {
               border: '1px solid rgba(255,215,0,0.3)',
               borderRadius: 99,
               padding: '4px 14px',
-              fontSize: 9, letterSpacing: 3,
+              fontSize: 12, letterSpacing: 0.4,
               textTransform: 'uppercase',
               color: '#ca8a04', fontWeight: 700, marginBottom: 14,
             }}>
               Organizzazione sovranazionale
             </div>
 
-            <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.5, marginBottom: 10 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.8, marginBottom: 10 }}>
               Unione<br />Europea
             </div>
 
@@ -842,7 +842,7 @@ export default function UnioneEuropeaPage() {
                   flex: 1, background: `${s.colore}11`, borderRadius: 12,
                   padding: '10px 8px', border: `0.5px solid ${s.colore}33`, textAlign: 'center',
                 }}>
-                  <div style={{ fontSize: 22, fontWeight: 900, color: s.colore }}>{s.num}</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: s.colore }}>{s.num}</div>
                   <div style={{ fontSize: 9.5, color: 'var(--text-3)', marginTop: 3 }}>{s.label}</div>
                 </div>
               ))}
@@ -854,7 +854,7 @@ export default function UnioneEuropeaPage() {
             background: 'var(--surface)', borderRadius: 18, padding: '16px',
             border: '0.5px solid var(--line)', marginBottom: 20,
           }}>
-            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
+            <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', color: 'var(--text-3)', fontWeight: 700, marginBottom: 12 }}>
               Indice degli argomenti
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -867,7 +867,7 @@ export default function UnioneEuropeaPage() {
                   style={{
                     padding: '5px 10px', borderRadius: 8,
                     background: `${s.colore}11`, border: `0.5px solid ${s.colore}33`,
-                    color: s.colore, fontSize: 10, fontWeight: 700,
+                    color: s.colore, fontSize: 12, fontWeight: 700,
                     cursor: 'pointer', fontFamily: 'var(--font-ui)',
                   }}>
                   {s.icon} {s.titolo}
@@ -924,7 +924,7 @@ export default function UnioneEuropeaPage() {
                           const col = blocco.colore ?? sezione.colore;
                           return (
                             <div key={bi} style={{ background: `${col}08`, borderRadius: 14, padding: '14px', border: `0.5px solid ${col}22` }}>
-                              <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: col, fontWeight: 700, marginBottom: 8 }}>{blocco.label}</div>
+                              <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', color: col, fontWeight: 700, marginBottom: 8 }}>{blocco.label}</div>
                               <p style={{ fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.85 }}>{blocco.contenuto}</p>
                             </div>
                           );
@@ -950,7 +950,7 @@ export default function UnioneEuropeaPage() {
                                 {data.items.map((p, pi) => (
                                   <div key={pi} style={{ display: 'flex', gap: 7, marginBottom: 7, alignItems: 'flex-start' }}>
                                     <div style={{ width: 3, height: 3, borderRadius: '50%', background: col, flexShrink: 0, marginTop: 5 }} />
-                                    <div style={{ fontSize: 11, color: 'var(--text-2)', lineHeight: 1.55 }}>{p}</div>
+                                    <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.55 }}>{p}</div>
                                   </div>
                                 ))}
                               </div>
@@ -966,12 +966,12 @@ export default function UnioneEuropeaPage() {
                                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                                     <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', flex: 1 }}>{card.titolo}</div>
                                     {card.badge && (
-                                      <div style={{ background: `${col}18`, borderRadius: 6, padding: '2px 8px', fontSize: 9, fontWeight: 700, color: col, letterSpacing: 0.5, flexShrink: 0 }}>
+                                      <div style={{ background: `${col}18`, borderRadius: 6, padding: '2px 8px', fontSize: 11, fontWeight: 700, color: col, letterSpacing: 0.5, flexShrink: 0 }}>
                                         {card.badge}
                                       </div>
                                     )}
                                   </div>
-                                  <p style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.8 }}>{card.testo}</p>
+                                  <p style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.8 }}>{card.testo}</p>
                                 </div>
                               );
                             })}
@@ -992,10 +992,10 @@ export default function UnioneEuropeaPage() {
             borderRadius: 18, padding: '18px 16px',
             border: '0.5px solid var(--line)',
           }}>
-            <div style={{ fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--text-3)', fontWeight: 700, marginBottom: 10 }}>
+            <div style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', color: 'var(--text-3)', fontWeight: 700, marginBottom: 10 }}>
               Nota
             </div>
-            <p style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.8 }}>
+            <p style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.8 }}>
               Il Consiglio d'Europa e la CEDU{' '}
               <span style={{ color: '#e11d48', fontWeight: 700 }}>non fanno parte dell'UE</span>.
               Sono istituzioni separate con 47 Stati membri. La Corte EDU di Strasburgo e la

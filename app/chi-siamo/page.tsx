@@ -36,10 +36,10 @@ export default function ChiSiamo() {
 
           {/* TITOLO */}
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8, fontFamily: 'var(--font-ui)'}}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8, fontFamily: 'var(--font-ui)'}}>
               Dal 2025
             </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, marginBottom: 12, fontFamily: 'var(--font-ui)', letterSpacing: -0.5 }}>
+            <div style={{ fontSize: 26, fontWeight: 800, color: 'var(--text)', lineHeight: 1.15, marginBottom: 12, fontFamily: 'var(--font-display)', letterSpacing: -0.8 }}>
               Rendiamo il diritto<br />accessibile a tutti.
             </div>
             <div style={{ fontSize: 13, color: 'var(--text-2)', lineHeight: 1.75, fontFamily: 'var(--font-ui)'}}>
@@ -50,14 +50,14 @@ export default function ChiSiamo() {
           {/* CITAZIONE */}
           <div style={{ borderRadius: 18, background: 'var(--surface)', border: '0.5px solid rgba(79,70,229,0.15)', padding: '20px 18px', marginBottom: 20, position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: 'linear-gradient(to right, transparent, var(--accent), transparent)' }} />
-            <div style={{ fontSize: 40, color: 'var(--accent)', opacity: 0.2, fontFamily: 'var(--font-ui)', fontWeight: 900, lineHeight: 1, marginBottom: 6 }}>"</div>
+            <div style={{ fontSize: 40, color: 'var(--accent)', opacity: 0.2, fontFamily: 'var(--font-display)', fontWeight: 800, lineHeight: 1, marginBottom: 6 }}>"</div>
             <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', lineHeight: 1.75, fontFamily: 'var(--font-ui)', fontStyle: 'italic', marginBottom: 14 }}>
               Il diritto è la più alta forma di civiltà umana: è la norma che trasforma la forza bruta in autorità legittima, e l'arbitrio in giustizia.
             </div>
-            <div style={{ fontSize: 10, fontWeight: 800, color: 'var(--accent)', letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: 'var(--font-ui)'}}>
+            <div style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent)', letterSpacing: 0.4, textTransform: 'uppercase', fontFamily: 'var(--font-ui)'}}>
               Piero Calamandrei
             </div>
-            <div style={{ fontSize: 9, color: 'var(--text-3)', fontFamily: 'var(--font-ui)', marginTop: 3, fontWeight: 500 }}>
+            <div style={{ fontSize: 11, color: 'var(--text-3)', fontFamily: 'var(--font-ui)', marginTop: 3, fontWeight: 500 }}>
               Giurista e padre costituente italiano
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function ChiSiamo() {
               <div style={{ fontSize: 22, flexShrink: 0, marginTop: 2 }}>{v.icon}</div>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', marginBottom: 5, fontFamily: 'var(--font-ui)'}}>{v.titolo}</div>
-                <div style={{ fontSize: 12, color: 'var(--text-2)', lineHeight: 1.65, fontFamily: 'var(--font-ui)'}}>{v.desc}</div>
+                <div style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.65, fontFamily: 'var(--font-ui)'}}>{v.desc}</div>
               </div>
             </div>
           ))}
@@ -125,7 +125,7 @@ export default function ChiSiamo() {
               Rivista scientifica trimestrale con sistema di peer review in doppio cieco, in conformità con i parametri ANVUR. Uno spazio editoriale qualificato per il confronto tra studiosi, professionisti e operatori del diritto.
             </div>
             <a href="https://orizzontideldiritto.orizzontegiuridico.com" target="_blank" rel="noreferrer"
-              style={{ fontSize: 9, fontWeight: 800, color: 'var(--accent)', letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: 'var(--font-ui)'}}>
+              style={{ fontSize: 12, fontWeight: 800, color: 'var(--accent)', letterSpacing: 0.4, textTransform: 'uppercase', fontFamily: 'var(--font-ui)'}}>
               Visita la rivista →
             </a>
           </div>
@@ -140,8 +140,8 @@ export default function ChiSiamo() {
               { titolo: 'Recensioni', desc: 'Letture critiche delle pubblicazioni scientifiche' },
             ].map((s, i) => (
               <div key={i} style={{ borderRadius: 14, background: 'var(--surface)', border: '0.5px solid var(--line)', padding: '13px 12px' }}>
-                <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', marginBottom: 5, fontFamily: 'var(--font-ui)'}}>{s.titolo}</div>
-                <div style={{ fontSize: 10, color: 'var(--text-3)', lineHeight: 1.55, fontFamily: 'var(--font-ui)'}}>{s.desc}</div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent)', marginBottom: 5, fontFamily: 'var(--font-ui)'}}>{s.titolo}</div>
+                <div style={{ fontSize: 12, color: 'var(--text-3)', lineHeight: 1.55, fontFamily: 'var(--font-ui)'}}>{s.desc}</div>
               </div>
             ))}
           </div>
@@ -157,7 +157,7 @@ export default function ChiSiamo() {
               Sei ricercatore, avvocato, studioso, studente o appassionato di diritto? Invia il tuo contributo originale. Tutti i testi sono sottoposti a double blind peer review e controllo antiplagio.
             </div>
             <a href="mailto:redazione@orizzontegiuridico.com"
-              style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--accent)', fontWeight: 700, fontFamily: 'var(--font-ui)', marginBottom: 10 }}>
+              style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'var(--accent)', fontWeight: 700, fontFamily: 'var(--font-ui)', marginBottom: 10 }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                 <polyline points="22,6 12,13 2,6"/>
@@ -165,14 +165,14 @@ export default function ChiSiamo() {
               redazione@orizzontegiuridico.com
             </a>
             <a href="mailto:info@orizzontegiuridico.com"
-              style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--accent)', fontWeight: 700, fontFamily: 'var(--font-ui)', marginBottom: 10 }}>
+              style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'var(--accent)', fontWeight: 700, fontFamily: 'var(--font-ui)', marginBottom: 10 }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                 <polyline points="22,6 12,13 2,6"/>
               </svg>
               info@orizzontegiuridico.com
             </a>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 11, color: 'var(--text-3)', fontFamily: 'var(--font-ui)', fontWeight: 600 }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 13, color: 'var(--text-3)', fontFamily: 'var(--font-ui)', fontWeight: 600 }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 2 }}>
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                 <circle cx="12" cy="10" r="3"/>
@@ -182,7 +182,7 @@ export default function ChiSiamo() {
           </div>
 
           <a href="https://orizzontegiuridico.com/dona-ora/" target="_blank" rel="noreferrer"
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px 0', borderRadius: 16, background: 'var(--accent)', color: 'var(--bg)', fontSize: 10, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'var(--font-ui)', width: '100%' }}>
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px 0', borderRadius: 16, background: 'var(--accent)', color: 'var(--bg)', fontSize: 12, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase', fontFamily: 'var(--font-ui)', width: '100%' }}>
             Sostieni il progetto →
           </a>
 

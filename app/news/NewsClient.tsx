@@ -107,11 +107,11 @@ function NewsCard({ item }: { item: NewsItem }) {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px' }}>
         <div style={{ width: 36, height: 36, borderRadius: '50%', flexShrink: 0, background: colFonte + '22', border: `1.5px solid ${colFonte}44`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontSize: 14, fontWeight: 900, color: colFonte, fontFamily: 'var(--font-ui)'}}>{item.fonte[0]}</span>
+          <span style={{ fontSize: 14, fontWeight: 800, color: colFonte, fontFamily: 'var(--font-ui)'}}>{item.fonte[0]}</span>
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 12.5, fontWeight: 800, color: 'var(--text)', fontFamily: 'var(--font-ui)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.fonte}</div>
-          <div style={{ fontSize: 10, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>{item.categoria}</div>
+          <div style={{ fontSize: 12, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>{item.categoria}</div>
         </div>
         <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 6px', color: 'var(--text-2)', fontSize: 18, lineHeight: 1, letterSpacing: 1 }}>···</button>
       </div>
@@ -122,7 +122,7 @@ function NewsCard({ item }: { item: NewsItem }) {
         <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${colFonte}12 0%, var(--surface-2) 60%)` }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0) 100%)' }} />
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 14px 20px' }}>
-          <div style={{ fontSize: 20, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.3, fontFamily: 'var(--font-ui)'}}>{item.titolo}</div>
+          <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.3, fontFamily: 'var(--font-ui)'}}>{item.titolo}</div>
         </div>
       </a>
 
@@ -167,7 +167,7 @@ function NewsCard({ item }: { item: NewsItem }) {
             style={{ fontSize: 11.5, fontWeight: 700, color: colFonte, textDecoration: 'none', fontFamily: 'var(--font-ui)'}}>
             Leggi la notizia →
           </a>
-          <span style={{ fontSize: 10, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>{dataRelativa(item.data)}</span>
+          <span style={{ fontSize: 12, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>{dataRelativa(item.data)}</span>
         </div>
       </div>
     </article>
@@ -223,10 +223,10 @@ export default function NewsClient({
 
         {/* HERO */}
         <div style={{ padding: '28px 16px 0' }}>
-          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 10 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 10 }}>
             Orizzonte Giuridico
           </div>
-          <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--text)', lineHeight: 1.1, letterSpacing: -0.5, marginBottom: 8 }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: 'var(--text)', lineHeight: 1.1, letterSpacing: -0.8, marginBottom: 8 }}>
             Ultime<br />News
           </div>
           <div style={{ fontSize: 12.5, color: 'var(--text-3)', lineHeight: 1.65, marginBottom: 16 }}>
@@ -240,10 +240,10 @@ export default function NewsClient({
             borderRadius: 10, padding: '8px 12px', marginBottom: 16,
           }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#16a34a', flexShrink: 0 }} />
-            <span style={{ fontSize: 10, color: 'rgba(34,197,94,0.85)', fontWeight: 700 }}>
+            <span style={{ fontSize: 12, color: 'rgba(34,197,94,0.85)', fontWeight: 700 }}>
               Aggiornato alle {aggiornato}
             </span>
-            <span style={{ fontSize: 10, color: 'var(--text-3)', marginLeft: 2 }}>
+            <span style={{ fontSize: 12, color: 'var(--text-3)', marginLeft: 2 }}>
               · {filtrate.length} notizie
             </span>
           </div>
@@ -263,7 +263,7 @@ export default function NewsClient({
                   background: attivo ? `${col}18` : 'var(--fill)',
                   border: `0.5px solid ${attivo ? col + '55' : 'var(--line)'}`,
                   color: attivo ? col : 'var(--text-3)',
-                  fontSize: 10, fontWeight: 700, cursor: 'pointer',
+                  fontSize: 12, fontWeight: 700, cursor: 'pointer',
                   fontFamily: 'var(--font-ui)',
                 }}
               >
@@ -283,7 +283,7 @@ export default function NewsClient({
             perGiorno.map((gruppo, gi) => (
               <div key={gi}>
                 <div style={{
-                  fontSize: 9, fontWeight: 700, letterSpacing: 3,
+                  fontSize: 12, fontWeight: 700, letterSpacing: 0.4,
                   textTransform: 'uppercase', color: 'var(--text-3)',
                   margin: gi === 0 ? '0 16px 12px' : '4px 16px 12px',
                   display: 'flex', alignItems: 'center', gap: 8,
@@ -304,8 +304,8 @@ export default function NewsClient({
               <path d="M21 2H3v16h5l3 3 3-3h7V2z" /><path d="M8 8h8M8 12h5" />
             </svg>
             <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(79,70,229,0.65)', marginBottom: 2 }}>Fonti ufficiali</div>
-              <div style={{ fontSize: 10, color: 'var(--text-3)', lineHeight: 1.5 }}>Altalex · Gazzetta Ufficiale · Diritto.it · Corte Costituzionale</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: 'rgba(79,70,229,0.65)', marginBottom: 2 }}>Fonti ufficiali</div>
+              <div style={{ fontSize: 12, color: 'var(--text-3)', lineHeight: 1.5 }}>Altalex · Gazzetta Ufficiale · Diritto.it · Corte Costituzionale</div>
             </div>
           </div>
         </div>

@@ -179,9 +179,9 @@ export default function IstituzioniPage() {
         <div style={{ marginBottom: 24 }}>
           <div
             style={{
-              fontSize: 9,
+              fontSize: 12,
               fontWeight: 700,
-              letterSpacing: 3,
+              letterSpacing: 0.4,
               color: 'var(--text-3)',
               textTransform: 'uppercase',
               marginBottom: 8,
@@ -191,11 +191,11 @@ export default function IstituzioniPage() {
           </div>
 
           <div
-            style={{
+            style={{ fontFamily: 'var(--font-display)',
               fontSize: 26,
-              fontWeight: 900,
+              fontWeight: 800,
               lineHeight: 1.15,
-              letterSpacing: -0.5,
+              letterSpacing: -0.8,
               marginBottom: 12,
             }}
           >
@@ -290,8 +290,8 @@ export default function IstituzioniPage() {
           >
             <div
               style={{
-                fontSize: 10,
-                letterSpacing: 3,
+                fontSize: 12,
+                letterSpacing: 0.4,
                 textTransform: 'uppercase',
                 color: 'var(--text-3)',
                 marginBottom: 8,
@@ -368,8 +368,8 @@ export default function IstituzioniPage() {
           >
             <div
               style={{
-                fontSize: 10,
-                letterSpacing: 3,
+                fontSize: 12,
+                letterSpacing: 0.4,
                 textTransform: 'uppercase',
                 color: 'var(--accent)',
                 marginBottom: 12,
@@ -381,9 +381,9 @@ export default function IstituzioniPage() {
 
             {istituzioneAttiva && (
               <div
-                style={{
+                style={{ fontFamily: 'var(--font-display)',
                   fontSize: 26,
-                  fontWeight: 900,
+                  fontWeight: 800,
                   lineHeight: 1.1,
                   marginBottom: 20,
                 }}

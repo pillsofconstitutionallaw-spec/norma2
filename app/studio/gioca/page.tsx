@@ -525,25 +525,25 @@ function GiocaContent() {
             <button onClick={() => router.back()} style={{ background: 'none', border: 'none', color: 'var(--text-3)', fontSize:13, cursor:'pointer', padding:0, fontFamily: 'var(--font-ui)', marginBottom:24 }}>← Indietro</button>
 
             <div style={{ marginBottom:24 }}>
-              <div style={{ fontSize:9, fontWeight:700, letterSpacing:3, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:6 }}>Impara Giocando</div>
-              <div style={{ fontSize:24, fontWeight:900, color: 'var(--text)' }}>🎮 Scegli il gioco</div>
+              <div style={{ fontSize: 12, fontWeight:700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:6 }}>Impara Giocando</div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize:24, fontWeight: 800, color: 'var(--text)' }}>🎮 Scegli il gioco</div>
             </div>
 
             {/* Quiz Generale */}
             <div style={{ background: 'linear-gradient(135deg,var(--surface-2),var(--bg))', border: '1px solid rgba(56,189,248,0.2)', borderRadius:20, padding:'20px 18px', marginBottom:20 }}>
-              <div style={{ fontSize:9, fontWeight:700, letterSpacing:3, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:6 }}>Quiz Generale</div>
+              <div style={{ fontSize: 12, fontWeight:700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:6 }}>Quiz Generale</div>
               <div style={{ fontSize:15, fontWeight:800, color: 'var(--text)', marginBottom:4 }}>Tutte le materie</div>
-              <div style={{ fontSize:11, color: 'var(--text-3)', marginBottom:18 }}>{MATERIE.reduce((s,m) => s+m.carte.length, 0)} domande dal pool completo</div>
+              <div style={{ fontSize:13, color: 'var(--text-3)', marginBottom:18 }}>{MATERIE.reduce((s,m) => s+m.carte.length, 0)} domande dal pool completo</div>
               <div style={{ display:'flex', gap:8 }}>
-                <button onClick={() => startMilionario(null)} style={{ flex:1, padding:'14px 6px 10px', borderRadius:14, border: '1px solid rgba(251,191,36,0.25)', background: 'linear-gradient(135deg,#1c0e00,#2d1a00)', color: '#fff', fontFamily: 'var(--font-ui)', fontWeight:800, fontSize:10, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
+                <button onClick={() => startMilionario(null)} style={{ flex:1, padding:'14px 6px 10px', borderRadius:14, border: '1px solid rgba(251,191,36,0.25)', background: 'linear-gradient(135deg,#1c0e00,#2d1a00)', color: '#fff', fontFamily: 'var(--font-ui)', fontWeight:800, fontSize:12, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
                   <img src="/game-logo-laureato.png" alt="Chi vuole essere Laureato" style={{ width:52, height:52, borderRadius:'50%', objectFit:'cover', display:'block' }} />
                   <span style={{ color: '#d97706', lineHeight:1.2, textAlign:'center' }}>Chi vuole essere Laureato</span>
                 </button>
-                <button onClick={() => startTrivia(null)} style={{ flex:1, padding:'14px 6px 10px', borderRadius:14, border: '1px solid rgba(196,181,253,0.25)', background: 'linear-gradient(135deg,#0d0520,var(--surface-2))', color: '#fff', fontFamily: 'var(--font-ui)', fontWeight:800, fontSize:10, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
+                <button onClick={() => startTrivia(null)} style={{ flex:1, padding:'14px 6px 10px', borderRadius:14, border: '1px solid rgba(196,181,253,0.25)', background: 'linear-gradient(135deg,#0d0520,var(--surface-2))', color: '#fff', fontFamily: 'var(--font-ui)', fontWeight:800, fontSize:12, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
                   <img src="/game-logo-trivia.png" alt="Trivia Track" style={{ width:52, height:52, borderRadius:'50%', objectFit:'cover', display:'block' }} />
                   <span style={{ color: '#7c3aed', lineHeight:1.2, textAlign:'center' }}>Trivia Track</span>
                 </button>
-                <button onClick={() => startAbbina(null)} style={{ flex:1, padding:'14px 6px 10px', borderRadius:14, border: '1px solid rgba(52,211,153,0.25)', background: 'linear-gradient(135deg,#001a10,var(--surface-2))', color: '#fff', fontFamily: 'var(--font-ui)', fontWeight:800, fontSize:10, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
+                <button onClick={() => startAbbina(null)} style={{ flex:1, padding:'14px 6px 10px', borderRadius:14, border: '1px solid rgba(52,211,153,0.25)', background: 'linear-gradient(135deg,#001a10,var(--surface-2))', color: '#fff', fontFamily: 'var(--font-ui)', fontWeight:800, fontSize:12, cursor:'pointer', display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
                   <img src="/game-logo-abbina.png" alt="Associa le Definizioni" style={{ width:52, height:52, borderRadius:'50%', objectFit:'cover', display:'block' }} />
                   <span style={{ color: '#059669', lineHeight:1.2, textAlign:'center' }}>Associa le Definizioni</span>
                 </button>
@@ -551,14 +551,14 @@ function GiocaContent() {
             </div>
 
             {/* Materie singole */}
-            <div style={{ fontSize:9, fontWeight:700, letterSpacing:2.5, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:12 }}>Scegli materia</div>
+            <div style={{ fontSize: 12, fontWeight:700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:12 }}>Scegli materia</div>
             <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
               {MATERIE.map(m => (
                 <div key={m.id} style={{ background: 'var(--surface)', border: `0.5px solid ${m.colore}33`, borderRadius:18, padding:'14px 16px', display:'flex', alignItems:'center', gap:14 }}>
                   <div style={{ width:46, height:46, borderRadius:13, background: m.bg, border: `0.5px solid ${m.colore}44`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, flexShrink:0 }}>{m.icona}</div>
                   <div style={{ flex:1 }}>
                     <div style={{ fontSize:13, fontWeight:800, color: 'var(--text)', marginBottom:2 }}>{m.titolo}</div>
-                    <div style={{ fontSize:10, color: 'var(--text-3)' }}>{m.carte.length} carte</div>
+                    <div style={{ fontSize:12, color: 'var(--text-3)' }}>{m.carte.length} carte</div>
                   </div>
                   <div style={{ display:'flex', gap:6, flexShrink:0 }}>
                     <button onClick={() => apriGioco('milionario', m)} style={{ padding:'6px', borderRadius:12, border: '1px solid rgba(251,191,36,0.3)', background: 'linear-gradient(135deg,#1c0e00,#2d1a00)', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -590,13 +590,13 @@ function GiocaContent() {
             <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:20 }}>
               <img src={GIOCHI[argGame].logo} alt={GIOCHI[argGame].nome} style={{ width:46, height:46, borderRadius:'50%', objectFit:'cover', display:'block', flexShrink:0 }} />
               <div>
-                <div style={{ fontSize:9, fontWeight:700, letterSpacing:2.5, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:3 }}>{argMateria.icona} {argMateria.titolo}</div>
-                <div style={{ fontSize:18, fontWeight:900, color: 'var(--text)' }}>{GIOCHI[argGame].nome}</div>
+                <div style={{ fontSize: 12, fontWeight:700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:3 }}>{argMateria.icona} {argMateria.titolo}</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize:18, fontWeight: 800, color: 'var(--text)' }}>{GIOCHI[argGame].nome}</div>
               </div>
             </div>
 
             <div style={{ fontSize:13, fontWeight:700, color: 'var(--text)', marginBottom:4 }}>Su quali argomenti vuoi giocare?</div>
-            <div style={{ fontSize:11, color: 'var(--text-3)', marginBottom:16 }}>Scegline uno, più di uno, oppure tutta la materia.</div>
+            <div style={{ fontSize:13, color: 'var(--text-3)', marginBottom:16 }}>Scegline uno, più di uno, oppure tutta la materia.</div>
 
             {/* Tutta la materia */}
             {(() => {
@@ -609,13 +609,13 @@ function GiocaContent() {
                   <span style={{ width:22, height:22, borderRadius:7, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, color: 'var(--text)', background: tutta ? argMateria.colore : 'transparent', border: `1.5px solid ${tutta ? argMateria.colore : '#d8d8de'}` }}>{tutta ? '✓' : ''}</span>
                   <span style={{ flex:1 }}>
                     <span style={{ display:'block', fontSize:13, fontWeight:800, color: 'var(--text)' }}>Tutta la materia</span>
-                    <span style={{ display:'block', fontSize:10, color: 'var(--text-3)' }}>{argMateria.carte.length} carte · {argMateria.argomenti!.length} argomenti</span>
+                    <span style={{ display:'block', fontSize:12, color: 'var(--text-3)' }}>{argMateria.carte.length} carte · {argMateria.argomenti!.length} argomenti</span>
                   </span>
                 </button>
               );
             })()}
 
-            <div style={{ fontSize:9, fontWeight:700, letterSpacing:2.5, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:10 }}>Oppure scegli gli argomenti</div>
+            <div style={{ fontSize: 12, fontWeight:700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:10 }}>Oppure scegli gli argomenti</div>
             <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
               {argMateria.argomenti!.map(t => {
                 const sel = argSel.includes(t);
@@ -624,9 +624,9 @@ function GiocaContent() {
                     style={{ width:'100%', textAlign:'left', display:'flex', alignItems:'center', gap:12, padding:'13px 15px', borderRadius:14, cursor:'pointer', fontFamily: 'var(--font-ui)',
                       background: sel ? `${argMateria.colore}1c` : 'var(--surface)',
                       border: `1px solid ${sel ? argMateria.colore : '#d8d8de'}` }}>
-                    <span style={{ width:20, height:20, borderRadius:6, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, color: 'var(--text)', background: sel ? argMateria.colore : 'transparent', border: `1.5px solid ${sel ? argMateria.colore : '#d8d8de'}` }}>{sel ? '✓' : ''}</span>
-                    <span style={{ flex:1, fontSize:12, fontWeight:700, color: sel ? 'var(--text)' : 'var(--text)' }}>{t}</span>
-                    <span style={{ fontSize:10, fontWeight:700, color: 'var(--text-3)' }}>{argCount(argMateria, t)}</span>
+                    <span style={{ width:20, height:20, borderRadius:6, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', fontSize:14, color: 'var(--text)', background: sel ? argMateria.colore : 'transparent', border: `1.5px solid ${sel ? argMateria.colore : '#d8d8de'}` }}>{sel ? '✓' : ''}</span>
+                    <span style={{ flex:1, fontSize:14, fontWeight:700, color: sel ? 'var(--text)' : 'var(--text)' }}>{t}</span>
+                    <span style={{ fontSize:12, fontWeight:700, color: 'var(--text-3)' }}>{argCount(argMateria, t)}</span>
                   </button>
                 );
               })}
@@ -637,7 +637,7 @@ function GiocaContent() {
           <div style={{ position:'fixed', left:0, right:0, bottom:0, padding:'14px 16px calc(14px + env(safe-area-inset-bottom))', background: 'linear-gradient(180deg, rgba(10,13,24,0) 0%, var(--bg) 35%)', zIndex:30 }}>
             <div style={{ maxWidth:650, margin:'0 auto' }}>
               <button onClick={avviaConArgomenti} disabled={argSel.length === 0}
-                style={{ width:'100%', padding:'16px', borderRadius:16, border: 'none', fontFamily: 'var(--font-ui)', fontWeight:900, fontSize:15,
+                style={{ width:'100%', padding:'16px', borderRadius:16, border: 'none', fontFamily: 'var(--font-ui)', fontWeight: 800, fontSize:15,
                   cursor: argSel.length === 0 ? 'default' : 'pointer', opacity: argSel.length === 0 ? 0.35 : 1, transition:'opacity 0.2s',
                   background: `linear-gradient(135deg, ${argMateria.colore}, ${argMateria.colore}cc)`, color: 'var(--bg)' }}>
                 {argSel.length === 0 ? 'Seleziona almeno un argomento' : `🎮 Gioca · ${argSelCount} carte`}
@@ -654,18 +654,18 @@ function GiocaContent() {
           <div style={{ padding:'16px 20px 10px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
             <button onClick={() => setScreen('selezione')} style={{ background: 'none', border: 'none', color: 'var(--text-3)', fontSize:13, cursor:'pointer', fontFamily: 'var(--font-ui)', padding:0 }}>← Esci</button>
             <div style={{ textAlign:'center' }}>
-              <div style={{ fontSize:8, fontWeight:700, letterSpacing:3, color: 'rgba(255,200,50,0.5)', textTransform:'uppercase' }}>Chi vuole essere</div>
-              <div style={{ fontSize:15, fontWeight:900, color: '#d97706', letterSpacing:1 }}>LAUREATO?</div>
+              <div style={{ fontSize: 12, fontWeight:700, letterSpacing: 0.4, color: 'rgba(255,200,50,0.5)', textTransform:'uppercase' }}>Chi vuole essere</div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize:15, fontWeight: 800, color: '#d97706', letterSpacing:1 }}>LAUREATO?</div>
             </div>
-            <button onClick={() => setMScaletta(s => !s)} style={{ background: 'var(--fill)', border: '0.5px solid var(--line)', borderRadius:10, padding:'6px 10px', color: 'rgba(255,255,255,0.55)', fontSize:10, fontWeight:700, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>📊</button>
+            <button onClick={() => setMScaletta(s => !s)} style={{ background: 'var(--fill)', border: '0.5px solid var(--line)', borderRadius:10, padding:'6px 10px', color: 'rgba(255,255,255,0.55)', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>📊</button>
           </div>
 
           {/* LIVELLO */}
           <div style={{ textAlign:'center', flexShrink:0, marginBottom:8 }}>
             <div style={{ display:'inline-flex', alignItems:'center', gap:10, background: 'rgba(251,191,36,0.08)', border: '0.5px solid rgba(251,191,36,0.3)', borderRadius:20, padding:'6px 20px' }}>
-              <span style={{ fontSize:9, color: 'var(--text-3)' }}>Livello {livello}/15</span>
-              <span style={{ fontSize:14, fontWeight:900, color: '#d97706' }}>{SCALETTA[livello-1].label}</span>
-              {SCALETTA[livello-1].safe && <span style={{ fontSize:9, color: '#16a34a' }}>✓ Safe</span>}
+              <span style={{ fontSize:11, color: 'var(--text-3)' }}>Livello {livello}/15</span>
+              <span style={{ fontSize:14, fontWeight: 800, color: '#d97706' }}>{SCALETTA[livello-1].label}</span>
+              {SCALETTA[livello-1].safe && <span style={{ fontSize:11, color: '#16a34a' }}>✓ Safe</span>}
             </div>
           </div>
 
@@ -679,7 +679,7 @@ function GiocaContent() {
               <button key={a.k} onClick={a.fn} disabled={a.usato || mFase==='rivelazione'}
                 style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2, background: a.usato?'var(--fill)':'var(--fill)', border: `1px solid ${a.usato?'var(--line)':'rgba(251,191,36,0.35)'}`, borderRadius:14, padding:'8px 14px', cursor:a.usato?'default':'pointer', opacity:a.usato?0.28:1, transition:'opacity 0.3s', fontFamily: 'var(--font-ui)'}}>
                 <span style={{ fontSize:20 }}>{a.icon}</span>
-                <span style={{ fontSize:8, fontWeight:700, color: 'var(--text-3)', letterSpacing:1 }}>{a.label}</span>
+                <span style={{ fontSize:10, fontWeight:700, color: 'var(--text-3)', letterSpacing:1 }}>{a.label}</span>
               </button>
             ))}
           </div>
@@ -687,7 +687,7 @@ function GiocaContent() {
           {/* DOMANDA */}
           <div style={{ padding:'0 16px', flexShrink:0, marginBottom:12 }}>
             <div key={`mil-${mIndice}`} style={{ background: 'linear-gradient(135deg,var(--surface-2),var(--bg))', border: '1px solid rgba(56,189,248,0.18)', borderRadius:20, padding:'20px 20px', textAlign:'center', animation:'fadeUp 0.25s ease' }}>
-              <div style={{ fontSize:8, letterSpacing:2, color: 'var(--text-3)', marginBottom:10, fontWeight:700 }}>DOMANDA {livello}</div>
+              <div style={{ fontSize:10, letterSpacing:2, color: 'var(--text-3)', marginBottom:10, fontWeight:700 }}>DOMANDA {livello}</div>
               <div style={{ fontSize:14, fontWeight:700, color: 'var(--text)', lineHeight:1.72 }}>{mCarteGioco[mIndice % mCarteGioco.length]?.domanda}</div>
             </div>
           </div>
@@ -714,8 +714,8 @@ function GiocaContent() {
                 return (
                   <button key={i} onClick={() => !elim && mFase==='scelta' && mSeleziona(i)}
                     style={{ textAlign:'left', padding:'12px 12px', borderRadius:16, border, background: bg, color: tc, fontFamily: 'var(--font-ui)', cursor:elim||mFase!=='scelta'?'default':'pointer', display:'flex', gap:8, alignItems:'flex-start', minHeight:60, transition:'background 0.3s,border 0.3s', animation:anim }}>
-                    <span style={{ fontSize:11, fontWeight:900, color: lc, flexShrink:0, minWidth:14, paddingTop:1 }}>{L[i]}</span>
-                    <span style={{ fontSize:11, fontWeight:600, lineHeight:1.55 }}>{elim?'':op.testo}</span>
+                    <span style={{ fontSize:13, fontWeight: 800, color: lc, flexShrink:0, minWidth:14, paddingTop:1 }}>{L[i]}</span>
+                    <span style={{ fontSize:13, fontWeight:600, lineHeight:1.55 }}>{elim?'':op.testo}</span>
                   </button>
                 );
               })}
@@ -724,14 +724,14 @@ function GiocaContent() {
             {/* Poll */}
             {mVotes && mFase==='scelta' && (
               <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius:14, padding:'12px 14px', border: '0.5px solid var(--line)' }}>
-                <div style={{ fontSize:9, fontWeight:700, letterSpacing:2, color: 'var(--text-3)', marginBottom:8 }}>👥 LA CLASSE VOTA</div>
+                <div style={{ fontSize:11, fontWeight:700, letterSpacing:2, color: 'var(--text-3)', marginBottom:8 }}>👥 LA CLASSE VOTA</div>
                 {[0,1,2,3].filter(i => !mEliminate.includes(i)).map(i => (
                   <div key={i} style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
-                    <span style={{ fontSize:10, fontWeight:700, color: '#d97706', width:14 }}>{['A','B','C','D'][i]}</span>
+                    <span style={{ fontSize:12, fontWeight:700, color: '#d97706', width:14 }}>{['A','B','C','D'][i]}</span>
                     <div style={{ flex:1, height:9, background: 'var(--fill)', borderRadius:5, overflow:'hidden' }}>
                       <div style={{ height:'100%', width:`${mVotes[i]}%`, background: 'linear-gradient(90deg,#3b82f6,#2563eb)', borderRadius:5, transition:'width 0.9s ease' }} />
                     </div>
-                    <span style={{ fontSize:10, fontWeight:700, color: 'var(--text-2)', minWidth:28, textAlign:'right' }}>{mVotes[i]}%</span>
+                    <span style={{ fontSize:12, fontWeight:700, color: 'var(--text-2)', minWidth:28, textAlign:'right' }}>{mVotes[i]}%</span>
                   </div>
                 ))}
               </div>
@@ -743,7 +743,7 @@ function GiocaContent() {
             <div style={{ padding:'10px 16px 20px', flexShrink:0 }}>
               <div style={{ display:'flex', gap:10 }}>
                 <button onClick={mCambia} style={{ flex:1, padding:'14px', borderRadius:16, border: '1px solid var(--line)', background: 'var(--fill)', color: 'rgba(255,255,255,0.55)', fontFamily: 'var(--font-ui)', fontWeight:700, fontSize:13, cursor:'pointer' }}>← Cambia</button>
-                <button onClick={mConferma} style={{ flex:2, padding:'14px', borderRadius:16, border: 'none', background: 'linear-gradient(135deg,#b45309,#d97706)', color: '#fff', fontFamily: 'var(--font-ui)', fontWeight:900, fontSize:14, cursor:'pointer' }}>✓ Risposta finale!</button>
+                <button onClick={mConferma} style={{ flex:2, padding:'14px', borderRadius:16, border: 'none', background: 'linear-gradient(135deg,#b45309,#d97706)', color: '#fff', fontFamily: 'var(--font-ui)', fontWeight: 800, fontSize:14, cursor:'pointer' }}>✓ Risposta finale!</button>
               </div>
             </div>
           )}
@@ -752,12 +752,12 @@ function GiocaContent() {
           {mScaletta && (
             <div onClick={() => setMScaletta(false)} style={{ position:'absolute', inset:0, background: 'rgba(0,0,0,0.65)', zIndex:50, display:'flex', justifyContent:'flex-end' }}>
               <div onClick={e => e.stopPropagation()} style={{ width:'55%', height:'100%', background: 'linear-gradient(180deg,var(--bg),var(--surface-2))', padding:'24px 14px', overflowY:'auto', display:'flex', flexDirection:'column', gap:4 }}>
-                <div style={{ fontSize:10, fontWeight:700, letterSpacing:2, color: 'rgba(255,200,50,0.6)', marginBottom:12, textAlign:'center' }}>SCALETTA</div>
+                <div style={{ fontSize:12, fontWeight:700, letterSpacing:2, color: 'rgba(255,200,50,0.6)', marginBottom:12, textAlign:'center' }}>SCALETTA</div>
                 {[...SCALETTA].reverse().map(s => (
                   <div key={s.n} style={{ display:'flex', alignItems:'center', gap:8, padding:'7px 10px', borderRadius:10, background: s.n===livello?'rgba(251,191,36,0.18)':s.n<livello?'rgba(34,197,94,0.06)':'transparent', border: s.n===livello?'1px solid rgba(251,191,36,0.45)':s.safe?'0.5px solid rgba(34,197,94,0.18)':'none' }}>
-                    <span style={{ fontSize:9, color: 'var(--text-3)', minWidth:16 }}>{s.n}</span>
-                    <span style={{ fontSize:11, fontWeight:s.n===livello?900:600, color: s.n===livello?'#d97706':s.n<livello?'#16a34a':s.safe?'rgba(34,197,94,0.65)':'var(--text-2)' }}>{s.label}</span>
-                    {s.safe && <span style={{ fontSize:8, color: '#16a34a', marginLeft:'auto' }}>✓</span>}
+                    <span style={{ fontSize:11, color: 'var(--text-3)', minWidth:16 }}>{s.n}</span>
+                    <span style={{ fontSize:13, fontWeight:s.n===livello?900:600, color: s.n===livello?'#d97706':s.n<livello?'#16a34a':s.safe?'rgba(34,197,94,0.65)':'var(--text-2)' }}>{s.label}</span>
+                    {s.safe && <span style={{ fontSize:10, color: '#16a34a', marginLeft:'auto' }}>✓</span>}
                   </div>
                 ))}
               </div>
@@ -772,10 +772,10 @@ function GiocaContent() {
           <Header />
           <div style={{ padding:'40px 16px 120px', maxWidth:500, margin:'0 auto', textAlign:'center', animation:'fadeUp 0.4s ease' }}>
             <div style={{ fontSize:64, marginBottom:14 }}>{mVinto ? '🎓' : livello >= 11 ? '🏆' : livello >= 6 ? '🎯' : '💀'}</div>
-            <div style={{ fontSize:11, fontWeight:700, letterSpacing:3, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:6 }}>{mVinto ? 'HAI VINTO!' : 'Sei arrivato a'}</div>
-            <div style={{ fontSize:30, fontWeight:900, color: '#d97706', marginBottom:4 }}>{SCALETTA[Math.min(livello,15)-1].label}</div>
-            <div style={{ fontSize:11, color: 'var(--text-3)', marginBottom:36 }}>Livello {Math.min(livello,15)} di 15</div>
-            <button onClick={() => startMilionario(materiaTarget)} style={{ width:'100%', padding:'16px', borderRadius:16, border: 'none', background: 'linear-gradient(135deg,#b45309,#d97706)', color: '#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)', marginBottom:10 }}>🎮 Rigioca</button>
+            <div style={{ fontSize:13, fontWeight:700, letterSpacing:3, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:6 }}>{mVinto ? 'HAI VINTO!' : 'Sei arrivato a'}</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize:30, fontWeight: 800, color: '#d97706', marginBottom:4 }}>{SCALETTA[Math.min(livello,15)-1].label}</div>
+            <div style={{ fontSize:13, color: 'var(--text-3)', marginBottom:36 }}>Livello {Math.min(livello,15)} di 15</div>
+            <button onClick={() => startMilionario(materiaTarget)} style={{ width:'100%', padding:'16px', borderRadius:16, border: 'none', background: 'linear-gradient(135deg,#b45309,#d97706)', color: '#fff', fontWeight: 800, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)', marginBottom:10 }}>🎮 Rigioca</button>
             <button onClick={() => setScreen('selezione')} style={{ width:'100%', padding:'15px', borderRadius:16, border: '0.5px solid var(--line)', background: 'var(--surface)', color: 'var(--text-2)', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>← Scegli altro gioco</button>
           </div>
           <Footer />
@@ -789,11 +789,11 @@ function GiocaContent() {
           <div style={{ padding:'16px 20px 10px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
             <button onClick={() => setScreen('selezione')} style={{ background: 'none', border: 'none', color: 'var(--text-3)', fontSize:13, cursor:'pointer', fontFamily: 'var(--font-ui)', padding:0 }}>← Esci</button>
             <div style={{ textAlign:'center' }}>
-              <div style={{ fontSize:8, fontWeight:700, letterSpacing:3, color: 'rgba(180,130,255,0.6)', textTransform:'uppercase' }}>Trivia Track</div>
-              <div style={{ fontSize:11, fontWeight:800, color: '#7c3aed' }}>Round {tRound}/3 · {tQCount}/10</div>
+              <div style={{ fontSize: 12, fontWeight:700, letterSpacing: 0.4, color: 'rgba(180,130,255,0.6)', textTransform:'uppercase' }}>Trivia Track</div>
+              <div style={{ fontSize:13, fontWeight:800, color: '#7c3aed' }}>Round {tRound}/3 · {tQCount}/10</div>
             </div>
             <div style={{ display:'flex', gap:12, alignItems:'center' }}>
-              <span style={{ fontSize:14, fontWeight:900, color: '#d97706' }}>⭐ {tScore}</span>
+              <span style={{ fontSize:14, fontWeight: 800, color: '#d97706' }}>⭐ {tScore}</span>
               <div style={{ display:'flex', gap:2 }}>{[1,2,3].map(i => <span key={i} style={{ fontSize:14, opacity:i<=tVite?1:0.15 }}>❤️</span>)}</div>
             </div>
           </div>
@@ -803,8 +803,8 @@ function GiocaContent() {
             <div style={{ position:'absolute', inset:0, zIndex:20, display:'flex', alignItems:'center', justifyContent:'center', background: 'rgba(10,4,30,0.93)' }}>
               <div style={{ textAlign:'center', animation:'fadeUp 0.25s ease' }}>
                 <div style={{ fontSize:56, marginBottom:10 }}>⭐</div>
-                <div style={{ fontSize:22, fontWeight:900, color: '#7c3aed', marginBottom:6 }}>Round {tRound} completato!</div>
-                <div style={{ fontSize:12, color: 'var(--text-3)' }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize:22, fontWeight: 800, color: '#7c3aed', marginBottom:6 }}>Round {tRound} completato!</div>
+                <div style={{ fontSize:14, color: 'var(--text-3)' }}>
                   {tRound < 3 ? `Prossimo round in arrivo…` : ''}
                 </div>
               </div>
@@ -838,12 +838,12 @@ function GiocaContent() {
                 </div>
                 {tFase === 'spin' && (
                   <button onClick={tSpin} disabled={tSpinning}
-                    style={{ padding:'14px 40px', borderRadius:20, border: 'none', background: tSpinning?'var(--fill)':'linear-gradient(135deg,#6d28d9,#7c3aed)', color: '#fff', fontWeight:900, fontSize:16, cursor:tSpinning?'default':'pointer', fontFamily: 'var(--font-ui)', opacity:tSpinning?0.5:1, transition:'opacity 0.3s' }}>
+                    style={{ padding:'14px 40px', borderRadius:20, border: 'none', background: tSpinning?'var(--fill)':'linear-gradient(135deg,#6d28d9,#7c3aed)', color: '#fff', fontWeight: 800, fontSize:16, cursor:tSpinning?'default':'pointer', fontFamily: 'var(--font-ui)', opacity:tSpinning?0.5:1, transition:'opacity 0.3s' }}>
                     {tSpinning ? 'Girando…' : '🎡 Gira!'}
                   </button>
                 )}
                 {tMateria && tFase==='question' && (
-                  <div style={{ fontSize:12, fontWeight:700, color: tMateria.colore }}>
+                  <div style={{ fontSize:14, fontWeight:700, color: tMateria.colore }}>
                     {tMateria.icona} {tMateria.titolo}
                   </div>
                 )}
@@ -854,7 +854,7 @@ function GiocaContent() {
             {materiaTarget && tFase==='question' && (
               <div style={{ display:'flex', alignItems:'center', gap:10, background: `${materiaTarget.colore}18`, border: `0.5px solid ${materiaTarget.colore}44`, borderRadius:14, padding:'8px 16px' }}>
                 <span style={{ fontSize:20 }}>{materiaTarget.icona}</span>
-                <span style={{ fontSize:12, fontWeight:700, color: materiaTarget.colore }}>{materiaTarget.titolo}</span>
+                <span style={{ fontSize:14, fontWeight:700, color: materiaTarget.colore }}>{materiaTarget.titolo}</span>
               </div>
             )}
 
@@ -862,7 +862,7 @@ function GiocaContent() {
             {tFase==='question' && tCarta && (
               <>
                 <div key={tCarta.domanda} style={{ width:'100%', background: 'linear-gradient(135deg,var(--surface-2),#0a0416)', border: '1px solid rgba(196,181,253,0.2)', borderRadius:20, padding:'20px 18px', textAlign:'center', animation:'fadeUp 0.2s ease' }}>
-                  <div style={{ fontSize:9, letterSpacing:2, color: 'var(--text-3)', marginBottom:10, fontWeight:700 }}>DOMANDA</div>
+                  <div style={{ fontSize:11, letterSpacing:2, color: 'var(--text-3)', marginBottom:10, fontWeight:700 }}>DOMANDA</div>
                   <div style={{ fontSize:14, fontWeight:700, color: 'var(--text)', lineHeight:1.72 }}>{tCarta.domanda}</div>
                 </div>
 
@@ -879,8 +879,8 @@ function GiocaContent() {
                     return (
                       <button key={i} onClick={() => !answered && tRispondi(i)}
                         style={{ textAlign:'left', padding:'12px 12px', borderRadius:16, border, background: bg, color: tc, fontFamily: 'var(--font-ui)', cursor:answered?'default':'pointer', display:'flex', gap:8, alignItems:'flex-start', minHeight:68, transition:'background 0.3s,border 0.3s' }}>
-                        <span style={{ fontSize:11, fontWeight:900, color: lc, flexShrink:0, minWidth:14, paddingTop:1 }}>{L[i]}</span>
-                        <span style={{ fontSize:11, fontWeight:600, lineHeight:1.55 }}>{op.testo}</span>
+                        <span style={{ fontSize:13, fontWeight: 800, color: lc, flexShrink:0, minWidth:14, paddingTop:1 }}>{L[i]}</span>
+                        <span style={{ fontSize:13, fontWeight:600, lineHeight:1.55 }}>{op.testo}</span>
                       </button>
                     );
                   })}
@@ -904,11 +904,11 @@ function GiocaContent() {
           <div style={{ padding:'16px 20px 10px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
             <button onClick={() => setScreen('selezione')} style={{ background: 'none', border: 'none', color: 'var(--text-3)', fontSize:13, cursor:'pointer', fontFamily: 'var(--font-ui)', padding:0 }}>← Esci</button>
             <div style={{ textAlign:'center' }}>
-              <div style={{ fontSize:8, fontWeight:700, letterSpacing:3, color: 'rgba(52,211,153,0.5)', textTransform:'uppercase' }}>Abbina</div>
-              <div style={{ fontSize:15, fontWeight:900, color: '#059669', letterSpacing:1 }}>LA DEFINIZIONE</div>
+              <div style={{ fontSize: 12, fontWeight:700, letterSpacing: 0.4, color: 'rgba(52,211,153,0.5)', textTransform:'uppercase' }}>Abbina</div>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize:15, fontWeight: 800, color: '#059669', letterSpacing:1 }}>LA DEFINIZIONE</div>
             </div>
             <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-              <span style={{ fontSize:13, fontWeight:900, color: '#d97706' }}>⭐ {aScore}</span>
+              <span style={{ fontSize:13, fontWeight: 800, color: '#d97706' }}>⭐ {aScore}</span>
               <div style={{ display:'flex', gap:2 }}>{[1,2,3].map(i => <span key={i} style={{ fontSize:13, opacity:i<=aVite?1:0.15 }}>❤️</span>)}</div>
             </div>
           </div>
@@ -916,15 +916,15 @@ function GiocaContent() {
           {/* Round info */}
           <div style={{ textAlign:'center', flexShrink:0, marginBottom:10 }}>
             <div style={{ display:'inline-flex', alignItems:'center', gap:10, background: 'rgba(52,211,153,0.08)', border: '0.5px solid rgba(52,211,153,0.25)', borderRadius:20, padding:'5px 18px' }}>
-              <span style={{ fontSize:9, color: 'var(--text-3)' }}>Round {aRound}</span>
-              <span style={{ fontSize:11, fontWeight:700, color: '#059669' }}>{aMatched.length}/{aPairs.length} coppie</span>
-              {materiaTarget && <span style={{ fontSize:11 }}>{materiaTarget.icona}</span>}
+              <span style={{ fontSize:11, color: 'var(--text-3)' }}>Round {aRound}</span>
+              <span style={{ fontSize:13, fontWeight:700, color: '#059669' }}>{aMatched.length}/{aPairs.length} coppie</span>
+              {materiaTarget && <span style={{ fontSize:13 }}>{materiaTarget.icona}</span>}
             </div>
           </div>
 
           {/* Istruzione */}
           {aSelectedLeft === null && aMatched.length === 0 && (
-            <div style={{ textAlign:'center', fontSize:10, color: 'var(--text-3)', marginBottom:6, flexShrink:0 }}>
+            <div style={{ textAlign:'center', fontSize:12, color: 'var(--text-3)', marginBottom:6, flexShrink:0 }}>
               Tocca un termine → poi la definizione giusta
             </div>
           )}
@@ -934,8 +934,8 @@ function GiocaContent() {
             <div style={{ position:'absolute', inset:0, zIndex:20, display:'flex', alignItems:'center', justifyContent:'center', background: 'rgba(2,44,34,0.9)', animation:'fadeUp 0.2s ease' }}>
               <div style={{ textAlign:'center' }}>
                 <div style={{ fontSize:52, marginBottom:8 }}>✅</div>
-                <div style={{ fontSize:18, fontWeight:900, color: '#059669' }}>Round completato!</div>
-                <div style={{ fontSize:12, color: 'var(--text-3)', marginTop:6 }}>Prossime coppie in arrivo…</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize:18, fontWeight: 800, color: '#059669' }}>Round completato!</div>
+                <div style={{ fontSize:14, color: 'var(--text-3)', marginTop:6 }}>Prossime coppie in arrivo…</div>
               </div>
             </div>
           )}
@@ -944,7 +944,7 @@ function GiocaContent() {
           <div style={{ flex:1, display:'flex', gap:10, padding:'0 14px 20px', overflowY:'auto' }}>
             {/* Colonna sinistra — Termini */}
             <div style={{ flex:1, display:'flex', flexDirection:'column', gap:8 }}>
-              <div style={{ fontSize:8, fontWeight:700, letterSpacing:2, color: 'var(--text-3)', textAlign:'center', marginBottom:2 }}>TERMINE</div>
+              <div style={{ fontSize:10, fontWeight:700, letterSpacing:2, color: 'var(--text-3)', textAlign:'center', marginBottom:2 }}>TERMINE</div>
               {aLeftOrder.map(id => {
                 const pair = aPairs.find(p => p.id === id)!;
                 const matched = aMatched.includes(id);
@@ -961,7 +961,7 @@ function GiocaContent() {
                 if (wrong) { bg = 'rgba(239,68,68,0.15)'; border = '1px solid #ef4444'; }
                 return (
                   <button key={id} onClick={() => !matched && aTapLeft(id)}
-                    style={{ padding:'12px 10px', borderRadius:14, border, background: bg, color: tc, fontFamily: 'var(--font-ui)', fontWeight:600, fontSize:11, lineHeight:1.5, cursor:matched?'default':'pointer', textAlign:'left', transition:'all 0.2s', opacity, transform, pointerEvents:matched?'none':'auto' }}>
+                    style={{ padding:'12px 10px', borderRadius:14, border, background: bg, color: tc, fontFamily: 'var(--font-ui)', fontWeight:600, fontSize:13, lineHeight:1.5, cursor:matched?'default':'pointer', textAlign:'left', transition:'all 0.2s', opacity, transform, pointerEvents:matched?'none':'auto' }}>
                     {pair.termine}
                   </button>
                 );
@@ -970,7 +970,7 @@ function GiocaContent() {
 
             {/* Colonna destra — Definizioni */}
             <div style={{ flex:1, display:'flex', flexDirection:'column', gap:8 }}>
-              <div style={{ fontSize:8, fontWeight:700, letterSpacing:2, color: 'var(--text-3)', textAlign:'center', marginBottom:2 }}>DEFINIZIONE</div>
+              <div style={{ fontSize:10, fontWeight:700, letterSpacing:2, color: 'var(--text-3)', textAlign:'center', marginBottom:2 }}>DEFINIZIONE</div>
               {aRightOrder.map(id => {
                 const pair = aPairs.find(p => p.id === id)!;
                 const matched = aMatched.includes(id);
@@ -983,7 +983,7 @@ function GiocaContent() {
                 if (correct) { bg = 'rgba(34,197,94,0.2)'; border = '1px solid #16a34a'; tc = '#fff'; }
                 return (
                   <button key={id} onClick={() => !matched && aTapRight(id)}
-                    style={{ padding:'12px 10px', borderRadius:14, border, background: bg, color: tc, fontFamily: 'var(--font-ui)', fontWeight:500, fontSize:11, lineHeight:1.5, cursor:matched?'default':'pointer', textAlign:'left', transition:'all 0.25s', opacity, pointerEvents:matched?'none':'auto' }}>
+                    style={{ padding:'12px 10px', borderRadius:14, border, background: bg, color: tc, fontFamily: 'var(--font-ui)', fontWeight:500, fontSize:13, lineHeight:1.5, cursor:matched?'default':'pointer', textAlign:'left', transition:'all 0.25s', opacity, pointerEvents:matched?'none':'auto' }}>
                     {pair.definizione}
                   </button>
                 );
@@ -999,10 +999,10 @@ function GiocaContent() {
           <Header />
           <div style={{ padding:'40px 16px 120px', maxWidth:500, margin:'0 auto', textAlign:'center', animation:'fadeUp 0.4s ease' }}>
             <div style={{ fontSize:60, marginBottom:14 }}>{aVinto ? '🎓' : aScore >= 400 ? '🏆' : aScore >= 200 ? '🎯' : '💀'}</div>
-            <div style={{ fontSize:11, fontWeight:700, letterSpacing:3, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:8 }}>{aVinto ? 'Hai abbinato tutto!' : 'Partita terminata'}</div>
-            <div style={{ fontSize:44, fontWeight:900, color: '#059669', marginBottom:4, letterSpacing:-2 }}>{aScore}</div>
-            <div style={{ fontSize:11, color: 'var(--text-3)', marginBottom:36 }}>punti · {aRound - 1} round completati</div>
-            <button onClick={() => startAbbina(materiaTarget)} style={{ width:'100%', padding:'16px', borderRadius:16, border: 'none', background: 'linear-gradient(135deg,#065f46,#059669)', color: '#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)', marginBottom:10 }}>🔗 Rigioca</button>
+            <div style={{ fontSize:13, fontWeight:700, letterSpacing:3, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:8 }}>{aVinto ? 'Hai abbinato tutto!' : 'Partita terminata'}</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize:44, fontWeight: 800, color: '#059669', marginBottom:4, letterSpacing: -0.8 }}>{aScore}</div>
+            <div style={{ fontSize:13, color: 'var(--text-3)', marginBottom:36 }}>punti · {aRound - 1} round completati</div>
+            <button onClick={() => startAbbina(materiaTarget)} style={{ width:'100%', padding:'16px', borderRadius:16, border: 'none', background: 'linear-gradient(135deg,#065f46,#059669)', color: '#fff', fontWeight: 800, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)', marginBottom:10 }}>🔗 Rigioca</button>
             <button onClick={() => setScreen('selezione')} style={{ width:'100%', padding:'15px', borderRadius:16, border: '0.5px solid var(--line)', background: 'var(--surface)', color: 'var(--text-2)', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>← Scegli altro gioco</button>
           </div>
           <Footer />
@@ -1015,10 +1015,10 @@ function GiocaContent() {
           <Header />
           <div style={{ padding:'40px 16px 120px', maxWidth:500, margin:'0 auto', textAlign:'center', animation:'fadeUp 0.4s ease' }}>
             <div style={{ fontSize:60, marginBottom:14 }}>{tVinto ? '🎓' : tScore >= 500 ? '🏆' : tScore >= 200 ? '🎯' : '💀'}</div>
-            <div style={{ fontSize:11, fontWeight:700, letterSpacing:3, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:8 }}>{tVinto ? 'HAI VINTO!' : 'Partita terminata'}</div>
-            <div style={{ fontSize:44, fontWeight:900, color: '#d97706', marginBottom:4, letterSpacing:-2 }}>{tScore}</div>
-            <div style={{ fontSize:11, color: 'var(--text-3)', marginBottom:36 }}>{tVinto ? '3 round completati' : 'punti'}</div>
-            <button onClick={() => startTrivia(materiaTarget)} style={{ width:'100%', padding:'16px', borderRadius:16, border: 'none', background: 'linear-gradient(135deg,#6d28d9,#7c3aed)', color: '#fff', fontWeight:900, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)', marginBottom:10 }}>🎡 Rigioca</button>
+            <div style={{ fontSize:13, fontWeight:700, letterSpacing:3, color: 'var(--text-3)', textTransform:'uppercase', marginBottom:8 }}>{tVinto ? 'HAI VINTO!' : 'Partita terminata'}</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize:44, fontWeight: 800, color: '#d97706', marginBottom:4, letterSpacing: -0.8 }}>{tScore}</div>
+            <div style={{ fontSize:13, color: 'var(--text-3)', marginBottom:36 }}>{tVinto ? '3 round completati' : 'punti'}</div>
+            <button onClick={() => startTrivia(materiaTarget)} style={{ width:'100%', padding:'16px', borderRadius:16, border: 'none', background: 'linear-gradient(135deg,#6d28d9,#7c3aed)', color: '#fff', fontWeight: 800, fontSize:15, cursor:'pointer', fontFamily: 'var(--font-ui)', marginBottom:10 }}>🎡 Rigioca</button>
             <button onClick={() => setScreen('selezione')} style={{ width:'100%', padding:'15px', borderRadius:16, border: '0.5px solid var(--line)', background: 'var(--surface)', color: 'var(--text-2)', fontWeight:700, fontSize:14, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>← Scegli altro gioco</button>
           </div>
           <Footer />

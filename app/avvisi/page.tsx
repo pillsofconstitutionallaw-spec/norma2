@@ -46,10 +46,10 @@ export default function Avvisi() {
 
           {/* TITOLO */}
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 3, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8, fontFamily: 'var(--font-ui)'}}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 8, fontFamily: 'var(--font-ui)'}}>
               Aggiornamenti
             </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.5, fontFamily: 'var(--font-ui)'}}>
+            <div style={{ fontSize: 26, fontWeight: 800, color: 'var(--text)', lineHeight: 1.15, letterSpacing: -0.8, fontFamily: 'var(--font-display)'}}>
               Avvisi
             </div>
           </div>
@@ -83,10 +83,10 @@ export default function Avvisi() {
 
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                    <span style={{ fontSize: 8, fontWeight: 700, color: isOdl ? 'var(--accent)' : 'var(--accent)', letterSpacing: 1.5, textTransform: 'uppercase', fontFamily: 'var(--font-ui)', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(79,70,229,0.3)'}`, borderRadius: 20, padding: '2px 7px' }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: isOdl ? 'var(--accent)' : 'var(--accent)', letterSpacing: 0.4, textTransform: 'uppercase', fontFamily: 'var(--font-ui)', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(79,70,229,0.3)'}`, borderRadius: 20, padding: '2px 7px' }}>
                       {isOdl ? 'OdD' : cat || 'OG'}
                     </span>
-                    <span style={{ fontSize: 10, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>{data}</span>
+                    <span style={{ fontSize: 12, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>{data}</span>
                   </div>
                   <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'var(--font-ui)', lineHeight: 1.3 }}
                     dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }} />
