@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { opzioniModello } from '@/lib/groq';
 
 async function groqGenerate(prompt: string, apiKey: string, maxTokens = 4096): Promise<string> {
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -8,10 +9,9 @@ async function groqGenerate(prompt: string, apiKey: string, maxTokens = 4096): P
       'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
+      ...opzioniModello(maxTokens),
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.1,
-      max_tokens: maxTokens,
     }),
   });
 

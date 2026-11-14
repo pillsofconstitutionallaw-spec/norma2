@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { opzioniModello } from '@/lib/groq';
 
 export async function POST(req: NextRequest) {
   const { citta, cap, problema } = await req.json();
@@ -38,8 +39,7 @@ Rispondi SOLO con un oggetto JSON valido (nessun testo prima o dopo) con questa 
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        max_tokens: 1200,
+        ...opzioniModello(1200),
         temperature: 0.3,
         messages: [
           { role: 'user', content: prompt },

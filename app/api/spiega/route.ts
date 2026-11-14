@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { opzioniModello } from '@/lib/groq';
 
 async function groqGenerate(prompt: string, apiKey: string, maxTokens = 1024): Promise<string> {
   const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -8,14 +9,22 @@ async function groqGenerate(prompt: string, apiKey: string, maxTokens = 1024): P
       'Authorization': `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
+      ...opzioniModello(maxTokens),
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.15,
-      max_tokens: maxTokens,
     }),
   });
 
-  const data = await response.json();
+  const data = await response.json().catch(() => ({}));
+  // Prima un errore di Groq (modello dismesso, limite raggiunto...) diventava
+  // una spiegazione vuota senza lasciare traccia: ora finisce nei log e
+  // l'utente riceve un messaggio invece di un riquadro vuoto.
+  if (!response.ok) {
+    console.error('spiega: Groq ha risposto', response.status, data?.error?.message);
+    return response.status === 429
+      ? 'Troppe richieste in questo momento: riprova tra un minuto.'
+      : 'Spiegazione non disponibile al momento, riprova più tardi.';
+  }
   return data.choices?.[0]?.message?.content || '';
 }
 
