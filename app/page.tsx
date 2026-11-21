@@ -98,7 +98,12 @@ const staticCategories = [
   { id: 707, name: 'Ripetiamo il Diritto' },
 ];
 
+const ICONA_GENERICA = <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M14 2v6h6M8 13h8M8 17h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>;
+
 const icons: Record<string, React.ReactNode> = {
+  'Orizzonti del Diritto': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  'Diritto canonico': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 2v6M9 5h6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M5 22V12l7-4 7 4v10" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M10 22v-5h4v5" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>,
+  'Analisi': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35M8 11h6M11 8v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
   Penale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 16 15.5 20 12 21C8.5 20 5 16 5 11V6L12 3Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
   Civile: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8"/><path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
   Costituzionale: <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M7 3H17L21 7V21H3V3H7Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M17 3V7H21" stroke="currentColor" strokeWidth="1.8"/><path d="M7 12H17M7 16H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>,
@@ -116,6 +121,8 @@ const icons: Record<string, React.ReactNode> = {
 };
 
 const shortNames: Record<string, string> = {
+  'Orizzonti del Diritto': 'Orizzonti',
+  'Diritto canonico': 'Canonico',
   Costituzionale: 'Cost.',
   'Unione Europea': 'UE',
   Amministrativo: 'Amm.',
@@ -354,6 +361,7 @@ export default function NormaHome() {
 
   async function loadCatPosts(name: string, catId: number): Promise<any[]> {
     if (storyCache.current[name]) return storyCache.current[name];
+    if (catId < 0) return [];  // Orizzonti del Diritto: arriva solo dal server
     try {
       const postsRes = await fetch(`/api/wp?sito=og&percorso=posts&_embed&categories=${catId}&per_page=5`);
       const data = await postsRes.json();
@@ -474,12 +482,9 @@ export default function NormaHome() {
             salvaStoryCacheLS();
             computeNewCategories();
           }
-          if (Array.isArray(cats)) {
-            setCategories(prev => prev.map(sc => {
-              const found = cats.find((d: any) => d.name === sc.name);
-              return found ? { ...sc, id: found.id } : sc;
-            }));
-          }
+          // Le categorie delle storie arrivano dal server, ricavate dagli
+          // articoli: compaiono anche quelle nuove o fuori dall'elenco storico
+          if (Array.isArray(cats) && cats.length > 0) setCategories(cats);
           if (Array.isArray(articles) && articles.length > 0) setFeedPosts(articles);
           else setFeedPosts(prev => { if (prev.length === 0) caricaFeedDiretto(); return prev; });
           if (f) setFascicolo(f);
@@ -593,12 +598,12 @@ export default function NormaHome() {
                   <div className="storia-anello" data-vista={!nuova}>
                     <div className="storia-interno">
                       <span style={{ display: 'flex', transform: 'scale(0.85)' }}>
-                        {icons[cat.name] || <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.8" /></svg>}
+                        {icons[cat.name] || ICONA_GENERICA}
                       </span>
                     </div>
                   </div>
                   <span className="storia-nome" style={{ fontWeight: nuova ? 600 : 500, color: nuova ? 'var(--text)' : undefined }}>
-                    {shortNames[cat.name] || cat.name}
+                    {shortNames[cat.name] || (cat.name.length > 12 ? cat.name.split(' ').pop() : cat.name)}
                   </span>
                 </button>
               );
@@ -791,7 +796,7 @@ export default function NormaHome() {
                   <div style={{ position: 'absolute', inset: 0, background: img ? 'linear-gradient(to top,rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.4) 50%,rgba(0,0,0,0.5) 100%)' : '#07162b' }} />
                   <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '0 20px 48px' }} onClick={e => e.stopPropagation()}>
                     <div style={{ display: 'inline-block', fontSize: 9, fontWeight: 700, letterSpacing: 2, textTransform: 'uppercase' as const, color: 'rgba(255,255,255,0.5)', border: '0.5px solid rgba(255,255,255,0.2)', borderRadius: 20, padding: '3px 10px', marginBottom: 12 }}>
-                      ORIZZONTE GIURIDICO · {storyCatName.toUpperCase()}
+                      {storyCatName === 'Orizzonti del Diritto' ? 'ORIZZONTI DEL DIRITTO' : `ORIZZONTE GIURIDICO · ${storyCatName.toUpperCase()}`}
                     </div>
                     <div style={{ fontSize: 22, fontWeight: 900, color: '#fff', lineHeight: 1.15, marginBottom: 14 }} dangerouslySetInnerHTML={{ __html: post?.title?.rendered || '' }} />
                     <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, marginBottom: 24 }}>{excerpt}</div>
