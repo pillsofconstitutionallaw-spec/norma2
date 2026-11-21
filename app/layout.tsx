@@ -1,14 +1,7 @@
  import type { Metadata, Viewport } from "next";
-import { Montserrat } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import StyledJsxRegistry from "./registry";
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
 
 export const metadata: Metadata = {
   title: "Norma — Il diritto a portata di swipe",
@@ -46,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="it" className={`${montserrat.variable} h-full antialiased`}>
+    <html lang="it" className="h-full antialiased">
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
