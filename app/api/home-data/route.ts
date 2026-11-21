@@ -16,25 +16,6 @@ export const maxDuration = 60;
 const CACHE = () => ({ next: { revalidate: 30 }, signal: AbortSignal.timeout(20000) });
 const INTESTAZIONI = { 'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=30' };
 
-// Tutte le categorie della barra delle storie in Home (prima solo 6: le
-// altre restavano nella cache del telefono fino a un'ora).
-const STORY_CATS = [
-  { name: 'Penale', id: 48 },
-  { name: 'Civile', id: 682 },
-  { name: 'Costituzionale', id: 39 },
-  { name: 'Ambiente', id: 220 },
-  { name: 'Unione Europea', id: 249 },
-  { name: 'Amministrativo', id: 86 },
-  { name: 'Internazionale', id: 140 },
-  { name: 'Animali', id: 834 },
-  { name: 'Legalità', id: 320 },
-  { name: 'Economia', id: 55 },
-  { name: 'Politica', id: 543 },
-  { name: 'Dir. Comparato', id: 72 },
-  { name: "L'Intervista", id: 333 },
-  { name: 'Ripetiamo il Diritto', id: 707 },
-];
-
 export async function GET() {
   try {
     // Ogni chiamata è indipendente: se una va in timeout, le altre restano.
@@ -49,8 +30,6 @@ export async function GET() {
       json('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=4'),
       json('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/media?mime_type=application/pdf&per_page=1&orderby=date&order=desc'),
     ]);
-    // Le categorie hanno id fissi (STORY_CATS): niente richiesta apposta.
-    const cats = STORY_CATS;
 
     const ogPosts = Array.isArray(recenti) ? recenti.slice(0, 6).map((p: any) => ({ ...p, _source: 'og' })) : [];
     const odlPosts = Array.isArray(odl) ? odl.map((p: any) => ({ ...p, _source: 'odl' })) : [];
@@ -62,22 +41,42 @@ export async function GET() {
       ? { url: fascicoli[0].source_url, title: fascicoli[0].title?.rendered || 'Ultimo fascicolo' }
       : null;
 
-    // Quanti articoli ha ogni categoria tra gli ultimi 50: le più frequenti
+    // Storie: le categorie si ricavano dagli articoli stessi (nome vero da
+    // WordPress), così qualsiasi categoria in cui si pubblica compare, anche
+    // nuova (prima c'era un elenco fisso di 14 e, per esempio, "Diritto
+    // canonico" restava fuori). In più una storia per Orizzonti del Diritto.
+    const decodifica = (t: string) => String(t || '')
+      .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+      .replace(/&amp;/g, '&').replace(/&quot;/g, '"').trim();
+    const ESCLUSE = /^(senza categoria|uncategorized|in evidenza|primo piano)$/i;
+    const perCategoria = new Map<number, { id: number; name: string; posts: any[] }>();
+    for (const p of Array.isArray(recenti) ? recenti : []) {
+      const termini: any[] = (p?._embedded?.['wp:term'] ?? []).flat().filter((t: any) => t?.taxonomy === 'category');
+      for (const t of termini) {
+        const name = decodifica(t.name);
+        if (!name || ESCLUSE.test(name)) continue;
+        if (!perCategoria.has(t.id)) perCategoria.set(t.id, { id: t.id, name, posts: [] });
+        perCategoria.get(t.id)!.posts.push({ ...p, _source: 'og' });
+      }
+    }
+    if (odlPosts.length > 0) perCategoria.set(-1, { id: -1, name: 'Orizzonti del Diritto', posts: odlPosts });
+
+    // Quanti articoli ha ogni categoria tra quelli recenti: le più frequenti
     // restano sempre nella barra delle storie (grigie se non c'è niente di nuovo)
     const frequenza: Record<string, number> = {};
     const storyPosts: Record<string, any[]> = {};
-    for (const { name, id } of STORY_CATS) {
-      frequenza[name] = Array.isArray(recenti) ? recenti.filter((p: any) => Array.isArray(p.categories) && p.categories.includes(id)).length : 0;
-      storyPosts[name] = Array.isArray(recenti)
-        ? recenti.filter((p: any) => Array.isArray(p.categories) && p.categories.includes(id)).slice(0, 5)
-        : [];
+    const storyCats: { id: number; name: string }[] = [];
+    for (const { id, name, posts } of perCategoria.values()) {
+      frequenza[name] = posts.length;
+      storyPosts[name] = posts.slice(0, 5);
+      storyCats.push({ id, name });
     }
 
     // Se WordPress non ha risposto in tempo non si mette in cache una Home
     // vuota: la prossima richiesta riprova subito.
     const vuota = ogPosts.length === 0;
     return NextResponse.json(
-      { cats, articles, fascicolo, storyPosts, frequenza },
+      { cats: storyCats, articles, fascicolo, storyPosts, frequenza },
       { headers: vuota ? { 'Cache-Control': 'no-store' } : INTESTAZIONI },
     );
   } catch {
