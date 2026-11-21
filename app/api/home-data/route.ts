@@ -39,14 +39,20 @@ export async function GET() {
   try {
     // Ogni chiamata è indipendente: se una va in timeout, le altre restano.
     const json = (url: string) => fetch(url, CACHE()).then(r => r.json()).catch(() => []);
-    const [cats, og, odl, fascicoli] = await Promise.all([
-      json('https://orizzontegiuridico.com/wp-json/wp/v2/categories?per_page=100'),
-      json('https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=6'),
+
+    // Verso Orizzonte Giuridico (hosting lento, con limite di processi) una
+    // sola richiesta: gli ultimi 50 articoli con copertina e categoria servono
+    // sia al feed (i primi 6) sia alle storie. Prima erano tre richieste
+    // (categorie, ultimi 6, ultimi 50) e con WordPress lento scadevano.
+    const [recenti, odl, fascicoli] = await Promise.all([
+      json('https://orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=50&_embed=wp:featuredmedia,wp:term&_fields=id,date,slug,link,title,excerpt,categories,_links,_embedded'),
       json('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=4'),
       json('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/media?mime_type=application/pdf&per_page=1&orderby=date&order=desc'),
     ]);
+    // Le categorie hanno id fissi (STORY_CATS): niente richiesta apposta.
+    const cats = STORY_CATS;
 
-    const ogPosts = Array.isArray(og) ? og.map((p: any) => ({ ...p, _source: 'og' })) : [];
+    const ogPosts = Array.isArray(recenti) ? recenti.slice(0, 6).map((p: any) => ({ ...p, _source: 'og' })) : [];
     const odlPosts = Array.isArray(odl) ? odl.map((p: any) => ({ ...p, _source: 'odl' })) : [];
     const articles = [...ogPosts, ...odlPosts]
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -56,13 +62,6 @@ export async function GET() {
       ? { url: fascicoli[0].source_url, title: fascicoli[0].title?.rendered || 'Ultimo fascicolo' }
       : null;
 
-    // Storie: una sola richiesta (gli ultimi 50 articoli, con la sola
-    // immagine di copertina) smistata per categoria, invece di una richiesta
-    // per categoria. L'hosting di WordPress ha un limite di processi
-    // contemporanei e con 14 richieste parallele rispondeva 508.
-    const recenti = await json(
-      'https://orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=50&_embed=wp:featuredmedia&_fields=id,date,slug,link,title,excerpt,categories,_links,_embedded'
-    );
     // Quanti articoli ha ogni categoria tra gli ultimi 50: le più frequenti
     // restano sempre nella barra delle storie (grigie se non c'è niente di nuovo)
     const frequenza: Record<string, number> = {};
@@ -76,7 +75,7 @@ export async function GET() {
 
     // Se WordPress non ha risposto in tempo non si mette in cache una Home
     // vuota: la prossima richiesta riprova subito.
-    const vuota = articles.length === 0;
+    const vuota = ogPosts.length === 0;
     return NextResponse.json(
       { cats, articles, fascicolo, storyPosts, frequenza },
       { headers: vuota ? { 'Cache-Control': 'no-store' } : INTESTAZIONI },
