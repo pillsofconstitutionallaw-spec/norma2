@@ -578,3 +578,12 @@ main, .feed, .cs-feed, .av-feed, .di-feed, .fonti-feed {
 .navbar { view-transition-name: barra-alta; }
 .tabbar { view-transition-name: barra-tab; }
 ::view-transition-group(barra-alta), ::view-transition-group(barra-tab) { animation: none; }
+
+/* Note di aggiornamento di Normattiva (sentenze, modifiche) sotto l'articolo */
+.box-aggiornamenti {
+  margin-top: 12px; padding: 14px 16px; border-radius: 16px;
+  background: rgba(245, 158, 11, 0.09); border: 1px solid rgba(245, 158, 11, 0.28);
+}
+.box-aggiornamenti .box-ai-etichetta { color: #b45309; }
+.box-aggiornamenti p { margin: 0 0 10px; font-size: 14px; line-height: 1.55; color: var(--text-2); white-space: pre-wrap; }
+.box-aggiornamenti p:last-child { margin-bottom: 0; }

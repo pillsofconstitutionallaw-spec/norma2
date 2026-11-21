@@ -242,7 +242,7 @@ export default function CodiceViewer({ slug, titolo, sottotitolo, colore, artico
                   <span className="riga-testo">
                     <span className="riga-titolo" style={{ display: 'block' }}>{art.rubrica || `Articolo ${cleanNumero(art.numero)}`}</span>
                     <span className="riga-sub" style={{ display: 'block' }}>
-                      {art.abrogato ? 'Abrogato' : art.testo.slice(0, 90)}
+                      {art.abrogato ? 'Abrogato' : art.testo.split(/-{5,}/)[0].slice(0, 90)}
                     </span>
                   </span>
                   {salvati.has(id) && <span className="punto-salvato" />}
@@ -278,7 +278,23 @@ export default function CodiceViewer({ slug, titolo, sottotitolo, colore, artico
             {a.libro && <div className="sheet-libro">{a.libro}</div>}
             {a.abrogato && <div className="badge-abrogato">Articolo abrogato</div>}
 
-            <div className="sheet-testo">{a.testo}</div>
+            {(() => {
+              // Normattiva accoda al testo le note di aggiornamento (sentenze
+              // della Corte costituzionale, modifiche...) dopo una riga di
+              // trattini e la parola AGGIORNAMENTO: le mostriamo a parte.
+              const [principale, ...note] = a.testo.split(/\s*-{5,}\s*AGGIORNAMENTO\s*(?:\(\d+\))?\s*/);
+              return (
+                <>
+                  <div className="sheet-testo">{principale.trim()}</div>
+                  {note.filter(n => n.trim()).length > 0 && (
+                    <div className="box-aggiornamenti">
+                      <div className="box-ai-etichetta">Aggiornamenti</div>
+                      {note.filter(n => n.trim()).map((n, i) => <p key={i}>{n.trim()}</p>)}
+                    </div>
+                  )}
+                </>
+              );
+            })()}
 
             <div className="sheet-azioni">
               <button className="azione-grande tap" data-tipo="ai" disabled={!!cache.spiega || a.abrogato || loadingSpiega}
