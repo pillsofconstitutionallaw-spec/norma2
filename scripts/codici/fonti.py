@@ -41,6 +41,14 @@ LIBRI_PROC_AMM = _per_intervalli([
     (137, "Libro V — Norme finali"),
 ])
 
+LIBRI_NAVIGAZIONE = _per_intervalli([
+    (14, "Disposizioni preliminari"),
+    (686, "Parte I — Della navigazione marittima e interna"),
+    (1079, "Parte II — Della navigazione aerea"),
+    (1265, "Parte III — Disposizioni penali e disciplinari"),
+    (1331, "Parte IV — Disposizioni transitorie e complementari"),
+])
+
 # nome file/variabile, URN, opzioni del parser
 CODICI = [
     ("codiceCivile", "urn:nir:stato:regio.decreto:1942-03-16;262",
@@ -67,4 +75,16 @@ CODICI = [
     ("codiceGiustiziaContabile", "urn:nir:stato:decreto.legislativo:2016-08-26;174",
      dict(prefisso="Allegato 1 Codice della giustizia contabile-art.")),
     ("codiceAmbiente", "urn:nir:stato:decreto.legislativo:2006-04-03;152", {}),
+    # Aggiunti a novembre 2026
+    ("codiceCrisiImpresa", "urn:nir:stato:decreto.legislativo:2019-01-12;14", {}),
+    ("codiceAssicurazioni", "urn:nir:stato:decreto.legislativo:2005-09-07;209", {}),
+    ("codiceNavigazione", "urn:nir:stato:regio.decreto:1942-03-30;327",
+     dict(prefisso="Codice della navigazione-art.", libri=LIBRI_NAVIGAZIONE)),
+    ("codiceOrdinamentoMilitare", "urn:nir:stato:decreto.legislativo:2010-03-15;66", {}),
+    ("codiceComunicazioniElettroniche", "urn:nir:stato:decreto.legislativo:2003-08-01;259", {}),
+    ("codiceAmministrazioneDigitale", "urn:nir:stato:decreto.legislativo:2005-03-07;82", {}),
+    ("codiceProtezioneCivile", "urn:nir:stato:decreto.legislativo:2018-01-02;1", {}),
+    ("testoUnicoBancario", "urn:nir:stato:decreto.legislativo:1993-09-01;385", {}),
+    ("testoUnicoFinanza", "urn:nir:stato:decreto.legislativo:1998-02-24;58", {}),
+    ("testoUnicoImmigrazione", "urn:nir:stato:decreto.legislativo:1998-07-25;286", {}),
 ]

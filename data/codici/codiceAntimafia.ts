@@ -810,9 +810,9 @@ export const codiceAntimafia: ArticoloCodice[] = [
  },
  {
   "numero": 98,
-  "rubrica": "",
+  "rubrica": "Contenuto della banca dati nazionale unica",
   "libro": "Libro II — Nuove disposizioni in materia di documentazione antimafia",
-  "testo": "Contenuto della banca dati nazionale unica\n\n1. Nella banca dati nazionale unica sono contenute le comunicazioni e le informazioni antimafia, liberatorie ed interdittive.\n\n2. La banca dati nazionale unica, tramite il collegamento al sistema informatico costituito presso la Direzione investigativa antimafia di cui all'articolo 5, comma 4, del decreto del Ministro dell'interno in data 14 marzo 2003, consente la consultazione dei dati acquisiti nel corso degli accessi nei cantieri delle imprese interessate all'esecuzione di lavori pubblici disposti dal prefetto.\n\n3. La banca dati nazionale unica, tramite il collegamento ad altre banche dati, puo' contenere ulteriori dati anche provenienti dall'estero.",
+  "testo": "1. Nella banca dati nazionale unica sono contenute le comunicazioni e le informazioni antimafia, liberatorie ed interdittive.\n\n2. La banca dati nazionale unica, tramite il collegamento al sistema informatico costituito presso la Direzione investigativa antimafia di cui all'articolo 5, comma 4, del decreto del Ministro dell'interno in data 14 marzo 2003, consente la consultazione dei dati acquisiti nel corso degli accessi nei cantieri delle imprese interessate all'esecuzione di lavori pubblici disposti dal prefetto.\n\n3. La banca dati nazionale unica, tramite il collegamento ad altre banche dati, puo' contenere ulteriori dati anche provenienti dall'estero.",
   "abrogato": false
  },
  {
