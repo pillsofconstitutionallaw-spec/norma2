@@ -21,8 +21,8 @@ export function useSearch(maxResults = 8) {
     try {
       const perPage = Math.ceil(maxResults / 2);
       const [r1, r2] = await Promise.all([
-        fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?search=${encodeURIComponent(q)}&per_page=${perPage}&_embed`),
-        fetch(`https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?search=${encodeURIComponent(q)}&per_page=${perPage}&_embed`),
+        fetch(`/api/wp?sito=og&percorso=posts&search=${encodeURIComponent(q)}&per_page=${perPage}&_embed`),
+        fetch(`/api/wp?sito=odl&percorso=posts&search=${encodeURIComponent(q)}&per_page=${perPage}&_embed`),
       ]);
       const d1 = await r1.json();
       const d2 = await r2.json();

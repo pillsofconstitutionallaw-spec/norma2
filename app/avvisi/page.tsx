@@ -12,8 +12,8 @@ export default function Avvisi() {
     async function carica() {
       try {
         const [r1, r2] = await Promise.all([
-          fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=15&_embed'),
-          fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?per_page=10&_embed'),
+          fetch('/api/wp?sito=og&percorso=posts&per_page=15&_embed'),
+          fetch('/api/wp?sito=odl&percorso=posts&per_page=10&_embed'),
         ]);
         const d1 = await r1.json();
         const d2 = await r2.json();

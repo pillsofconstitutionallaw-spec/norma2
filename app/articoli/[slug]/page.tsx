@@ -39,7 +39,7 @@ export default function ArticoloPage() {
         } else {
           // Fallback: chiamata diretta a WordPress se l'endpoint cache non risponde
           const direct = await fetch(
-            `https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&slug=${encodeURIComponent(slug)}&per_page=1`
+            `/api/wp?sito=og&percorso=posts&_embed&slug=${encodeURIComponent(slug)}&per_page=1`
           ).then(r => r.json()).catch(() => []);
           setPost(Array.isArray(direct) && direct.length > 0 ? direct[0] : null);
         }

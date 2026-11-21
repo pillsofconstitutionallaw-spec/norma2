@@ -103,7 +103,7 @@ export default function FeedCard({ post, priority = false }: { post: Post; prior
   useEffect(() => {
     if (!post.id || isOdl) return;
     fetch(
-      `https://orizzontegiuridico.com/wp-json/wp/v2/comments?post=${post.id}&per_page=3&orderby=date&order=asc`
+      `/api/wp?sito=og&percorso=comments&post=${post.id}&per_page=3&orderby=date&order=asc`
     )
       .then(async r => {
         const total = r.headers.get('X-WP-Total');

@@ -100,7 +100,7 @@ export default function ArticoliPage() {
 
   // Fetch categories with real IDs + preloading storie con ID noti
   useEffect(() => {
-    fetch('https://orizzontegiuridico.com/wp-json/wp/v2/categories?per_page=100')
+    fetch('/api/wp?sito=og&percorso=categories&per_page=100')
       .then(r => r.json())
       .then(data => {
         if (!Array.isArray(data)) return;
@@ -143,7 +143,7 @@ export default function ArticoliPage() {
           catId = found.id;
         } else {
           const catRes = await fetch(
-            `https://orizzontegiuridico.com/wp-json/wp/v2/categories?search=${encodeURIComponent(cat)}&per_page=1`
+            `/api/wp?sito=og&percorso=categories&search=${encodeURIComponent(cat)}&per_page=1`
           ).then(r => r.json());
           if (Array.isArray(catRes) && catRes.length > 0) catId = catRes[0].id;
         }
@@ -152,10 +152,10 @@ export default function ArticoliPage() {
       const catParam = catId ? `&categories=${catId}` : '';
 
       const urls = cat
-        ? [`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=10&page=${p}${catParam}`]
+        ? [`/api/wp?sito=og&percorso=posts&_embed&per_page=10&page=${p}${catParam}`]
         : [
-            `https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=6&page=${p}`,
-            `https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=6&page=${p}`,
+            `/api/wp?sito=og&percorso=posts&_embed&per_page=6&page=${p}`,
+            `/api/wp?sito=odl&percorso=posts&_embed&per_page=6&page=${p}`,
           ];
 
       const results = await Promise.all(urls.map(url => fetch(url).then(r => r.json()).catch(() => [])));
@@ -190,7 +190,7 @@ export default function ArticoliPage() {
   async function loadStoryCat(name: string, catId: number): Promise<any[]> {
     if (storyCache.current[name]) return storyCache.current[name];
     try {
-      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${catId}&per_page=5`);
+      const postsRes = await fetch(`/api/wp?sito=og&percorso=posts&_embed&categories=${catId}&per_page=5`);
       const data = await postsRes.json();
       const posts = Array.isArray(data) ? data : [];
       storyCache.current[name] = posts;

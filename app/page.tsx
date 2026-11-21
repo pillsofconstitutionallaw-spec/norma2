@@ -296,8 +296,8 @@ export default function NormaHome() {
     try {
       const nextPage = feedPage + 1;
       const [ogRes, odlRes] = await Promise.all([
-        fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=5&page=${nextPage}`).then(r => r.json()).catch(() => []),
-        fetch(`https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=3&page=${nextPage}`).then(r => r.json()).catch(() => []),
+        fetch(`/api/wp?sito=og&percorso=posts&_embed&per_page=5&page=${nextPage}`).then(r => r.json()).catch(() => []),
+        fetch(`/api/wp?sito=odl&percorso=posts&_embed&per_page=3&page=${nextPage}`).then(r => r.json()).catch(() => []),
       ]);
       const og = Array.isArray(ogRes) ? ogRes.map((p: any) => ({ ...p, _source: 'og' })) : [];
       const odl = Array.isArray(odlRes) ? odlRes.map((p: any) => ({ ...p, _source: 'odl' })) : [];
@@ -355,7 +355,7 @@ export default function NormaHome() {
   async function loadCatPosts(name: string, catId: number): Promise<any[]> {
     if (storyCache.current[name]) return storyCache.current[name];
     try {
-      const postsRes = await fetch(`https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&categories=${catId}&per_page=5`);
+      const postsRes = await fetch(`/api/wp?sito=og&percorso=posts&_embed&categories=${catId}&per_page=5`);
       const data = await postsRes.json();
       const posts = Array.isArray(data) ? data : [];
       storyCache.current[name] = posts;
@@ -436,8 +436,8 @@ export default function NormaHome() {
   async function caricaFeedDiretto() {
     try {
       const [ogRes, odlRes] = await Promise.all([
-        fetch('https://orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=6').then(r => r.json()).catch(() => []),
-        fetch('https://orizzontideldiritto.orizzontegiuridico.com/wp-json/wp/v2/posts?_embed&per_page=4').then(r => r.json()).catch(() => []),
+        fetch('/api/wp?sito=og&percorso=posts&_embed&per_page=6').then(r => r.json()).catch(() => []),
+        fetch('/api/wp?sito=odl&percorso=posts&_embed&per_page=4').then(r => r.json()).catch(() => []),
       ]);
       const og = Array.isArray(ogRes) ? ogRes.map((p: any) => ({ ...p, _source: 'og' })) : [];
       const odl = Array.isArray(odlRes) ? odlRes.map((p: any) => ({ ...p, _source: 'odl' })) : [];
