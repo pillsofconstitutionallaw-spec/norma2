@@ -1,4 +1,4 @@
-// Generato da scripts/codici/aggiorna.py — testo vigente Normattiva al 13/11/2026.
+// Generato da scripts/codici/aggiorna.py — testo vigente Normattiva al 21/11/2026.
 // Non modificare a mano: le modifiche verrebbero sovrascritte al prossimo aggiornamento.
 import type { ArticoloCodice } from '@/components/codici/CodiceViewer';
 
