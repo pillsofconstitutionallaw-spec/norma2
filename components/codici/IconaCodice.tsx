@@ -36,6 +36,26 @@ const ICONE: Record<string, React.ReactNode> = {
   'giustizia-contabile': <><circle cx="12" cy="12" r="9" /><path d="M15.5 8.6a4.2 4.2 0 1 0 0 6.8" /><path d="M7 10.5h6M7 13.5h6" /></>,
   // Ambiente: la foglia
   'codice-ambiente': <><path d="M5 19c0-8 5-14 15-15-1 10-6 15-14 15" /><path d="M5 19c3-4 6-7 10-10" /></>,
+  // Crisi d'impresa: il grafico in calo
+  'crisi-impresa': <><path d="M3 3v18h18" /><path d="m7 8 4 5 3-3 6 7" /><path d="M20 13v4h-4" /></>,
+  // Assicurazioni: l'ombrello
+  'codice-assicurazioni': <><path d="M12 3a9 9 0 0 1 9 9H3a9 9 0 0 1 9-9z" /><path d="M12 12v6.5a2 2 0 0 0 4 0" /></>,
+  // Navigazione: l'àncora
+  'codice-navigazione': <><circle cx="12" cy="5" r="2.5" /><path d="M12 7.5V21" /><path d="M5 12H2.5a9.5 9.5 0 0 0 19 0H19" /></>,
+  // Ordinamento militare: la stella
+  'ordinamento-militare': <><path d="m12 2.5 2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z" /></>,
+  // Comunicazioni elettroniche: il segnale
+  'comunicazioni-elettroniche': <><path d="M2 8.8a15 15 0 0 1 20 0" /><path d="M5 12.6a10.5 10.5 0 0 1 14 0" /><path d="M8.5 16.3a5.5 5.5 0 0 1 7 0" /><circle cx="12" cy="20" r="1" /></>,
+  // Amministrazione digitale: il monitor
+  'amministrazione-digitale': <><rect x="2.5" y="4" width="19" height="13" rx="2" /><path d="M8 21h8M12 17v4" /></>,
+  // Protezione civile: il segnale di pericolo
+  'protezione-civile': <><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" /><path d="M12 9v4M12 17h.01" /></>,
+  // Testo unico bancario: la carta
+  'testo-unico-bancario': <><rect x="2.5" y="5" width="19" height="14" rx="2.5" /><path d="M2.5 10h19M6.5 15h4" /></>,
+  // Testo unico finanza: il grafico in crescita
+  'testo-unico-finanza': <><path d="m3 17 6-6 4 4 8-8" /><path d="M14 7h7v7" /></>,
+  // Testo unico immigrazione: il passaporto
+  'testo-unico-immigrazione': <><rect x="5" y="2.5" width="14" height="19" rx="2" /><circle cx="12" cy="10" r="3" /><path d="M9 16.5h6" /></>,
 };
 
 export function IconaCodice({ slug, size = 24, colore, anima = false, ritardo = 0 }: {

@@ -57,7 +57,7 @@ def pulisci(s):
 
 def _abrogato(rubrica, testo):
     t = testo.strip().upper()
-    return (not t) or bool(re.match(r"^\(?\s*(L')?ARTICOLO\s+(E'\s+)?ABROGAT|^ABROGAT|^ARTICOLO ABROGATO|^\(?ABROGATO", t)) \
+    return (not t) or bool(re.match(r"^\(?\s*(L')?ARTICOLO\s+(E'\s+)?ABROGAT|^ABROGAT|^ARTICOLO ABROGATO|^\(?ABROGATO|^\(?\s*ARTICOLO NON PIU'? PREVISTO", t)) \
         or bool(re.match(r"^\(?\s*abrogat", rubrica.strip(), re.I))
 
 
@@ -88,7 +88,7 @@ def _ordinale(o):
 
 
 _DIV = re.compile(
-    r"\b(LIBRO|PARTE|TITOLO)\s+(" + _ORD + r")\b\s*(.*?)(?=\s+\b(?:LIBRO|PARTE|TITOLO|CAPO|SEZIONE)\s+" + _ORD + r"\b|$)",
+    r"\b(LIBRO|PARTE|TITOLO|CAPO)\s+(" + _ORD + r")\b\s*(.*?)(?=\s+\b(?:LIBRO|PARTE|TITOLO|CAPO|SEZIONE)\s+" + _ORD + r"\b|$)",
     re.I,
 )
 
@@ -118,7 +118,7 @@ def _articoli_corpo(body):
                 for c in body.iter(A + "chapter")]
     # Livello del filtro: Libro se esiste, altrimenti Parte, altrimenti Titolo
     tutto = " ".join(capitoli)
-    livello = next((l for l in ("LIBRO", "PARTE", "TITOLO")
+    livello = next((l for l in ("LIBRO", "PARTE", "TITOLO", "CAPO")
                     if re.search(r"\b" + l + r"\s+" + _ORD + r"\b", tutto, re.I)), None)
 
     articoli, libro = [], ""
@@ -155,6 +155,24 @@ def _articolo_corpo(art, libro):
             commi.append(t)
     if not rubrica and commi and re.fullmatch(r"\(.*\)\.?", commi[0]):
         rubrica = commi.pop(0).rstrip(".")[1:-1].strip()  # rubrica finita nel primo comma
+    nota_fonti = re.compile(r"\s+\((?=\s*(?:art|legge|l\.|d\.|decreto|dpr|regolamento|codice))", re.I)
+    if not rubrica and commi and commi[0].startswith("("):
+        # "(Rubrica) (art. 4 eecc; ...) 1. Testo" → rubrica tra parentesi + nota fonti
+        rub, resto = _rubrica_iniziale(commi[0])
+        resto = re.sub(r"^\((?=\s*(?:art|legge|l\.|d\.|decreto|dpr|regolamento|codice))[^)]*(?:\)[^()]*?)??\)\s*", "", resto, flags=re.I)
+        if rub and re.match(r"1\s*\.", resto):
+            rubrica, commi[0] = rub.strip(" ."), resto
+    if not rubrica and len(commi) > 1 and len(commi[0]) < 450 and not re.match(r"[\d(]", commi[0]) \
+            and re.match(r"1\s*\.", commi[1]):
+        # rubrica in un paragrafo suo, prima del comma 1
+        rubrica = nota_fonti.split(commi.pop(0))[0].strip(" .")
+    if not rubrica and commi:
+        # "Attivita' di protezione civile (fonti...) 1. Sono..." → rubrica + comma 1
+        m = re.match(r"^(?![\d(])(.{3,400}?)\s+(1\s*\.\s.*)$", commi[0], re.S)
+        if m:
+            # via la nota sulle fonti tra parentesi: "(Articoli 3..., legge 225/1992)"
+            rubrica = re.split(r"\s+\((?=\s*(?:art|legge|l\.|d\.|decreto|dpr|regolamento|codice))", m.group(1), flags=re.I)[0].strip(" .")
+            commi[0] = m.group(2)
     testo = "\n\n".join(commi)
     return {"numero": numero, "rubrica": rubrica, "libro": libro,
             "testo": testo, "abrogato": _abrogato(rubrica, testo)}

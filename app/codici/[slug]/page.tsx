@@ -20,6 +20,16 @@ const COLORI: Record<string, string> = {
   'giustizia-contabile': '#a78bfa',
   'codice-contratti-pubblici': '#22c55e',
   'codice-ambiente': '#16a34a',
+  'crisi-impresa': '#dc2626',
+  'codice-assicurazioni': '#0891b2',
+  'codice-navigazione': '#1d4ed8',
+  'ordinamento-militare': '#4d7c0f',
+  'comunicazioni-elettroniche': '#7c3aed',
+  'amministrazione-digitale': '#0284c7',
+  'protezione-civile': '#ea580c',
+  'testo-unico-bancario': '#0f766e',
+  'testo-unico-finanza': '#4f46e5',
+  'testo-unico-immigrazione': '#be185d',
 };
 
 const SOTTOTITOLI: Record<string, string> = {
@@ -40,6 +50,16 @@ const SOTTOTITOLI: Record<string, string> = {
   'giustizia-contabile': 'D.Lgs. 26 agosto 2016, n. 174',
   'codice-contratti-pubblici': 'D.Lgs. 31 marzo 2023, n. 36',
   'codice-ambiente': 'D.Lgs. 3 aprile 2006, n. 152',
+  'crisi-impresa': 'D.Lgs. 12 gennaio 2019, n. 14',
+  'codice-assicurazioni': 'D.Lgs. 7 settembre 2005, n. 209',
+  'codice-navigazione': 'R.D. 30 marzo 1942, n. 327',
+  'ordinamento-militare': 'D.Lgs. 15 marzo 2010, n. 66',
+  'comunicazioni-elettroniche': 'D.Lgs. 1 agosto 2003, n. 259',
+  'amministrazione-digitale': 'D.Lgs. 7 marzo 2005, n. 82',
+  'protezione-civile': 'D.Lgs. 2 gennaio 2018, n. 1',
+  'testo-unico-bancario': 'D.Lgs. 1 settembre 1993, n. 385',
+  'testo-unico-finanza': 'D.Lgs. 24 febbraio 1998, n. 58',
+  'testo-unico-immigrazione': 'D.Lgs. 25 luglio 1998, n. 286',
 };
 
 export default async function CodicePage({

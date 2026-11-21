@@ -278,9 +278,9 @@ export const codiceBeniCulturali: ArticoloCodice[] = [
  },
  {
   "numero": 38,
-  "rubrica": "",
+  "rubrica": "Accessibilita' al pubblico dei beni culturali oggetto di interventi conservativi",
   "libro": "Parte II — Beni culturali",
-  "testo": "Accessibilita' al pubblico dei beni culturali oggetto di interventi conservativi\n\n1. I beni culturali restaurati o sottoposti ad altri interventi conservativi con il concorso totale o parziale dello Stato nella spesa, o per i quali siano stati concessi contributi in conto interessi, sono resi accessibili al pubblico secondo modalita' fissate, caso per caso, da appositi accordi o convenzioni da stipularsi fra il Ministero ed i singoli proprietari all'atto della assunzione dell'onere della spesa ai sensi dell'articolo 34 o della concessione del contributo ai sensi degli articoli 35 e 37.\n\n2. Gli accordi e le convenzioni stabiliscono i limiti temporali dell'obbligo di apertura al pubblico, tenendo conto della tipologia degli interventi, del valore artistico e storico degli immobili e dei beni in essi esistenti. Accordi e convenzioni sono trasmessi, a cura del soprintendente, al comune e alla citta' metropolitana nel cui territorio si trovano gli immobili.",
+  "testo": "1. I beni culturali restaurati o sottoposti ad altri interventi conservativi con il concorso totale o parziale dello Stato nella spesa, o per i quali siano stati concessi contributi in conto interessi, sono resi accessibili al pubblico secondo modalita' fissate, caso per caso, da appositi accordi o convenzioni da stipularsi fra il Ministero ed i singoli proprietari all'atto della assunzione dell'onere della spesa ai sensi dell'articolo 34 o della concessione del contributo ai sensi degli articoli 35 e 37.\n\n2. Gli accordi e le convenzioni stabiliscono i limiti temporali dell'obbligo di apertura al pubblico, tenendo conto della tipologia degli interventi, del valore artistico e storico degli immobili e dei beni in essi esistenti. Accordi e convenzioni sono trasmessi, a cura del soprintendente, al comune e alla citta' metropolitana nel cui territorio si trovano gli immobili.",
   "abrogato": false
  },
  {
