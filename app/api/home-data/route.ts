@@ -9,7 +9,11 @@ import { NextResponse } from 'next/server';
 // lento falliva. Le chiamate restano in cache 60 s (data cache) e la
 // risposta 60 s sulla CDN; ogni chiamata ha un tempo massimo di 8 s.
 export const dynamic = 'force-dynamic';
-const CACHE = () => ({ next: { revalidate: 30 }, signal: AbortSignal.timeout(8000) });
+// WordPress (hosting condiviso) a volte impiega 7-8 s anche per richieste
+// piccole: con 8 s di limite le richieste con le immagini scadevano e la Home
+// riceveva liste vuote. 20 s, e la funzione può durare fino a 60.
+export const maxDuration = 60;
+const CACHE = () => ({ next: { revalidate: 30 }, signal: AbortSignal.timeout(20000) });
 const INTESTAZIONI = { 'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=30' };
 
 // Tutte le categorie della barra delle storie in Home (prima solo 6: le
@@ -70,7 +74,13 @@ export async function GET() {
         : [];
     }
 
-    return NextResponse.json({ cats, articles, fascicolo, storyPosts, frequenza }, { headers: INTESTAZIONI });
+    // Se WordPress non ha risposto in tempo non si mette in cache una Home
+    // vuota: la prossima richiesta riprova subito.
+    const vuota = articles.length === 0;
+    return NextResponse.json(
+      { cats, articles, fascicolo, storyPosts, frequenza },
+      { headers: vuota ? { 'Cache-Control': 'no-store' } : INTESTAZIONI },
+    );
   } catch {
     return NextResponse.json({ cats: [], articles: [], fascicolo: null, storyPosts: {} });
   }
