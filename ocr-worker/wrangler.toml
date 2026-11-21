@@ -1,0 +1,6 @@
+name = "norma-ocr"
+main = "worker.js"
+compatibility_date = "2026-06-13"
+
+[ai]
+binding = "AI"
