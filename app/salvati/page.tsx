@@ -196,7 +196,7 @@ export default function Salvati() {
                       </button>
                       <button
                         onClick={() => rimuoviDeck(deck.id)}
-                        style={{ padding: '10px 14px', borderRadius: 12, border: '0.5px solid var(--line)', background: 'var(--fill)', color: 'rgba(255,255,255,0.35)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-ui)'}}
+                        style={{ padding: '10px 14px', borderRadius: 12, border: '0.5px solid var(--line)', background: 'var(--fill)', color: 'var(--text-3)', fontWeight: 700, fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-ui)'}}
                       >
                         Rimuovi
                       </button>
@@ -228,7 +228,7 @@ export default function Salvati() {
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'flex-end' }}>
                       <Link href={a.href} style={{ fontSize: 11, fontWeight: 800, color: a.colore, textDecoration: 'none', letterSpacing: 1, textTransform: 'uppercase' }}>Vai →</Link>
-                      <button onClick={() => rimuoviCodice(a.storageKey, a.numero)} style={{ background: 'var(--fill)', border: '0.5px solid var(--line)', borderRadius: 7, padding: '3px 8px', cursor: 'pointer', fontSize: 11, color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-ui)'}}>Rimuovi</button>
+                      <button onClick={() => rimuoviCodice(a.storageKey, a.numero)} style={{ background: 'var(--fill)', border: '0.5px solid var(--line)', borderRadius: 7, padding: '3px 8px', cursor: 'pointer', fontSize: 11, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>Rimuovi</button>
                     </div>
                   </div>
                 ))}
@@ -256,7 +256,7 @@ export default function Salvati() {
                           <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.4, color: isOdl ? 'var(--accent)' : 'var(--accent)', border: `0.5px solid ${isOdl ? 'rgba(168,200,240,0.3)' : 'rgba(79,70,229,0.3)'}`, borderRadius: 20, padding: '3px 8px', textTransform: 'uppercase' }}>
                             {isOdl ? 'Orizzonti del Diritto' : 'Orizzonte Giuridico'}
                           </span>
-                          <button onClick={() => rimuoviBlog(post.slug)} style={{ background: 'var(--fill)', border: 'none', borderRadius: 8, padding: '5px 8px', cursor: 'pointer', fontSize: 11, color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-ui)'}}>Rimuovi</button>
+                          <button onClick={() => rimuoviBlog(post.slug)} style={{ background: 'var(--fill)', border: 'none', borderRadius: 8, padding: '5px 8px', cursor: 'pointer', fontSize: 11, color: 'var(--text-3)', fontFamily: 'var(--font-ui)'}}>Rimuovi</button>
                         </div>
                         <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)', lineHeight: 1.25, marginBottom: 10 }} dangerouslySetInnerHTML={{ __html: post.title || '' }} />
                         <a href={href} target={isOdl ? '_blank' : '_self'} rel="noreferrer" style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', letterSpacing: 1, textTransform: 'uppercase', textDecoration: 'none' }}>

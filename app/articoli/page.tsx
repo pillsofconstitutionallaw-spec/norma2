@@ -305,7 +305,7 @@ export default function ArticoliPage() {
             <button
               onClick={loadMore}
               disabled={loadingMore}
-              style={{ width: '100%', padding: 14, borderRadius: 16, background: 'var(--fill)', border: '0.5px solid var(--line)', color: 'rgba(255,255,255,0.5)', fontSize: 12, fontWeight: 800, letterSpacing: 1, cursor: 'pointer' }}
+              style={{ width: '100%', padding: 14, borderRadius: 16, background: 'var(--fill)', border: '0.5px solid var(--line)', color: 'var(--text-2)', fontSize: 12, fontWeight: 800, letterSpacing: 1, cursor: 'pointer' }}
             >
               {loadingMore ? '...' : 'CARICA ALTRI'}
             </button>
@@ -353,7 +353,7 @@ export default function ArticoliPage() {
                 )}
               </div>
             </div>
-            <button onClick={(e) => { e.stopPropagation(); setStoryOpen(false); }} style={{ background: 'var(--fill)', border: 'none', borderRadius: '50%', width: 32, height: 32, color: '#fff', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+            <button onClick={(e) => { e.stopPropagation(); setStoryOpen(false); }} style={{ background: 'var(--fill)', border: 'none', borderRadius: '50%', width: 32, height: 32, color: 'var(--text)', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
           </div>
 
           {/* Content */}

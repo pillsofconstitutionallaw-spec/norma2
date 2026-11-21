@@ -196,7 +196,7 @@ export default function ReferendumPage() {
               {[
                 { n: totali.approvati, l: 'approvati', c: '#16a34a' },
                 { n: totali.respinti, l: 'respinti', c: '#e11d48' },
-                { n: totali.non_validi, l: 'quorum non raggiunto', c: 'rgba(255,255,255,0.4)' },
+                { n: totali.non_validi, l: 'quorum non raggiunto', c: 'var(--text-3)' },
               ].map((s, i) => (
                 <div key={i} style={{
                   background: `${s.c}12`, border: `0.5px solid ${s.c}30`,
@@ -254,10 +254,10 @@ export default function ReferendumPage() {
           {/* FILTRI ESITO */}
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' as const, marginBottom: 16 }}>
             {[
-              { id: 'tutti', label: 'Tutti gli esiti', c: 'rgba(255,255,255,0.4)' },
+              { id: 'tutti', label: 'Tutti gli esiti', c: 'var(--text-3)' },
               { id: 'approvato', label: '● Approvati', c: '#16a34a' },
               { id: 'respinto', label: '● Respinti', c: '#e11d48' },
-              { id: 'non_valido', label: '● Quorum non raggiunto', c: 'rgba(255,255,255,0.4)' },
+              { id: 'non_valido', label: '● Quorum non raggiunto', c: 'var(--text-3)' },
             ].map(f => (
               <button key={f.id} onClick={() => setFiltroEsito(f.id)} style={{
                 padding: '5px 11px', borderRadius: 8, cursor: 'pointer',
@@ -291,7 +291,7 @@ export default function ReferendumPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {items.map(r => {
                   const isAperto = aperto === r.id;
-                  const coloreEsito = r.esito === 'approvato' ? '#16a34a' : r.esito === 'respinto' ? '#e11d48' : 'rgba(255,255,255,0.35)';
+                  const coloreEsito = r.esito === 'approvato' ? '#16a34a' : r.esito === 'respinto' ? '#e11d48' : 'var(--text-3)';
                   const colTipo = COLORI_TIPO[r.tipo];
 
                   return (
@@ -366,7 +366,7 @@ export default function ReferendumPage() {
                               background: 'var(--fill)',
                               border: '0.5px solid var(--line)',
                               borderRadius: 12, padding: '14px',
-                              fontSize: 13, color: 'rgba(255,255,255,0.75)',
+                              fontSize: 13, color: 'var(--text)',
                               lineHeight: 1.85, marginBottom: 12,
                               fontFamily: 'Georgia, serif',
                             }}>
@@ -413,7 +413,7 @@ export default function ReferendumPage() {
                                 background: 'var(--fill)',
                                 border: '0.5px solid var(--line)',
                                 borderRadius: 12, padding: '10px 14px',
-                                fontSize: 14, color: 'rgba(255,255,255,0.4)',
+                                fontSize: 14, color: 'var(--text-3)',
                                 display: 'flex', alignItems: 'center', gap: 8,
                               }}>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -444,7 +444,7 @@ export default function ReferendumPage() {
             background: 'rgba(255,215,0,0.04)',
             border: '0.5px solid rgba(255,215,0,0.12)',
             borderRadius: 14, padding: '14px',
-            fontSize: 13, color: 'rgba(255,255,255,0.28)', lineHeight: 1.7,
+            fontSize: 13, color: 'var(--text-3)', lineHeight: 1.7,
           }}>
             Archivio dei referendum italiani dal 1946 ad oggi. I dati percentuali sono approssimati. Fonte: Ministero dell'Interno, Corte Costituzionale.
           </div>

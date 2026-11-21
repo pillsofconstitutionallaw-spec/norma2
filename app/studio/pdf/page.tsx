@@ -597,7 +597,7 @@ export default function PdfStudioPage() {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
                 {domande[indiceDomanda].opzioni.map((opzione, i) => {
-                  let bg = 'var(--surface)', border = '1px solid rgba(255,255,255,0.08)', color = '#fff';
+                  let bg = 'var(--surface)', border = '1px solid var(--line)', color = 'var(--text)';
                   if (confermata) {
                     if (i === domande[indiceDomanda].corretta) { bg = 'rgba(34,197,94,0.15)'; border = '1px solid #16a34a'; color = '#16a34a'; }
                     else if (i === rispostaScelta) { bg = 'rgba(239,68,68,0.15)'; border = '1px solid #ef4444'; color = '#ef4444'; }
@@ -611,7 +611,7 @@ export default function PdfStudioPage() {
                 })}
               </div>
               {!confermata ? (
-                <button onClick={confermaRisposta} disabled={rispostaScelta === null} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: rispostaScelta !== null ? '#a855f7' : 'rgba(168,85,247,0.2)', color: '#fff', fontWeight: 800, cursor: rispostaScelta !== null ? 'pointer' : 'default', fontFamily: 'var(--font-ui)'}}>
+                <button onClick={confermaRisposta} disabled={rispostaScelta === null} style={{ width: '100%', padding: '16px', borderRadius: 16, border: 'none', background: rispostaScelta !== null ? '#a855f7' : 'rgba(168,85,247,0.2)', color: 'var(--text)', fontWeight: 800, cursor: rispostaScelta !== null ? 'pointer' : 'default', fontFamily: 'var(--font-ui)'}}>
                   Conferma
                 </button>
               ) : (

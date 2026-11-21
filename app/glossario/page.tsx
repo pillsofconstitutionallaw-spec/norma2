@@ -115,7 +115,7 @@ export default function GlossarioPage() {
               background: 'var(--fill)',
               border: '0.5px solid var(--line)',
               padding: '0 44px 0 18px',
-              color: '#fff',
+              color: 'var(--text)',
               fontSize: 13,
               outline: 'none',
               fontFamily: 'var(--font-ui)',

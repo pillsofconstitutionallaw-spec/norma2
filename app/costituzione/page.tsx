@@ -176,7 +176,7 @@ export default function CostituzionePage() {
             placeholder="Cerca articolo, principio, diritto..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ width: '100%', height: 52, borderRadius: 16, background: 'var(--fill)', border: '0.5px solid var(--line)', padding: '0 44px 0 18px', color: '#fff', fontSize: 13, outline: 'none', fontFamily: 'var(--font-ui)', boxSizing: 'border-box' }}
+            style={{ width: '100%', height: 52, borderRadius: 16, background: 'var(--fill)', border: '0.5px solid var(--line)', padding: '0 44px 0 18px', color: 'var(--text)', fontSize: 13, outline: 'none', fontFamily: 'var(--font-ui)', boxSizing: 'border-box' }}
           />
           <svg style={{ position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)' }} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="7" />
@@ -248,7 +248,7 @@ export default function CostituzionePage() {
                       onClick={() => salvaArticolo(articolo)}
                       style={{ width: 42, height: 42, borderRadius: 12, background: salvati[articolo.n] ? 'rgba(79,70,229,0.15)' : 'var(--fill)', border: `0.5px solid ${salvati[articolo.n] ? 'rgba(79,70,229,0.3)' : 'var(--line)'}`, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill={salvati[articolo.n] ? '#4f46e5' : 'none'} stroke={salvati[articolo.n] ? '#4f46e5' : 'rgba(255,255,255,0.4)'} strokeWidth="2">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill={salvati[articolo.n] ? '#4f46e5' : 'none'} stroke={salvati[articolo.n] ? '#4f46e5' : 'var(--text-3)'} strokeWidth="2">
                         <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
                       </svg>
                     </button>

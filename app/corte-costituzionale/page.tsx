@@ -457,7 +457,7 @@ const sezioni: Sezione[] = [
           {
             titolo: 'Inammissibilità',
             testo: 'La Corte non entra nel merito: manca qualche requisito del giudizio (es. chi ha sollevato la questione non è un vero giudice, manca la rilevanza, la norma non è una legge, l\'ordinanza è scritta male). La norma resta in vigore. Il giudice non può riproporre la stessa questione identica.',
-            colore: 'rgba(255,255,255,0.4)',
+            colore: 'var(--text-3)',
             badge: 'Processuale',
           },
           {

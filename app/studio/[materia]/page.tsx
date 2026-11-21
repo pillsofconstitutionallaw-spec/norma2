@@ -429,7 +429,7 @@ export default function PdfStudioPage() {
                 {domande[indiceDomanda].opzioni.map((opzione, i) => {
                   const isCorretta = i === domande[indiceDomanda].corretta;
                   const isScelta = i === rispostaScelta;
-                  let bg = 'var(--surface)', border = '0.5px solid rgba(255,255,255,0.08)', colore = 'rgba(255,255,255,0.8)';
+                  let bg = 'var(--surface)', border = '0.5px solid var(--line)', colore = 'var(--text)';
                   if (confermata) {
                     if (isCorretta) { bg = 'rgba(34,197,94,0.1)'; border = '0.5px solid rgba(34,197,94,0.5)'; colore = '#16a34a'; }
                     else if (isScelta) { bg = 'rgba(239,68,68,0.1)'; border = '0.5px solid rgba(239,68,68,0.5)'; colore = '#ef4444'; }

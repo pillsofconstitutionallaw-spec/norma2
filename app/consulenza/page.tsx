@@ -329,7 +329,7 @@ export default function ConsulenzaPage() {
                 <div style={{
                   background: 'rgba(79,70,229,0.05)',
                   borderRadius: 12, padding: '12px',
-                  fontSize: 13, color: 'rgba(255,255,255,0.65)', lineHeight: 1.75,
+                  fontSize: 13, color: 'var(--text-2)', lineHeight: 1.75,
                 }}>
                   {risultato.analisi}
                 </div>
@@ -398,7 +398,7 @@ export default function ConsulenzaPage() {
                   background: 'var(--fill)',
                   border: '0.5px solid var(--line)',
                   borderRadius: 12, padding: '14px',
-                  fontSize: 12.5, color: 'rgba(255,255,255,0.6)',
+                  fontSize: 12.5, color: 'var(--text-2)',
                   lineHeight: 1.85, whiteSpace: 'pre-wrap' as const,
                   fontFamily: 'monospace',
                 }}>
@@ -476,7 +476,7 @@ export default function ConsulenzaPage() {
                   width: '100%', height: 46, borderRadius: 14,
                   background: 'var(--fill)',
                   border: '0.5px solid var(--line)',
-                  color: 'rgba(255,255,255,0.35)',
+                  color: 'var(--text-3)',
                   fontSize: 14, fontWeight: 700, cursor: 'pointer',
                   fontFamily: 'var(--font-ui)',
                 }}
@@ -489,7 +489,7 @@ export default function ConsulenzaPage() {
                 background: 'rgba(255,215,0,0.04)',
                 border: '0.5px solid rgba(255,215,0,0.12)',
                 borderRadius: 12, padding: '12px 14px',
-                fontSize: 13, color: 'rgba(255,255,255,0.3)', lineHeight: 1.65,
+                fontSize: 13, color: 'var(--text-3)', lineHeight: 1.65,
               }}>
                 Questo strumento fornisce indicazioni orientative e non costituisce consulenza legale.
                 Rivolgiti sempre a un avvocato iscritto all'albo per assistenza professionale.

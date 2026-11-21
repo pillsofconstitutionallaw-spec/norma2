@@ -314,7 +314,7 @@ export default function TestMateriaPage() {
               border: '0.5px solid var(--line)',
               borderRadius: 10,
               padding: '6px 12px',
-              color: 'rgba(255,255,255,0.5)',
+              color: 'var(--text-2)',
               fontSize: 13,
               fontWeight: 700,
               cursor: 'pointer'
@@ -403,8 +403,8 @@ export default function TestMateriaPage() {
           const corretta = domanda.corretta === i;
 
           let bg = 'var(--surface)';
-          let border = '0.5px solid rgba(255,255,255,0.06)';
-          let colore = 'rgba(255,255,255,0.7)';
+          let border = '0.5px solid var(--line)';
+          let colore = 'var(--text-2)';
 
           if (haRisposto || scaduto) {
 

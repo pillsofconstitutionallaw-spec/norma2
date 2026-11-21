@@ -210,7 +210,7 @@ function toggleSalva() {
   );
 
   const articleStyles = `
-.article-content h1,.article-content h2,.article-content h3,.article-content h4{line-height:1.25;margin-top:36px;margin-bottom:18px;color:#fff;font-weight:800;}
+.article-content h1,.article-content h2,.article-content h3,.article-content h4{line-height:1.25;margin-top:36px;margin-bottom:18px;color:var(--text);font-weight:800;}
 .article-content h1{font-size:clamp(28px,5vw,42px);}
 .article-content h2{font-size:clamp(24px,4vw,34px);}
 .article-content h3{font-size:clamp(20px,3vw,28px);}
@@ -223,10 +223,10 @@ function toggleSalva() {
 .article-content iframe{width:100%;max-width:100%;border:0;border-radius:18px;}
 .article-content table{width:100%;overflow-x:auto;display:block;}
 .article-content pre{overflow-x:auto;}
-.article-content strong{color:#fff;}
+.article-content strong{color:var(--text);}
 .article-content em{opacity:0.9;}
 .article-content ul,.article-content ol{padding-left:22px;margin-bottom:22px;}
-.article-content blockquote{border-left:3px solid var(--accent);padding-left:18px;margin:28px 0;color:rgba(255,255,255,0.72);}
+.article-content blockquote{border-left:3px solid var(--accent);padding-left:18px;margin:28px 0;color:var(--text-2);}
 @media(max-width:768px){.article-content{font-size:15px!important;line-height:1.9!important;}.article-content h1{font-size:30px;}.article-content h2{font-size:24px;}.article-content h3{font-size:20px;}}
 `;
 
@@ -234,7 +234,7 @@ function toggleSalva() {
   const aiBtnStyle = (active: boolean, hasTopBorder?: boolean): React.CSSProperties => ({
     background: active ? 'var(--surface)' : 'var(--bg)',
     border: 'none',
-    borderTop: hasTopBorder ? '0.5px solid rgba(255,255,255,0.04)' : 'none',
+    borderTop: hasTopBorder ? '0.5px solid var(--line)' : 'none',
     padding: '16px',
     cursor: 'pointer',
     display: 'flex',
@@ -285,10 +285,10 @@ function toggleSalva() {
     borderRadius: 10,
     background: salvato
       ? 'rgba(79,70,229,0.14)'
-      : 'rgba(255,255,255,0.06)',
+      : 'var(--text-3)',
     border: salvato
       ? '0.5px solid rgba(79,70,229,0.25)'
-      : '0.5px solid rgba(255,255,255,0.08)',
+      : '0.5px solid var(--text-3)',
     display: 'flex',
     alignItems: 'center',
     gap: 6,
@@ -301,7 +301,7 @@ function toggleSalva() {
   {salvato ? '✓ Salvato' : '☆ Salva'}
 </button>
 
-            <button onClick={() => router.back()} style={{ width: 34, height: 34, borderRadius: 10, background: 'var(--fill)', border: '0.5px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#fff', fontSize: 14 }}>←</button>
+            <button onClick={() => router.back()} style={{ width: 34, height: 34, borderRadius: 10, background: 'var(--fill)', border: '0.5px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--text)', fontSize: 14 }}>←</button>
             {categoria && <span style={{ fontSize: 12, letterSpacing: 0.4, textTransform: 'uppercase', color: 'var(--accent)', fontWeight: 800 }}>{categoria}</span>}
           </div>
 
@@ -318,7 +318,7 @@ function toggleSalva() {
               <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>{autore}</div>
               <div style={{ fontSize: 12, color: 'var(--text-3)' }}>{dataPost} · {tempoLettura} min</div>
             </div>
-            <div style={{ marginLeft: 'auto', fontSize: 12, color: 'rgba(255,255,255,0.4)', background: 'var(--fill)', padding: '4px 10px', borderRadius: 99, border: '0.5px solid var(--line)', flexShrink: 0 }}>
+            <div style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--text-3)', background: 'var(--fill)', padding: '4px 10px', borderRadius: 99, border: '0.5px solid var(--line)', flexShrink: 0 }}>
               {readProgress}% letto
             </div>
           </div>
@@ -444,9 +444,9 @@ function toggleSalva() {
                                 const selezionata = risposta === j;
                                 const corretta = d.risposta_corretta === j;
                                 const risposto = risposta !== undefined;
-                                let bg = 'rgba(255,255,255,0.04)';
-                                let border = '0.5px solid rgba(255,255,255,0.08)';
-                                let color = 'rgba(255,255,255,0.7)';
+                                let bg = 'var(--fill)';
+                                let border = '0.5px solid var(--line)';
+                                let color = 'var(--text-2)';
                                 if (risposto && corretta) { bg = 'rgba(29,166,104,0.15)'; border = '0.5px solid rgba(29,166,104,0.3)'; color = '#16a34a'; }
                                 else if (risposto && selezionata && !corretta) { bg = 'rgba(239,68,68,0.15)'; border = '0.5px solid rgba(239,68,68,0.3)'; color = '#dc2626'; }
                                 return (

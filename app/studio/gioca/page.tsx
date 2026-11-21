@@ -657,7 +657,7 @@ function GiocaContent() {
               <div style={{ fontSize: 12, fontWeight:700, letterSpacing: 0.4, color: 'rgba(255,200,50,0.5)', textTransform:'uppercase' }}>Chi vuole essere</div>
               <div style={{ fontFamily: 'var(--font-display)', fontSize:15, fontWeight: 800, color: '#d97706', letterSpacing:1 }}>LAUREATO?</div>
             </div>
-            <button onClick={() => setMScaletta(s => !s)} style={{ background: 'var(--fill)', border: '0.5px solid var(--line)', borderRadius:10, padding:'6px 10px', color: 'rgba(255,255,255,0.55)', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>📊</button>
+            <button onClick={() => setMScaletta(s => !s)} style={{ background: 'var(--fill)', border: '0.5px solid var(--line)', borderRadius:10, padding:'6px 10px', color: 'var(--text-2)', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily: 'var(--font-ui)'}}>📊</button>
           </div>
 
           {/* LIVELLO */}
@@ -742,7 +742,7 @@ function GiocaContent() {
           {mFase==='conferma' && (
             <div style={{ padding:'10px 16px 20px', flexShrink:0 }}>
               <div style={{ display:'flex', gap:10 }}>
-                <button onClick={mCambia} style={{ flex:1, padding:'14px', borderRadius:16, border: '1px solid var(--line)', background: 'var(--fill)', color: 'rgba(255,255,255,0.55)', fontFamily: 'var(--font-ui)', fontWeight:700, fontSize:13, cursor:'pointer' }}>← Cambia</button>
+                <button onClick={mCambia} style={{ flex:1, padding:'14px', borderRadius:16, border: '1px solid var(--line)', background: 'var(--fill)', color: 'var(--text-2)', fontFamily: 'var(--font-ui)', fontWeight:700, fontSize:13, cursor:'pointer' }}>← Cambia</button>
                 <button onClick={mConferma} style={{ flex:2, padding:'14px', borderRadius:16, border: 'none', background: 'linear-gradient(135deg,#b45309,#d97706)', color: '#fff', fontFamily: 'var(--font-ui)', fontWeight: 800, fontSize:14, cursor:'pointer' }}>✓ Risposta finale!</button>
               </div>
             </div>
@@ -951,9 +951,9 @@ function GiocaContent() {
                 const selected = aSelectedLeft === id;
                 const wrong = aWrong === id;
                 const correct = aCorrectFlash === id;
-                let bg = 'rgba(255,255,255,0.04)';
-                let border = '1px solid rgba(255,255,255,0.08)';
-                let tc = 'rgba(255,255,255,0.75)';
+                let bg = 'var(--fill)';
+                let border = '1px solid var(--line)';
+                let tc = 'var(--text)';
                 let opacity = matched ? 0 : 1;
                 let transform = wrong ? 'translateX(-6px)' : 'none';
                 if (selected) { bg = 'rgba(52,211,153,0.15)'; border = '1px solid #059669'; tc = '#fff'; }
@@ -976,9 +976,9 @@ function GiocaContent() {
                 const matched = aMatched.includes(id);
                 const correct = aCorrectFlash === id;
                 const wrong = aWrong !== null && aSelectedLeft === aWrong && id === aSelectedLeft; // not applicable to right
-                let bg = 'rgba(255,255,255,0.04)';
-                let border = '1px solid rgba(255,255,255,0.08)';
-                let tc = 'rgba(255,255,255,0.75)';
+                let bg = 'var(--fill)';
+                let border = '1px solid var(--line)';
+                let tc = 'var(--text)';
                 let opacity = matched ? 0 : 1;
                 if (correct) { bg = 'rgba(34,197,94,0.2)'; border = '1px solid #16a34a'; tc = '#fff'; }
                 return (

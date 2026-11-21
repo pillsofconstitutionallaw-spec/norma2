@@ -248,7 +248,7 @@ export default function IstituzioniPage() {
 
                 border: categoriaAttiva === livello.titolo
                     ? '1px solid rgba(79,70,229,0.25)'
-                    : '1px solid rgba(255,255,255,0.05)',
+                    : '1px solid var(--text-3)',
 
                 cursor: 'pointer',
                 textAlign: 'left',
@@ -325,7 +325,7 @@ export default function IstituzioniPage() {
                     border: istituzioneAttiva ===
                       istituzione
                         ? '1px solid rgba(79,70,229,0.25)'
-                        : '1px solid rgba(255,255,255,0.05)',
+                        : '1px solid var(--text-3)',
 
                     cursor: 'pointer',
                     width: '100%',
