@@ -15,6 +15,16 @@ import { codiceGiustiziaContabile } from '@/data/codici/codiceGiustiziaContabile
 import { codiceContratti } from '@/data/codici/codiceContratti';
 import { codiceAmbiente } from '@/data/codici/codiceAmbiente';
 
+import { codiceCrisiImpresa } from '@/data/codici/codiceCrisiImpresa';
+import { codiceAssicurazioni } from '@/data/codici/codiceAssicurazioni';
+import { codiceNavigazione } from '@/data/codici/codiceNavigazione';
+import { codiceOrdinamentoMilitare } from '@/data/codici/codiceOrdinamentoMilitare';
+import { codiceComunicazioniElettroniche } from '@/data/codici/codiceComunicazioniElettroniche';
+import { codiceAmministrazioneDigitale } from '@/data/codici/codiceAmministrazioneDigitale';
+import { codiceProtezioneCivile } from '@/data/codici/codiceProtezioneCivile';
+import { testoUnicoBancario } from '@/data/codici/testoUnicoBancario';
+import { testoUnicoFinanza } from '@/data/codici/testoUnicoFinanza';
+import { testoUnicoImmigrazione } from '@/data/codici/testoUnicoImmigrazione';
 export const codiciMap = {
   'codice-civile': { nome: 'Codice Civile', slug: 'codice-civile', articoli: codiceCivile },
   'codice-penale': { nome: 'Codice Penale', slug: 'codice-penale', articoli: codicePenale },
@@ -33,4 +43,14 @@ export const codiciMap = {
   'giustizia-contabile': { nome: 'Codice della Giustizia Contabile', slug: 'giustizia-contabile', articoli: codiceGiustiziaContabile },
   'codice-contratti-pubblici': { nome: 'Codice dei Contratti Pubblici', slug: 'codice-contratti-pubblici', articoli: codiceContratti },
   'codice-ambiente': { nome: 'Codice dell\'Ambiente', slug: 'codice-ambiente', articoli: codiceAmbiente },
+  'crisi-impresa': { nome: "Codice della Crisi d'Impresa", slug: 'crisi-impresa', articoli: codiceCrisiImpresa },
+  'codice-assicurazioni': { nome: 'Codice delle Assicurazioni Private', slug: 'codice-assicurazioni', articoli: codiceAssicurazioni },
+  'codice-navigazione': { nome: 'Codice della Navigazione', slug: 'codice-navigazione', articoli: codiceNavigazione },
+  'ordinamento-militare': { nome: "Codice dell'Ordinamento Militare", slug: 'ordinamento-militare', articoli: codiceOrdinamentoMilitare },
+  'comunicazioni-elettroniche': { nome: 'Codice delle Comunicazioni Elettroniche', slug: 'comunicazioni-elettroniche', articoli: codiceComunicazioniElettroniche },
+  'amministrazione-digitale': { nome: "Codice dell'Amministrazione Digitale", slug: 'amministrazione-digitale', articoli: codiceAmministrazioneDigitale },
+  'protezione-civile': { nome: 'Codice della Protezione Civile', slug: 'protezione-civile', articoli: codiceProtezioneCivile },
+  'testo-unico-bancario': { nome: 'Testo Unico Bancario', slug: 'testo-unico-bancario', articoli: testoUnicoBancario },
+  'testo-unico-finanza': { nome: 'Testo Unico della Finanza', slug: 'testo-unico-finanza', articoli: testoUnicoFinanza },
+  'testo-unico-immigrazione': { nome: 'Testo Unico Immigrazione', slug: 'testo-unico-immigrazione', articoli: testoUnicoImmigrazione },
 };

@@ -9,7 +9,7 @@ type Codice = {
   breve?: string;          // nome corto per le card principali
   atto: string;
   colore: string;
-  icona: React.ReactNode;  // contenuto dell'<svg> 24x24, tratto = currentColor
+  icona?: React.ReactNode;  // non più usato: le icone sono in IconaCodice
 };
 
 const PRINCIPALI: Codice[] = [
@@ -56,6 +56,19 @@ const ALTRI: Codice[] = [
     icona: <path d="M12 21s-6-4.35-9-8a5.5 5.5 0 018-7 5.5 5.5 0 018 7c-3 3.65-9 8-9 8z" /> },
   { slug: 'codice-turismo', titolo: 'Codice del Turismo', atto: 'D.Lgs. 79/2011', colore: '#14b8a6',
     icona: <><path d="M3 20h18" /><path d="M6 20V10l6-4 6 4v10" /></> },
+  { slug: 'crisi-impresa', titolo: "Codice della Crisi d'Impresa", atto: 'D.Lgs. 14/2019', colore: '#dc2626', icona: null },
+  { slug: 'codice-assicurazioni', titolo: "Codice delle Assicurazioni Private", atto: 'D.Lgs. 209/2005', colore: '#0891b2', icona: null },
+  { slug: 'codice-navigazione', titolo: "Codice della Navigazione", atto: 'R.D. 327/1942', colore: '#1d4ed8', icona: null },
+  { slug: 'ordinamento-militare', titolo: "Codice dell'Ordinamento Militare", atto: 'D.Lgs. 66/2010', colore: '#4d7c0f', icona: null },
+  { slug: 'comunicazioni-elettroniche', titolo: "Codice delle Comunicazioni Elettroniche", atto: 'D.Lgs. 259/2003', colore: '#7c3aed', icona: null },
+  { slug: 'amministrazione-digitale', titolo: "Codice dell'Amministrazione Digitale", atto: 'D.Lgs. 82/2005 · CAD', colore: '#0284c7', icona: null },
+  { slug: 'protezione-civile', titolo: "Codice della Protezione Civile", atto: 'D.Lgs. 1/2018', colore: '#ea580c', icona: null },
+];
+
+const TESTI_UNICI: Codice[] = [
+  { slug: 'testo-unico-bancario', titolo: "Testo Unico Bancario", atto: 'D.Lgs. 385/1993 · TUB', colore: '#0f766e', icona: null },
+  { slug: 'testo-unico-finanza', titolo: "Testo Unico della Finanza", atto: 'D.Lgs. 58/1998 · TUF', colore: '#4f46e5', icona: null },
+  { slug: 'testo-unico-immigrazione', titolo: "Testo Unico Immigrazione", atto: 'D.Lgs. 286/1998', colore: '#be185d', icona: null },
 ];
 
 const normalizza = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -64,8 +77,38 @@ export default function ListaCodici({ conteggi }: { conteggi: Record<string, num
   const [q, setQ] = useState('');
   const filtro = (c: Codice) => !q || normalizza(`${c.titolo} ${c.atto}`).includes(normalizza(q));
   const principali = PRINCIPALI.filter(filtro);
-  const altri = ALTRI.filter(filtro);
+  // In ordine alfabetico per argomento ("Codice della Strada" → "Strada")
+  const chiave = (t: string) => normalizza(t.replace(/^codice\s+(dell['’]\s*|della\s+|delle\s+|dei\s+|del\s+|degli\s+)?/i, ''));
+  const altri = ALTRI.filter(filtro).sort((a, b) => chiave(a.titolo).localeCompare(chiave(b.titolo)));
+  const testiUnici = TESTI_UNICI.filter(filtro);
   const articoli = (slug: string) => conteggi[slug]?.toLocaleString('it-IT') ?? '';
+
+  // Elenco raggruppato stile iOS, usato per "Altri codici" e "Testi unici"
+  function elenco(lista: Codice[], titolo: string, ritardo: number) {
+    if (lista.length === 0) return null;
+    return (
+      <>
+        <div className="sezione-label appare" style={{ animationDelay: `${ritardo}ms` }}>{titolo}</div>
+        <div className="lista appare" style={{ animationDelay: `${ritardo + 20}ms` }}>
+          {lista.map((c, i) => {
+            const d = ritardo + 100 + Math.min(i, 12) * 45;
+            return (
+              <Link key={c.slug} href={`/codici/${c.slug}`} className="riga">
+                <div className="riga-icona tessera" style={{ background: `linear-gradient(150deg, ${c.colore}, color-mix(in srgb, ${c.colore} 75%, #0b1f3a))`, ['--d' as string]: `${d}ms` }}>
+                  <IconaCodice slug={c.slug} size={21} colore="#fff" anima ritardo={d} />
+                </div>
+                <div className="riga-testo">
+                  <div className="riga-titolo">{c.titolo}</div>
+                  <div className="riga-sub">{c.atto}{articoli(c.slug) && ` · ${articoli(c.slug)} articoli`}</div>
+                </div>
+                <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M9 18l6-6-6-6" /></svg>
+              </Link>
+            );
+          })}
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -106,25 +149,10 @@ export default function ListaCodici({ conteggi }: { conteggi: Record<string, num
         </>
       )}
 
-      {altri.length > 0 && (
-        <>
-          <div className="sezione-label appare" style={{ animationDelay: '280ms' }}>Altri codici</div>
-          <div className="lista appare" style={{ animationDelay: '300ms' }}>
-            {altri.map((c, i) => (
-              <Link key={c.slug} href={`/codici/${c.slug}`} className="riga">
-                <div className="riga-icona tessera" style={{ background: `linear-gradient(150deg, ${c.colore}, color-mix(in srgb, ${c.colore} 75%, #0b1f3a))`, ['--d' as string]: `${380 + i * 45}ms` }}><IconaCodice slug={c.slug} size={21} colore="#fff" anima ritardo={380 + i * 45} /></div>
-                <div className="riga-testo">
-                  <div className="riga-titolo">{c.titolo}</div>
-                  <div className="riga-sub">{c.atto}{articoli(c.slug) && ` · ${articoli(c.slug)} articoli`}</div>
-                </div>
-                <svg className="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M9 18l6-6-6-6" /></svg>
-              </Link>
-            ))}
-          </div>
-        </>
-      )}
+      {elenco(altri, 'Altri codici', 280)}
+      {elenco(testiUnici, 'Testi unici', 340)}
 
-      {!principali.length && !altri.length && (
+      {!principali.length && !altri.length && !testiUnici.length && (
         <div style={{ textAlign: 'center', color: 'var(--text-3)', fontSize: 14, padding: '48px 0' }}>
           Nessun codice trovato per “{q}”
         </div>
