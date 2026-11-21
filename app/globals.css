@@ -325,17 +325,6 @@ button, nav, .tap { -webkit-user-select: none; user-select: none; -webkit-touch-
 .feed-azione[data-attivo='true'] svg { animation: cuore-pop 0.45s var(--ease-spring); }
 .feed-azione:last-child[data-attivo='true'] { color: var(--accent); }
 @keyframes cuore-pop { 0% { transform: scale(1); } 35% { transform: scale(1.35); } 100% { transform: scale(1); } }
-.feed-conta { font-variant-numeric: tabular-nums; }
-.feed-commenti { border-top: 0.5px solid var(--line); margin-top: 6px; padding-top: 10px; }
-.feed-commento { margin: 0 0 6px; font-size: 14px; line-height: 1.45; color: var(--text-2); }
-.feed-commento b { color: var(--text); font-weight: 600; }
-.feed-tutti { font-size: 13px; color: var(--text-3); text-decoration: none; }
-.feed-ok { font-size: 13px; color: #16a34a; margin: 4px 0; }
-.feed-input { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
-.feed-input input {
-  flex: 1; min-width: 0; height: 38px; padding: 0 12px; border-radius: 19px; border: none; outline: none;
-  background: var(--fill); color: var(--text); font: 400 15px var(--font-ui);
-}
 
 /* ───────── Home ───────── */
 .saluto-data { font-size: 13px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; color: var(--text-3); margin-top: 10px; }

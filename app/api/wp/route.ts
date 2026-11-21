@@ -21,7 +21,6 @@ const SITI: Record<string, string> = {
 const PERCORSI: Record<string, number> = {
   posts: 120,
   categories: 3600,
-  comments: 60,
   media: 600,
 };
 

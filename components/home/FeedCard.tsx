@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Post = {
   id?: number;
@@ -10,13 +10,6 @@ type Post = {
   _embedded?: any;
   _source: 'og' | 'odl';
   link: string;
-};
-
-type WpComment = {
-  id: number;
-  author_name: string;
-  content: { rendered: string };
-  date: string;
 };
 
 function dataRelativa(isoString: string): string {
@@ -67,18 +60,6 @@ export default function FeedCard({ post, priority = false }: { post: Post; prior
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  // ── Commenti ──
-  const [comments, setComments] = useState<WpComment[]>([]);
-  const [commentCount, setCommentCount] = useState(0);
-  const [commentInput, setCommentInput] = useState('');
-  const [authorName, setAuthorName] = useState('');
-  const [nameInput, setNameInput] = useState('');
-  const [showInput, setShowInput] = useState(false);
-  const [needsName, setNeedsName] = useState(false);
-  const [posting, setPosting] = useState(false);
-  const [postOk, setPostOk] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const excerpt = post.excerpt?.rendered
     ? stripHtml(post.excerpt.rendered).replace(/\[…\]/g, '…').slice(0, 180)
     : '';
@@ -90,29 +71,6 @@ export default function FeedCard({ post, priority = false }: { post: Post; prior
       setSaved(items.some(s => s.slug === post.slug));
     } catch {}
   }, [post.slug]);
-
-  // Carica nome autore salvato
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('norma_author_name');
-      if (stored) setAuthorName(stored);
-    } catch {}
-  }, []);
-
-  // Carica commenti WP (solo OG con ID)
-  useEffect(() => {
-    if (!post.id || isOdl) return;
-    fetch(
-      `/api/wp?sito=og&percorso=comments&post=${post.id}&per_page=3&orderby=date&order=asc`
-    )
-      .then(async r => {
-        const total = r.headers.get('X-WP-Total');
-        if (total) setCommentCount(parseInt(total, 10));
-        const data = await r.json();
-        if (Array.isArray(data)) setComments(data);
-      })
-      .catch(() => {});
-  }, [post.id]);
 
   function toggleSave(e: React.MouseEvent) {
     e.preventDefault();
@@ -134,47 +92,6 @@ export default function FeedCard({ post, priority = false }: { post: Post; prior
     if (navigator.share) {
       navigator.share({ title: titleText, url: window.location.origin + href }).catch(() => {});
     }
-  }
-
-  function handleCommentTap() {
-    if (!authorName) {
-      setNeedsName(true);
-    }
-    setShowInput(true);
-    setTimeout(() => inputRef.current?.focus(), 80);
-  }
-
-  async function submitComment() {
-    const name = authorName || nameInput.trim();
-    if (!commentInput.trim() || !name || !post.id) return;
-    setPosting(true);
-    try {
-      const res = await fetch('https://orizzontegiuridico.com/wp-json/wp/v2/comments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          post: post.id,
-          author_name: name,
-          author_email: `${name.toLowerCase().replace(/\s+/g, '.')}@norma.app`,
-          content: commentInput,
-        }),
-      });
-      if (res.ok) {
-        const newComment: WpComment = await res.json();
-        setComments(prev => [...prev, newComment]);
-        setCommentCount(c => c + 1);
-        setCommentInput('');
-        setShowInput(false);
-        setNeedsName(false);
-        setPostOk(true);
-        setTimeout(() => setPostOk(false), 2000);
-        if (!authorName) {
-          setAuthorName(name);
-          try { localStorage.setItem('norma_author_name', name); } catch {}
-        }
-      }
-    } catch {}
-    finally { setPosting(false); }
   }
 
   const Azione = ({ label, onClick, children, attivo }: { label: string; onClick: (e: React.MouseEvent) => void; children: React.ReactNode; attivo?: boolean }) => (
@@ -219,12 +136,6 @@ export default function FeedCard({ post, priority = false }: { post: Post; prior
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
             </svg>
           </Azione>
-          <Azione label="Aggiungi un commento" onClick={handleCommentTap}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
-            {commentCount > 0 && <span className="feed-conta">{commentCount}</span>}
-          </Azione>
           <Azione label="Condividi articolo" onClick={share}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
               <path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" />
@@ -238,35 +149,6 @@ export default function FeedCard({ post, priority = false }: { post: Post; prior
           </Azione>
         </div>
 
-        {/* ── Commenti ── */}
-        {!isOdl && post.id && (comments.length > 0 || showInput || postOk) && (
-          <div className="feed-commenti">
-            {comments.slice(-2).map(c => (
-              <p key={c.id} className="feed-commento">
-                <b>{c.author_name}</b> {stripHtml(c.content.rendered)}
-              </p>
-            ))}
-            {commentCount > 2 && <a href={href} className="feed-tutti">Vedi tutti i {commentCount} commenti</a>}
-            {postOk && <div className="feed-ok">✓ Commento inviato</div>}
-            {showInput && (
-              <div className="feed-input">
-                {needsName && !authorName && (
-                  <input placeholder="Il tuo nome" value={nameInput} onChange={e => setNameInput(e.target.value)} />
-                )}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <input ref={inputRef} placeholder="Aggiungi un commento…" value={commentInput}
-                    onChange={e => setCommentInput(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && !e.shiftKey && submitComment()} />
-                  {commentInput.trim() && (
-                    <button onClick={submitComment} disabled={posting} className="link-azione tap" style={{ fontSize: 15, fontWeight: 600 }}>
-                      {posting ? '…' : 'Pubblica'}
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
       </div>
     </article>
   );
