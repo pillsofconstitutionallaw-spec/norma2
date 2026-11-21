@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
+
+export const maxDuration = 60;
 import { leggiEdgeConfig, scriviEdgeConfig } from '@/lib/edge-config';
 
 // Controlla se sui due siti WordPress è uscito un articolo nuovo e, se sì,
@@ -82,6 +84,11 @@ async function controllaSito(sito: (typeof SITI)[number]) {
       ...(immagine ? { chrome_web_image: immagine } : {}),
     }),
   });
+  // Si carica subito l'articolo una volta, così chi arriva dalla notifica lo
+  // trova già in cache invece di aspettare WordPress.
+  if (sito.chiave === 'ultimo-articolo-og') {
+    await fetch(`https://norma2.vercel.app/api/articolo?slug=${encodeURIComponent(ultimo.slug)}`, { cache: 'no-store', signal: AbortSignal.timeout(25000) }).catch(() => {});
+  }
   return { sito: sito.titolo, esito: 'notifica inviata', articolo: titolo, onesignal: await r.json() };
 }
 

@@ -1,7 +1,19 @@
 import { NextRequest } from 'next/server';
 import { scriviEdgeConfig } from '@/lib/edge-config';
 
+// Manda una notifica push a TUTTI gli iscritti: prima era aperta a chiunque
+// conoscesse l'indirizzo. Ora serve lo stesso segreto dei controlli
+// automatici, nell'header Authorization (Bearer) o come ?token= per i
+// webhook che non permettono header personalizzati (es. WordPress).
+function autorizzato(req: NextRequest): boolean {
+  const segreto = process.env.CRON_SECRET;
+  if (!segreto) return false;
+  return req.headers.get('Authorization') === `Bearer ${segreto}`
+    || req.nextUrl.searchParams.get('token') === segreto;
+}
+
 export async function POST(req: NextRequest) {
+  if (!autorizzato(req)) return Response.json({ ok: false, error: 'Non autorizzato' }, { status: 401 });
   try {
     const body = await req.json();
 

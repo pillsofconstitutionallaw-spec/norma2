@@ -2,6 +2,7 @@
 import { Montserrat } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import StyledJsxRegistry from "./registry";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -59,7 +60,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         {/* Su schermi larghi l'app resta in una colonna centrale, come un'app
             aperta su tablet/desktop, invece di stirarsi a tutta larghezza. */}
-        <div className="app-colonna">{children}</div>
+        <div className="app-colonna"><StyledJsxRegistry>{children}</StyledJsxRegistry></div>
 
         {/* OneSignal SDK */}
         <Script
@@ -113,7 +114,7 @@ export default function RootLayout({
                       <div style="font-size:13px;font-weight:800;color:#0b0b0f;margin-bottom:2px;">Norma</div>
                       <div style="font-size:11px;color:rgba(60,60,67,0.6);">Tocca per attivare le notifiche push</div>
                     </div>
-                    <div style="font-size:13px;font-weight:600;color:#fff;flex-shrink:0;background:#0a66ff;border-radius:20px;padding:7px 14px;">Attiva</div>
+                    <div style="font-size:13px;font-weight:600;color:#fff;flex-shrink:0;background:#4f46e5;border-radius:20px;padding:7px 14px;">Attiva</div>
                   \`;
                   document.body.appendChild(banner);
                   setTimeout(() => { banner.style.top = '0px'; }, 50);
