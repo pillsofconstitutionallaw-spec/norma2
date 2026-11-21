@@ -101,6 +101,9 @@ const staticCategories = [
 const ICONA_GENERICA = <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M14 2v6h6M8 13h8M8 17h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>;
 
 const icons: Record<string, React.ReactNode> = {
+  'Editoriali': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 20h9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  'Approfondimenti': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 2 2 7l10 5 10-5z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="m2 12 10 5 10-5M2 17l10 5 10-5" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>,
+  'Storia del Diritto': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
   'Orizzonti del Diritto': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
   'Diritto canonico': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><path d="M12 2v6M9 5h6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M5 22V12l7-4 7 4v10" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M10 22v-5h4v5" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>,
   'Analisi': <svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35M8 11h6M11 8v6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
@@ -123,6 +126,7 @@ const icons: Record<string, React.ReactNode> = {
 const shortNames: Record<string, string> = {
   'Orizzonti del Diritto': 'Orizzonti',
   'Diritto canonico': 'Canonico',
+  'Storia del Diritto': 'Storia',
   Costituzionale: 'Cost.',
   'Unione Europea': 'UE',
   Amministrativo: 'Amm.',
@@ -131,6 +135,33 @@ const shortNames: Record<string, string> = {
   "L'Intervista": 'Interv.',
   'Ripetiamo il Diritto': 'Ripetiamo',
 };
+
+// Le categorie arrivano da WordPress con i loro nomi veri ("Diritto penale",
+// "Diritto dell'Unione Europea"...): icona e nome breve si scelgono per
+// parola chiave, così funzionano anche con categorie nuove o rinominate.
+const CHIAVI_ICONE: [RegExp, string][] = [
+  [/orizzonti del diritto/i, 'Orizzonti del Diritto'], [/canonic/i, 'Diritto canonico'],
+  [/penal/i, 'Penale'], [/civil/i, 'Civile'], [/costituzional/i, 'Costituzionale'],
+  [/ambient/i, 'Ambiente'], [/europe|unione/i, 'Unione Europea'], [/amministrativ/i, 'Amministrativo'],
+  [/internazional/i, 'Internazionale'], [/animal/i, 'Animali'], [/legalit/i, 'Legalità'],
+  [/econom/i, 'Economia'], [/politic/i, 'Politica'], [/compar/i, 'Dir. Comparato'],
+  [/intervist/i, "L'Intervista"], [/ripetiamo/i, 'Ripetiamo il Diritto'], [/analisi/i, 'Analisi'],
+  [/editorial/i, 'Editoriali'], [/approfondiment/i, 'Approfondimenti'], [/storia/i, 'Storia del Diritto'],
+];
+
+function iconaCategoria(nome: string): React.ReactNode {
+  if (icons[nome]) return icons[nome];
+  const chiave = CHIAVI_ICONE.find(([re]) => re.test(nome))?.[1];
+  return (chiave && icons[chiave]) || ICONA_GENERICA;
+}
+
+function nomeBreve(nome: string): string {
+  if (shortNames[nome]) return shortNames[nome];
+  let n = nome.replace(/^diritto\s+(dell['’]\s*|della\s+|del\s+|e\s+)?/i, '').trim() || nome;
+  n = n.replace(/^unione europea$/i, 'UE').replace(/^protezione animali$/i, 'Animali');
+  n = n.charAt(0).toUpperCase() + n.slice(1);
+  return n.length > 12 ? n.split(' ').pop()! : n;
+}
 
 const slides = [
   {
@@ -598,12 +629,12 @@ export default function NormaHome() {
                   <div className="storia-anello" data-vista={!nuova}>
                     <div className="storia-interno">
                       <span style={{ display: 'flex', transform: 'scale(0.85)' }}>
-                        {icons[cat.name] || ICONA_GENERICA}
+                        {iconaCategoria(cat.name)}
                       </span>
                     </div>
                   </div>
                   <span className="storia-nome" style={{ fontWeight: nuova ? 600 : 500, color: nuova ? 'var(--text)' : undefined }}>
-                    {shortNames[cat.name] || (cat.name.length > 12 ? cat.name.split(' ').pop() : cat.name)}
+                    {nomeBreve(cat.name)}
                   </span>
                 </button>
               );
@@ -763,9 +794,7 @@ export default function NormaHome() {
             <div style={{ position: 'absolute', top: 22, left: 0, right: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--grad-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  {icons[storyCatName]
-                    ? <span style={{ display: 'flex', transform: 'scale(0.72)', color: '#fff' }}>{icons[storyCatName]}</span>
-                    : <span style={{ fontSize: 16 }}>🏛️</span>}
+                  <span style={{ display: 'flex', transform: 'scale(0.72)', color: '#fff' }}>{iconaCategoria(storyCatName)}</span>
                 </div>
                 <div>
                   <div style={{ color: '#fff', fontWeight: 800, fontSize: 13 }}>{storyCatName}</div>
