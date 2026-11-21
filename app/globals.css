@@ -3,7 +3,6 @@
 /* Tailwind non deve scansionare i dati: 11 MB di codici e 22 MB di XML
    rallentano compilazione e build senza contenere classi. */
 @source not "../data";
-@source not "../normativa";
 @source not "../ocr-worker";
 @source not "../old.html";
 
